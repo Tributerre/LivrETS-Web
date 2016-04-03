@@ -1,20 +1,19 @@
 @model ExternalLoginConfirmationViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Inscrivez-vous";
 }
 
 <h2>@ViewData["Title"].</h2>
-<h3>Associate your @ViewData["LoginProvider"] account.</h3>
+<h3>Associez votre compte @ViewData["LoginProvider"].</h3>
 
 <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-    <h4>Association Form</h4>
     <hr />
     <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
 
     <p class="text-info">
-        You've successfully authenticated with <strong>@ViewData["LoginProvider"]</strong>.
-        Please enter a user name for this site below and click the Register button to finish
-        logging in.
+        Vous vous êtes connectez avec succès à <strong>@ViewData["LoginProvider"]</strong>.
+        Svp, veuillez confirmer votre inscription en remplissant les champs ci-dessous et cliquez sur le
+        bouton <strong>S'inscrire</strong> pour continuer.
     </p>
     <div class="form-group">
         <label asp-for="Email" class="col-md-2 control-label"></label>

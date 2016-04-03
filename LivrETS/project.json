@@ -28,7 +28,8 @@
     "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-final",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final"
+    "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Authentication.Google": "1.0.0-rc1-final"
   },
 
   "commands": {
@@ -37,7 +38,6 @@
   },
 
   "frameworks": {
-    "dnx451": { },
     "dnxcore50": { }
   },
 
@@ -51,11 +51,14 @@
     "**.vspscc"
   ],
   "scripts": {
-    "prepublish": [
-      "npm install",
-      "bower install",
-      "gulp clean",
-      "gulp min"
-    ]
+      "postrestore": [
+          "npm install",
+          "bower install"
+      ],
+      "prepare": [
+        "gulp clean",
+        "gulp sass",
+        "gulp min"
+      ]
   }
 }

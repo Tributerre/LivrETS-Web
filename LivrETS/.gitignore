@@ -232,3 +232,9 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# SASS - Compiled to css with dnu restore.
+wwwroot/css
+
+# Project specifics
+appsettings.json

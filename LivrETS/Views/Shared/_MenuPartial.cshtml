@@ -1,0 +1,9 @@
+@using System.Security.Claims
+
+@if (User.IsSignedIn())
+{
+    <li><a href="#section1">Vendre</a></li>
+    <li><a href="#section2">Utilisateurs</a></li>
+    <li><a href="#section3">Foires</a></li>
+    <li>&nbsp;</li>
+}
