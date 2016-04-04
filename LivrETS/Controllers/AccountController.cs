@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Data.Entity;
 using Microsoft.Extensions.Logging;
 using LivrETS.Models;
 using LivrETS.Services;
@@ -75,6 +73,32 @@ namespace LivrETS.Controllers
         }
 
         //
+        // Temporary. Deletes a user completely.
+        //        
+        [HttpGet]
+        public async Task<IActionResult> Unregister()
+        {
+            await _signInManager.SignOutAsync();
+            
+            var user = await _userManager.FindByIdAsync(User.GetUserId());
+            var logins = user.Logins;
+            var roles = await _userManager.GetRolesAsync(user);
+            
+            foreach (var login in logins)
+            {
+                await _userManager.RemoveLoginAsync(user, login.LoginProvider, login.ProviderKey);
+            }
+            
+            if (roles.Count > 0)
+            {
+                await _userManager.RemoveFromRolesAsync(user, roles);
+            }
+
+            await _userManager.DeleteAsync(user);            
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        //
         // GET: /Account/ExternalLoginCallback
         [HttpGet]
         [AllowAnonymous]
@@ -111,7 +135,8 @@ namespace LivrETS.Controllers
                 if (!email.Contains("etsmtl.net"))
                 {
                     return RedirectToAction(nameof(AccountController.Login), "Account", new { error = "InvalidDomain" });
-                } else
+                } 
+                else
                 {
                     var firstName = info.ExternalPrincipal.FindFirstValue(ClaimTypes.GivenName);
                     var lastName = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Surname);
@@ -140,15 +165,22 @@ namespace LivrETS.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
+                
                 var user = new ApplicationUser { 
                     UserName = model.Email,
                     Email = model.Email,
                     FirstName = model.FirstName,
-                    LastName = model.LastName
+                    LastName = model.LastName,
+                    SubscribedAt = DateTime.Now
                 };
+                
+                
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    // Add claims to retreive in views and such.
+                    await _userManager.AddClaimAsync(user, new Claim(user.FirstName, "FirstName"));
+                    
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {

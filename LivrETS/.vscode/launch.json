@@ -28,7 +28,7 @@
 					"args": "/C start ${auto-detect-url}"
 				},
 				"osx": {
-					"command": "open"
+					"command": "open -a Safari ${auto-detect-url}"
 				},
 				"linux": {
 					"command": "xdg-open"

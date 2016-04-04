@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using LivrETS.Models;
 using LivrETS.Services;
+using Microsoft.AspNet.Localization;
+using System.Globalization;
 
 namespace LivrETS
 {
@@ -23,17 +25,8 @@ namespace LivrETS
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
-
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
-            // Configuration["Data:DefaultConnection:ConnectionString"] = $@"Data Source={appEnv.ApplicationBasePath}/LivrETS.db";
-
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -66,6 +59,16 @@ namespace LivrETS
 
             if (env.IsDevelopment())
             {
+                var localizationOptions = new RequestLocalizationOptions()
+                {
+                    SupportedCultures = new List<CultureInfo> { new CultureInfo("") },
+                    SupportedUICultures = new List<CultureInfo> { new CultureInfo("") }
+                };
+
+                var invariantCulture = new RequestCulture(new CultureInfo(""), new CultureInfo(""));
+
+                app.UseRequestLocalization(localizationOptions, invariantCulture);
+                
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
