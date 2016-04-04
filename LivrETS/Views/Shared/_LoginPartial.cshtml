@@ -5,7 +5,7 @@
     <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
         <div class="btn-group">
             <button id="user-btn" type="button" class="navbar-btn btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Bonjour @User.FindFirstValue("FirstName") !<span class="caret"></span>
+                Bonjour @User.FindFirstValue("FirstName")!<span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                 <li><a href="#" onclick="$('#logoutForm').submit()">Se déconnecter</a></li>
@@ -22,7 +22,6 @@ else
         </button>
         <ul class="dropdown-menu">
             <li><a asp-controller="Account" asp-action="Login">Se connecter</a></li>
-            <li role="separator" class="divider"></li>
         </ul>
     </div>
 }

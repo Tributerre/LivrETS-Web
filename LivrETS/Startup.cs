@@ -59,18 +59,18 @@ namespace LivrETS
 
             if (env.IsDevelopment())
             {
-                var localizationOptions = new RequestLocalizationOptions()
-                {
-                    SupportedCultures = new List<CultureInfo> { new CultureInfo("") },
-                    SupportedUICultures = new List<CultureInfo> { new CultureInfo("") }
-                };
+                // var localizationOptions = new RequestLocalizationOptions()
+                // {
+                //     SupportedCultures = new List<CultureInfo> { new CultureInfo("") },
+                //     SupportedUICultures = new List<CultureInfo> { new CultureInfo("") }
+                // };
 
-                var invariantCulture = new RequestCulture(new CultureInfo(""), new CultureInfo(""));
+                // var invariantCulture = new RequestCulture(new CultureInfo(""), new CultureInfo(""));
 
-                app.UseRequestLocalization(localizationOptions, invariantCulture);
+                // app.UseRequestLocalization(localizationOptions, invariantCulture);
                 
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                // app.UseDeveloperExceptionPage();
+                // app.UseDatabaseErrorPage();
             }
             else
             {

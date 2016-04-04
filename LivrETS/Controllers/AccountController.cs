@@ -179,7 +179,7 @@ namespace LivrETS.Controllers
                 if (result.Succeeded)
                 {
                     // Add claims to retreive in views and such.
-                    await _userManager.AddClaimAsync(user, new Claim(user.FirstName, "FirstName"));
+                    await _userManager.AddClaimAsync(user, new Claim("FirstName", user.FirstName));
                     
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
