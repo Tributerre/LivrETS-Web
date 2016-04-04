@@ -10,7 +10,7 @@
 
 <h2>@ViewData["Title"].</h2>
 <div class="row">
-    @if (ViewData["error"].ToString() == "InvalidDomain")
+    @if (ViewData["error"] != null && ViewData["error"].ToString() == "InvalidDomain")
     {
         <div class="alert alert-danger alert-dismissible fade in" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>

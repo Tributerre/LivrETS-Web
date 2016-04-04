@@ -2,15 +2,16 @@
 
 @if (User.IsSignedIn())
 {
-    <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a href="#" title="">Hello @User.GetUserName()!</a>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
-            </li>
-        </ul>
+    <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
+        <div class="btn-group">
+            <button id="user-btn" type="button" class="navbar-btn btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Bonjour! @User.GetUserName()<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#" onclick="$('#logoutForm').submit()">Se déconnecter</a></li>
+                <li role="separator" class="divider"></li>
+            </ul>
+        </div>
     </form>
 }
 else
@@ -21,7 +22,6 @@ else
         </button>
         <ul class="dropdown-menu">
             <li><a asp-controller="Account" asp-action="Login">Se connecter</a></li>
-            <li><a asp-controller="Account" asp-action="Register">S'inscrire</a></li>
             <li role="separator" class="divider"></li>
         </ul>
     </div>

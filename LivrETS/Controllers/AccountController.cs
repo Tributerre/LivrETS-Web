@@ -113,7 +113,9 @@ namespace LivrETS.Controllers
                     return RedirectToAction(nameof(AccountController.Login), "Account", new { error = "InvalidDomain" });
                 } else
                 {
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
+                    var firstName = info.ExternalPrincipal.FindFirstValue(ClaimTypes.GivenName);
+                    var lastName = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Surname);
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email, FirstName = firstName, LastName = lastName });
                 }
             }
         }
@@ -138,7 +140,12 @@ namespace LivrETS.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { 
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName
+                };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
