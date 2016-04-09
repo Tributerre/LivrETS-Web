@@ -8,8 +8,8 @@
                 Bonjour @User.FindFirstValue("FirstName")!<span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a asp-controller="Account" asp-action="Profile">Profil</a></li>
-                <li><a href="#" onclick="$('#logoutForm').submit()">Se d&eacute;connecter</a></li>
+                <li><a asp-controller="Account" asp-action="Profile"><span class="glyphicon glyphicon-user"></span>  Profil</a></li>
+                <li><a href="#" onclick="$('#logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span>  Se d&eacute;connecter</a></li>
                 <li role="separator" class="divider"></li>
             </ul>
         </div>
@@ -22,7 +22,7 @@ else
             Bonjour! <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a asp-controller="Account" asp-action="Login">Se connecter</a></li>
+            <li><a asp-controller="Account" asp-action="Login"><span class="glyphicon glyphicon-log-in"></span>  Se connecter</a></li>
         </ul>
     </div>
 }
