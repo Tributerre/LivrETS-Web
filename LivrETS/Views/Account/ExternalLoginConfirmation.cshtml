@@ -10,6 +10,10 @@
 
 <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
     <hr />
+    <div id="alert-terms" class="alert alert-danger" role="alert" hidden>
+        <button type="button" class="close" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+        <strong>Oups!</strong> Vous devez vous connecter avec votre compte <strong>etsmtl.net</strong>.
+    </div>
     <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
 
     <p class="text-info">
@@ -55,16 +59,39 @@
                 style="margin: 10px auto 0; float: none;"
                 placeholder="Num&eacute;ro du code &agrave; barres"
                 class="form-control"
-                data-val-required="Veuillez indiquer le numéro du code à barres de votre carte étudiante." /> 
+                data-val-required="Veuillez indiquer le numéro du code à barres de votre carte étudiante." />
+            <span style="margin: 10px auto 0; float: none;" asp-validation-for="BarCode" class="text-danger"></span>
         </div>
     </div>
+    
+    <div class="row">
+        <p>
+            <input type="checkbox" id="terms-checkbox"> Je confirme avoir lu et compris les <a href="#">termes et conditions d'utilisation</a> de Livr&Eacute;TS.
+        </p>
+    </div>
+    
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10 text-right">
-            <button type="submit" class="btn btn-primary">Confirmer!</button>
+            <button id="btn-confirm" type="button" class="btn btn-primary">Confirmer!</button>
         </div>
     </div>
 </form>
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        $(document).ready(() => {
+            $("#btn-confirm").on("click", () => {
+                if ($("#terms-checkbox").is(":checked")) {
+                    $("form").submit()
+                } else {
+                    $("#alert-terms").show("slow")
+                }
+            })
+            
+            $("#alert-terms>button").on("click", () => {
+                $("#alert-terms").hide("slow")
+            })
+        })
+    </script>
 }
