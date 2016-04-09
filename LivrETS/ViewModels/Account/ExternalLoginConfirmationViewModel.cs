@@ -17,5 +17,8 @@ namespace LivrETS.ViewModels.Account
         
         [Required]
         public string LastName { get; set; }
+        
+        [Required]
+        public string BarCode { get; set; }
     }
 }

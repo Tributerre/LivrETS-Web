@@ -24,7 +24,7 @@ namespace LivrETS.Models
         public string BarCode { get; set; }
         
         [Key]
-        public string ID { get; set; }
+        public string ID { get; set; }  // To be deleted. Not used.
         
         public int GeneratedNumber { get; set; }
         

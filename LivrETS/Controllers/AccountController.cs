@@ -133,7 +133,7 @@ namespace LivrETS.Controllers
                 ViewData["LoginProvider"] = info.LoginProvider;
                 var email = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Email);
                 
-                if (!email.Contains("etsmtl.net"))
+                if (email.Split('@').Last() != "etsmtl.net")
                 {
                     return RedirectToAction(nameof(AccountController.Login), "Account", new { error = "InvalidDomain" });
                 } 
@@ -141,7 +141,12 @@ namespace LivrETS.Controllers
                 {
                     var firstName = info.ExternalPrincipal.FindFirstValue(ClaimTypes.GivenName);
                     var lastName = info.ExternalPrincipal.FindFirstValue(ClaimTypes.Surname);
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email, FirstName = firstName, LastName = lastName });
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { 
+                        Email = email,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        BarCode = ""
+                    });
                 }
             }
         }
@@ -172,7 +177,8 @@ namespace LivrETS.Controllers
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    SubscribedAt = DateTime.Now
+                    SubscribedAt = DateTime.Now,
+                    BarCode = model.BarCode.ToUpper()
                 };
                 
                 

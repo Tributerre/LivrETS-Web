@@ -3,47 +3,64 @@
     ViewData["Title"] = "Inscrivez-vous";
 }
 
-<h2>@ViewData["Title"].</h2>
-<h3>Associez votre compte @ViewData["LoginProvider"].</h3>
+@section Styles {
+    <link rel="stylesheet" href="~/css/externallogincallback.css" />
+}
+<h3>Vous y &ecirc;tes presque!</h3>
 
 <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
     <hr />
     <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
 
     <p class="text-info">
-        Vous vous êtes connectez avec succès à <strong>@ViewData["LoginProvider"]</strong>.
+        Vous vous &ecirc;tes connectez avec succ&egrave;s &agrave; <strong>@ViewData["LoginProvider"]</strong>.
         Svp, veuillez confirmer votre inscription en remplissant les champs ci-dessous et cliquez sur le
-        bouton <strong>S'inscrire</strong pour continuer.
+        bouton <strong>Confirmer!</strong pour continuer.
     </p>
     <div class="form-group">
-        <label asp-for="Email" class="col-md-2 control-label">Courriel</label>
-        <div class="col-md-10">
-            <input asp-for="Email"
-                class="form-control"
-                data-val-required="Veuillez indiquer votre courriel."
-                data-val-email="Le courriel que vous avez indiqué est invalide."/>
-            <span asp-validation-for="Email" class="text-danger"></span>
+        <div class="row">
+            <label asp-for="FirstName" class="col-md-2 control-label">Prénom</label>
+            <div class="col-md-2">
+                <input asp-for="FirstName"
+                    class="form-control"
+                    data-val-required="Veuilez indiquer votre prénom.">
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            
+            <label asp-for="LastName" class="col-md-2 control-label">Nom de famille</label>
+            <div class="col-md-2">
+                <input asp-for="LastName"
+                    class="form-control"
+                    data-val-required="Veuillez indiquer votre nom de famille.">
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
         </div>
         
-        <label asp-for="FirstName" class="col-md-2 control-label">Prénom</label>
-        <div class="col-md-10">
-            <input asp-for="FirstName"
-                class="form-control"
-                data-val-required="Veuilez indiquer votre prénom.">
-            <span asp-validation-for="FirstName" class="text-danger"></span>
+        <div class="row" style="margin-top: 20px;">
+            <label asp-for="Email" class="col-md-2 control-label">Courriel</label>
+            <div class="col-md-4">
+                <input asp-for="Email"
+                    class="form-control"
+                    data-val-required="Veuillez indiquer votre courriel."
+                    data-val-email="Le courriel que vous avez indiqué est invalide."/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>    
         </div>
         
-        <label asp-for="LastName" class="col-md-2 control-label">Nom de famille</label>
-        <div class="col-md-10">
-            <input asp-for="LastName"
+        <div class="row text-center" style="margin-top: 20px;">
+            <p>Entour&eacute; de <strong style="color: red;">rouge</strong> est l'information recherch&eacute;.</p>
+            <img class="img-rounded" width="300px" height="175px" alt="student_card_example.jpg" src="~/images/student_card_example.jpg" />
+            <br>
+            <input asp-for="BarCode"
+                style="margin: 10px auto 0; float: none;"
+                placeholder="Num&eacute;ro du code &agrave; barres"
                 class="form-control"
-                data-val-required="Veuillez indiquer votre nom de famille.">
-            <span asp-validation-for="LastName" class="text-danger"></span>
+                data-val-required="Veuillez indiquer le numéro du code à barres de votre carte étudiante." /> 
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-default">Confirmer l'inscription</button>
+        <div class="col-md-offset-2 col-md-10 text-right">
+            <button type="submit" class="btn btn-primary">Confirmer!</button>
         </div>
     </div>
 </form>
