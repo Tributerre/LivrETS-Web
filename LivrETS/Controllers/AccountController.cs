@@ -1,3 +1,20 @@
+/*
+LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+Copyright (C) 2016  TribuTerre
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -305,6 +322,46 @@ namespace LivrETS.Controllers
                 ModelState.AddModelError("", "Invalid code.");
                 return View(model);
             }
+        }
+
+        /// <summary>
+        /// GET: /Account/Profile
+        /// 
+        /// Uses the same view modal as the ExternalLoginConfirmation view to save code.
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.FindByIdAsync(User.GetUserId());
+            
+            ViewData["user"] = user;
+            return View("Profile", new ExternalLoginConfirmationViewModel { 
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BarCode = user.BarCode
+            });
+        }
+        
+        /// <summary>
+        /// POST: /Account/Profile 
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile(ExternalLoginConfirmationViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(User.GetUserId());
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.BarCode = model.BarCode;
+            await _userManager.UpdateAsync(user);
+            await _userManager.RemoveClaimsAsync(user, User.Claims);
+            await _userManager.AddClaimsAsync(user, new List<Claim> {
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName)
+            });
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         #region Helpers

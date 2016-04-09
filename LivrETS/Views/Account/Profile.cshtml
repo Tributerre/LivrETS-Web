@@ -1,0 +1,86 @@
+@using LivrETS.Models
+@model ExternalLoginConfirmationViewModel
+@{
+    var user = ViewData["user"] as ApplicationUser;
+    ViewData["Title"] = "Profil";
+}
+
+<div class="container">
+    <h1>Votre profil... lit&eacute;ralement</h1>
+    <hr>
+    
+    <form 
+        asp-controller="Account"
+        asp-action="Profile"
+        asp-route-returnurl="/Home/Index"
+        method="POST"
+        class="form-horizontal"
+        role="form">
+        
+        <div class="form-group">
+            <div class="row">
+                <label class="col-md-2 text-right">ID Vendeur</label>
+                <label class="col-md-2">@user.LivrETSID</label>
+            </div>
+            
+            <div class="row" style="margin-top: 5px;">
+                <label class="col-md-2 text-right">Courriel</label>
+                <label class="col-md-2">@user.Email</label>
+            </div>
+            
+            <div class="row" style="margin-top: 5px;">
+                <label asp-for="FirstName" class="col-md-2 control-label">Pr&eacute;nom</label>
+                <div class="col-md-2">
+                    <input asp-for="FirstName"
+                        class="form-control"
+                        data-val-required="Votre prénom ne peut pas être vide.">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 5px;">
+                <label asp-for="LastName" class="col-md-2 control-label">Nom</label>
+                <div class="col-md-2">
+                    <input asp-for="LastName"
+                        class="form-control"
+                        data-val-required="Votre nom ne peut pas être vide.">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 5px;">
+                <label asp-for="BarCode" class="col-md-2 control-label">
+                    N&deg; Code &agrave; barres <a
+                                                    style="color: black;"
+                                                    role="button"
+                                                    data-content='<img class="img-rounded" width="200px" height="125px" alt="student_card_example.jpg" src="/images/student_card_example.jpg">'
+                                                    data-html="true"
+                                                    data-placement="top"
+                                                    data-toggle="popover">
+                                                        <span class="glyphicon glyphicon-question-sign"></span>
+                                                </a>
+                </label>
+                <div class="col-md-2">
+                    <input asp-for="BarCode"
+                        class="form-control"
+                        data-val-required="Votre devez indiquer votre numéro de code à barres pour participer à LivrÉTS.">
+                    <span asp-validation-for="BarCode" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-md-4 text-right">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </form>    
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+    </script>
+}

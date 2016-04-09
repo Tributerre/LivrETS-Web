@@ -8,7 +8,8 @@
                 Bonjour @User.FindFirstValue("FirstName")!<span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="#" onclick="$('#logoutForm').submit()">Se déconnecter</a></li>
+                <li><a asp-controller="Account" asp-action="Profile">Profil</a></li>
+                <li><a href="#" onclick="$('#logoutForm').submit()">Se d&eacute;connecter</a></li>
                 <li role="separator" class="divider"></li>
             </ul>
         </div>
