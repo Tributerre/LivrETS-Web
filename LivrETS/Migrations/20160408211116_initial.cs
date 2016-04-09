@@ -4,7 +4,7 @@ using Microsoft.Data.Entity.Migrations;
 
 namespace LivrETS.Migrations
 {
-    public partial class first : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,11 +14,14 @@ namespace LivrETS.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
+                    BarCode = table.Column<string>(nullable: false),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: false),
+                    GeneratedNumber = table.Column<int>(nullable: false),
+                    ID = table.Column<int>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     NormalizedEmail = table.Column<string>(nullable: true),
@@ -34,6 +37,7 @@ namespace LivrETS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApplicationUser", x => x.Id);
+                    table.UniqueConstraint("AK_ApplicationUser_GeneratedNumber", x => x.GeneratedNumber);
                 });
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",

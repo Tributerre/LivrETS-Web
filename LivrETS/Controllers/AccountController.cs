@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using LivrETS.Models;
 using LivrETS.Services;
 using LivrETS.ViewModels.Account;
+using System.Collections.Generic;
 
 namespace LivrETS.Controllers
 {
@@ -179,7 +180,10 @@ namespace LivrETS.Controllers
                 if (result.Succeeded)
                 {
                     // Add claims to retreive in views and such.
-                    await _userManager.AddClaimAsync(user, new Claim("FirstName", user.FirstName));
+                    await _userManager.AddClaimsAsync(user, new List<Claim> {
+                        new Claim("FirstName", user.FirstName),
+                        new Claim("LastName", user.LastName)
+                    });
                     
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)

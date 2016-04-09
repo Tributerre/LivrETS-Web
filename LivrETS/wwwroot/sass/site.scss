@@ -1,7 +1,4 @@
-$color-primary: #5EC924;
-$color-alt: #00FF48;
-$color-accent: #FF1919;
-$color-text-alt: #fefefe;
+@import 'colors';
 
 body {
     padding-top: 50px;
@@ -62,10 +59,5 @@ html,body {
 #user-btn {
     border: 0px solid transparent;
     background-color: transparent;
-    color: $color-text-alt;
-}
-
-#google-btn {
-    background-color: #F44336;
     color: $color-text-alt;
 }

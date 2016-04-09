@@ -8,8 +8,8 @@ using LivrETS.Models;
 namespace LivrETS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160404001910_first")]
-    partial class first
+    [Migration("20160408211218_second")]
+    partial class second
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,6 +22,9 @@ namespace LivrETS.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("BarCode")
+                        .IsRequired();
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -30,9 +33,15 @@ namespace LivrETS.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
-                    b.Property<string>("LastName");
+                    b.Property<int>("GeneratedNumber");
+
+                    b.Property<string>("ID");
+
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -60,6 +69,8 @@ namespace LivrETS.Migrations
                         .HasAnnotation("MaxLength", 256);
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("GeneratedNumber");
 
                     b.HasIndex("NormalizedEmail")
                         .HasAnnotation("Relational:Name", "EmailIndex");

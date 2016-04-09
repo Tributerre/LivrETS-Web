@@ -8,9 +8,10 @@ using LivrETS.Models;
 namespace LivrETS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160408211116_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348");
@@ -37,7 +38,7 @@ namespace LivrETS.Migrations
 
                     b.Property<int>("GeneratedNumber");
 
-                    b.Property<string>("ID");
+                    b.Property<int>("ID");
 
                     b.Property<string>("LastName")
                         .IsRequired();
