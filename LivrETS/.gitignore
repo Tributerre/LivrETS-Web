@@ -239,3 +239,9 @@ wwwroot/css
 
 # Project specifics
 appsettings.json
+
+# Bower
+wwwroot/lib/*
+
+# Gulp
+wwwroot/css/*
