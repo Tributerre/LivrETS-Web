@@ -15,3 +15,42 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
+using LivrETS.Models;
+using LivrETS.Services;
+using LivrETS.ViewModels.Account;
+using System.Collections.Generic;
+
+namespace LivrETS.Controllers
+{
+    [Authorize(Policy = "AdministrationRights")]
+    public class AdminController : Controller
+    {
+        private readonly ILogger _logger;
+        private readonly ApplicationDbContext _db;
+        
+        public AdminController(
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext db
+            )
+        {
+            _logger = loggerFactory.CreateLogger<AdminController>();
+            _db = db;
+        }
+        
+        [HttpGet]
+        public IActionResult ManageUsers()
+        {
+            ViewBag.users = _db.Users.ToList();
+            return View();
+        }
+    }
+}

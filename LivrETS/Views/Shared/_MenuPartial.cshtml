@@ -2,8 +2,12 @@
 
 @if (User.IsSignedIn())
 {
-    <li><a href="#section1">Vendre</a></li>
-    <li><a href="#section2">Utilisateurs</a></li>
-    <li><a href="#section3">Foires</a></li>
+    <li><a href="#">Vendre</a></li>
+    
+    @if (User.IsInRole("Administrator"))
+    {
+        <li><a asp-controller="Admin" asp-action="ManageUsers">Utilisateurs</a></li>
+        <li><a href="#">Foires</a></li>
+    }
     <li>&nbsp;</li>
 }

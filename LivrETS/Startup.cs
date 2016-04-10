@@ -49,6 +49,12 @@ namespace LivrETS
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            
+            // System policies
+            services.AddAuthorization(options => {
+                options.AddPolicy("AdministrationRights", policy => policy.RequireRole("Administrator"));
+                options.AddPolicy("FairRights", policy => policy.RequireRole("Administrator", "Clerk"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
