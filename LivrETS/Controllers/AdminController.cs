@@ -33,8 +33,7 @@ using LivrETS.ViewModels.Admin;
 
 namespace LivrETS.Controllers
 {
-    // [Authorize(Policy = "AdministrationRights")]
-    [Authorize]
+    [Authorize(Policy = "AdministrationRights")]
     public class AdminController : Controller
     {
         private readonly ILogger _logger;
@@ -96,6 +95,79 @@ namespace LivrETS.Controllers
             
             _logger.LogInformation("Role Change Successful!");
             return new HttpOkResult();
+        }
+        
+        /// <summary>
+        /// Deletes a user from the system.
+        /// </summary>
+        /// <param name="model">
+        ///     UserId: The id of the user to delete.
+        /// </param>
+        /// <returns>200 if deleted</returns>
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser([FromBody] AjaxUsersViewModel model)
+        {
+            _logger.LogInformation("Delete User Requested");
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            
+            if (user == null)
+            {
+                return new HttpOkResult();
+            }
+            
+            await UnregisterAsync(user);
+            _logger.LogInformation("User deleted successfully!");
+            return new HttpOkResult();
+        }
+        
+        /// <summary>
+        /// Deletes multiple users.
+        /// </summary>
+        /// <param name="model">
+        ///     UserIds: All of the ids of users to delete separated by commas.
+        /// </param>
+        /// <returns>200 if OK.</returns>
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUsers([FromBody] AjaxUsersViewModel model)
+        {
+            var ids = model.UserIds.Split(',');
+            
+            foreach (var id in ids)
+            {
+                var user = await _userManager.FindByIdAsync(id);
+
+                if (user == null) {
+                    continue;
+                }
+                
+                await UnregisterAsync(user);
+            }
+            
+            return new HttpOkResult();
+        }
+        
+        /// <summary>
+        /// Deletes a user completely from the system.
+        /// </summary>
+        /// <param name="user">The user to delete.</param>
+        /// <returns>true if deleted. false otherwise.</returns>
+        private async Task<bool> UnregisterAsync(ApplicationUser user)
+        {
+            var logins = user.Logins;
+            var roles = await _userManager.GetRolesAsync(user);
+            
+            foreach (var login in logins)
+            {
+                await _userManager.RemoveLoginAsync(user, login.LoginProvider, login.ProviderKey);
+            }
+            
+            if (roles.Count > 0)
+            {
+                await _userManager.RemoveFromRolesAsync(user, roles);
+            }
+
+            await _userManager.DeleteAsync(user);            
+            return true;
         }
     }
 }

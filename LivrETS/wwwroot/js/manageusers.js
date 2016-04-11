@@ -47,6 +47,28 @@ $(function () {
     
     // Delete user event.
     $(".btn-delete.user").on("click", function () {
+        var button = $(this);
+        var userId = $(this).attr("data-user-id");
+
+        button.prop("disabled", true);
+        $.ajax({
+            method: "DELETE",
+            contentType: "application/json",
+            url: "/Admin/DeleteUser",
+            dataType: "json",
+            data: JSON.stringify({
+                UserId: userId
+            }),
+            success: function () {
+                button.parents("tr").remove();
+            },
+            error: function () {
+                button.prop("disabled", false);
+                $("#error-message").text("Une erreur est survenue lors de la suppression de l'utilisateur.");
+                $("#errors").show("slow");
+            }
+        });
+        
         updateDeleteSelectedView();
     });
     
@@ -57,13 +79,38 @@ $(function () {
         $("tbody>tr>td")
             .find("input[type='checkbox'][name='check-select-user-for-action']")
             .prop("checked", checked);
-
-        var checkedCount = $("tbody>tr>td").find("input[type='checkbox'][name='check-select-user-for-action']:checked").length;
         updateDeleteSelectedView();
     });
 
     // Delete selected event            
     $("#div-actions").on("click", "#div-delete-selected>#btn-delete-selected", function () {
+        $(this).prop("disabled", true);
+        var userIds = [];
+        
+        $("input[type='checkbox'][name='check-select-user-for-action']:checked").each(function () {
+            userIds.push($(this).attr("data-user-id"));
+        });
+        
+        $.ajax({
+            method: "DELETE",
+            contentType: "application/json",
+            url: "/Admin/DeleteUsers",
+            dataType: "json",
+            data: JSON.stringify({
+                UserIds: userIds.join()
+            }),
+            success: function () {
+                $("input[type='checkbox'][name='check-select-user-for-action']:checked").each(function () {
+                    $(this).parents("tr").remove();
+                    $(this).prop("disabled", false);
+                    updateDeleteSelectedView();
+                });
+            },
+            error: function () {
+                $("#error-message").text("Une erreur est survenue lors de la suppression des l'utilisateurs. Svp, rechargez la page.");
+                $("#errors").show("slow");
+            }
+        });
     });
 });
 

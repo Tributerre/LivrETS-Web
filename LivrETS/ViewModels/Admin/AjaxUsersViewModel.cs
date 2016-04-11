@@ -39,6 +39,7 @@ namespace LivrETS.ViewModels.Admin
             {
                 _newRole = (value == "User") ? null : value;
             }
-        } 
+        }
+        public string UserIds { get; set; }
     }
 }
