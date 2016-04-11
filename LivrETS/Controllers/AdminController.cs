@@ -28,29 +28,74 @@ using LivrETS.Models;
 using LivrETS.Services;
 using LivrETS.ViewModels.Account;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using LivrETS.ViewModels.Admin;
 
 namespace LivrETS.Controllers
 {
-    [Authorize(Policy = "AdministrationRights")]
+    // [Authorize(Policy = "AdministrationRights")]
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly ILogger _logger;
         private readonly ApplicationDbContext _db;
+        private readonly UserManager<ApplicationUser> _userManager;
         
         public AdminController(
             ILoggerFactory loggerFactory,
-            ApplicationDbContext db
+            ApplicationDbContext db,
+            UserManager<ApplicationUser> userManager
             )
         {
             _logger = loggerFactory.CreateLogger<AdminController>();
             _db = db;
+            _userManager = userManager;
         }
         
+        /// <summary>
+        /// GET /Admin/ManageUsers 
+        /// </summary>
         [HttpGet]
         public IActionResult ManageUsers()
         {
-            ViewBag.users = _db.Users.ToList();
+            ViewBag.users = (
+                from user in _db.Users
+                orderby user.LastName ascending
+                select user
+            ).ToList();
+            ViewBag.roles = _db.Roles.ToList();
             return View();
+        }
+        
+        /// <summary>
+        /// PUT: /Admin/ChangeUserRole
+        /// </summary>
+        /// <param name="model">
+        ///     UserId: The id is needed to change the role of that user.
+        ///     NewRole: The name of the new role. If "User" is passed, then all roles are removed.
+        /// </param>
+        /// <returns>200 if OK. 400 otherwise.</returns>
+        [HttpPut]
+        public async Task<IActionResult> ChangeUserRole([FromBody] AjaxUsersViewModel model)
+        {
+            _logger.LogInformation("Role Change Requested");
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            
+            if (user == null)
+            {
+                return new HttpStatusCodeResult(400);
+            }
+            
+            // Remove from all roles, just in case.
+            await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+            
+            if (model.NewRole != null)  // If null, user is a simple user of the system. 
+            {
+                await _userManager.AddToRoleAsync(user, model.NewRole);
+            }
+            
+            _logger.LogInformation("Role Change Successful!");
+            return new HttpOkResult();
         }
     }
 }

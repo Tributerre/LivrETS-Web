@@ -2,6 +2,10 @@
     Layout = "_Layout";
 }
 
+@section Styles {
+    @RenderSection("styles", required: false)
+}
+
 <div class="container">
     <div class="row" style="padding-top: 10px;">
         <div class="col-md-3">
@@ -31,3 +35,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @RenderSection("scripts", required: false)
+}
