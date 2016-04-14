@@ -245,3 +245,4 @@ wwwroot/lib/*
 
 # Gulp
 wwwroot/css/*
+wwwroot/js/site.min.js
