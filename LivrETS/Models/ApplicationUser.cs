@@ -40,10 +40,8 @@ namespace LivrETS.Models
         [Required]
         public string BarCode { get; set; }
         
-        [Key]
-        public string ID { get; set; }  // To be deleted. Not used.
-        
-        public int GeneratedNumber { get; set; }
+        [Column(TypeName = "BIGSERIAL")]
+        public long GeneratedNumber { get; set; }
         
         [NotMapped]
         public string LivrETSID => $"{FirstName[0].ToString().ToUpper()}{LastName[0].ToString().ToUpper()}{GeneratedNumber}";

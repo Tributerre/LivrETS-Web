@@ -19,8 +19,7 @@ namespace LivrETS.Migrations
                     Email = table.Column<string>(nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     FirstName = table.Column<string>(nullable: false),
-                    GeneratedNumber = table.Column<int>(nullable: false),
-                    ID = table.Column<int>(nullable: false),
+                    GeneratedNumber = table.Column<long>(type: "BIGSERIAL", nullable: false),
                     LastName = table.Column<string>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
@@ -37,7 +36,6 @@ namespace LivrETS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApplicationUser", x => x.Id);
-                    table.UniqueConstraint("AK_ApplicationUser_GeneratedNumber", x => x.GeneratedNumber);
                 });
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",

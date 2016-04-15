@@ -35,9 +35,8 @@ namespace LivrETS.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired();
 
-                    b.Property<int>("GeneratedNumber");
-
-                    b.Property<string>("ID");
+                    b.Property<long>("GeneratedNumber")
+                        .HasAnnotation("Relational:ColumnType", "BIGSERIAL");
 
                     b.Property<string>("LastName")
                         .IsRequired();
@@ -68,8 +67,6 @@ namespace LivrETS.Migrations
                         .HasAnnotation("MaxLength", 256);
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("GeneratedNumber");
 
                     b.HasIndex("NormalizedEmail")
                         .HasAnnotation("Relational:Name", "EmailIndex");

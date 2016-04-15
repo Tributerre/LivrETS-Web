@@ -8,8 +8,8 @@ using LivrETS.Models;
 namespace LivrETS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20160408211218_second")]
-    partial class second
+    [Migration("20160415042955_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,9 +36,8 @@ namespace LivrETS.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired();
 
-                    b.Property<int>("GeneratedNumber");
-
-                    b.Property<string>("ID");
+                    b.Property<long>("GeneratedNumber")
+                        .HasAnnotation("Relational:ColumnType", "BIGSERIAL");
 
                     b.Property<string>("LastName")
                         .IsRequired();
@@ -69,8 +68,6 @@ namespace LivrETS.Migrations
                         .HasAnnotation("MaxLength", 256);
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("GeneratedNumber");
 
                     b.HasIndex("NormalizedEmail")
                         .HasAnnotation("Relational:Name", "EmailIndex");
