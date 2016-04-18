@@ -187,10 +187,16 @@
     <Compile Include="Migrations\201604172216523_InitialCreate.Designer.cs">
       <DependentUpon>201604172216523_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604182352590_Second.cs" />
+    <Compile Include="Migrations\201604182352590_Second.Designer.cs">
+      <DependentUpon>201604182352590_Second.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
+    <Compile Include="Models\Fair.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Trimester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -251,6 +257,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201604172216523_InitialCreate.resx">
       <DependentUpon>201604172216523_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604182352590_Second.resx">
+      <DependentUpon>201604182352590_Second.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
