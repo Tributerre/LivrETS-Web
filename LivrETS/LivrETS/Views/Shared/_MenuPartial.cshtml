@@ -1,0 +1,13 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <li><a href="#">Vendre</a></li>
+
+    if (User.IsInRole("Administrator"))
+    {
+        <li>
+            @Html.ActionLink("Utilisateurs", "ManageUsers", "Admin")
+        </li>
+        <li><a href="#">Foires</a></li>
+    }
+    <li>&nbsp;</li>
+}
