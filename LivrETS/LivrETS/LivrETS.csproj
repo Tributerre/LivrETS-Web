@@ -187,9 +187,9 @@
     <Compile Include="Migrations\201604172216523_InitialCreate.Designer.cs">
       <DependentUpon>201604172216523_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604182352590_Second.cs" />
-    <Compile Include="Migrations\201604182352590_Second.Designer.cs">
-      <DependentUpon>201604182352590_Second.cs</DependentUpon>
+    <Compile Include="Migrations\201604190156556_Second.cs" />
+    <Compile Include="Migrations\201604190156556_Second.Designer.cs">
+      <DependentUpon>201604190156556_Second.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -209,6 +209,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\student_card_example.jpg" />
     <Content Include="Scripts\dropdowns-enhancement.js" />
+    <Content Include="Scripts\managefairs.js" />
     <Content Include="Scripts\manageusers.js" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
@@ -258,14 +259,15 @@
     <EmbeddedResource Include="Migrations\201604172216523_InitialCreate.resx">
       <DependentUpon>201604172216523_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604182352590_Second.resx">
-      <DependentUpon>201604182352590_Second.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201604190156556_Second.resx">
+      <DependentUpon>201604190156556_Second.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\Admin\ManageFairs.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

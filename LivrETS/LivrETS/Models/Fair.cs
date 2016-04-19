@@ -47,10 +47,36 @@ namespace LivrETS.Models
         public DateTime RetrievalEndDate { get; set; }
 
         [Required]
-        public FairPhase Phase { get; set; }
-
-        [Required]
         public string Trimester { get; set; }
+
+        [NotMapped]
+        public FairPhase Phase {
+            get
+            {
+                DateTime now = DateTime.Now;
+
+                if (now < StartDate || now < PickingStartDate)
+                {
+                    return FairPhase.PREFAIR;
+                }
+                else if (now >= PickingStartDate && now < PickingEndDate)
+                {
+                    return FairPhase.PICKING;
+                }
+                else if (now >= SaleStartDate && now < SaleEndDate)
+                {
+                    return FairPhase.SALE;
+                }
+                else if (now >= RetrievalStartDate && now < RetrievalEndDate)
+                {
+                    return FairPhase.RETRIEVAL;
+                }
+                else
+                {
+                    return FairPhase.POSTFAIR;
+                }
+            }
+        }
 
         [NotMapped]
         public string LivrETSID => $"{Trimester}{StartDate.Year}";

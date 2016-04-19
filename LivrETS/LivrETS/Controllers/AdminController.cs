@@ -56,12 +56,37 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult ManageUsers()
         {
-            var db = new ApplicationDbContext();
-
-            ViewBag.users = UserManager.Users.ToList();
-            ViewBag.roles = (from role in db.Roles select role).ToList();
+            using (var db = new ApplicationDbContext())
+            {
+                ViewBag.users = UserManager.Users.ToList();
+                ViewBag.roles = (from role in db.Roles select role).ToList();
+            }
             return View();
         }
+
+        // GET: /Admin/ManageFairs
+        [HttpGet]
+        public ActionResult ManageFairs()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                ViewBag.fairs = (from fair in db.Fairs select fair).ToList();
+            }
+            return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _userManager?.Dispose();
+                _userManager = null;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #region Ajax
 
         // PUT: /Admin/ChangeUserRole
         // Change the role of a user.
@@ -113,6 +138,10 @@ namespace LivrETS.Controllers
             return Json(new { }, contentType: "application/json");
         }
 
+        #endregion
+
+        #region Helpers
+
         /// <summary>
         /// Removes a user from the system completely.
         /// </summary>
@@ -134,5 +163,7 @@ namespace LivrETS.Controllers
 
             UserManager.Delete(user);
         }
+
+        #endregion
     }
 }

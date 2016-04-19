@@ -63,6 +63,7 @@ $(document).ready(function () {
             }),
             success: function () {
                 button.parents("tr").remove();
+                updateDeleteSelectedView();
             },
             error: function () {
                 button.prop("disabled", false);
@@ -70,8 +71,6 @@ $(document).ready(function () {
                 $("#errors").show("slow");
             }
         });
-
-        updateDeleteSelectedView();
     });
 
     // Select all users's checkbox for action

@@ -1,0 +1,76 @@
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses
+*@
+@using LivrETS.Models
+@{
+    ViewBag.Title = "Gérer les foires";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    List<Fair> fairs = ViewBag.fairs;
+}
+
+<div id="errors" class="row" hidden>
+    <div class="alert alert-danger alert-dismissible fade in" role="alert">
+        <button id="close-error" type="button" class="close" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+        <span id="error-message"></span>
+    </div>
+</div>
+
+<div class="row">
+    <table class="table-stripped table-bordered table-hover col-md-12">
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" name="check-select-all" />
+                </th>
+                <th>Id</th>
+                <th>Date d&eacute;but</th>
+                <th>Date fin</th>
+                <th>Phase</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var fair in fairs)
+            {
+                <tr>
+                    <td class="text-center"><input type="checkbox" name="check-select-fair" data-fair-id="@fair.Id" /></td>
+                    <td class="text-center">@fair.LivrETSID</td>
+                    <td>@fair.StartDate</td>
+                    <td>@fair.EndDate</td>
+                    <td>@fair.Phase.ToString()</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-primary btn-edit-fair" data-fair-id="@fair.Id"><strong><span class="glyphicon glyphicon-edit"></span></strong></button>
+                        <button type="button" class="btn btn-xs btn-danger btn-delete-fair" data-fair-id="@fair.Id"><strong>&times;</strong></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+</div>
+
+@section Actions {
+    <div class="row text-center" id="div-actions">
+        <button type="button" class="btn btn-default">Pr&eacute;voir une foire</button>
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/managefairs.js"></script>
+}

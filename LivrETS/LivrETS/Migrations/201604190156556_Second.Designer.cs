@@ -13,7 +13,7 @@ namespace LivrETS.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201604182352590_Second"; }
+            get { return "201604190156556_Second"; }
         }
         
         string IMigrationMetadata.Source

@@ -20,7 +20,6 @@ namespace LivrETS.Migrations
                         SaleEndDate = c.DateTime(nullable: false),
                         RetrievalStartDate = c.DateTime(nullable: false),
                         RetrievalEndDate = c.DateTime(nullable: false),
-                        Phase = c.Int(nullable: false),
                         Trimester = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
