@@ -21,10 +21,8 @@
 
     if (User.IsInRole("Administrator"))
     {
-        <li>
-            @Html.ActionLink("Utilisateurs", "ManageUsers", "Admin")
-        </li>
-        <li><a href="#">Foires</a></li>
+        <li>@Html.ActionLink("Utilisateurs", "ManageUsers", "Admin")</li>
+        <li>@Html.ActionLink("Foires", "ManageFairs", "Admin")</li>
     }
     <li>&nbsp;</li>
 }
