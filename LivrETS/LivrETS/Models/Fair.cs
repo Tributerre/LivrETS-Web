@@ -105,7 +105,7 @@ namespace LivrETS.Models
         /// <param name="start">Start date of the fair or phase</param>
         /// <param name="end">End date of the fair or phase</param>
         /// <param name="forPhase">Phase to set the dates for. Choose PREFAIR or POSTFAIR for fair.</param>
-        public void SetDates(DateTime start, DateTime end, FairPhase forPhase = FairPhase.PREFAIR)
+        public Fair SetDates(DateTime start, DateTime end, FairPhase forPhase = FairPhase.PREFAIR)
         {
             if (end <= start)
             {
@@ -135,6 +135,8 @@ namespace LivrETS.Models
                     RetrievalEndDate = end;
                     break;
             }
+
+            return this;
         }
     }
 

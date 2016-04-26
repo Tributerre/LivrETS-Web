@@ -114,7 +114,7 @@ namespace LivrETS.Controllers
         // DELETE: /Admin/Delete
         // Deletes one or multiple users.
         [HttpDelete]
-        public ActionResult Delete(AjaxManageUsersViewModel model)
+        public ActionResult DeleteUser(AjaxManageUsersViewModel model)
         {
             List<ApplicationUser> users = new List<ApplicationUser>();
             
@@ -135,6 +135,78 @@ namespace LivrETS.Controllers
                 }
             }
 
+            return Json(new { }, contentType: "application/json");
+        }
+
+        // POST: /Admin/NewFair
+        // Adds a new fair to the system.
+        [HttpPost]
+        public ActionResult NewFair(AjaxFairViewModel model)
+        {
+            Fair fair = new Fair(model.StartDate, model.EndDate);
+            fair.SetDates(model.PickingStartDate, model.PickingEndDate, forPhase: FairPhase.PICKING)
+                .SetDates(model.SaleStartDate, model.SaleEndDate, forPhase: FairPhase.SALE)
+                .SetDates(model.RetrievalStartDate, model.RetrievalEndDate, forPhase: FairPhase.RETRIEVAL);
+            fair.Trimester = model.Trimester;
+
+            using (var db = new ApplicationDbContext())
+            {
+                db.Fairs.Add(fair);
+                db.SaveChanges();
+            }
+
+            return Json(new { }, contentType: "application/json");
+        }
+
+        // DELETE: /Admin/DeleteFair
+        // Deletes one or more fairs.
+        [HttpDelete]
+        public ActionResult DeleteFair(AjaxFairViewModel model)
+        {
+            List<Fair> fairs = new List<Fair>();
+
+            using (var db = new ApplicationDbContext())
+            {
+                if (model.Id != null)
+                {
+                    var fairDb = (
+                        from fair in db.Fairs
+                        where fair.Id.ToString() == model.Id
+                        select fair
+                    ).FirstOrDefault();
+
+                    if (fairDb != null)
+                    {
+                        fairs.Add(fairDb);
+                    }
+                    else
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                    }
+                }
+                else
+                {
+                    fairs = model.IdsList.ConvertAll(new Converter<string, Fair>(id =>
+                    {
+                        return (
+                            from fair in db.Fairs
+                            where fair.Id.ToString() == id
+                            select fair
+                        ).FirstOrDefault();
+                    }));
+
+                    if (fairs.Any(fair => fair == null))
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                    }
+                }
+
+                foreach (var fair in fairs)
+                {
+                    db.Fairs.Remove(fair);
+                }
+                db.SaveChanges();
+            }
             return Json(new { }, contentType: "application/json");
         }
 

@@ -22,7 +22,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
 
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Content/bootstrap-material-design.min.css" />
+    <link rel="stylesheet" href="~/Content/ripples.min.css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/Content/dropdowns-enhancement.css")">
     <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
     @RenderSection("styles", required: false)
@@ -67,7 +73,7 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
+        <footer class="text-center">
             <p>&copy; @DateTime.Now.Year - TribuTerre</p>
         </footer>
     </div>
@@ -76,7 +82,13 @@
             integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
             crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="~/Scripts/material.min.js"></script>
+    <script src="~/Scripts/ripples.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/moment-fr-ca.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Scripts/dropdowns-enhancement.js"></script>
+    <script src="~/Scripts/material.spinner.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

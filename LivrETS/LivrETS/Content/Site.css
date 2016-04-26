@@ -17,11 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 @media screen and (max-width: 765px) {
   body {
-    padding-top: 175px; } }
+    padding-top: 200px; } }
 
 @media screen and (min-width: 766px) {
   body {
-    padding-top: 50px; } }
+    padding-top: 75px; } }
 
 body {
   padding-bottom: 20px; }
@@ -29,9 +29,13 @@ body {
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
+    width: 100%;
   padding-left: 15px;
   padding-right: 15px; }
 
+.body-content>.container {
+    width: 100%;
+}
 /* Set widths on the form inputs since otherwise they're 100% wide */
 input,
 select,

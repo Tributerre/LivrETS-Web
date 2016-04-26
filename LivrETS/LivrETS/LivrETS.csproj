@@ -201,16 +201,27 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\bootstrap-material-design.min.css" />
     <Content Include="Content\dropdowns-enhancement.css" />
     <Content Include="Content\Login.css" />
+    <Content Include="Content\ripples.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\student_card_example.jpg" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\dropdowns-enhancement.js" />
+    <Content Include="Scripts\fullcalendar-lang-fr-ca.js" />
+    <Content Include="Scripts\managefairs-calendarhandling.js" />
     <Content Include="Scripts\managefairs.js" />
     <Content Include="Scripts\manageusers.js" />
+    <Content Include="Scripts\material.min.js" />
+    <Content Include="Scripts\material.spinner.min.js" />
+    <Content Include="Scripts\moment-fr-ca.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\ripples.min.js" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>

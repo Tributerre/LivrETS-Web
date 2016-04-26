@@ -56,7 +56,7 @@ $(document).ready(function () {
         $.ajax({
             method: "DELETE",
             contentType: "application/json",
-            url: "/Admin/Delete",
+            url: "/Admin/DeleteUser",
             dataType: "json",
             data: JSON.stringify({
                 UserId: userId
@@ -95,7 +95,7 @@ $(document).ready(function () {
         $.ajax({
             method: "DELETE",
             contentType: "application/json",
-            url: "/Admin/Delete",
+            url: "/Admin/DeleteUser",
             dataType: "json",
             data: JSON.stringify({
                 UserIds: userIds.join()

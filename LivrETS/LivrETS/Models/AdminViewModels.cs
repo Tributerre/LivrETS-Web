@@ -17,8 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using LivrETS.Models;
 
 namespace LivrETS.Models
 {
@@ -44,6 +46,58 @@ namespace LivrETS.Models
             get
             {
                 return UserIds.Split(',').ToList();
+            }
+        }
+    }
+
+    public class AjaxFairViewModel
+    {
+        public string Id { get; set; }
+        public string Ids { get; set; }
+
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public DateTime PickingStartDate { get; set; }
+        public DateTime PickingEndDate { get; set; }
+
+        public DateTime SaleStartDate { get; set; }
+        public DateTime SaleEndDate { get; set; }
+
+        public DateTime RetrievalStartDate { get; set; }
+        public DateTime RetrievalEndDate { get; set; }
+
+        public List<string> IdsList
+        {
+            get
+            {
+                return Ids.Split(',').ToList();
+            }
+        }
+
+        private string _trimester;
+        public string Trimester
+        {
+            get
+            {
+                return _trimester;
+            }
+            set
+            {
+                switch (value)
+                {
+                    case "A":
+                        _trimester = Models.Trimester.AUTUMN;
+                        break;
+
+                    case "E":
+                        _trimester = Models.Trimester.SUMMER;
+                        break;
+
+                    case "H":
+                        _trimester = Models.Trimester.WINTER;
+                        break;
+                }
             }
         }
     }

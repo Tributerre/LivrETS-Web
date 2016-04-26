@@ -29,6 +29,6 @@ namespace LivrETS.Models
     {
         public static readonly string WINTER = "H";
         public static readonly string SUMMER = "É";
-        public static readonly string AUTUMNE = "A";
+        public static readonly string AUTUMN = "A";
     }
 }

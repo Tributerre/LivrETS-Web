@@ -36,10 +36,10 @@ $(document).ready(function () {
         $.ajax({
             method: "DELETE",
             contentType: "application/json",
-            url: "",
+            url: "/Admin/DeleteFair",
             dataType: "json",
             data: JSON.stringify({
-                
+                Id: fairId
             }),
             success: function () {
                 button.parents("tr").remove();
@@ -58,6 +58,16 @@ $(document).ready(function () {
         var fairId = $(this).attr("data-fair-id");
     });
 
+    // Select all fair's checkbox for action
+    $("input[type='checkbox'][name='check-select-all']").on("change", function () {
+        var checked = $(this).is(":checked");
+
+        $("tbody>tr>td")
+            .find("input[type='checkbox'][name='check-select-fair']")
+            .prop("checked", checked);
+        updateDeleteSelectedView();
+    });
+
     // Delete selected event            
     $("#div-actions").on("click", "#div-delete-selected>#btn-delete-selected", function () {
         $(this).prop("disabled", true);
@@ -70,10 +80,10 @@ $(document).ready(function () {
         $.ajax({
             method: "DELETE",
             contentType: "application/json",
-            url: "",
+            url: "/Admin/DeleteFair",
             dataType: "json",
             data: JSON.stringify({
-                
+                Ids: fairIds.join()
             }),
             success: function () {
                 $("input[type='checkbox'][name='check-select-fair']:checked").each(function () {
