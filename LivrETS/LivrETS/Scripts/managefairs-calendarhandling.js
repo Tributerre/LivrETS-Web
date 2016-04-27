@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+var fairId = null;
 var startDate = null,
     endDate = null,
     pickingStartDate = null,
@@ -48,14 +49,11 @@ $(document).ready(function () {
         $(this).data("DateTimePicker").date(null);
     });
 
-    $("button[data-target='#NewFairModal']").on("click", function () {
+    $("#NewFairModal").on("shown.bs.modal", function () {
         $("#calendar").fullCalendar({
             lang: "fr-ca",
             allDayDefault: true
         });
-    });
-
-    $("#NewFairModal").on("shown.bs.modal", function () {
         $("#calendar").fullCalendar("today");
     });
 
@@ -65,35 +63,40 @@ $(document).ready(function () {
 
         switch (pickerId) {
             case START_DATE_ID:
-                startDate = date.date;
+                // When event is triggered manually, date.date contains the called element instead
+                // of the new date. startDate will already be initialized. It is in this case an edit
+                // of a fair.
+                if (date.date !== undefined) {
+                    startDate = date.date.startOf("day");
+                }
                 break;
 
             case END_DATE_ID:
-                endDate = date.date;
+                endDate = date.date.startOf("day");
                 break;
 
             case PICKING_START_DATE_ID:
-                pickingStartDate = date.date;
+                pickingStartDate = date.date.startOf("day");
                 break;
 
             case PICKING_END_DATE_ID:
-                pickingEndDate = date.date;
+                pickingEndDate = date.date.startOf("day");
                 break;
 
             case SALE_START_DATE_ID:
-                saleStartDate = date.date;
+                saleStartDate = date.date.startOf("day");
                 break;
 
             case SALE_END_DATE_ID:
-                saleEndDate = date.date;
+                saleEndDate = date.date.startOf("day");
                 break;
 
             case RETRIEVAL_START_DATE_ID:
-                retrievingStartDate = date.date;
+                retrievingStartDate = date.date.startOf("day");
                 break;
 
             case RETREIVAL_END_DATE_ID:
-                retrievingEndDate = date.date;
+                retrievingEndDate = date.date.startOf("day");
                 break;
         }
 
@@ -163,8 +166,9 @@ $(document).ready(function () {
             method: "POST",
             contentType: "application/json",
             dataType: "json",
-            url: "/Admin/NewFair",
+            url: "/Admin/Fair",
             data: JSON.stringify({
+                Id: fairId,
                 StartDate: startDate.toDate(),
                 EndDate: endDate.toDate(),
                 PickingStartDate: pickingStartDate.toDate(),

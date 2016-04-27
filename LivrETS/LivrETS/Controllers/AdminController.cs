@@ -138,20 +138,39 @@ namespace LivrETS.Controllers
             return Json(new { }, contentType: "application/json");
         }
 
-        // POST: /Admin/NewFair
-        // Adds a new fair to the system.
+        // POST: /Admin/Fair
+        // Adds or modifies a new fair to the system. To modify, populate the Id when posting.
         [HttpPost]
-        public ActionResult NewFair(AjaxFairViewModel model)
+        public ActionResult Fair(AjaxFairViewModel model)
         {
-            Fair fair = new Fair(model.StartDate, model.EndDate);
-            fair.SetDates(model.PickingStartDate, model.PickingEndDate, forPhase: FairPhase.PICKING)
-                .SetDates(model.SaleStartDate, model.SaleEndDate, forPhase: FairPhase.SALE)
-                .SetDates(model.RetrievalStartDate, model.RetrievalEndDate, forPhase: FairPhase.RETRIEVAL);
-            fair.Trimester = model.Trimester;
-
             using (var db = new ApplicationDbContext())
             {
-                db.Fairs.Add(fair);
+                Fair fair;
+                if (model.Id == null)
+                {
+                    fair = new Fair();
+                }
+                else
+                {
+                    fair = db.Fairs.FirstOrDefault(fairDb => fairDb.Id.ToString() == model.Id);
+
+                    if (fair == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                    }
+                }
+
+                fair.SetDates(model.StartDate, model.EndDate)
+                    .SetDates(model.PickingStartDate, model.PickingEndDate, forPhase: FairPhase.PICKING)
+                    .SetDates(model.SaleStartDate, model.SaleEndDate, forPhase: FairPhase.SALE)
+                    .SetDates(model.RetrievalStartDate, model.RetrievalEndDate, forPhase: FairPhase.RETRIEVAL);
+                fair.Trimester = model.Trimester;
+
+                if (model.Id == null)
+                {
+                    db.Fairs.Add(fair);
+                }
+
                 db.SaveChanges();
             }
 
@@ -169,15 +188,11 @@ namespace LivrETS.Controllers
             {
                 if (model.Id != null)
                 {
-                    var fairDb = (
-                        from fair in db.Fairs
-                        where fair.Id.ToString() == model.Id
-                        select fair
-                    ).FirstOrDefault();
+                    var fair = db.Fairs.FirstOrDefault(fairDb => fairDb.Id.ToString() == model.Id);
 
-                    if (fairDb != null)
+                    if (fair != null)
                     {
-                        fairs.Add(fairDb);
+                        fairs.Add(fair);
                     }
                     else
                     {
@@ -186,14 +201,7 @@ namespace LivrETS.Controllers
                 }
                 else
                 {
-                    fairs = model.IdsList.ConvertAll(new Converter<string, Fair>(id =>
-                    {
-                        return (
-                            from fair in db.Fairs
-                            where fair.Id.ToString() == id
-                            select fair
-                        ).FirstOrDefault();
-                    }));
+                    fairs = model.IdsList.ConvertAll(new Converter<string, Fair>(id => db.Fairs.FirstOrDefault(fair => fair.Id.ToString() == id)));
 
                     if (fairs.Any(fair => fair == null))
                     {
@@ -208,6 +216,44 @@ namespace LivrETS.Controllers
                 db.SaveChanges();
             }
             return Json(new { }, contentType: "application/json");
+        }
+
+        // POST: /Admin/GetFairData
+        // Gets the data of a fair. POST method is used to avoid verifying
+        // an anti-forgery token with GET.
+        [HttpPost]
+        public ActionResult GetFairData(AjaxFairViewModel model)
+        {
+            Fair fair = null;
+            using (var db = new ApplicationDbContext())
+            {
+                fair = (
+                    from fairdb in db.Fairs
+                    where fairdb.Id.ToString() == model.Id
+                    select fairdb
+                ).FirstOrDefault();
+            }
+
+            if (fair == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            else
+            {
+                return Json(new AjaxFairViewModel
+                {
+                    Id = fair.Id.ToString(),
+                    StartDate = fair.StartDate,
+                    EndDate = fair.EndDate,
+                    PickingStartDate = fair.PickingStartDate,
+                    PickingEndDate = fair.PickingEndDate,
+                    SaleStartDate = fair.SaleStartDate,
+                    SaleEndDate = fair.SaleEndDate,
+                    RetrievalStartDate = fair.RetrievalStartDate,
+                    RetrievalEndDate = fair.RetrievalEndDate,
+                    Trimester = fair.Trimester
+                }, contentType: "application/json");
+            }
         }
 
         #endregion

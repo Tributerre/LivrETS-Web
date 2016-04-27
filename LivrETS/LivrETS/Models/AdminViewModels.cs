@@ -71,7 +71,7 @@ namespace LivrETS.Models
         {
             get
             {
-                return Ids.Split(',').ToList();
+                return Ids?.Split(',').ToList();
             }
         }
 

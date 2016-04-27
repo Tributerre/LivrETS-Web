@@ -127,7 +127,7 @@ namespace LivrETS.Models
 
                 case FairPhase.SALE:
                     SaleStartDate = start;
-                    SaleEndDate = start;
+                    SaleEndDate = end;
                     break;
 
                 case FairPhase.RETRIEVAL:
