@@ -23,6 +23,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace LivrETS.Models
 {
@@ -46,6 +47,8 @@ namespace LivrETS.Models
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long GeneratedNumber { get; }
+
+        public List<Offer> Offers { get; set; }
 
         [NotMapped]
         public string LivrETSID => $"{FirstName[0].ToString().ToUpper()}{LastName[0].ToString().ToUpper()}{GeneratedNumber}";

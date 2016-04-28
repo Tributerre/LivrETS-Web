@@ -18,12 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using LivrETS.Models;
+using LivrETS.ViewModels;
 using System.Net;
 
 namespace LivrETS.Controllers
