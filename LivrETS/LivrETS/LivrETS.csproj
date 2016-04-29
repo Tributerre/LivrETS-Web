@@ -191,11 +191,23 @@
     <Compile Include="Migrations\201604190156556_Second.Designer.cs">
       <DependentUpon>201604190156556_Second.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604290206238_Third.cs" />
+    <Compile Include="Migrations\201604290206238_Third.Designer.cs">
+      <DependentUpon>201604290206238_Third.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Article.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\AdminViewModels.cs" />
+    <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\Calculator.cs" />
+    <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\CourseNotes.cs" />
+    <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="ViewModels\AdminViewModels.cs" />
     <Compile Include="Models\Fair.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Offer.cs" />
+    <Compile Include="Models\OfferImage.cs" />
     <Compile Include="Models\Trimester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -240,6 +252,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Uploads\Originals\" />
+    <Folder Include="Content\Uploads\Thumbnails\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -272,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604190156556_Second.resx">
       <DependentUpon>201604190156556_Second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604290206238_Third.resx">
+      <DependentUpon>201604290206238_Third.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

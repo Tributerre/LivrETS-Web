@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using LivrETS.Models;
 
 namespace LivrETS.ViewModels
 {

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace LivrETS.Models
 {
@@ -42,9 +41,25 @@ namespace LivrETS.Models
         [Required]
         public string Condition { get; set; }
         public DateTime MarkedSoldOn { get; set; }
-        public List<OfferImage> Images { get; set; }
+        public DbSet<OfferImage> Images { get; set; }
 
         [Required]
-        public ApplicationUser User { get; set; }
+        public Article Article { get; set; }
+
+        /// <summary>
+        /// Use this method to add an image to the offer.
+        /// </summary>
+        /// <param name="image">The image to add</param>
+        public void AddImage(OfferImage image)
+        {
+            if (Images.Count() == 5)
+            {
+                throw new ArgumentException("Maximum 5 images");
+            }
+            else
+            {
+                Images.Add(image);
+            }
+        }
     }
 }
