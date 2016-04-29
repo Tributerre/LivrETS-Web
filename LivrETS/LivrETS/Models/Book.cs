@@ -11,5 +11,9 @@ namespace LivrETS.Models
     {
         [Required]
         public string ISBN { get; set; }
+
+        public Book()
+            : base(articleCode: "B")
+        { }
     }
 }

@@ -26,7 +26,7 @@ namespace LivrETS.Models
         public long GeneratedNumber { get; }
 
         [NotMapped]
-        public readonly string ArticleCode = "";
+        public readonly string ArticleCode;
 
         [NotMapped]
         public string LivrETSID => $"{ArticleCode}{GeneratedNumber}";
@@ -34,6 +34,12 @@ namespace LivrETS.Models
         public Article()
         {
             FairState = ArticleFairState.UNKNOWN;
+        }
+
+        public Article(string articleCode)
+            : this()
+        {
+            ArticleCode = articleCode;
         }
 
         public Article MarkedAsPicked()

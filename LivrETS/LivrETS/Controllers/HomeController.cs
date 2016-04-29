@@ -25,7 +25,15 @@ namespace LivrETS.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult Sell()
         {
             return View();
         }
