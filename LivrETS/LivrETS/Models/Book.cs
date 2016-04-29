@@ -13,7 +13,7 @@ namespace LivrETS.Models
         public string ISBN { get; set; }
 
         public Book()
-            : base(articleCode: "B")
+            : base(articleCode: BOOK_CODE)
         { }
     }
 }

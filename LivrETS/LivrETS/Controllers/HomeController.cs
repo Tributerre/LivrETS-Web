@@ -20,22 +20,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using LivrETS.ViewModels;
 
 namespace LivrETS.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
-        [Authorize]
         public ActionResult Sell()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Sell(ArticleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(model);
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace LivrETS.Models
         public string BarCode { get; set; }
 
         public CourseNotes()
-            : base(articleCode: "N")
+            : base(articleCode: COURSE_NOTES_CODE)
         { }
     }
 }

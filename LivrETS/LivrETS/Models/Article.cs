@@ -31,6 +31,13 @@ namespace LivrETS.Models
         [NotMapped]
         public string LivrETSID => $"{ArticleCode}{GeneratedNumber}";
 
+        [NotMapped]
+        public static readonly string BOOK_CODE = "B";
+        [NotMapped]
+        public static readonly string CALCULATOR_CODE = "C";
+        [NotMapped]
+        public static readonly string COURSE_NOTES_CODE = "N";
+
         public Article()
         {
             FairState = ArticleFairState.UNKNOWN;

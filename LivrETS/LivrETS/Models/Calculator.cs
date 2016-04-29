@@ -13,7 +13,7 @@ namespace LivrETS.Models
         public CalculatorModel Model { get; set; }
 
         public Calculator()
-            : base(articleCode: "C")
+            : base(articleCode: CALCULATOR_CODE)
         {
             Model = CalculatorModel.NSPIRE;
         }
