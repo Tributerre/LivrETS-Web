@@ -89,7 +89,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-2 col-md-offset-1">
+            <div class="col-md-2 col-md-offset-2">
                 <span class="help-block" style="font-size: 12px;">Pas dans la liste? Ajoutez-le!</span>
                 <div class="input-group">
                     <input type="text" id="newCourse" class="form-control input-sm" placeholder="Optionel" />
@@ -109,7 +109,7 @@
             <div class="col-md-12">
                 @Html.LabelFor(model => model.Title, new { @class = "control-label" })
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
             </div>
             <div class="col-md-12">
@@ -125,7 +125,7 @@
             <div class="col-md-12">
                 @Html.LabelFor(model => model.Condition, new { @class = "control-label" })
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 @Html.TextAreaFor(model => model.Condition, new { @class = "form-control", placeholder = "Indiquez la condition dans laquelle est l'objet." })
             </div>
             <div class="col-md-12">
@@ -133,5 +133,49 @@
             </div>
         </div>
         <!-- END Condition -->
+
+        <br />
+
+        <!-- BEGIN Footer of the form -->
+        <div class="row">
+            <div class="col-md-7">
+                <div class="col-md-4">
+                    <label for="selling-frame">Vendre dans le cadre de</label>
+                    <br />
+                    @Html.RadioButtonFor(model => model.SellingStrategy, "WEBSITE", new { @checked = "checked" })
+                    <span class="label label-success" style="font-size: 18px; margin-left: 10px;">Site Web</span>
+                    <br /><br />
+                    @Html.RadioButtonFor(model => model.SellingStrategy, "FAIR", new { })
+                    <span class="label label-info" style="font-size: 18px; margin-left: 10px;">Foire</span>
+                    <br /><br />
+                    <div id="info-sellingframe-fair" class="panel panel-info" hidden>
+                        <div class="panel-body bg-info" style="font-size: 12px;">
+                            L'article sera enregistr&eacute; pour la prochaine Foire aux Livres.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div id="images-panel" class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Images <a href="#" id="add-image" class="pull-right"><span class="glyphicon glyphicon-plus"></span></a></h3>
+                        </div>
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Footer of the form -->
+
+        <br />
+
+        <!-- START Buttons -->
+        <div class="row">
+            <div class="col-md-7">
+                <button type="submit" class="btn btn-primary col-md-3">Terminer</button>
+                <button type="button" class="btn btn-danger col-md-3 pull-right">Annuler</button>
+            </div>
+        </div>
+        <!-- END Buttons -->
     }
 </div>

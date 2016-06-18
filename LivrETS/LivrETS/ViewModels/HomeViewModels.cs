@@ -36,12 +36,10 @@ namespace LivrETS.ViewModels
                     return CalculatorModel.NSPIRE;
                 }
 
-                switch (Model)
+                switch (Model.Trim().ToUpper())
                 {
                     case "VOYAGE200":
                         return CalculatorModel.VOYAGE200;
-                    case "NSPIRE":
-                        return CalculatorModel.NSPIRE;
                     default:
                         return CalculatorModel.NSPIRE;
                 }
@@ -58,7 +56,14 @@ namespace LivrETS.ViewModels
         [Required(ErrorMessage = "Veuillez indiquer la condition de l'article.")]
         public string Condition { get; set; }
 
-        [Required]
-        public bool ForNextFair { get; set; }
+        [Required(ErrorMessage = "Vous devez indiquer la méthode de vente.")]
+        public string SellingStrategy { get; set; }
+        public bool ForNextFair
+        {
+            get
+            {
+                return SellingStrategy.Trim().ToUpper() == "FAIR";
+            }
+        }
     }
 }
