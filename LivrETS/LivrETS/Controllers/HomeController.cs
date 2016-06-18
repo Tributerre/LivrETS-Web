@@ -21,6 +21,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LivrETS.ViewModels;
+using LivrETS.Models;
 
 namespace LivrETS.Controllers
 {
@@ -34,9 +35,18 @@ namespace LivrETS.Controllers
             return View();
         }
 
+        // GET: /Home/Sell
         [HttpGet]
         public ActionResult Sell()
         {
+            using (var db = new ApplicationDbContext())
+            {
+                ViewBag.Courses = (
+                    from course in db.Courses
+                    orderby course.Title ascending
+                    select course
+                ).ToList();
+            }
             return View();
         }
 

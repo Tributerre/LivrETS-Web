@@ -1,4 +1,21 @@
-﻿@using LivrETS.ViewModels
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
+*@
+@using LivrETS.ViewModels
 @using LivrETS.Models
 @model ArticleViewModel
 @{
@@ -6,17 +23,115 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="page-header">
-    <h1>Vendre un article <small>Remplissez tous les champs</small></h1>
-</div>
-
-@using (Html.BeginForm("Sell", "Index", FormMethod.Post, new { @class = "form" }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="row">
-        @Html.TextBoxFor(model => model.ISBN, new { @class = "" })
-        <div class="input-group">
-        </div>
+<div class="row">
+    <div class="page-header">
+        <h1>Vendre un article <small>Remplissez tous les champs</small></h1>
     </div>
-}
+
+    @using (Html.BeginForm("Sell", "Home", FormMethod.Post, new { @class = "form" }))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.AntiForgeryToken()
+
+        <!-- BEGIN ISBN -->
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ISBN, new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                @Html.TextBoxFor(model => model.ISBN, new { @class = "form-control" })
+            </div>
+            <div class="col-md-1 text-left">
+                <!-- dropdowns-enhancement.js -->
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Type <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><input type="radio" id="Book" name="Article" value="B"><label for="Book">Livre</label></li>
+                        <li><input type="radio" id="CourseNotes" name="Article" value="N"><label for="CourseNotes">Notes de cours</label></li>
+                        <li><input type="radio" id="Calculator" name="Article" value="C"><label for="Calculator">Calculatrice</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @Html.ValidationMessageFor(model => model.ISBN, "", new { @class = "text-danger" })
+        </div>
+        <!-- END ISBN -->
+        
+        <br />
+
+        <!-- BEGIN Stats -->
+        <div class="row">
+
+        </div>
+        <!-- END Stats -->
+
+        <br />
+
+        <!-- BEGIN Course -->
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Course, new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <!-- dropdowns-enhancement.js -->
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Cours <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        @foreach (Course course in ViewBag.Courses)
+                        {
+                            <li><input type="radio" id="@course.Id" name="Course" value="@course.Acronym" /><label for="@course.Id">@course.Acronym</label></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-2 col-md-offset-1">
+                <span class="help-block" style="font-size: 12px;">Pas dans la liste? Ajoutez-le!</span>
+                <div class="input-group">
+                    <input type="text" id="newCourse" class="form-control input-sm" placeholder="Optionel" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-sm" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                    </span>
+                </div>
+            </div>
+            @Html.TextBoxFor(model => model.Course, new { @class = "form-control hide", id = "course-text-input" })
+        </div>
+        <!-- END Course -->
+
+        <br />
+
+        <!-- START Title -->
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Title, new { @class = "control-label" })
+            </div>
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+            </div>
+            <div class="col-md-12">
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!-- END Title -->
+
+        <br />
+
+        <!-- START Condition -->
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Condition, new { @class = "control-label" })
+            </div>
+            <div class="col-md-6">
+                @Html.TextAreaFor(model => model.Condition, new { @class = "form-control", placeholder = "Indiquez la condition dans laquelle est l'objet." })
+            </div>
+            <div class="col-md-12">
+                @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!-- END Condition -->
+    }
+</div>
