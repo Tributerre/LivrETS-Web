@@ -22,12 +22,38 @@ using System.Web;
 using System.Web.Mvc;
 using LivrETS.ViewModels;
 using LivrETS.Models;
+using LivrETS.Repositories;
 
 namespace LivrETS.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
+        private LivrETSRepository _repository;
+        public LivrETSRepository Repository
+        {
+            get
+            {
+                if (_repository == null)
+                {
+                    _repository = new LivrETSRepository();
+                }
+
+                return _repository;
+            }
+            private set
+            {
+                _repository = value;
+            }
+        }
+
+        public HomeController() { }
+
+        public HomeController(LivrETSRepository livretsRepository)
+        {
+            Repository = livretsRepository;
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Index()
@@ -39,29 +65,45 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult Sell()
         {
-            using (var db = new ApplicationDbContext())
-            {
-                ViewBag.Courses = (
-                    from course in db.Courses
-                    orderby course.Title ascending
-                    select course
-                ).ToList();
-            }
-            return View();
+            ArticleViewModel model = new ArticleViewModel();
+
+            model.Courses = Repository.GetAllCourses().ToList();
+            return View(model);
         }
 
+        // POST: /Home/Sell
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Sell(ArticleViewModel model)
         {
+            //if (model.ISBN == null)
+            //{
+            //    ModelState.AddModelError("ISBN", "Veuillez indiquer le ISBN.");
+            //}
+
             if (ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Index));
             }
             else
             {
+                model.Courses = Repository.GetAllCourses().ToList();
                 return View(model);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_repository != null)
+                {
+                    _repository.Dispose();
+                    _repository = null;
+                }
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

@@ -65,5 +65,7 @@ namespace LivrETS.ViewModels
                 return SellingStrategy.Trim().ToUpper() == "FAIR";
             }
         }
+
+        public List<Course> Courses;
     }
 }

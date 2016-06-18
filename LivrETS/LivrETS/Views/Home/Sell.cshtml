@@ -56,7 +56,9 @@
             </div>
         </div>
         <div class="row">
-            @Html.ValidationMessageFor(model => model.ISBN, "", new { @class = "text-danger" })
+            <div class="col-md-12">
+                @Html.ValidationMessageFor(model => model.ISBN, "", new { @class = "text-danger" })
+            </div>
         </div>
         <!-- END ISBN -->
         
@@ -82,7 +84,7 @@
                 <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Cours <span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        @foreach (Course course in ViewBag.Courses)
+                        @foreach (Course course in Model.Courses)
                         {
                             <li><input type="radio" id="@course.Id" name="Course" value="@course.Acronym" /><label for="@course.Id">@course.Acronym</label></li>
                         }
@@ -143,10 +145,10 @@
                     <label for="selling-frame">Vendre dans le cadre de</label>
                     <br />
                     @Html.RadioButtonFor(model => model.SellingStrategy, "WEBSITE", new { @checked = "checked" })
-                    <span class="label label-success" style="font-size: 18px; margin-left: 10px;">Site Web</span>
+                    <span class="label label-success" style="font-size: 15px; margin-left: 10px;">Site Web</span>
                     <br /><br />
                     @Html.RadioButtonFor(model => model.SellingStrategy, "FAIR", new { })
-                    <span class="label label-info" style="font-size: 18px; margin-left: 10px;">Foire</span>
+                    <span class="label label-info" style="font-size: 15px; margin-left: 10px;">Foire</span>
                     <br /><br />
                     <div id="info-sellingframe-fair" class="panel panel-info" hidden>
                         <div class="panel-body bg-info" style="font-size: 12px;">
