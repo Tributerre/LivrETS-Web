@@ -20,37 +20,48 @@ $(document).ready(function () {
     'use strict';
 
     document.getElementById("imageupload").addEventListener("change", function () {
-        var image = this.files[0];
-        var xhr = new XMLHttpRequest();
-        var formData = new FormData();
-        var progressHandler = function (event) {
-            var done = event.position || event.loaded,
-                total = event.totalSize || event.total;
-            var percent = Math.floor(done / total * 1000) / 10;
+        if ($("#images-panel>div[class='panel-body']>img").length < 5) {
+            var image = this.files[0];
+            var xhr = new XMLHttpRequest();
+            var formData = new FormData();
+            var progressHandler = function (event) {
+                var done = event.position || event.loaded,
+                    total = event.totalSize || event.total;
+                var percent = Math.floor(done / total * 1000) / 10;
 
-            $("#image-progress>div").css("width", percent);
-        };
-        
-        formData.append("image", image);
-        xhr.addEventListener("progress", progressHandler, false);
+                $("#image-progress>div").css("width", percent);
+            };
 
-        if (xhr.upload) {
-            xhr.upload.onprogress = progressHandler;
-        }
+            formData.append("image", image);
+            xhr.addEventListener("progress", progressHandler, false);
 
-        xhr.onreadystatechange = function (event) {
-            var status = event.target.status;
-
-            switch (status) {
-                case 200:
-                    console.log("upload completed", event);
-                    break;
+            if (xhr.upload) {
+                xhr.upload.onprogress = progressHandler;
             }
 
-            $("#image-progress").hide();
-        };
-        xhr.open("POST", "/Home/AddImage", true);
-        xhr.send(formData);
-        $("#image-progress").show();
+            xhr.onreadystatechange = function (event) {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        var json = JSON.parse(xhr.responseText);
+                        var image = $("<div>")
+                            .attr("class", "col-md-2")
+                            .append($("<img>")
+                                .attr("src", json["thumbPath"])
+                                .attr("class", "img-responsive img-rounded")
+                                .attr("alt", "Preview image")
+                            );
+
+                        $("#images-panel>div[class='panel-body']").append(image);
+                    }
+                }
+
+                $("#image-progress").hide();
+            };
+            xhr.open("POST", "/Home/AddImage", true);
+            xhr.send(formData);
+            $("#image-progress").show();
+        } else {
+            // alert the user of the limit.
+        }
     }, false);
 });

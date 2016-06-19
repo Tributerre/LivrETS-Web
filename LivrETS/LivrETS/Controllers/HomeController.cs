@@ -22,7 +22,10 @@ using System.Web;
 using System.Web.Mvc;
 using LivrETS.ViewModels;
 using LivrETS.Models;
+using LivrETS.Service.IO;
 using LivrETS.Repositories;
+using Microsoft.AspNet.Identity;
+using System.Threading;
 
 namespace LivrETS.Controllers
 {
@@ -67,7 +70,13 @@ namespace LivrETS.Controllers
         {
             var model = new ArticleViewModel();
 
+            Session["images"] = null;
             model.Courses = Repository.GetAllCourses().ToList();
+            ThreadPool.QueueUserWorkItem((object state) => 
+            {
+                FileSystemFacade.CleanTempFolder(state as string);
+            }, state: Server.MapPath("~/Content/Uploads"));
+
             return View(model);
         }
 
@@ -95,7 +104,10 @@ namespace LivrETS.Controllers
         [HttpPost]
         public JsonResult AddImage(HttpPostedFileBase image)
         {
-            return Json(new { }, contentType: "application/json");
+            var uploadsPath = Server.MapPath("~/Content/Uploads");
+            var paths = FileSystemFacade.SaveUploadedImage(User.Identity.GetUserId(), image, uploadsPath);
+
+            return Json(new { thumbPath = paths.Item2 }, contentType: "application/json");
         }
         #endregion
 

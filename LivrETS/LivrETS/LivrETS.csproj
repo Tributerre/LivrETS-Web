@@ -203,6 +203,7 @@
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CourseNotes.cs" />
     <Compile Include="Repositories\LivrETSRepository.cs" />
+    <Compile Include="Service\IO\FileSystemFacade.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\AdminViewModels.cs" />
     <Compile Include="Models\Fair.cs" />
@@ -251,8 +252,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Uploads\Originals\" />
-    <Folder Include="Content\Uploads\Thumbnails\" />
+    <Folder Include="Content\Uploads\Originals\Temp\" />
+    <Folder Include="Content\Uploads\Thumbnails\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
