@@ -23,14 +23,34 @@ $(document).ready(function () {
         var image = this.files[0];
         var xhr = new XMLHttpRequest();
         var formData = new FormData();
+        var progressHandler = function (event) {
+            var done = event.position || event.loaded,
+                total = event.totalSize || event.total;
+            var percent = Math.floor(done / total * 1000) / 10;
+
+            $("#image-progress>div").css("width", percent);
+        };
         
         formData.append("image", image);
+        xhr.addEventListener("progress", progressHandler, false);
+
+        if (xhr.upload) {
+            xhr.upload.onprogress = progressHandler;
+        }
+
         xhr.onreadystatechange = function (event) {
-            if (this.readyState == 4) {
-                console.log("upload completed", event);
+            var status = event.target.status;
+
+            switch (status) {
+                case 200:
+                    console.log("upload completed", event);
+                    break;
             }
+
+            $("#image-progress").hide();
         };
         xhr.open("POST", "/Home/AddImage", true);
         xhr.send(formData);
-    });
+        $("#image-progress").show();
+    }, false);
 });
