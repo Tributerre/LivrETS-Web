@@ -46,11 +46,15 @@ namespace LivrETS.ViewModels
             }
         }
 
+        [Display(Name = "ISBN ou Code")]
         public string ISBN { get; set; }
 
         [Required(ErrorMessage = "Veuillez indiquer un titre à votre offre.")]
         [MaxLength(256, ErrorMessage = "Maximum de 256 caractères.")]
+        [Display(Name = "Titre")]
         public string Title { get; set; }
+
+        [Display(Name = "Cours")]
         public string Course { get; set; }
         
         [Required(ErrorMessage = "Veuillez indiquer la condition de l'article.")]

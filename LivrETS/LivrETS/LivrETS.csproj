@@ -232,6 +232,7 @@
     <Content Include="Scripts\material.spinner.min.js" />
     <Content Include="Scripts\moment-fr-ca.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\sell.js" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>

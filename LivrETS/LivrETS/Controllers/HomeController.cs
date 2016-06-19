@@ -65,7 +65,7 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult Sell()
         {
-            ArticleViewModel model = new ArticleViewModel();
+            var model = new ArticleViewModel();
 
             model.Courses = Repository.GetAllCourses().ToList();
             return View(model);
@@ -80,7 +80,6 @@ namespace LivrETS.Controllers
             //{
             //    ModelState.AddModelError("ISBN", "Veuillez indiquer le ISBN.");
             //}
-
             if (ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Index));
@@ -92,15 +91,20 @@ namespace LivrETS.Controllers
             }
         }
 
+        #region Ajax
+        [HttpPost]
+        public JsonResult AddImage(HttpPostedFileBase image)
+        {
+            return Json(new { }, contentType: "application/json");
+        }
+        #endregion
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (_repository != null)
-                {
-                    _repository.Dispose();
-                    _repository = null;
-                }
+                _repository?.Dispose();
+                _repository = null;
             }
 
             base.Dispose(disposing);
