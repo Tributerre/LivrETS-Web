@@ -61,7 +61,15 @@
         </div>
         <div class="row">
             <div class="col-md-5">
-                @Html.TextBoxFor(model => model.ISBN, new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.ISBN, new { @class = "form-control", id = "isbn-text-input" })
+                <!-- dropdowns-enhancement.js -->
+                <div id="calculator-models-dropdown" class="btn-group" style="display: none;">
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Mod&egrave;le <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li>@Html.RadioButtonFor(model => model.Model, "VOYAGE200", new { id = "radio-voyage200" })<label for="radio-voyage200">Voyage 200</label></li>
+                        <li>@Html.RadioButtonFor(model => model.Model, "NSPIRE", new { id = "radio-nspire" })<label for="radio-nspire">NSpire</label></li>
+                    </ul>
+                </div>
             </div>
             <div class="col-md-1 text-left">
                 <!-- dropdowns-enhancement.js -->
@@ -95,7 +103,7 @@
         <!-- BEGIN Course -->
         <div class="row">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.Course, new { @class = "control-label" })
+                @Html.LabelFor(model => model.Acronym, new { @class = "control-label" })
             </div>
         </div>
         <div class="row">
@@ -114,6 +122,8 @@
             </div>
             <div class="col-md-2 col-md-offset-2">
                 <span class="help-block" style="font-size: 12px;">Pas dans la liste? Ajoutez-le!</span>
+            </div>
+            <div class="col-md-2">
                 <div class="input-group">
                     <input type="text" id="newCourse" class="form-control input-sm" placeholder="Optionel" />
                     <span class="input-group-btn">
@@ -121,7 +131,7 @@
                     </span>
                 </div>
             </div>
-            @Html.TextBoxFor(model => model.Course, new { @class = "form-control hide", id = "course-text-input" })
+            @Html.HiddenFor(model => model.Acronym, new { id = "hidden-acronym" })
         </div>
         <!-- END Course -->
 

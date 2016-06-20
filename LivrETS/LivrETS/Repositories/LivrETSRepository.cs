@@ -48,6 +48,20 @@ namespace LivrETS.Repositories
             );
         }
 
+        /// <summary>
+        /// Gets the course associated with a specific acronym.
+        /// </summary>
+        /// <param name="acronym">The acronym to test.</param>
+        /// <returns>A Course or null if not found.</returns>
+        public Course GetCourseByAcronym(string acronym)
+        {
+            return (
+                from course in _db.Courses
+                where course.Acronym == acronym
+                select course
+            ).FirstOrDefault();
+        }
+
         public void Dispose()
         {
             _db.Dispose();

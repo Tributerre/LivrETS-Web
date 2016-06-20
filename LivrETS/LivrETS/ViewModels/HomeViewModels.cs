@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using LivrETS.Models;
+using LivrETS.Repositories;
 using System.ComponentModel.DataAnnotations;
 
 namespace LivrETS.ViewModels
@@ -46,7 +47,7 @@ namespace LivrETS.ViewModels
             }
         }
 
-        [Display(Name = "ISBN ou Code")]
+        [Display(Name = "ISBN ou Code ou Modèle")]
         public string ISBN { get; set; }
 
         [Required(ErrorMessage = "Veuillez indiquer un titre à votre offre.")]
@@ -54,8 +55,24 @@ namespace LivrETS.ViewModels
         [Display(Name = "Titre")]
         public string Title { get; set; }
 
+        [Required(ErrorMessage = "Veuillez choisir un cours ou «Non Applicable»")]
         [Display(Name = "Cours")]
-        public string Course { get; set; }
+        public string Acronym { get; set; }
+        public Course Course
+        {
+            get
+            {
+                switch (Acronym.Trim())
+                {
+                    case "not-applicable":
+                        return null;
+
+                    default:
+                        var repo = new LivrETSRepository();
+                        return repo.GetCourseByAcronym(Acronym);
+                }
+            }
+        }
         
         [Required(ErrorMessage = "Veuillez indiquer la condition de l'article.")]
         public string Condition { get; set; }

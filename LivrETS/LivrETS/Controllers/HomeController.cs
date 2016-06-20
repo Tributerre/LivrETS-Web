@@ -72,10 +72,11 @@ namespace LivrETS.Controllers
 
             Session["images"] = null;
             model.Courses = Repository.GetAllCourses().ToList();
-            ThreadPool.QueueUserWorkItem((object state) => 
+            ThreadPool.QueueUserWorkItem(state => 
             {
-                FileSystemFacade.CleanTempFolder(state as string);
-            }, state: Server.MapPath("~/Content/Uploads"));
+                var arguments = state as Tuple<string, string>;
+                FileSystemFacade.CleanTempFolder(uploadsPath: arguments.Item1, userId: arguments.Item2);
+            }, state: new Tuple<string, string>(Server.MapPath("~/Content/Uploads"), User.Identity.GetUserId()));
 
             return View(model);
         }

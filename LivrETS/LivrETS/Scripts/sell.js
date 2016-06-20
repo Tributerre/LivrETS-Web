@@ -20,7 +20,7 @@ $(document).ready(function () {
     'use strict';
 
     document.getElementById("imageupload").addEventListener("change", function () {
-        if ($("#images-panel>div[class='panel-body']>img").length < 5) {
+        if ($("#images-panel>div[class='panel-body']").find("img").length < 5) {
             var image = this.files[0];
             var xhr = new XMLHttpRequest();
             var formData = new FormData();
@@ -61,7 +61,45 @@ $(document).ready(function () {
             xhr.send(formData);
             $("#image-progress").show();
         } else {
-            // alert the user of the limit.
+            var alert = $("<div>")
+                .attr("class", "alert alert-warning fade in")
+                .append($("<a>")
+                    .attr("href", "#")
+                    .attr("class", "close")
+                    .attr("data-dismiss", "alert")
+                    .text("x"))
+                .append("5 images maximum par offre.");
+            
+            alert.hide();
+            $("#images-panel>div[class='panel-body']").prepend(alert);
+            alert.show("slow");
         }
     }, false);
+
+    $("input[name='Course']").on("change", function () {
+        $("#hidden-acronym").val($("input[name='Course']:checked").val());
+    });
+
+    $("input[name='SellingStrategy']").on("change", function () {
+        if ($(this).val() === 'FAIR') {
+            $("#info-sellingframe-fair").show('fast');
+        } else {
+            $("#info-sellingframe-fair").hide('fast');
+        }
+    });
+
+    $("input[name='Article']").on('change', function () {
+        var value = $(this).val();
+
+        if (value === 'C') {
+            $("#calculator-models-dropdown").show('fast');
+            $("#isbn-text-input").hide('fast');
+        } else {
+            $("#calculator-models-dropdown").hide('fast');
+            $("#isbn-text-input").show('fast');
+        }
+    });
+
+    $("#newCourse").on("click", function () {
+    });
 });

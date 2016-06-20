@@ -64,13 +64,17 @@ namespace LivrETS.Service.IO
         /// Cleans the temporary folders.
         /// </summary>
         /// <param name="uploadsPath">The path to the Uploads folder.</param>
-        public static void CleanTempFolder(string uploadsPath)
+        /// <param name="userId">The ID of the current user.</param>
+        public static void CleanTempFolder(string uploadsPath, string userId)
         {
             CreateTemp(uploadsPath);
             var thumbnailsTempPath = Path.Combine(uploadsPath, THUMBNAILS, TEMP);
             var originalsTempPath = Path.Combine(uploadsPath, ORIGINALS, TEMP);
 
-            foreach (var file in Directory.EnumerateFiles(thumbnailsTempPath).Concat(Directory.EnumerateFiles(originalsTempPath)))
+            foreach (var file in 
+                Directory.EnumerateFiles(thumbnailsTempPath)
+                .Concat(Directory.EnumerateFiles(originalsTempPath))
+                .Where(file => file.StartsWith(userId)))
             {
                 File.Delete(file);
             }
