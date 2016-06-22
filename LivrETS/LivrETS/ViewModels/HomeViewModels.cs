@@ -27,6 +27,9 @@ namespace LivrETS.ViewModels
 {
     public class ArticleViewModel
     {
+        [Required(ErrorMessage = "Le type de l'article est requis.")]
+        public string Type { get; set; }
+
         public string Model { get; set; }
         public CalculatorModel CalculatorModel
         {
@@ -39,7 +42,7 @@ namespace LivrETS.ViewModels
 
                 switch (Model.Trim().ToUpper())
                 {
-                    case "VOYAGE200":
+                    case nameof(CalculatorModel.VOYAGE200):
                         return CalculatorModel.VOYAGE200;
                     default:
                         return CalculatorModel.NSPIRE;
@@ -52,27 +55,12 @@ namespace LivrETS.ViewModels
 
         [Required(ErrorMessage = "Veuillez indiquer un titre à votre offre.")]
         [MaxLength(256, ErrorMessage = "Maximum de 256 caractères.")]
-        [Display(Name = "Titre")]
+        [Display(Name = "Titre de l'article")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Veuillez choisir un cours ou «Non Applicable»")]
         [Display(Name = "Cours")]
         public string Acronym { get; set; }
-        public Course Course
-        {
-            get
-            {
-                switch (Acronym.Trim())
-                {
-                    case "not-applicable":
-                        return null;
-
-                    default:
-                        var repo = new LivrETSRepository();
-                        return repo.GetCourseByAcronym(Acronym);
-                }
-            }
-        }
         
         [Required(ErrorMessage = "Veuillez indiquer la condition de l'article.")]
         public string Condition { get; set; }

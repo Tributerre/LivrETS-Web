@@ -62,6 +62,42 @@ namespace LivrETS.Repositories
             ).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Adds a new course to the system.
+        /// </summary>
+        /// <param name="acronym">The acronym of the new course.</param>
+        public void AddNewCourse(string acronym, string title)
+        {
+            Course course = new Course() { Acronym = acronym, Title = title };
+            _db.Courses.Add(course);
+            _db.SaveChanges();
+        }
+
+        /// <summary>
+        /// Add a new offer to a user.
+        /// </summary>
+        /// <param name="toUser">The id of the user in which to add the offer.</param>
+        /// <param name="offer">The offer to add.</param>
+        public void AddOffer(Offer offer, string toUser)
+        {
+            var user = (
+                from userDb in _db.Users
+                where userDb.Id.ToString() == toUser
+                select userDb
+            ).FirstOrDefault();
+
+            if (user != null)
+            {
+                user.Offers.Add(offer);
+                _db.SaveChanges();
+            }
+        }
+
+        public void Update()
+        {
+            _db.SaveChanges();
+        }
+
         public void Dispose()
         {
             _db.Dispose();

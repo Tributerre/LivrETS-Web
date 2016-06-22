@@ -20,27 +20,31 @@ namespace LivrETS.Models
         [Required]
         public ArticleFairState FairState { get; set; }
 
-        public Course Course { get; set; }
+        [ForeignKey(nameof(Course))]
+        public Guid CourseID { get; set; }
+        public virtual Course Course { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long GeneratedNumber { get; }
 
-        [NotMapped]
+        [Required]
+        [MaxLength(1)]
         public readonly string ArticleCode;
 
         [NotMapped]
         public string LivrETSID => $"{ArticleCode}{GeneratedNumber}";
 
         [NotMapped]
-        public static readonly string BOOK_CODE = "B";
+        public const string BOOK_CODE = "B";
         [NotMapped]
-        public static readonly string CALCULATOR_CODE = "C";
+        public const string CALCULATOR_CODE = "C";
         [NotMapped]
-        public static readonly string COURSE_NOTES_CODE = "N";
+        public const string COURSE_NOTES_CODE = "N";
 
         public Article()
         {
             FairState = ArticleFairState.UNKNOWN;
+            Id = Guid.NewGuid();
         }
 
         public Article(string articleCode)

@@ -183,17 +183,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201604172216523_InitialCreate.cs" />
-    <Compile Include="Migrations\201604172216523_InitialCreate.Designer.cs">
-      <DependentUpon>201604172216523_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604190156556_Second.cs" />
-    <Compile Include="Migrations\201604190156556_Second.Designer.cs">
-      <DependentUpon>201604190156556_Second.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201604290206238_Third.cs" />
-    <Compile Include="Migrations\201604290206238_Third.Designer.cs">
-      <DependentUpon>201604290206238_Third.cs</DependentUpon>
+    <Compile Include="Migrations\201606220322515_first.cs" />
+    <Compile Include="Migrations\201606220322515_first.Designer.cs">
+      <DependentUpon>201606220322515_first.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Article.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -225,6 +217,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\student_card_example.jpg" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap-notify.min.js" />
     <Content Include="Scripts\dropdowns-enhancement.js" />
     <Content Include="Scripts\fullcalendar-lang-fr-ca.js" />
     <Content Include="Scripts\managefairs-calendarhandling.js" />
@@ -281,17 +274,6 @@
     <Content Include="Views\Admin\ManageUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201604172216523_InitialCreate.resx">
-      <DependentUpon>201604172216523_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604190156556_Second.resx">
-      <DependentUpon>201604190156556_Second.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201604290206238_Third.resx">
-      <DependentUpon>201604290206238_Third.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Account\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -308,6 +290,11 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201606220322515_first.resx">
+      <DependentUpon>201606220322515_first.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

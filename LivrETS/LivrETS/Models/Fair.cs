@@ -48,7 +48,7 @@ namespace LivrETS.Models
 
         [Required]
         public string Trimester { get; set; }
-        public List<Offer> Offers { get; set; }
+        public virtual ICollection<Offer> Offers { get; set; }
 
         [NotMapped]
         public FairPhase Phase {

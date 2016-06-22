@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
@@ -29,9 +28,13 @@ namespace LivrETS.Service.IO
     /// </summary>
     public class FileSystemFacade
     {
-        public static readonly string THUMBNAILS = "Thumbnails";
-        public static readonly string ORIGINALS = "Originals";
-        public static readonly string TEMP = "Temp";
+        public const string THUMBNAILS = "Thumbnails";
+        public const string ORIGINALS = "Originals";
+        public const string TEMP = "Temp";
+        public const string RELATIVE_ORIGINALS_PATH = "/Content/Uploads/" + ORIGINALS;
+        public const string RELATIVE_THUMBNAILS_PATH = "/Content/Uploads/" + THUMBNAILS;
+        public const string RELATIVE_TEMP_ORIGINALS_PATH = "/Content/Uploads/" + ORIGINALS + "/" + TEMP;
+        public const string RELATIVE_TEMP_THUMBNAILS_PATH = "/Content/Uploads/" + THUMBNAILS + "/" + TEMP;
 
         /// <summary>
         /// Save an uploaded image to disk in the right folder.
@@ -39,25 +42,20 @@ namespace LivrETS.Service.IO
         /// <param name="userId">The ID of the current user.</param>
         /// <param name="image">The image that has been uploaded.</param>
         /// <param name="uploadsPath">The path to the Uploads folder.</param>
-        /// <returns>A tuple containing the original (first) and thumbnail (second) paths.</returns>
-        public static Tuple<string, string> SaveUploadedImage(string userId, HttpPostedFileBase image, string uploadsPath)
+        public static void SaveUploadedImage(string userId, HttpPostedFileBase image, string uploadsPath, out string fullOriginalPath, out string fullThumbnailPath)
         {
             CreateTemp(uploadsPath);
             var imageName = $"{userId}-{Guid.NewGuid()}.{image.FileName.Split('.').Last()}".Trim();
-            var thumbnailPath = Path.Combine(uploadsPath, THUMBNAILS, TEMP, imageName);
-            var originalPath = Path.Combine(uploadsPath, ORIGINALS, TEMP, imageName);
-            var virtualThumbnailPath = $"/Content/Uploads/{THUMBNAILS}/{TEMP}/{imageName}";
-            var virtualOriginalPath = $"/Content/Uploads/{ORIGINALS}/{TEMP}/{imageName}";
+            fullThumbnailPath = Path.Combine(uploadsPath, THUMBNAILS, TEMP, imageName);
+            fullOriginalPath = Path.Combine(uploadsPath, ORIGINALS, TEMP, imageName);
 
-            image.SaveAs(originalPath);
+            image.SaveAs(fullOriginalPath);
 
-            using (Image originalImage = Image.FromFile(originalPath),
+            using (Image originalImage = Image.FromFile(fullOriginalPath),
                 thumbnailImage = originalImage.GetThumbnailImage(100, 100, () => { return false; }, IntPtr.Zero))
             {
-                thumbnailImage.Save(thumbnailPath);
+                thumbnailImage.Save(fullThumbnailPath);
             }
-
-            return new Tuple<string, string>(virtualOriginalPath, virtualThumbnailPath);
         }
 
         /// <summary>
@@ -74,9 +72,27 @@ namespace LivrETS.Service.IO
             foreach (var file in 
                 Directory.EnumerateFiles(thumbnailsTempPath)
                 .Concat(Directory.EnumerateFiles(originalsTempPath))
-                .Where(file => file.StartsWith(userId)))
+                .Where(file => Path.GetFileName(file).StartsWith(userId)))
             {
                 File.Delete(file);
+            }
+        }
+
+        public static void DeleteFile(string location)
+        {
+            if (File.Exists(location))
+            {
+                File.Delete(location);
+            }
+        }
+
+        public static void MoveFileToLocation(string oldLocation, string newLocation)
+        {
+            var newParent = Directory.GetParent(newLocation);
+
+            if (newParent.Exists && File.Exists(oldLocation))
+            {
+                File.Move(oldLocation, newLocation);
             }
         }
 

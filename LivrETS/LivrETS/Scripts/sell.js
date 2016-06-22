@@ -56,27 +56,21 @@ $(document).ready(function () {
                 }
 
                 $("#image-progress").hide();
+                $("#image-progress>div").css("width", 0);
             };
             xhr.open("POST", "/Home/AddImage", true);
             xhr.send(formData);
             $("#image-progress").show();
         } else {
-            var alert = $("<div>")
-                .attr("class", "alert alert-warning fade in")
-                .append($("<a>")
-                    .attr("href", "#")
-                    .attr("class", "close")
-                    .attr("data-dismiss", "alert")
-                    .text("x"))
-                .append("5 images maximum par offre.");
-            
-            alert.hide();
-            $("#images-panel>div[class='panel-body']").prepend(alert);
-            alert.show("slow");
+            $.notify({
+                message: "5 images maximum par offre."
+            }, {
+                type: 'warning'
+            });
         }
     }, false);
 
-    $("input[name='Course']").on("change", function () {
+    $("#courses-list").on("change", "li>input[name='Course']", function () {
         $("#hidden-acronym").val($("input[name='Course']:checked").val());
     });
 
@@ -100,6 +94,72 @@ $(document).ready(function () {
         }
     });
 
-    $("#newCourse").on("click", function () {
+    $("#btn-newCourse").on("click", function () {
+        var courseTextInput = $("#newCourse");
+        var spinner = $("<div>");
+        var btnCourseText = $(this).html();
+        var restoreButton = function () {
+            $("#btn-newCourse").html(btnCourseText);
+        };
+        var notifyError = function (message) {
+            $.notify({
+                icon: "glyphicon glyphicon-remove",
+                message: message
+            }, {
+                type: "danger"
+            });
+        };
+
+        if (courseTextInput.val() === "") {
+            courseTextInput.parent().addClass("has-error");
+        } else {
+            $(this).html(spinner);
+            spinner.spinner({
+                radius: 7,
+                strokeWidth: 3
+            });
+
+            if (courseTextInput.hasClass("has-error")) {
+                courseTextInput.removeClass("has-error");
+            }
+
+            $.ajax({
+                method: "POST",
+                dataType: "json",
+                url: "/Home/AddNewCourse",
+                data: { acronym: courseTextInput.val() },
+                success: function (data) {
+                    var newCourseElement = $("<li>")
+                        .append($("<input>")
+                            .attr("id", data['courseId'])
+                            .attr("type", "radio")
+                            .attr("name", "Course")
+                            .attr("value", data["acronym"]))
+                        .append($("<label>")
+                            .attr("for", data["courseId"])
+                            .text(data["acronym"]));
+
+                    $("#courses-list").append(newCourseElement);
+                    courseTextInput.val("");
+                    restoreButton();
+                    $.notify({
+                        icon: "glyphicon glyphicon-ok",
+                        message: "Le cours a été ajouté à la liste avec succès!"
+                    }, {
+                        type: 'success'
+                    });
+                },
+                statusCode: {
+                    500: function () {
+                        restoreButton();
+                        notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                    },
+                    409: function () {
+                        restoreButton();
+                        notifyError("Le cours exsite déjà dans la liste.");
+                    }
+                }
+            });
+        }
     });
 });

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -28,23 +29,34 @@ namespace LivrETS.Models
             set
             {
                 if (value < 0)
-                {
                     throw new ArgumentOutOfRangeException("Price must be positive");
-                }
                 else
-                {
                     _price = value;
-                }
             }
         }
 
         [Required]
-        public string Condition { get; set; }
-        public DateTime MarkedSoldOn { get; set; }
-        public DbSet<OfferImage> Images { get; set; }
+        [MaxLength(256)]
+        public string Title { get; set; }
 
         [Required]
-        public Article Article { get; set; }
+        public string Condition { get; set; }
+        [Required]
+        public DateTime MarkedSoldOn { get; set; }
+        public virtual ICollection<OfferImage> Images { get; set; }
+
+        [Required]
+        public virtual Article Article { get; set; }
+        [ForeignKey(nameof(Article))]
+        public Guid ArticleID { get; set; }
+
+        public bool Sold => MarkedSoldOn != StartDate;
+
+        public Offer()
+        {
+            Images = new List<OfferImage>();
+            Id = Guid.NewGuid();
+        }
 
         /// <summary>
         /// Use this method to add an image to the offer.
@@ -56,10 +68,8 @@ namespace LivrETS.Models
             {
                 throw new ArgumentException("Maximum 5 images");
             }
-            else
-            {
-                Images.Add(image);
-            }
+
+            Images.Add(image);
         }
     }
 }

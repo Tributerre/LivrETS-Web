@@ -1,22 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+Copyright (C) 2016  TribuTerre
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Web;
+using LivrETS.Service.IO;
 
 namespace LivrETS.Models
 {
     public class OfferImage
     {
-        [NotMapped]
-        public static readonly string RelativeOriginalsPath = "/Content/Uploads/Originals";
-        [NotMapped]
-        public static readonly string RealtiveThumbnailsPath = "/Content/Uploads/Thumbnails";
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
@@ -26,33 +35,82 @@ namespace LivrETS.Models
         [Required]
         public string ThumbnailPathOnDisk { get; set; }
 
-        /// <summary>
-        /// Saves an image to disk and populates the paths.
-        /// </summary>
-        /// <param name="image">The image uploaded</param>
-        /// <param name="userId">The Id of the user that have uploaded it</param>
-        /// <param name="absoluteOriginalsPath">The absolute path to the originals</param>
-        /// <param name="absoluteThumbnailsPath">The absolute path to the thumbnails</param>
-        public void SaveImage(
-            HttpPostedFileBase image,
-            string userId,
-            string absoluteOriginalsPath,
-            string absoluteThumbnailsPath)
+        [NotMapped]
+        public string RelativeOriginalPath
         {
-            var fileName = $"{new Guid().ToString()}.{image.FileName.Split('.').Last()}";
-            var imageOriginalPath = Path.Combine(absoluteOriginalsPath, userId, fileName);
-            var imageThumbnailPath = Path.Combine(absoluteThumbnailsPath, userId, fileName);
-            image.SaveAs(imageOriginalPath);
-
-            using (var srcImage = Image.FromFile(imageOriginalPath))
+            get
             {
-                var dstImage = srcImage.GetThumbnailImage(200, 200, () => false, IntPtr.Zero);
-                dstImage.Save(imageThumbnailPath);
-                dstImage.Dispose();
+                
+                if (Array.Exists(PathOnDisk.Split(Path.DirectorySeparatorChar), component => component == FileSystemFacade.TEMP))
+                {
+                    return $"{FileSystemFacade.RELATIVE_TEMP_ORIGINALS_PATH}/{Path.GetFileName(PathOnDisk)}";
+                }
+                else
+                {
+                    return $"{FileSystemFacade.RELATIVE_ORIGINALS_PATH}/{Path.GetFileName(PathOnDisk)}";
+                }
             }
+        }
+        [NotMapped]
+        public string RelativeThumbnailPath
+        {
+            get
+            {
+                if (Array.Exists(ThumbnailPathOnDisk.Split(Path.DirectorySeparatorChar), component => component == FileSystemFacade.TEMP))
+                {
+                    return $"{FileSystemFacade.RELATIVE_TEMP_THUMBNAILS_PATH}/{Path.GetFileName(ThumbnailPathOnDisk)}";
+                }
+                else
+                {
+                    return $"{FileSystemFacade.RELATIVE_THUMBNAILS_PATH}/{Path.GetFileName(ThumbnailPathOnDisk)}";
+                }
+            }
+        }
 
-            PathOnDisk = imageOriginalPath;
-            ThumbnailPathOnDisk = imageThumbnailPath;
+        public OfferImage()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        /// <summary>
+        /// Saves an image on disk in a temporary location.
+        /// </summary>
+        /// <param name="image">The ID of the current user.</param>
+        /// <param name="userId">The image that has been uploaded.</param>
+        /// <param name="uploadsPath">The path to the Uploads folder.</param>
+        public void SaveImageTemporarily(HttpPostedFileBase image, string userId, string uploadsPath)
+        {
+            string fullOriginalPath = string.Empty;
+            string fullThumbnailPath = string.Empty;
+
+            FileSystemFacade.SaveUploadedImage(userId, image, uploadsPath, out fullOriginalPath, out fullThumbnailPath);
+            PathOnDisk = fullOriginalPath;
+            ThumbnailPathOnDisk = fullThumbnailPath;
+        }
+
+        /// <summary>
+        /// Move the image from temp to the permanent location.
+        /// </summary>
+        /// <param name="uploadsPath">The path to the Uploads folder.</param>
+        public void MovePermanently(string uploadsPath)
+        {
+            var fileName = Path.GetFileName(PathOnDisk);
+            var newOriginalLocation = Path.Combine(uploadsPath, FileSystemFacade.ORIGINALS, fileName);
+            var newThumbnsilLocation = Path.Combine(uploadsPath, FileSystemFacade.THUMBNAILS, fileName);
+
+            FileSystemFacade.MoveFileToLocation(PathOnDisk, newOriginalLocation);
+            FileSystemFacade.MoveFileToLocation(ThumbnailPathOnDisk, newThumbnsilLocation);
+            PathOnDisk = newOriginalLocation;
+            ThumbnailPathOnDisk = newThumbnsilLocation;
+        }
+
+        /// <summary>
+        /// Deletes the image on disk.
+        /// </summary>
+        public void Delete()
+        {
+            FileSystemFacade.DeleteFile(PathOnDisk);
+            FileSystemFacade.DeleteFile(ThumbnailPathOnDisk);
         }
     }
 }

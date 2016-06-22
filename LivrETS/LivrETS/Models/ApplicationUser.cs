@@ -48,7 +48,7 @@ namespace LivrETS.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long GeneratedNumber { get; }
 
-        public List<Offer> Offers { get; set; }
+        public virtual ICollection<Offer> Offers { get; set; }
 
         [NotMapped]
         public string LivrETSID => $"{FirstName[0].ToString().ToUpper()}{LastName[0].ToString().ToUpper()}{GeneratedNumber}";
