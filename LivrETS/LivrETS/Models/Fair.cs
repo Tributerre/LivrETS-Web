@@ -82,7 +82,10 @@ namespace LivrETS.Models
         [NotMapped]
         public string LivrETSID => $"{Trimester}{StartDate.Year}";
 
-        public Fair() { }
+        public Fair()
+        {
+            Offers = new List<Offer>();
+        }
 
         /// <summary>
         /// Constructor with start and end dates of the fair.
@@ -90,6 +93,7 @@ namespace LivrETS.Models
         /// <param name="start">Start date of the fair</param>
         /// <param name="end">End date of the fair</param>
         public Fair(DateTime start, DateTime end)
+            : this()
         {
             if (end <= start)
             {

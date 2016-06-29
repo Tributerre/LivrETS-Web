@@ -93,6 +93,34 @@ namespace LivrETS.Repositories
             }
         }
 
+        /// <summary>
+        /// Get the current fair (current date between StartDate and EndDate) if there is one.
+        /// </summary>
+        /// <returns>A Fair or null if not found.</returns>
+        public Fair GetCurrentFair()
+        {
+            var now = DateTime.Now;
+            return (
+                from fairdb in _db.Fairs
+                where fairdb.StartDate <= now && now <= fairdb.EndDate
+                select fairdb
+            ).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets a user by its bar code.
+        /// </summary>
+        /// <param name="BarCode">The bar code of the user to retrieve.</param>
+        /// <returns>An ApplicationUser or null if not found.</returns>
+        public ApplicationUser GetUserBy(string BarCode)
+        {
+            return (
+                from user in _db.Users
+                where user.BarCode == BarCode
+                select user
+            ).FirstOrDefault();
+        }
+
         public void Update()
         {
             _db.SaveChanges();
