@@ -22,6 +22,7 @@ using System.Web;
 using System.Web.Mvc;
 using LivrETS.ViewModels;
 using LivrETS.Repositories;
+using LivrETS.Models;
 
 namespace LivrETS.Controllers
 {
