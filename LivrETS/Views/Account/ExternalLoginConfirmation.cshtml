@@ -1,0 +1,101 @@
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
+*@
+@model LivrETS.ViewModels.ExternalLoginConfirmationViewModel
+@{
+    ViewBag.Title = "S'inscrire";
+}
+<h3>Vous y &ecirc;tes presque!</h3>
+
+@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    <div id="alert-terms" class="alert alert-info" role="alert" hidden>
+        <button type="button" class="close" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+        Vous devez confirmer que vous avez lu et compris les termes et conditions en cochant la case appropri&eacute;e.
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <p class="text-info">
+        Vous vous &ecirc;tes connectez avec succ&egrave;s &agrave; <strong>@ViewBag.LoginProvider</strong>.
+        Svp, veuillez confirmer votre inscription en remplissant les champs ci-dessous et cliquez sur le
+        bouton <strong>Confirmer!</strong>
+    </p>
+    <div class="form-group">
+        <div class="row">
+            @Html.LabelFor(model => model.FirstName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-2">
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+
+            @Html.LabelFor(model => model.LastName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-2">
+                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+            @Html.LabelFor(model => model.Email, new { @class = "col-md-2 control-label" })
+            <div class="col-md-4">
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row text-center" style="margin-top: 20px;">
+            <p>Entour&eacute; de <strong style="color: red;">rouge</strong> est l'information recherch&eacute;.</p>
+            <img class="img-rounded" width="300px" height="175px" alt="student_card_example.jpg" src="~/Images/student_card_example.jpg" />
+            <br>
+            @Html.TextBoxFor(model => model.BarCode, new { @class = "form-control", placeholder = "Numéro du code à barres", style = "margin: 10px auto 0; float: none;" })
+            @Html.ValidationMessageFor(model => model.BarCode, "", new { @class = "text-danger", style = "margin: 10px auto 0; float: none;" })
+        </div>
+    </div>
+
+    <div class="row">
+        <p>
+            <input type="checkbox" id="terms-checkbox"> Je confirme avoir lu et compris les <a href="#">termes et conditions d'utilisation</a> de Livr&Eacute;TS.
+        </p>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10 text-right">
+            <button id="btn-confirm" type="button" class="btn btn-primary">Confirmer!</button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(() => {
+            $("#btn-confirm").on("click", () => {
+                if ($("#terms-checkbox").is(":checked")) {
+                    $("form").submit()
+                } else {
+                    $("#alert-terms").show("slow")
+                }
+            })
+
+            $("#alert-terms>button").on("click", () => {
+                $("#alert-terms").hide("slow")
+            })
+        })
+    </script>
+}

@@ -1,0 +1,99 @@
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
+*@
+@using Microsoft.Owin.Security
+@{
+    Layout = null;
+    ViewBag.Title = "Se connecter";
+}
+
+<!doctype html>
+<html lang="">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="@Url.Content("~/Content/dropdowns-enhancement.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/Login.css")" />
+</head>
+<body>
+    <div class="container body-content">
+        @if (ViewData["error"] != null && ViewData["error"].ToString() == "InvalidDomain")
+            {
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+                <strong>Oups!</strong> Vous devez vous connecter avec votre compte <strong>etsmtl.net</strong>.
+            </div>
+        }
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                <h1 class="text-center login-title">Connectez-vous pour continuer sur Livr&Eacute;TS</h1>
+                <div class="account-wall">
+                    <p class="title-text" style="font-size: 24px;">
+                        LivrETS<strong style="font-size: 18px;">&#64;etsmtl.net</strong>
+                    </p>
+                    @{
+                        var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+                        if (loginProviders.Count() > 0)
+                        {
+                            using (Html.BeginForm("ExternalLogin", "Account", FormMethod.Post, new { @class = "form-signin", role = "form", ReturnUrl = ViewBag.ReturnUrl }))
+                            {
+                                @Html.AntiForgeryToken()
+                                foreach (var provider in loginProviders)
+                                {
+                                    if (@provider.Caption == "Google")
+                                    {
+                                        <button id="google-btn" name="provider" value="@provider.AuthenticationType" class="btn btn-lg btn-block login-btn" type="submit">
+                                            Connectez-vous avec Google
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-lg btn-block login-btn" name="provider" value="@provider.AuthenticationType" type="submit">
+                                            @provider.Caption
+                                        </button>
+                                    }
+                                }
+                            }
+                            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-signin" role="form">
+                                
+                            </form>
+                        }
+                    }
+                </div>
+                <p class="text-center copyright-login">&copy; TribuTerre @DateTime.Now.Year</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"
+            integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="@Url.Content("~/Scripts/dropdowns-enhancement.js")"></script>
+    
+</body>
+</html>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

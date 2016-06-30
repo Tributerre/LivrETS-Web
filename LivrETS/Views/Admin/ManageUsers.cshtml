@@ -1,0 +1,123 @@
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses
+*@
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using Microsoft.AspNet.Identity.Owin
+@using LivrETS.Models
+@{
+    ViewBag.Title = "Admin: Utilisateurs";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var users = ViewBag.users as List<ApplicationUser>;
+    var roles = ViewBag.roles as List<IdentityRole>;
+    var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+}
+
+@section Styles {
+    <style>
+        thead > tr > th {
+            padding: 5px;
+        }
+    </style>
+}
+
+<div id="errors" class="row" hidden>
+    <div class="alert alert-danger alert-dismissible fade in" role="alert">
+        <button id="close-error" type="button" class="close" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+        <span id="error-message"></span>
+    </div>
+</div>
+
+<div class="row">
+    <table class="table-striped table-bordered table-hover col-md-12">
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" name="check-select-all">
+                </th>
+                <th>ID</th>
+                <th>Pr&eacute;nom</th>
+                <th>Nom</th>
+                <th>N&deg; Code &agrave; barres</th>
+                <th>Inscrit le</th>
+                <th>Privil&egrave;ge</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td class="text-center">
+                        @if (User.Identity.GetUserId() != user.Id)
+                        {
+                            <input type="checkbox" name="check-select-user-for-action" data-user-id="@user.Id">
+                        }
+                    </td>
+                    <td class="text-center">@user.LivrETSID</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>@user.BarCode</td>
+                    <td>@user.SubscribedAt</td>
+                    <td class="text-center">
+                        @{
+                            string userRoleId = user.Roles.ToList().FirstOrDefault()?.RoleId ?? "";
+                            string userRoleName = roles.Where(role => role.Id == userRoleId).FirstOrDefault()?.Name ?? "User";
+
+                            if (User.Identity.GetUserId() == user.Id)
+                            {
+                                <span>@userRoleName</span>
+                            }
+                            else
+                            {
+                                <div class="btn-group">
+                                    <!-- dropdowns-enhancement.js -->
+                                    <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">@userRoleName</button>
+                                    <ul class="dropdown-menu">
+                                        @foreach (var role in roles)
+                                        {
+                                            <li><input type="radio" id="@role.Name" name="UserRole" value="@role.Name" data-user-id="@user.Id"><label for="@role.Name">@role.Name</label></li>
+                                        }
+                                        <li><input type="radio" id="User" name="UserRole" value="User"><label for="User">User</label></li>
+                                    </ul>
+                                </div>
+                            }
+                        }
+                    </td>
+                    <td class="text-center">
+                        @if (User.Identity.GetUserId() != user.Id)
+                        {
+                            <button type="button" class="btn-delete-user btn btn-danger btn-xs" data-user-id="@user.Id"><strong>&times;</strong></button>
+                        }
+                    </td>
+                </tr>
+                            }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+</div>
+
+@section Actions {
+    <div class="row text-center" id="div-actions">
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/manageusers.js"></script>
+}

@@ -236,5 +236,5 @@ _Pvt_Extensions
 .fake/
 
 # LivrETS
-LivrETS/LivrETS/Content/Uploads/Originals/*
-LivrETS/LivrETS/Content/Uploads/Thumbnails/*
+LivrETS/Content/Uploads/Originals/*
+LivrETS/Content/Uploads/Thumbnails/*

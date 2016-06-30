@@ -1,0 +1,53 @@
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses*@
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.Owin
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { Id = "logoutForm" }))
+    {
+        @Html.AntiForgeryToken()
+        var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        var user = userManager.FindById(User.Identity.GetUserId());
+        <div class="btn-group">
+            <button id="user-btn" type="button" class="navbar-btn btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Bonjour @user.FirstName!<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="/Account/Profile"><span class="glyphicon glyphicon-user"></span>  Profil</a></li>
+                <li><a href="/Home/Sell"><span class="glyphicon glyphicon-usd"></span>  Vendre</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="/Admin/ManageUsers"><span class="glyphicon glyphicon-th-list"></span>  Utilisateurs</a></li>
+                <li><a href="/Admin/ManageFairs"><span class="glyphicon glyphicon-book"></span>  Foires</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#" onclick="$('#logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span>  Se d&eacute;connecter</a></li>
+            </ul>
+        </div>
+    }
+}
+else
+{
+    <div class="btn-group">
+        <button id="user-btn" type="button" class="navbar-btn btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Bonjour! <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="/Account/Login"><span class="glyphicon glyphicon-log-in"></span>  Se connecter</a></li>
+        </ul>
+    </div>
+}

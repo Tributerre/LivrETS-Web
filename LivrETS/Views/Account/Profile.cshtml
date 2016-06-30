@@ -1,0 +1,97 @@
+﻿@*
+LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+Copyright (C) 2016  TribuTerre
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>
+*@
+@using LivrETS.Models
+@model ProfileViewModel
+@{
+    ViewBag.Title = "Mon profil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ApplicationUser user = ViewBag.user;
+}
+
+<div class="container">
+    <h1>Votre profil... lit&eacute;ralement</h1>
+    <hr>
+
+    @using (Html.BeginForm("Profile", "Account", FormMethod.Post, new { ReturnUrl = "/Home/Index", @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <div class="row">
+                <label class="col-md-2 text-right">Inscrit depuis:</label>
+                <label class="col-md-2">@user.SubscribedAt</label>
+            </div>
+
+            <div class="row">
+                <label class="col-md-2 text-right">ID Vendeur:</label>
+                <label class="col-md-2">@user.LivrETSID</label>
+            </div>
+
+            <div class="row" style="margin-top: 5px;">
+                <label class="col-md-2 text-right">Courriel:</label>
+                <label class="col-md-3">@user.Email</label>
+            </div>
+
+            <div class="row" style="margin-top: 5px;">
+                @Html.LabelFor(model => model.FirstName,new { @class = "col-md-2 control-label" })
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 5px;">
+                @Html.LabelFor(model => model.LastName, new { @class = "col-md-2 control-label" })
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 5px;">
+                <label for="BarCode" class="col-md-2 control-label">
+                    N&deg; Code &agrave; barres <a style="color: black;"
+                                                   role="button"
+                                                   data-content='<img class="img-rounded" width="200px" height="125px" alt="student_card_example.jpg" src="/images/student_card_example.jpg">'
+                                                   data-html="true"
+                                                   data-placement="top"
+                                                   data-toggle="popover">
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                    </a>
+                </label>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(model => model.BarCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.BarCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-md-5 text-right">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+    </script>
+}
