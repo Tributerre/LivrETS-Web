@@ -29,8 +29,8 @@ namespace LivrETS.Controllers
     [Authorize(Roles = "Administrator,Clerk")]
     public class FairController : Controller
     {
-        private const int NUMBER_OF_PHASES = 2;
-        private const string CURRENT_PHASE = "CurrentPhase";
+        private const int NUMBER_OF_STEPS = 2;
+        private const string CURRENT_STEP = "CurrentPhase";
         private const string SELLER = "Seller";
 
         private LivrETSRepository _repository;
@@ -51,12 +51,12 @@ namespace LivrETS.Controllers
         {
             var model = new FairViewModel();
             var currentFair = Repository.GetCurrentFair();
-            var currentPhase = 0f;
+            var currentStep = 0f;
 
-            model.FairYear = currentFair?.StartDate.Year ?? 0;
-            model.CurrentPhase = currentPhase;
-            Session[CURRENT_PHASE] = currentPhase;
-            model.NumberOfPhases = NUMBER_OF_PHASES;
+            model.Fair = currentFair;
+            model.CurrentPhase = currentStep;
+            Session[CURRENT_STEP] = currentStep;
+            model.NumberOfPhases = NUMBER_OF_STEPS;
             return View(model);
         }
 
@@ -64,18 +64,18 @@ namespace LivrETS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Pick(FairViewModel model)
         {
-            if (Session[CURRENT_PHASE] == null)
+            if (Session[CURRENT_STEP] == null)
                 return RedirectToAction(nameof(Pick));
 
             if (ModelState.IsValid)
             {
-                int currentPhase = (int)Session[CURRENT_PHASE];
+                int currentStep = (int)Session[CURRENT_STEP];
 
-                switch (currentPhase)
+                switch (currentStep)
                 {
                     case 0:
                         Session[SELLER] = Repository.GetUserBy(BarCode: model.UserBarCode);
-                        Session[CURRENT_PHASE] = 1;
+                        Session[CURRENT_STEP] = 1;
                         model.CurrentPhase = 1;
                         break;
 

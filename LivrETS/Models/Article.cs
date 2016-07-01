@@ -40,6 +40,24 @@ namespace LivrETS.Models
         public const string CALCULATOR_CODE = "C";
         [NotMapped]
         public const string COURSE_NOTES_CODE = "N";
+        [NotMapped]
+        public string TypeName
+        {
+            get
+            {
+                switch (ArticleCode)
+                {
+                    case BOOK_CODE:
+                        return "Livre";
+                    case CALCULATOR_CODE:
+                        return "Calculatrice";
+                    case COURSE_NOTES_CODE:
+                        return "Notes de cours";
+                    default:
+                        return string.Empty;
+                }
+            }
+        }
 
         public Article()
         {

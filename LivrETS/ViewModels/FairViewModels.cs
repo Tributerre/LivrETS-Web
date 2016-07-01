@@ -20,14 +20,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using LivrETS.Models;
 
 namespace LivrETS.ViewModels
 {
     public class FairViewModel
     {
-        public int FairYear { get; set; }
         public float CurrentPhase { get; set; }
         public float NumberOfPhases { get; set; }
+        public ApplicationUser User { get; set; }
+        public Fair Fair { get; set; }
 
         [Required(ErrorMessage = "Veuillez entrer le numéro du code à bar du vendeur.")]
         public string UserBarCode { get; set; }
