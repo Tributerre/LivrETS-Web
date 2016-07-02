@@ -188,6 +188,10 @@
     <Compile Include="Migrations\201606220322515_first.Designer.cs">
       <DependentUpon>201606220322515_first.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607020308055_second.cs" />
+    <Compile Include="Migrations\201607020308055_second.Designer.cs">
+      <DependentUpon>201607020308055_second.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -292,6 +296,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201606220322515_first.resx">
       <DependentUpon>201606220322515_first.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607020308055_second.resx">
+      <DependentUpon>201607020308055_second.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

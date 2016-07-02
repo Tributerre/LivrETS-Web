@@ -108,6 +108,21 @@ namespace LivrETS.Repositories
         }
 
         /// <summary>
+        /// Gets the next not started fair from now.
+        /// </summary>
+        /// <returns>A Fair or null if not found.</returns>
+        public Fair GetNextFair()
+        {
+            var now = DateTime.Now;
+            return (
+                from fair in _db.Fairs
+                where fair.StartDate > now
+                orderby fair.StartDate ascending
+                select fair
+            ).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Gets a user by its bar code.
         /// </summary>
         /// <param name="BarCode">The bar code of the user to retrieve.</param>

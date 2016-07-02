@@ -50,12 +50,17 @@ namespace LivrETS.Models
         [ForeignKey(nameof(Article))]
         public Guid ArticleID { get; set; }
 
+        [Required]
+        public bool ManagedByFair { get; set; }
+
+        [NotMapped]
         public bool Sold => MarkedSoldOn != StartDate;
 
         public Offer()
         {
             Images = new List<OfferImage>();
             Id = Guid.NewGuid();
+            ManagedByFair = false;
         }
 
         /// <summary>

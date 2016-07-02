@@ -145,8 +145,17 @@ namespace LivrETS.Controllers
                     Price = 0f,  // FIXME: No elements for this in the view. Weird.
                     Condition = model.Condition,
                     Article = newArticle,
+                    ManagedByFair = false,
                     Title = "Sample Title"  // FIXME: No elements for this in the view. Weird.
                 };
+
+                if (model.ForNextFair)
+                {
+                    var nextFair = Repository.GetNextFair();
+
+                    offer.ManagedByFair = true;
+                    nextFair?.Offers.Add(offer);
+                }
                 
                 Repository.AddOffer(offer, toUser: User.Identity.GetUserId());
 

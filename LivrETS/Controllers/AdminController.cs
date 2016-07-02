@@ -143,6 +143,7 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult Fair(AjaxFairViewModel model)
         {
+            // TODO: Transfert database specifics to a repository.
             using (var db = new ApplicationDbContext())
             {
                 Fair fair;
@@ -169,6 +170,33 @@ namespace LivrETS.Controllers
                 if (model.Id == null)
                 {
                     db.Fairs.Add(fair);
+                }
+
+                // Updating all past offers until the fair start date before this fair
+                var pastFair = (
+                    from dbFair in db.Fairs
+                    where dbFair.StartDate < fair.StartDate
+                    orderby dbFair.StartDate descending
+                    select dbFair
+                ).FirstOrDefault();
+
+                var pastFairStartDate = pastFair?.StartDate ?? new DateTime(1970, 01, 01);
+                var pastOffers = (
+                    from dbOffer in db.Offers
+                    where dbOffer.StartDate < fair.StartDate && dbOffer.StartDate >= pastFairStartDate && dbOffer.ManagedByFair
+                    select dbOffer
+                );
+
+                // Removing the old offers managed by the fair.
+                foreach (var offer in fair.Offers)
+                {
+                    fair.Offers.Remove(offer);
+                }
+
+                // Adding the new ones (including the old ones that are still valid for this fair).
+                foreach (var offer in pastOffers)
+                {
+                    fair.Offers.Add(offer);
                 }
 
                 db.SaveChanges();
