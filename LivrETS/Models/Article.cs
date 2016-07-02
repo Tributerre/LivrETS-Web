@@ -71,19 +71,19 @@ namespace LivrETS.Models
             ArticleCode = articleCode;
         }
 
-        public Article MarkedAsPicked()
+        public Article MarkAsPicked()
         {
             FairState = ArticleFairState.PICKED;
             return this;
         }
 
-        public Article MarkedAsSold()
+        public Article MarkAsSold()
         {
             FairState = ArticleFairState.SOLD;
             return this;
         }
 
-        public Article MarkedAsRetrieved()
+        public Article MarkAsRetrieved()
         {
             FairState = ArticleFairState.RETREIVED;
             return this;

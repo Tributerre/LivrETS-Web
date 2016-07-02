@@ -21,18 +21,18 @@
 @{
     ViewBag.Title = "Cueillette";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var progress = Model.CurrentPhase / Model.NumberOfPhases * 100f;
-    string inputValue = Model.CurrentPhase == 2 ? "Terminer" : "Suivant >";
+    var progress = Model.CurrentStep / Model.NumberOfPhases * 100f;
+    string inputValue = Model.CurrentStep == 2 ? "Terminer" : "Suivant >";
 }
 
 @if (Model.Fair == null || Model.Fair.Phase != FairPhase.PICKING)
 {
-    <h2>Vous n'&ecirc;tes présentement pas en phase de cueillette =(</h2>
+    <h2>Vous n'&ecirc;tes pr&eacute;sentement pas en phase de cueillette =(</h2>
 }
 else
 {
     <div class="page-header">
-        <h1>Cueillir des articles <small>Pour la Foire @(Model.Fair?.StartDate.Year ?? 0)</small></h1>
+        <h1>Cueillir des articles <small>Pour la Foire @Model.Fair.LivrETSID</small></h1>
     </div>
 
     <div class="row">
@@ -49,7 +49,7 @@ else
     {
         @Html.AntiForgeryToken()
         <div class="row">
-            @switch ((int)(Model.CurrentPhase))
+            @switch ((int)(Model.CurrentStep))
             {
                 case 0:
                     <h3>Num&eacute;risez ou entrez manuellement<br />le code &agrave; barres de la<br />carte &eacute;tudiante du vendeur.</h3>
@@ -66,53 +66,55 @@ else
                 case 1:
                     <div class="row">
                         <div class="col-md-4">
-                            <input class="form-control" id="article-code-input" placeholder="Code à barres ou ISBN de l'article" autofocus />
+                            <input type="text" class="form-control" id="article-code-input" placeholder="Code à barres ou ISBN de l'article" autofocus />
                         </div>
                     </div>
                     <div class="row">
-                        <h4>Articles &agrave; vendre par le vendeur</h4>
+                        <div class="col-md-12">
+                            <h4>Articles &agrave; vendre par le vendeur</h4>
+                        </div>
                     </div>
                     <div class="row">
-                        <table class="table">
-                            <thead>
-                                <tr><th>ID</th></tr><tr><th>Type</th></tr><tr><th>Titre</th></tr><tr><td>ISBN ou Code ou Mod&egrave;le</td></tr><tr><th>Actions</th></tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var offer in Model.Fair.Offers.Intersect(Model.User.Offers))
-                                {
+                        <div class="col-md-8">
+                            <table id="notpicked-table" class="table table-bordered">
+                                <thead>
                                     <tr>
-                                        <td>@offer.Article.LivrETSID</td>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                        <th>Titre</th>
+                                        <th>ISBN ou Code ou Mod&egrave;le</th>
+                                        <th>Actions</th>
                                     </tr>
-                                    <tr>
-                                        <td>@offer.Article.TypeName</td>
-                                    </tr>
-                                    <tr>
-                                        <td>@offer.Article.Title</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            @switch (offer.Article.ArticleCode)
-                                            {
-                                                case Article.BOOK_CODE:
-                                                    @((offer.Article as Book).ISBN)
-                                                    break;
-                                                case Article.CALCULATOR_CODE:
-                                                    @((offer.Article as Calculator).Model.ToString())
-                                                    break;
-                                                case Article.COURSE_NOTES_CODE:
-                                                    @((offer.Article as CourseNotes).BarCode)
-                                                    break;
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <button class="btn btn-sm btn-success pick-article-btn" data-livrets-id="@offer.Article.Id" type="button">Cueillir</button>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var offer in Model.FairOffers.Intersect(Model.UserOffers))
+                                    {
+                                        <tr>
+                                            <td>@offer.Article.LivrETSID</td>
+                                            <td>@offer.Article.TypeName</td>
+                                            <td>@offer.Article.Title</td>
+                                            <td>
+                                                @switch (offer.Article.ArticleCode)
+                                                {
+                                                    case Article.BOOK_CODE:
+                                                        @((offer.Article as Book).ISBN)
+                                                        break;
+                                                    case Article.CALCULATOR_CODE:
+                                                        @((offer.Article as Calculator).Model.ToString())
+                                                        break;
+                                                    case Article.COURSE_NOTES_CODE:
+                                                        @((offer.Article as CourseNotes).BarCode)
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-success pick-article-btn" data-article-id="@offer.Article.Id" type="button">Cueillir</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <br />
                     <br />
@@ -120,19 +122,25 @@ else
                     <br />
                     <br />
                     <div class="row">
-                        <h4>Articles re&ccedil;us pour la Foire</h4>
+                        <div class="col-md-12">
+                            <h4>Articles re&ccedil;us pour la Foire</h4>
+                        </div>
                     </div>
                     <div class="row">
-                        <table id="picked-articles-table" class="table">
-                            <thead>
-                                <tr><th>ID</th></tr>
-                                <tr><th>Type</th></tr>
-                                <tr><th>Titre</th></tr>
-                                <tr><td>ISBN ou Code ou Mod&egrave;le</td></tr>
-                                <tr><th>Actions</th></tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                        <div class="col-md-8">
+                            <table id="picked-articles-table" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                        <th>Titre</th>
+                                        <th>ISBN ou Code ou Mod&egrave;le</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                     break;
 
@@ -142,9 +150,33 @@ else
         </div>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="@(Model.CurrentStep == 0 ? "col-md-6" : "col-md-8")">
                 <input type="submit" class="btn btn-primary pull-right" value="@inputValue" />
             </div>
         </div>
+
+        <!-- MODALS -->
+        <div id="pick-confirm-dialog" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>
+                            V&eacute;rifiez que vous avez bien pris physiquement l'article avant de
+                            le marquer comme cueillis.
+                        </p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                        <button id="btn-confirm-pick" type="button" class="btn btn-primary">Cueillir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MODALS -->
+    }
+
+    @section Scripts {
+        <script src="~/Scripts/pick.js"></script>
     }
 }

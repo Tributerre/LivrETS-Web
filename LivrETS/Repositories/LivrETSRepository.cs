@@ -93,6 +93,22 @@ namespace LivrETS.Repositories
             }
         }
 
+        public Article GetArticleBy(string Id = null)
+        {
+            Article articleToReturn = null;
+
+            if (Id != null)
+            {
+                articleToReturn = (
+                    from article in _db.Articles
+                    where article.Id.ToString() == Id
+                    select article
+                ).FirstOrDefault();
+            }
+
+            return articleToReturn;
+        }
+
         /// <summary>
         /// Get the current fair (current date between StartDate and EndDate) if there is one.
         /// </summary>
@@ -127,13 +143,28 @@ namespace LivrETS.Repositories
         /// </summary>
         /// <param name="BarCode">The bar code of the user to retrieve.</param>
         /// <returns>An ApplicationUser or null if not found.</returns>
-        public ApplicationUser GetUserBy(string BarCode)
+        public ApplicationUser GetUserBy(string BarCode = null, string Id = null)
         {
-            return (
-                from user in _db.Users
-                where user.BarCode == BarCode
-                select user
-            ).FirstOrDefault();
+            ApplicationUser userToReturn = null;
+
+            if (BarCode != null)
+            {
+                userToReturn = (
+                    from user in _db.Users
+                    where user.BarCode == BarCode
+                    select user
+                ).FirstOrDefault();
+            }
+            else if (Id != null)
+            {
+                userToReturn = (
+                    from user in _db.Users
+                    where user.Id == Id
+                    select user
+                ).FirstOrDefault();
+            }
+
+            return userToReturn;
         }
 
         public void Update()

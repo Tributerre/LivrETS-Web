@@ -12,6 +12,7 @@ namespace LivrETS.Models
         public DbSet<Fair> Fairs { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Offer> Offers { get; set; }
+        public DbSet<Article> Articles { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

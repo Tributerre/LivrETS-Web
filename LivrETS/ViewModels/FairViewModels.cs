@@ -26,10 +26,12 @@ namespace LivrETS.ViewModels
 {
     public class FairViewModel
     {
-        public float CurrentPhase { get; set; }
+        public float CurrentStep { get; set; }
         public float NumberOfPhases { get; set; }
         public ApplicationUser User { get; set; }
         public Fair Fair { get; set; }
+        public ICollection<Offer> UserOffers { get; set; }
+        public ICollection<Offer> FairOffers { get; set; }
 
         [Required(ErrorMessage = "Veuillez entrer le numéro du code à bar du vendeur.")]
         public string UserBarCode { get; set; }
