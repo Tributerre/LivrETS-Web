@@ -23,6 +23,7 @@ using System.Web.Mvc;
 using LivrETS.ViewModels;
 using LivrETS.Repositories;
 using LivrETS.Models;
+using LivrETS.Service;
 using System.Net;
 
 namespace LivrETS.Controllers
@@ -31,8 +32,11 @@ namespace LivrETS.Controllers
     public class FairController : Controller
     {
         private const int NUMBER_OF_STEPS = 2;
+        private const int MAX_NUMBER_OF_STICKERS_PER_SHEET = 14;
         private const string CURRENT_STEP = "CurrentPhase";
         private const string SELLER = "Seller";
+        private const string SELLER_PICKED_ARTICLES = "SellerPickedArticles";
+        private const string LAST_NUMBER_OF_STICKERS_LEFT_ON_SHEET = "LastNumberOfStickersLeftOnSheet";
 
         private LivrETSRepository _repository;
         public LivrETSRepository Repository
@@ -68,14 +72,19 @@ namespace LivrETS.Controllers
             if (Session[CURRENT_STEP] == null)
                 return RedirectToAction(nameof(Pick));
 
+            int currentStep = (int)Session[CURRENT_STEP];
+            Fair currentFair = Repository.GetCurrentFair();
+
+            model.Fair = currentFair;
+            model.NumberOfPhases = NUMBER_OF_STEPS;
+
+            if (string.IsNullOrEmpty(model.UserBarCode) && currentStep == 0)
+            {
+                ModelState.AddModelError(nameof(FairViewModel.UserBarCode), "Veuillez indiquez le code à barres du vendeur.");
+            }
+
             if (ModelState.IsValid)
             {
-                Fair currentFair = Repository.GetCurrentFair();
-                int currentStep = (int)Session[CURRENT_STEP];
-
-                model.Fair = currentFair;
-                model.NumberOfPhases = NUMBER_OF_STEPS;
-
                 switch (currentStep)
                 {
                     case 0:
@@ -94,9 +103,11 @@ namespace LivrETS.Controllers
                     case 1:
                         if (Session[SELLER] == null) return RedirectToAction(nameof(Pick));
                         ApplicationUser seller1 = Repository.GetUserBy(Id: Session[SELLER] as string);
-                        IEnumerable<Offer> sellerPickedOffers = 
+                        Session[SELLER_PICKED_ARTICLES] = 
                             currentFair.Offers.Intersect(seller1.Offers)
-                            .Where(offer => offer.Article.FairState == ArticleFairState.PICKED);
+                            .Where(offer => offer.Article.FairState == ArticleFairState.PICKED)
+                            .ToList()
+                            .ConvertAll(new Converter<Offer, string>(offer => offer.Id.ToString()));
 
                         Session[CURRENT_STEP] = 2;
                         model.CurrentStep = 2;
@@ -124,6 +135,67 @@ namespace LivrETS.Controllers
             article.MarkAsPicked();
             Repository.Update();
             return Json(new { }, contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult GeneratePreview(int NumberOfStickersLeft)
+        {
+            if (Session[SELLER_PICKED_ARTICLES] == null || Session[SELLER] == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var offersPicked = (Session[SELLER_PICKED_ARTICLES] as IEnumerable<string>).ToList();
+            var currentFair = Repository.GetCurrentFair();
+            var seller = Repository.GetUserBy(Id: Session[SELLER] as string);
+
+            // Re-attaching the offers to a context...
+            foreach (var offer in offersPicked)
+            {
+                Repository.AttachToContext(offer);
+            }
+
+            var relativePdfPath = PrintManager.GeneratePreview(
+                Server.MapPath("~/Content/PDF"),
+                NumberOfStickersLeft,
+                offersPicked.ConvertAll(new Converter<string, PrintManager.StickerInfo>(offerId => 
+                {
+                    var offer = Repository.GetOfferBy(Id: offerId);
+                    return new PrintManager.StickerInfo()
+                    {
+                        ArticleLivrETSID = offer.Article.LivrETSID,
+                        ArticleTitle = offer.Article.Title,
+                        OfferPrice = offer.Price,
+                        FairLivrETSID = currentFair.LivrETSID,
+                        UserLivrETSID = seller.LivrETSID
+                    };
+                }))
+            );
+            Session[LAST_NUMBER_OF_STICKERS_LEFT_ON_SHEET] = NumberOfStickersLeft;
+
+            return Json(new { PdfStickerPath = relativePdfPath }, contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmPrint()
+        {
+            if (Session[SELLER_PICKED_ARTICLES] == null || Session[SELLER] == null || Session[LAST_NUMBER_OF_STICKERS_LEFT_ON_SHEET] == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var offersPicked = Session[SELLER_PICKED_ARTICLES] as IEnumerable<string>;
+            var lastNumberOfStickersLeft = (int)Session[LAST_NUMBER_OF_STICKERS_LEFT_ON_SHEET];
+            int numberOfOffersRemaining = 0;
+
+            if (lastNumberOfStickersLeft >= offersPicked.Count())
+            {
+                Session[SELLER_PICKED_ARTICLES] = null;
+            }
+            else
+            {
+                var remainingOffers = offersPicked.Skip(lastNumberOfStickersLeft);
+                numberOfOffersRemaining = remainingOffers.Count();
+                Session[SELLER_PICKED_ARTICLES] = remainingOffers;
+            }
+
+            return Json(new { RemainingOffersCount = numberOfOffersRemaining }, contentType: "application/json");
         }
 
         #endregion

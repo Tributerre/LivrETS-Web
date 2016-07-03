@@ -24,15 +24,16 @@ function checkEnter(evt) {
 
 document.onkeypress = checkEnter;
 
+var notifyError = function (message) {
+    $.notify({
+        icon: "glyphicon glyphicon-remove",
+        message: message
+    }, {
+        type: "danger"
+    })
+}
+
 function markArticleAsPicked(articleId, trTagToMove) {
-    var notifyError = function (message) {
-        $.notify({
-            icon: "glyphicon glyphicon-remove",
-            message: message
-        }, {
-            type: "danger"
-        })
-    }
     var modal = $("#pick-confirm-dialog")
 
     if (modal.is(":visible")) {
@@ -85,5 +86,60 @@ $(document).ready(function () {
 
             markArticleAsPicked(articleId, articleTr)
         }
+    })
+
+    $("#btn-preview").on("click", function () {
+        var numberOfStickersLeftStr = $(this).parent().find("input[type='number']").val()
+
+        if (numberOfStickersLeftStr === "") {
+            $(this).parent().addClass("text-danger")
+        } else {
+            var numberOfStickersLeft = parseInt(numberOfStickersLeftStr)
+
+            $(this).parent().removeClass("text-danger")
+            $.ajax({
+                method: "POST",
+                dataType: "json",
+                url: "/Fair/GeneratePreview",
+                data: { NumberOfStickersLeft: numberOfStickersLeft },
+                success: function (data) {
+                    $("#embed-preview").attr("src", data["PdfStickerPath"])
+                    $("#btn-print").prop("disabled", false)
+                },
+                statusCode: {
+                    500: function () {
+                        notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                    },
+                    400: function () {
+                        notifyError("Il n'y a plus d'étiquette à imprimer ou le vendeur n'a pas d'article à vendre dans le système.")
+                    }
+                }
+            })
+        }
+    })
+
+    $("#btn-print").on("click", function () {
+        $.ajax({
+            method: "POST",
+            dataType: "json",
+            url: "/Fair/ConfirmPrint",
+            success: function (data) {
+                $.notify({
+                    message: `Il reste ${data["RemainingOffersCount"]} offre(s) à imprimer.`
+                }, {
+                    type: "success"
+                })
+            },
+            statusCode: {
+                500: function () {
+                    notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                },
+                400: function () {
+                    notifyError("Il n'y a plus d'étiquette à imprimer ou le vendeur n'a pas d'article à vendre dans le système.")
+                }
+            }
+        })
+
+        window.open($("#embed-preview").attr("src"))
     })
 })

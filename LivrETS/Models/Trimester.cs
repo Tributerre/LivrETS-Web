@@ -28,7 +28,7 @@ namespace LivrETS.Models
     public static class Trimester
     {
         public const string WINTER = "H";
-        public const string SUMMER = "É";
+        public const string SUMMER = "E";
         public const string AUTUMN = "A";
     }
 }

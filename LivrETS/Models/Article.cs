@@ -35,7 +35,7 @@ namespace LivrETS.Models
         public string LivrETSID => $"{ArticleCode}{GeneratedNumber}";
 
         [NotMapped]
-        public const string BOOK_CODE = "B";
+        public const string BOOK_CODE = "L";
         [NotMapped]
         public const string CALCULATOR_CODE = "C";
         [NotMapped]

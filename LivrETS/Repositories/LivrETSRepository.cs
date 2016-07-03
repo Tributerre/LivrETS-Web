@@ -93,6 +93,11 @@ namespace LivrETS.Repositories
             }
         }
 
+        /// <summary>
+        /// Gets an article by one of its unique fields.
+        /// </summary>
+        /// <param name="Id">The Id of the article.</param>
+        /// <returns>An Article or null if not found.</returns>
         public Article GetArticleBy(string Id = null)
         {
             Article articleToReturn = null;
@@ -139,9 +144,10 @@ namespace LivrETS.Repositories
         }
 
         /// <summary>
-        /// Gets a user by its bar code.
+        /// Gets a user.
         /// </summary>
         /// <param name="BarCode">The bar code of the user to retrieve.</param>
+        /// <param name="Id">The Id of the user.</param>
         /// <returns>An ApplicationUser or null if not found.</returns>
         public ApplicationUser GetUserBy(string BarCode = null, string Id = null)
         {
@@ -165,6 +171,40 @@ namespace LivrETS.Repositories
             }
 
             return userToReturn;
+        }
+
+        /// <summary>
+        /// Attaches a model to a context. Does nothing if the object isn't
+        /// a model of the domain.
+        /// </summary>
+        /// <param name="modelToAttach">The model to attach.</param>
+        public void AttachToContext(object modelToAttach)
+        {
+            if (modelToAttach is Offer)
+            {
+                _db.Offers.Attach(modelToAttach as Offer);
+            }
+        }
+
+        /// <summary>
+        /// Gets an offer.
+        /// </summary>
+        /// <param name="Id">The Id of the offer.</param>
+        /// <returns>An Offer or null if not found.</returns>
+        public Offer GetOfferBy(string Id = null)
+        {
+            Offer offerToReturn = null;
+
+            if (Id != null)
+            {
+                offerToReturn = (
+                    from offer in _db.Offers
+                    where offer.Id.ToString() == Id
+                    select offer
+                ).FirstOrDefault();
+            }
+
+            return offerToReturn;
         }
 
         public void Update()

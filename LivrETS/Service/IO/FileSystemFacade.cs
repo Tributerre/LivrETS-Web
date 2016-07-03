@@ -20,6 +20,7 @@ using System.Linq;
 using System.Web;
 using System.IO;
 using System.Drawing;
+using PdfSharp.Pdf;
 
 namespace LivrETS.Service.IO
 {
@@ -35,6 +36,7 @@ namespace LivrETS.Service.IO
         public const string RELATIVE_THUMBNAILS_PATH = "/Content/Uploads/" + THUMBNAILS;
         public const string RELATIVE_TEMP_ORIGINALS_PATH = "/Content/Uploads/" + ORIGINALS + "/" + TEMP;
         public const string RELATIVE_TEMP_THUMBNAILS_PATH = "/Content/Uploads/" + THUMBNAILS + "/" + TEMP;
+        public const string RELATIVE_STICKERS_PDF_PATH = "/Content/PDF/stickers.pdf";
 
         /// <summary>
         /// Save an uploaded image to disk in the right folder.
@@ -94,6 +96,19 @@ namespace LivrETS.Service.IO
             {
                 File.Move(oldLocation, newLocation);
             }
+        }
+
+        /// <summary>
+        /// Saves a pdf document containing the stickers layout to print
+        /// to a file.
+        /// </summary>
+        /// <param name="document">The pdf document to save.</param>
+        /// <param name="pdfPath">The full path to the pdf folder.</param>
+        /// <returns></returns>
+        public static string SaveStickersDocument(PdfDocument document, string pdfPath)
+        {
+            document.Save(Path.Combine(pdfPath, "stickers.pdf"));
+            return RELATIVE_STICKERS_PDF_PATH;
         }
 
         /// <summary>

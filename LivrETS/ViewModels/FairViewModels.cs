@@ -32,8 +32,6 @@ namespace LivrETS.ViewModels
         public Fair Fair { get; set; }
         public ICollection<Offer> UserOffers { get; set; }
         public ICollection<Offer> FairOffers { get; set; }
-
-        [Required(ErrorMessage = "Veuillez entrer le numéro du code à bar du vendeur.")]
         public string UserBarCode { get; set; }
     }
 }
