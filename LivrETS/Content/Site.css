@@ -17,11 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 @media screen and (max-width: 765px) {
   body {
-    padding-top: 200px; } }
+    padding-top: 100px; 
+  }
+}
 
 @media screen and (min-width: 766px) {
   body {
-    padding-top: 75px; } }
+    padding-top: 75px; 
+  }
+
+  #input-search {
+      width: 500px;
+  }
+}
 
 body {
   padding-bottom: 20px; }

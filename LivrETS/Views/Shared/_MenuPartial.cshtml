@@ -19,6 +19,11 @@
 {
     <li>@Html.ActionLink("Vendre", "Sell", "Home")</li>
 
+    if (User.IsInRole("Administrator") || User.IsInRole("Clerk"))
+    {
+        <li>@Html.ActionLink("Cueillir", "Pick", "Fair")</li>
+    }
+
     if (User.IsInRole("Administrator"))
     {
         <li>@Html.ActionLink("Utilisateurs", "ManageUsers", "Admin")</li>
