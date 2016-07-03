@@ -3,10 +3,28 @@ namespace LivrETS.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class first : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.Articles",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false, identity: true),
+                        Title = c.String(nullable: false, maxLength: 256),
+                        FairState = c.Int(nullable: false),
+                        CourseID = c.Guid(nullable: false),
+                        ISBN = c.String(),
+                        Model = c.Int(),
+                        SubTitle = c.String(),
+                        BarCode = c.String(),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Courses", t => t.CourseID, cascadeDelete: true)
+                .Index(t => t.CourseID);
+            
             CreateTable(
                 "dbo.Courses",
                 c => new
@@ -43,8 +61,9 @@ namespace LivrETS.Migrations
                         Price = c.Single(nullable: false),
                         Title = c.String(nullable: false, maxLength: 256),
                         Condition = c.String(nullable: false),
-                        MarkedSoldOn = c.DateTime(nullable: true),
+                        MarkedSoldOn = c.DateTime(nullable: false),
                         ArticleID = c.Guid(nullable: false),
+                        ManagedByFair = c.Boolean(nullable: false),
                         Fair_Id = c.Guid(),
                         ApplicationUser_Id = c.String(maxLength: 128),
                     })
@@ -55,24 +74,6 @@ namespace LivrETS.Migrations
                 .Index(t => t.ArticleID)
                 .Index(t => t.Fair_Id)
                 .Index(t => t.ApplicationUser_Id);
-            
-            CreateTable(
-                "dbo.Articles",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false, identity: true),
-                        Title = c.String(nullable: false, maxLength: 256),
-                        FairState = c.Int(nullable: false),
-                        CourseID = c.Guid(nullable: false),
-                        ISBN = c.String(),
-                        Model = c.Int(),
-                        SubTitle = c.String(),
-                        BarCode = c.String(),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Courses", t => t.CourseID, cascadeDelete: true)
-                .Index(t => t.CourseID);
             
             CreateTable(
                 "dbo.OfferImages",
@@ -179,20 +180,20 @@ namespace LivrETS.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.OfferImages", new[] { "Offer_Id" });
-            DropIndex("dbo.Articles", new[] { "CourseID" });
             DropIndex("dbo.Offers", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.Offers", new[] { "Fair_Id" });
             DropIndex("dbo.Offers", new[] { "ArticleID" });
+            DropIndex("dbo.Articles", new[] { "CourseID" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.OfferImages");
-            DropTable("dbo.Articles");
             DropTable("dbo.Offers");
             DropTable("dbo.Fairs");
             DropTable("dbo.Courses");
+            DropTable("dbo.Articles");
         }
     }
 }

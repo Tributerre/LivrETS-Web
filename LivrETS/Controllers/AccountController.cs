@@ -182,7 +182,21 @@ namespace LivrETS.Controllers
                 return RedirectToAction("Login");
             }
 
-            // Sign in the user with this external login provider if the user already has a login
+            // USED FOR DEBUGGING
+            //System.Diagnostics.Trace.TraceError("Before SignIn...{0}", loginInfo);
+            //SignInStatus result;
+            //// Sign in the user with this external login provider if the user already has a login
+            //try 
+            //{
+            //    result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            //}
+            //catch (Exception e)
+            //{
+            //    System.Diagnostics.Trace.TraceError("Catch SignIn...{0}", e);
+            //    throw e;
+            //}
+            //System.Diagnostics.Trace.TraceError("After SignIn...{0}", result);
+
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
@@ -199,21 +213,22 @@ namespace LivrETS.Controllers
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     var email = loginInfo.Email;
 
-                    //if (email.Split('@').Last() != "etsmtl.net")
-                    //{
-                    //    return RedirectToAction(nameof(AccountController.Login), "Account", new { error = "InvalidDomain" });
-                    //}
-                    //else
-                    //{
+                    if (email.Split('@').Last() != "etsmtl.net")
+                    {
+                        return RedirectToAction(nameof(AccountController.Login), "Account", new { error = "InvalidDomain" });
+                    }
+                    else
+                    {
+                        System.Diagnostics.Trace.TraceError("Before Return...");
                         var firstName = loginInfo.ExternalIdentity.FindFirstValue(ClaimTypes.GivenName);
                         var lastName = loginInfo.ExternalIdentity.FindFirstValue(ClaimTypes.Surname);
                         return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel {
-                            Email = loginInfo.Email,
+                            Email = email,
                             FirstName = firstName,
                             LastName = lastName,
                             BarCode = string.Empty
                         });
-                    //}
+                    }
             }
         }
 

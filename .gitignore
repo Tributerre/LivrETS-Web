@@ -239,3 +239,7 @@ _Pvt_Extensions
 LivrETS/Content/Uploads/Originals/*
 LivrETS/Content/Uploads/Thumbnails/*
 LivrETS/Content/PDF/*
+
+# macOS
+.DS_Store
+._.DS_Store

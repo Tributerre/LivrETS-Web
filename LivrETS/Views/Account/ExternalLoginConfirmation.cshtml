@@ -84,8 +84,8 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        $(document).ready(() => {
-            $("#btn-confirm").on("click", () => {
+        $(document).ready(function () {
+            $("#btn-confirm").on("click", function () {
                 if ($("#terms-checkbox").is(":checked")) {
                     $("form").submit()
                 } else {
@@ -93,7 +93,7 @@
                 }
             })
 
-            $("#alert-terms>button").on("click", () => {
+            $("#alert-terms>button").on("click", function () {
                 $("#alert-terms").hide("slow")
             })
         })

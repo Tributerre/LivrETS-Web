@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44312</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -196,13 +196,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606220322515_first.cs" />
-    <Compile Include="Migrations\201606220322515_first.Designer.cs">
-      <DependentUpon>201606220322515_first.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607020308055_second.cs" />
-    <Compile Include="Migrations\201607020308055_second.Designer.cs">
-      <DependentUpon>201607020308055_second.cs</DependentUpon>
+    <Compile Include="Migrations\201607030820353_initial.cs" />
+    <Compile Include="Migrations\201607030820353_initial.Designer.cs">
+      <DependentUpon>201607030820353_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -248,7 +244,6 @@
     <Content Include="Content\Uploads\Thumbnails\Temp\24d84ce5-c2a5-4436-8879-2609d3693722-a6db96b7-95ee-458d-a3ca-4112b94c8da4.jpg" />
     <Content Include="Content\Uploads\Thumbnails\Temp\24d84ce5-c2a5-4436-8879-2609d3693722-a73fc9b1-db4c-4cea-bf3b-07931ddff365.jpg" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\student_card_example.jpg" />
@@ -300,20 +295,15 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\PDF\" />
+    <Folder Include="fonts\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606220322515_first.resx">
-      <DependentUpon>201606220322515_first.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607020308055_second.resx">
-      <DependentUpon>201607020308055_second.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201607030820353_initial.resx">
+      <DependentUpon>201607030820353_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
