@@ -5,6 +5,7 @@ Dépôt du module web du projet LivrETS de Tributerre. Ce projet est sous la lic
 * [Démarrage](#getting-started)
     * [Prérequis](#requirements)
     * [Manipulations](#manipulations)
+* [Contribution](#contributing)
 
 <h2 id="getting-started">Démarrage</h2>
 Le projet est relativement simple à démarrer. Il s'agit d'un projet ASP.NET version 4 sur le cadricel .NET version 4.5+ créé à l'aide du logiciel Visual Studio (VS) 2015 version communautaire. Le gestionnaire de dépendances du projet est nuget et le langage de programmation est C#.
@@ -35,9 +36,9 @@ Le projet est relativement simple à démarrer. Il s'agit d'un projet ASP.NET ve
         <!--<add name="DefaultConnection" connectionString="Data Source=YOUR_MACHINE_NAME;Initial Catalog=LivrETS;Integrated Security=SSPI;" providerName="System.Data.SqlClient" />-->
     </connectionStrings>
     ```
-    L'étiquette (tag) commentez est celui d'un SQL Server configuré localement avec authentification par compte Windows. Le non-commenté est le LocalDB. Pour savoir quoi mettre dans l'attribut «connectionString», voyez [ce lien](https://connectionstrings.com/sql-server/). Il est possible que vous aurez à créer la base de données «livrets» dans SQL Server Management Studio.
+    L'étiquette (tag) commenté est celui d'un SQL Server configuré localement avec authentification par compte Windows. Le non-commenté est le LocalDB. Pour savoir quoi mettre dans l'attribut «connectionString», voyez [ce lien](https://connectionstrings.com/sql-server/). Il est possible que vous aurez à créer la base de données «livrets» dans SQL Server Management Studio.
     
-    Autre chose à modifier si vous désirez que l'authentification fonctionne, il y a deux clés à insérer dans le fichier pour la redirection de l'authentification par Google.
+    Autre chose à modifier si vous désirez que l'authentification fonctionne, il y a deux clés à insérer dans le fichier pour la redirection de l'authentification par Google. Vous aurez probablement à créer une application du bon type dans la [console des développeurs de Google](https://console.developers.google.com).
     ```xml
     <appSettings>
         <add key="webpages:Version" value="3.0.0.0" />
@@ -62,3 +63,8 @@ Le projet est relativement simple à démarrer. Il s'agit d'un projet ASP.NET ve
     Cette commande lance les migrations contenues dans le répertoire `Migrations`.
 
 6. Exécutez le projet et voyez si le tout fonctionne. Si vous avez des problèmes, vous pouvez ouvrir un billet d'aide ou envoyer un courriel à l'un des contributeurs enregistrés du projet.
+
+<h2 id="contributing">Comment contribuer?</h2>
+Vous pouvez contribuer de plusieurs façons au projet LivrETS. Vous pouvez aider directement en réglant des bogues en choisissant les billets qui vous intéresse dans la section «Issues» de ce dépôt (https://github.com/Tributerre/LivrETS-Web/issues). Il vous suffit de créer une fourche de ce projet sous votre propre compte, d'effectuer les modifications et de créer une requête de tirage. Un des contributeurs officiels du projet se fera un plaisir de faire la revue de vos modifications, de les commenter et, éventuellement, les accepter ou les refuser.
+
+Pour devenir un contributeur officiel, il vous suffit de contacter Tributerre ou la Maison du Logiciel Libre pour obtenir plus d'information. Ce rôle est très important également, car il vous est possible d'effectuer des revues sur les requêtes de tirage, de gérer les billets et de les attribuer, de mettre à jour la documentation du projet et de participer à l'élaboration des versions futures.
