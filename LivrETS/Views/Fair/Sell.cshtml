@@ -1,0 +1,62 @@
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
+*@
+@using LivrETS.ViewModels
+@using LivrETS.Models
+@model FairViewModel
+@{
+    ViewBag.Title = "Terminal de vente";
+}
+
+@if (Model.Fair == null || Model.Fair.Phase != FairPhase.SALE)
+{
+    <h2>Vous n'&ecirc;tes pas pr&eacute;sentement en p&eacute;riode de vente =(</h2>
+}
+else
+{
+    <div class="page-header">
+        <h1>Cueillir des articles <small>Pour la Foire @Model.Fair.LivrETSID</small></h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <input type="text" id="article-livretsid" placeholder="Espace de numérisation" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Articles</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-bordered" style="min-height: 500px;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Titre</th>
+                        <th>Vendeur</th>
+                        <th>Prix</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+}

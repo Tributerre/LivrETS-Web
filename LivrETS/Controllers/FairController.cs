@@ -58,9 +58,9 @@ namespace LivrETS.Controllers
             var currentFair = Repository.GetCurrentFair();
             var currentStep = 0;
 
-            model.Fair = currentFair;
-            model.CurrentStep = currentStep;
-            model.NumberOfPhases = NUMBER_OF_STEPS;
+            model.Fair            = currentFair;
+            model.CurrentStep     = currentStep;
+            model.NumberOfPhases  = NUMBER_OF_STEPS;
             Session[CURRENT_STEP] = currentStep;
             return View(model);
         }
@@ -93,11 +93,11 @@ namespace LivrETS.Controllers
                         if (seller == null) return RedirectToAction(nameof(Pick));
 
                         Session[CURRENT_STEP] = 1;
-                        Session[SELLER] = seller.Id;
-                        model.CurrentStep = 1;
-                        model.User = seller;
-                        model.UserOffers = seller.Offers;
-                        model.FairOffers = currentFair.Offers;
+                        Session[SELLER]       = seller.Id;
+                        model.CurrentStep     = 1;
+                        model.User            = seller;
+                        model.UserOffers      = seller.Offers;
+                        model.FairOffers      = currentFair.Offers;
                         break;
 
                     case 1:
@@ -110,8 +110,8 @@ namespace LivrETS.Controllers
                             .ConvertAll(new Converter<Offer, string>(offer => offer.Id.ToString()));
 
                         Session[CURRENT_STEP] = 2;
-                        model.CurrentStep = 2;
-                        model.User = seller1;
+                        model.CurrentStep     = 2;
+                        model.User            = seller1;
                         break;
 
                     case 2:
@@ -119,7 +119,16 @@ namespace LivrETS.Controllers
                 }
             }
 
-            
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Sell()
+        {
+            SellViewModel model = new SellViewModel()
+            {
+                Fair = Repository.GetCurrentFair()
+            };
             return View(model);
         }
 

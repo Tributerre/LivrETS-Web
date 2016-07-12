@@ -288,6 +288,7 @@
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\Fair\Pick.cshtml" />
+    <Content Include="Views\Fair\Sell.cshtml" />
     <None Include="Web.Debug.sample.config" />
     <None Include="Web.Release.sample.config" />
     <None Include="Web.sample.config" />
