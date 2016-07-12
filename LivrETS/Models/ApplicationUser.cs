@@ -48,10 +48,17 @@ namespace LivrETS.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long GeneratedNumber { get; }
 
+        public virtual ICollection<Sale> Sales { get; set; }
         public virtual ICollection<Offer> Offers { get; set; }
 
         [NotMapped]
         public string LivrETSID => $"{FirstName[0].ToString().ToUpper()}{LastName[0].ToString().ToUpper()}{GeneratedNumber}";
+
+        public ApplicationUser()
+        {
+            Sales = new List<Sale>();
+            Offers = new List<Offer>();
+        }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
