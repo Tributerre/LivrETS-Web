@@ -258,7 +258,7 @@ namespace LivrETS.Controllers
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    BarCode = model.BarCode,
+                    BarCode = model.BarCode.Trim().ToUpper(),
                     SubscribedAt = DateTime.Now
                 };
 
