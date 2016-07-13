@@ -39,6 +39,15 @@ Le projet est relativement simple à démarrer. Il s'agit d'un projet ASP.NET ve
     L'étiquette (tag) commenté est celui d'un SQL Server configuré localement avec authentification par compte Windows. Le non-commenté est le LocalDB. Pour savoir quoi mettre dans l'attribut «connectionString», voyez [ce lien](https://connectionstrings.com/sql-server/). Il est possible que vous aurez à créer la base de données «livrets» dans SQL Server Management Studio.
     
     Autre chose à modifier si vous désirez que l'authentification fonctionne, il y a deux clés à insérer dans le fichier pour la redirection de l'authentification par Google. Vous aurez probablement à créer une application du bon type dans la [console des développeurs de Google](https://console.developers.google.com).
+	
+	Créez un identifiant OAuth 2.0 :
+	
+	Origines JavaScript autorisées : http://localhost:PORT
+	
+	URI de redirection autorisés : http://localhost:PORT/signin-google
+	
+	Ajoutez Google+ API  
+	
     ```xml
     <appSettings>
         <add key="webpages:Version" value="3.0.0.0" />
@@ -58,7 +67,7 @@ Le projet est relativement simple à démarrer. Il s'agit d'un projet ASP.NET ve
     });
     ```
 
-5. Avec le projet configuré, il reste la base de données à mettre aux goûts du jour. Ouvrez la console de gestion de paquets nuget (Tools > Library Package Manager > Package Manager Console) et exécutez la commande `Update-Database`.
+5. Avec le projet configuré, il reste la base de données à mettre aux goûts du jour. Ouvrez la console de gestion de paquets nuget (Tools > NuGet Package Manager > Package Manager Console) et exécutez la commande `Update-Database`.
  
     Cette commande lance les migrations contenues dans le répertoire `Migrations`.
 
