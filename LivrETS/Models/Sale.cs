@@ -20,13 +20,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using LivrETS.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LivrETS.Models
 {
     public class Sale
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
+
         [Required]
         public DateTime Date { get; set; }
         public virtual ICollection<SaleItem> SaleItems { get; set; }
@@ -36,41 +39,20 @@ namespace LivrETS.Models
         public virtual Fair Fair { get; set; }
 
         [ForeignKey(nameof(Seller))]
-        public Guid SellerID { get; set; }
+        public string SellerID { get; set; }
         public virtual ApplicationUser Seller { get; set; }
 
         [NotMapped]
-        public double Subtotal
-        {
-            get
-            {
-                return SaleItems.Sum(item => item.Offer.Price);
-            }
-        }
-
+        public double Subtotal => SaleItems.Sum(item => item.Offer.Price);
         [NotMapped]
-        public double Total
-        {
-            get
-            {
-                return Subtotal + this.CalculateCommission();
-            }
-        }
+        public double Total => Subtotal + TotalCommission;
+        [NotMapped]
+        public double TotalCommission => Subtotal + (Fair?.CommissionOnSale ?? 0d);
 
         public Sale()
         {
             Date = DateTime.Now;
             SaleItems = new List<SaleItem>();
-        }
-
-        /// <summary>
-        /// Calculates the commission on the sale.
-        /// </summary>
-        /// <returns>The total money on the commission.</returns>
-        public double CalculateCommission()
-        {
-            double commission = Fair?.CommissionOnSale ?? 0d;
-            return Subtotal * commission;
         }
     }
 }

@@ -37,6 +37,6 @@ namespace LivrETS.ViewModels
 
     public class SellViewModel
     {
-        public Fair Fair;
+        public Fair Fair { get; set; }
     }
 }

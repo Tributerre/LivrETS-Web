@@ -16,14 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-function checkEnter(evt) {
-    var evt = (evt) ? evt : ((event) ? event : null);
-    var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
-    if ((evt.keyCode == 13) && (node.type == "text")) { return false; }
-}
-
-document.onkeypress = checkEnter;
-
 var notifyError = function (message) {
     $.notify({
         icon: "glyphicon glyphicon-remove",
@@ -62,6 +54,7 @@ function markArticleAsPicked(articleId, trTagToMove) {
 }
 
 $(document).ready(function () {
+    $.preventEnterToSubmit()
     $(".pick-article-btn").on("click", function () {
         window.ArticleId = $(this).attr("data-article-id")
         window.TrTagOfArticle = $(this).parents("tr")

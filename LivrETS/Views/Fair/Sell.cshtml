@@ -17,24 +17,36 @@
 *@
 @using LivrETS.ViewModels
 @using LivrETS.Models
-@model FairViewModel
+@model SellViewModel
 @{
     ViewBag.Title = "Terminal de vente";
 }
 
-@if (Model.Fair == null || Model.Fair.Phase != FairPhase.SALE)
+@section Styles {
+    <style>
+        div.row {
+            margin-top: 10px;
+        }
+
+        .amount-input {
+            background-color: white !important;
+        }
+    </style>
+}
+
+@if (Model.Fair != null)
 {
     <h2>Vous n'&ecirc;tes pas pr&eacute;sentement en p&eacute;riode de vente =(</h2>
 }
 else
 {
     <div class="page-header">
-        <h1>Cueillir des articles <small>Pour la Foire @Model.Fair.LivrETSID</small></h1>
+        <h1>Cueillir des articles <small>Pour la Foire </small></h1>
     </div>
 
     <div class="row">
         <div class="col-md-6">
-            <input type="text" id="article-livretsid" placeholder="Espace de numérisation" />
+            <input type="text" class="form-control" id="article-livretsid" placeholder="Espace de numérisation" />
         </div>
     </div>
 
@@ -46,17 +58,68 @@ else
 
     <div class="row">
         <div class="col-md-6">
-            <table class="table table-bordered" style="min-height: 500px;">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Titre</th>
-                        <th>Vendeur</th>
-                        <th>Prix</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-responsive" style="min-height: 450px; border: 1px solid lightgray; border-radius: 3px;">
+                <table id="articles-table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Titre</th>
+                            <th>Vendeur</th>
+                            <th>Prix</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group pull-right col-md-5">
+                <span class="input-group-addon" id="subtotal-addon">Sous-Total</span>
+                <input type="text" class="form-control amount-input" aria-describedby="subtotal-addon" disabled />
+                <span class="input-group-addon">$</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group pull-right col-md-5">
+                <span class="input-group-addon" id="commission-addon">Commission</span>
+                <input type="text" class="form-control amount-input" aria-describedby="commission-addon" disabled />
+                <span class="input-group-addon">$</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group pull-right col-md-5">
+                <span class="input-group-addon" id="total-addon"><b>Total</b></span>
+                <input type="text" class="form-control amount-input" aria-describedby="total-addon" style="font-weight: bold;" disabled />
+                <span class="input-group-addon"><b>$</b></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-default">Réinitialiser</button>
+            <button type="button" class="btn btn-primary pull-right">Conclure</button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.sameWidthForElements.apply(this, [
+                $("#subtotal-addon"),
+                $("#commission-addon"),
+                $("#total-addon")
+            ])
+        })
+    </script>
 }

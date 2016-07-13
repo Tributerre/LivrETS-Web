@@ -21,11 +21,16 @@ using System.Linq;
 using System.Web;
 using LivrETS.Models;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace LivrETS.Models
 {
     public class SaleItem
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
+
         [ForeignKey(nameof(Offer))]
         public Guid OfferID { get; set; }
         public virtual Offer Offer { get; set; }
