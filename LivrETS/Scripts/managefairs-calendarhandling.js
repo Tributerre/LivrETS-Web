@@ -72,7 +72,7 @@ $(document).ready(function () {
                 break;
 
             case END_DATE_ID:
-                endDate = date.date.startOf("day").add(1, 'days').subtract(1,'seconds');
+                endDate = date.date.endOf("day");
                 break;
 
             case PICKING_START_DATE_ID:
@@ -80,7 +80,7 @@ $(document).ready(function () {
                 break;
 
             case PICKING_END_DATE_ID:
-                pickingEndDate = date.date.startOf("day").add(1, 'days').subtract(1, 'seconds');;
+                pickingEndDate = date.date.endOf("day");
                 break;
 
             case SALE_START_DATE_ID:
@@ -88,7 +88,7 @@ $(document).ready(function () {
                 break;
 
             case SALE_END_DATE_ID:
-                saleEndDate = date.date.startOf("day").add(1, 'days').subtract(1, 'seconds');;
+                saleEndDate = date.date.endOf("day");
                 break;
 
             case RETRIEVAL_START_DATE_ID:
@@ -96,7 +96,7 @@ $(document).ready(function () {
                 break;
 
             case RETREIVAL_END_DATE_ID:
-                retrievingEndDate = date.date.startOf("day").add(1, 'days').subtract(1, 'seconds');;
+                retrievingEndDate = date.date.endOf("day");
                 break;
         }
 
