@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
      * @description Makes the elements passed in parameters the same width by finding
      * the highest width and applying it to the other elements.
      * @param Elements Array of jquery elements or string selectors.
-     * @type str or object
+     * @type string or object
      * @author Charles Levesque
      */
     $.sameWidthForElements = function () {
@@ -58,5 +58,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
         var maxWidth = Math.max.apply(this, widths)
 
         $.each(elements, function (index, value) { value.width(maxWidth) })
+    }
+
+    /**
+     * @description Notifies the user of an error with a banner in the top right
+     * corner.
+     * @param message The message to be displayed.
+     * @type string
+     * @author Charles Levesque
+     */
+    $.notifyError = function (message) {
+        $.notify({
+            icon: "glyphicon glyphicon-remove",
+            message: message
+        }, {
+            type: "danger"
+        })
     }
 })(jQuery)

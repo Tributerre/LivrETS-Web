@@ -134,6 +134,12 @@ namespace LivrETS.Controllers
 
         #region Ajax
 
+        [HttpGet]
+        public ActionResult OfferInfo(string LivrETSID)
+        {
+            return Json(new { }, contentType: "application/json");
+        }
+
         [HttpPost]
         public ActionResult MarkAsPicked(string ArticleId)
         {
