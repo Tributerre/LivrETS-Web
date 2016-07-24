@@ -19,6 +19,8 @@
 @{
     ViewBag.Title = "S'inscrire";
 }
+
+
 <h3>Vous y &ecirc;tes presque!</h3>
 
 <div class="container">
@@ -64,9 +66,10 @@
 
         <div class="form-group" style="margin-top: 20px;">
             
-            <div class="col-sm-offset-2 col-sm-10">
+            <div class="col-sm-offset-2 col-sm-10 ">
                 <p>Entour&eacute; de <strong style="color: red;">rouge</strong> est l'information recherch&eacute;.</p>
-                <img class="img-rounded" width="300px" height="175px" alt="student_card_example.jpg" src="~/Images/student_card_example.jpg" />
+<div id="img-card" style="width:300px; height:175px">
+                <img class="img-rounded" width="100%" alt="student_card_example.jpg" src="~/Images/student_card_example.jpg" /></div>
             </div>
             <br>
             @Html.LabelFor(model => model.BarCode, new { @class = "col-sm-2 control-label" })
