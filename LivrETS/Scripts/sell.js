@@ -82,7 +82,7 @@ $(document).ready(function () {
         }
     });
 
-    $("input[name='Article']").on('change', function () {
+    $("input[name='Type']").on('change', function () {
         var value = $(this).val();
 
         if (value === 'C') {
