@@ -70,8 +70,12 @@ $(document).ready(function () {
         }
     }, false);
 
+    function setHiddenAcronym(val) {
+        $("#hidden-acronym").val(val);
+    }
+
     $("#courses-list").on("change", "li>input[name='Course']", function () {
-        $("#hidden-acronym").val($("input[name='Course']:checked").val());
+        setHiddenAcronym($("input[name='Course']:checked").val())
     });
 
     $("input[name='SellingStrategy']").on("change", function () {
@@ -138,6 +142,8 @@ $(document).ready(function () {
                         .append($("<label>")
                             .attr("for", data["courseId"])
                             .text(data["acronym"]));
+
+                    setHiddenAcronym(data["acronym"])
 
                     $("#courses-list").append(newCourseElement);
                     courseTextInput.val("");
