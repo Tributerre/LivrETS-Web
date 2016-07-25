@@ -37,6 +37,30 @@ namespace LivrETS.Migrations
                 .Index(t => t.Sale_Id);
             
             AddColumn("dbo.Fairs", "CommissionOnSale", c => c.Double(nullable: false));
+            AddColumn("dbo.AspNetUsers", "GeneratedNumber", c => c.Long(nullable: false, identity: true));
+            AddColumn("dbo.AspNetUsers", "LivrETSID", c => c.String(maxLength: 128));
+
+            // Updates existing users
+            Sql(@"
+DECLARE users CURSOR FOR
+	SELECT Id, FirstName, LastName, GeneratedNumber FROM AspNetUsers
+DECLARE @generatedNumber BIGINT, @id NVARCHAR(128), @firstName NVARCHAR(256), @lastName NVARCHAR(256)
+
+OPEN users
+FETCH NEXT FROM users INTO @id, @firstName, @lastName, @generatedNumber
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	UPDATE AspNetUsers
+	SET LivrETSID = SUBSTRING(@firstName, 1, 1) + SUBSTRING(@lastName, 1, 1) + CAST(@generatedNumber AS nvarchar(max))
+	WHERE Id = @id
+
+	FETCH NEXT FROM users INTO @id, @firstName, @lastName, @generatedNumber
+END
+
+CLOSE users
+DEALLOCATE users
+            ");
         }
         
         public override void Down()
@@ -49,6 +73,8 @@ namespace LivrETS.Migrations
             DropIndex("dbo.SaleItems", new[] { "OfferID" });
             DropIndex("dbo.Sales", new[] { "SellerID" });
             DropIndex("dbo.Sales", new[] { "FairID" });
+            DropColumn("dbo.AspNetUsers", "LivrETSID");
+            DropColumn("dbo.AspNetUsers", "GeneratedNumber");
             DropColumn("dbo.Fairs", "CommissionOnSale");
             DropTable("dbo.SaleItems");
             DropTable("dbo.Sales");
