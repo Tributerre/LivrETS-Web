@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using LivrETS.Repositories;
 
 namespace LivrETS.Models
 {
@@ -17,6 +18,28 @@ namespace LivrETS.Models
         private string _livretsID;
         private Regex _regex;
 
+        public string SellerLivrETSID
+        {
+            get
+            {
+                Match match = _regex.Match(_livretsID);
+                var sellerInitials = match.Groups["sellerinitials"];
+                var sellerNumber = match.Groups["sellernumber"];
+                return sellerInitials.Value + sellerNumber.Value;
+            }
+        }
+
+        public string ArticleLivrETSID
+        {
+            get
+            {
+                Match match = _regex.Match(_livretsID);
+                var articleData = match.Groups["article"];
+                var articleNumber = match.Groups["articleNumber"];
+                return articleData.Value + articleNumber.Value;
+            }
+        }
+
         /// <summary>
         /// Constructor of the helper.
         /// </summary>
@@ -30,10 +53,35 @@ namespace LivrETS.Models
             if (!_regex.Match(livretsID).Success)
                 throw new RegexNoMatchException("The expression is not a LivrETSID. (A9999-AA9+-AA9+)");
         }
+
+        /// <summary>
+        /// Get the seller associated with this LivrETS ID.
+        /// </summary>
+        /// <returns>An ApplicationUser or null of not found.</returns>
         public ApplicationUser GetSeller()
         {
-            Match match = _regex.Match(_livretsID);
-            var sellerInitials = match.Groups["sellerinitials"];
+            ApplicationUser user = null;
+            using (var repo = new LivrETSRepository())
+            {
+                user = repo.GetUserBy(LivrETSID: SellerLivrETSID);
+            }
+
+            return user;
+        }
+
+        /// <summary>
+        /// Get the offer associated with this LivrETS ID.
+        /// </summary>
+        /// <returns>An Offer or null if not found.</returns>
+        public Offer GetOffer()
+        {
+
+            Offer offer = null;
+            using (var repo = new LivrETSRepository())
+            {
+                offer = repo.GetOfferAssociatedWith(userLivrETSID: SellerLivrETSID, andArticleLivrETSID: ArticleLivrETSID);
+            }
+            return offer;
         }
 
         /// <summary>

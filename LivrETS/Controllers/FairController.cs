@@ -148,7 +148,15 @@ namespace LivrETS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
             }
 
-            return Json(new { }, contentType: "application/json");
+            var seller = helper.GetSeller();
+            var offer = helper.GetOffer();
+            return Json(new
+            {
+                sellerID = seller.LivrETSID,
+                sellerFullName = seller.FullName,
+                articleTitle = offer.Article.Title,
+                offerPrice = offer.Price
+            }, contentType: "application/json");
         }
 
         [HttpPost]

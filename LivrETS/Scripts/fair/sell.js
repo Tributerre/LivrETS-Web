@@ -26,7 +26,21 @@ $(document).ready(function () {
 
             $.ajax({
                 method: "GET",
-                url: "/Fair/"
+                url: "/Fair/OfferInfo",
+                dataType: "json",
+                data: {
+                    LivrETSID: livretsId
+                },
+                success: function (data) {
+                },
+                statusCode: {
+                    400: function (event, message) {
+                        $.notifyError("Une erreur est survenue. Svp réessayez.")
+                    },
+                    500: function () {
+                        $.notifyError("Une erreur est survenue. Svp réessayez.")
+                    }
+                }
             })
         }
     })

@@ -54,6 +54,9 @@ namespace LivrETS.Models
         [MaxLength(length: 128)]
         public string LivrETSID { get; set; }
 
+        [NotMapped]
+        public string FullName => $"{FirstName} {LastName}";
+
         public ApplicationUser()
         {
             Sales = new List<Sale>();

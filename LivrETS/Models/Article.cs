@@ -25,7 +25,7 @@ namespace LivrETS.Models
         public virtual Course Course { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long GeneratedNumber { get; }
+        public long GeneratedNumber { get; private set; }
 
         [Required]
         [MaxLength(1)]
