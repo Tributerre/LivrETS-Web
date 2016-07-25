@@ -137,6 +137,17 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult OfferInfo(string LivrETSID)
         {
+            var cleanLivrETSID = LivrETSID.Trim().ToUpper();
+            TRIBSTD01Helper helper = null;
+            try
+            {
+                helper = new TRIBSTD01Helper(cleanLivrETSID);
+            }
+            catch (RegexNoMatchException ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
+            }
+
             return Json(new { }, contentType: "application/json");
         }
 

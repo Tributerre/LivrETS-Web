@@ -51,7 +51,6 @@ namespace LivrETS.Models
         public virtual ICollection<Sale> Sales { get; set; }
         public virtual ICollection<Offer> Offers { get; set; }
 
-        // $"{FirstName[0].ToString().ToUpper()}{LastName[0].ToString().ToUpper()}{GeneratedNumber}"
         [MaxLength(length: 128)]
         public string LivrETSID { get; set; }
 

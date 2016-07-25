@@ -265,8 +265,12 @@ namespace LivrETS.Controllers
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    // Create the LivrETS ID
+                    user.LivrETSID = TRIBSTD01Helper.GenerateLivrETSID(user: user);
+                    UserManager.Update(user);
                     await UserManager.AddClaimAsync(user.Id, new Claim("FirstName", user.FirstName));
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
+
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
