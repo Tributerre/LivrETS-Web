@@ -149,7 +149,6 @@ $(document).ready(function () {
                             .text(data["acronym"]));
 
                     setHiddenAcronym(data["acronym"])
-
                     $('#btn-choice-class').text(data["acronym"])
 
                     $("#courses-list").append(newCourseElement);
