@@ -134,7 +134,7 @@ namespace LivrETS.Controllers
 
         #region Ajax
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult OfferInfo(string LivrETSID)
         {
             var cleanLivrETSID = LivrETSID.Trim().ToUpper();

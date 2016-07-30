@@ -35,7 +35,7 @@ namespace LivrETS.Models
             {
                 Match match = _regex.Match(_livretsID);
                 var articleData = match.Groups["article"];
-                var articleNumber = match.Groups["articleNumber"];
+                var articleNumber = match.Groups["articlenumber"];
                 return articleData.Value + articleNumber.Value;
             }
         }

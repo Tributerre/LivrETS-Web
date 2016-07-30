@@ -32,7 +32,7 @@ namespace LivrETS.Models
         public readonly string ArticleCode;
 
         [NotMapped]
-        public string LivrETSID => $"{ArticleCode}{GeneratedNumber}";
+        public string LivrETSID => $"A{ArticleCode}{GeneratedNumber}";
 
         [NotMapped]
         public const string BOOK_CODE = "L";

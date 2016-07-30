@@ -34,7 +34,7 @@
     </style>
 }
 
-@if (Model.Fair != null)
+@if (Model.Fair == null || Model.Fair.Phase != FairPhase.SALE)
 {
     <h2>Vous n'&ecirc;tes pas pr&eacute;sentement en p&eacute;riode de vente =(</h2>
 }
@@ -113,13 +113,5 @@ else
 }
 
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $.sameWidthForElements.apply(this, [
-                $("#subtotal-addon"),
-                $("#commission-addon"),
-                $("#total-addon")
-            ])
-        })
-    </script>
+    <script src="~/Scripts/fair/sell.js"></script>
 }

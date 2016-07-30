@@ -17,6 +17,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 **/
 
 $(document).ready(function () {
+    $.sameWidthForElements.apply(this, [
+        $("#subtotal-addon"),
+        $("#commission-addon"),
+        $("#total-addon")
+    ])
+
     $("#article-livretsid").on("keyup", function (event) {
         if (event.keyCode == 13) {  // Enter
             var livretsId = $(this).val()
@@ -25,7 +31,7 @@ $(document).ready(function () {
                 return
 
             $.ajax({
-                method: "GET",
+                method: "POST",
                 url: "/Fair/OfferInfo",
                 dataType: "json",
                 data: {
@@ -37,7 +43,7 @@ $(document).ready(function () {
                     400: function (event, message) {
                         $.notifyError("Une erreur est survenue. Svp réessayez.")
                     },
-                    500: function () {
+                    500: function (event, message) {
                         $.notifyError("Une erreur est survenue. Svp réessayez.")
                     }
                 }
