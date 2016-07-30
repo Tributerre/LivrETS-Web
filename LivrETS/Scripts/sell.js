@@ -70,8 +70,16 @@ $(document).ready(function () {
         }
     }, false);
 
+    /**
+    * @param val id of course 
+    * update the value of input hidden
+    */
+    function setHiddenAcronym(val) {
+        $("#hidden-acronym").val(val);
+    }
+
     $("#courses-list").on("change", "li>input[name='Course']", function () {
-        $("#hidden-acronym").val($("input[name='Course']:checked").val());
+        setHiddenAcronym($("input[name='Course']:checked").val())
     });
 
     $("input[name='SellingStrategy']").on("change", function () {
@@ -82,7 +90,7 @@ $(document).ready(function () {
         }
     });
 
-    $("input[name='Article']").on('change', function () {
+    $("input[name='Type']").on('change', function () {
         var value = $(this).val();
 
         if (value === 'C') {
@@ -130,7 +138,7 @@ $(document).ready(function () {
                 data: { acronym: courseTextInput.val() },
                 success: function (data) {
                     var newCourseElement = $("<li>")
-                        .append($("<input>")
+                        .append($("<input>") 
                             .attr("id", data['courseId'])
                             .attr("type", "radio")
                             .attr("name", "Course")
@@ -138,6 +146,9 @@ $(document).ready(function () {
                         .append($("<label>")
                             .attr("for", data["courseId"])
                             .text(data["acronym"]));
+
+                    setHiddenAcronym(data["acronym"])  
+                    $('#btn-choice-class').text(data["acronym"])
 
                     $("#courses-list").append(newCourseElement);
                     courseTextInput.val("");
