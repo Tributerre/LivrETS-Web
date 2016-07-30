@@ -71,8 +71,8 @@ $(document).ready(function () {
     }, false);
 
     /**
-    * @param val identifiant du cours
-    * Modifie la valeur du champ invisible
+    * @param val id of course 
+    * update the value of input hidden
     */
     function setHiddenAcronym(val) {
         $("#hidden-acronym").val(val);
@@ -142,7 +142,6 @@ $(document).ready(function () {
                             .attr("id", data['courseId'])
                             .attr("type", "radio")
                             .attr("name", "Course")
-                            .attr("select", "select")
                             .attr("value", data["acronym"]))
                         .append($("<label>")
                             .attr("for", data["courseId"])
