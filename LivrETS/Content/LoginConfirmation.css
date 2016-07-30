@@ -1,0 +1,21 @@
+﻿@media screen and (max-width: 765px) {
+    #img-card{
+        width:100% !important;
+        height: 100%  !important
+    }
+}
+
+#box-card-img p strong{
+    color: red;
+}
+
+#BarCode{
+    margin: 10px auto 0; 
+    float: none;
+}
+
+.field-validation-valid{
+    margin: 10px auto 0; 
+    float: none;
+}
+

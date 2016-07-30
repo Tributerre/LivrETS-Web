@@ -19,15 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
   body {
     padding-top: 100px; 
   }
-.body-content {
+    .body-content {
        padding-top: 30px;
     }
-
-/* code css du fichier ExternalLoginConfirmation.cshtml */
-#img-card{
-    width:100% !important;
-height: 100%  !important
- }
 }
 
 @media screen and (min-width: 766px) {
