@@ -138,7 +138,7 @@ $(document).ready(function () {
                 data: { acronym: courseTextInput.val() },
                 success: function (data) {
                     var newCourseElement = $("<li>")
-                        .append($("<input>")
+                        .append($("<input>") 
                             .attr("id", data['courseId'])
                             .attr("type", "radio")
                             .attr("name", "Course")
@@ -149,7 +149,6 @@ $(document).ready(function () {
                             .text(data["acronym"]));
 
                     setHiddenAcronym(data["acronym"])
-
                     $('#btn-choice-class').text(data["acronym"])
 
                     $("#courses-list").append(newCourseElement);
