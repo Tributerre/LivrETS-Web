@@ -16,7 +16,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
-    $("thead>tr").find("th").addClass("text-center");
+    //init manage users table width datables plugins
+    $('table').DataTable({
+        "scrollY": "500px",
+        "scrollCollapse": true
+    });
 
     $("#close-error").on("click", function () {
         $("#errors").hide("slow");

@@ -28,6 +28,7 @@
 }
 
 @section Styles {
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <style>
         thead > tr > th {
             padding: 5px;
@@ -43,7 +44,8 @@
 </div>
 
 <div class="row">
-    <table class="table-striped table-bordered table-hover col-md-12">
+    <div class="col-md-12">
+    <table class="table-striped table-bordered table-hover display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>
@@ -108,6 +110,7 @@
                             }
         </tbody>
     </table>
+    </div>
 </div>
 
 <div class="row">
@@ -119,5 +122,6 @@
 }
 
 @section Scripts {
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="~/Scripts/manageusers.js"></script>
 }
