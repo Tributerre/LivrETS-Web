@@ -38,10 +38,42 @@ $(document).ready(function () {
                     LivrETSID: livretsId
                 },
                 success: function (data) {
+                    var element = $("<tr>")
+                        .append($("<td>").text(data.id).addClass("livretsid"))
+                        .append($("<td>").text(data.articleTitle))
+                        .append($("<td>").text(data.sellerFullName))
+                        .append($("<td>").text(data.offerPrice))
+
+                    $("#articles-table>tbody").append(element)
+
+                    var ids = $.map($("#articles-table>tbody").find("td.livretsid"), function (element) {
+                        return element.innerText
+                    })
+                    $.ajax({
+                        method: "POST",
+                        url: "/Fair/CalculatePrices",
+                        dataType: "json",
+                        data: {
+                            LivrETSIDs: ids
+                        },
+                        success: function (data) {
+                            $("#subtotal").val(data.subtotal)
+                            $("#commission").val(data.commission)
+                            $("#total").val(data.total)
+                        },
+                        statusCode: {
+                            400: function (event, message) {
+                                $.notifyError("Un des identificateurs n'est pas valide.")
+                            },
+                            500: function (event, message) {
+                                $.notifyError("Une erreur est survenue. Svp réessayez.")
+                            }
+                        }
+                    })
                 },
                 statusCode: {
                     400: function (event, message) {
-                        $.notifyError("Une erreur est survenue. Svp réessayez.")
+                        $.notifyError("L'identificateur n'est pas valide.")
                     },
                     500: function (event, message) {
                         $.notifyError("Une erreur est survenue. Svp réessayez.")

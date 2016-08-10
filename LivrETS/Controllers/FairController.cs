@@ -129,6 +129,7 @@ namespace LivrETS.Controllers
             {
                 Fair = Repository.GetCurrentFair()
             };
+
             return View(model);
         }
 
@@ -150,12 +151,47 @@ namespace LivrETS.Controllers
 
             var seller = helper.GetSeller();
             var offer = helper.GetOffer();
+
             return Json(new
             {
-                sellerID = seller.LivrETSID,
-                sellerFullName = seller.FullName,
+                id = LivrETSID,
+                sellerFullName = $"{seller.FullName} ({seller.LivrETSID})",
                 articleTitle = offer.Article.Title,
                 offerPrice = offer.Price
+            }, contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult CalculatePrices(ICollection<string> LivrETSIDs)
+        {
+            double subtotal = 0;
+            double total = 0;
+            double commission = 0;
+
+            foreach (var id in LivrETSIDs)
+            {
+                TRIBSTD01Helper helper;
+                try
+                {
+                    helper = new TRIBSTD01Helper(id);
+                }
+                catch (RegexNoMatchException ex)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
+                }
+
+                subtotal += helper.GetOffer().Price;
+            }
+
+            var currentFair = Repository.GetCurrentFair();
+            commission = subtotal * currentFair.CommissionOnSale;
+            total = subtotal + commission;
+
+            return Json(new
+            {
+                commission = commission,
+                subtotal = subtotal,
+                total = total
             }, contentType: "application/json");
         }
 
