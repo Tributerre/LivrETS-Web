@@ -71,10 +71,7 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult ManageFairs()
         {
-            using (var db = new ApplicationDbContext())
-            {
-                ViewBag.fairs = (from fair in db.Fairs select fair).ToList();
-            }
+           
             return View();
         }
 
@@ -118,6 +115,18 @@ namespace LivrETS.Controllers
             return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, contentType: "application/json");
         }
 
+        // POST: /Admin/ListFairs
+        // List all user
+        [HttpPost]
+        public ActionResult ListFairs()
+        {
+            var db = new ApplicationDbContext();
+
+            var listFairs = (from fair in db.Fairs
+                             select fair).ToList();
+
+            return Json(new { listFairs }, contentType: "application/json");
+        }
 
         // PUT: /Admin/ChangeUserRole
         // Change the role of a user.

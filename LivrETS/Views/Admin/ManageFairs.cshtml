@@ -19,7 +19,6 @@
 @{
     ViewBag.Title = "Gérer les foires";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    List<Fair> fairs = ViewBag.fairs;
 }
 
 @section Styles {
@@ -54,22 +53,6 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var fair in fairs)
-            {
-                <tr>
-                    <td class="text-center"><input type="checkbox" name="check-select-fair" data-fair-id="@fair.Id" /></td>
-                    <td class="text-center">@fair.LivrETSID</td>
-                    <td>@fair.StartDate</td>
-                    <td>@fair.EndDate</td>
-                    <td>@fair.Phase.ToString()</td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-sm btn-primary btn-edit-fair" data-fair-id="@fair.Id"><span class="glyphicon glyphicon-edit"></span></button>
-                        <button type="button" class="btn btn-sm btn-danger btn-delete-fair" data-fair-id="@fair.Id"><span class="glyphicon glyphicon-trash"></span></button>
-                    </td>
-                </tr>
-            }
-        </tbody>
     </table>
     </div>
 </div>

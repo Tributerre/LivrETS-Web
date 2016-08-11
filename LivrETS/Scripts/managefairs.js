@@ -17,9 +17,54 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
     //init managefairs table width datables plugins
+
     $('table').DataTable({
-        "scrollY": "500px",
-        "scrollCollapse": true
+        processing: true,
+        ajax: {
+            url: "/Admin/ListFairs",
+            type: "POST",
+            dataType: "JSON",
+            dataSrc: function (val) {
+
+                return val.listFairs
+            }
+        },
+        columns: [
+            {
+                class: "check-row",
+                sortable: false,
+                data: function (val) {
+                        return "<input type='checkbox' name='check-select-user-for-action' data-user-id='" + val.Id + "'>";
+                }
+            },
+            {
+                data: "LivrETSID",
+                //visible: false
+            },
+            {
+                data: function (val) {
+                    return new Date(parseInt(val.StartDate.replace('/Date(', ''))).toDateString();
+                }
+            },
+            {
+                data: function (val) {
+                    return new Date(parseInt(val.EndDate.replace('/Date(', ''))).toDateString();
+                }
+            },
+            {
+                data: "Phase"
+            },
+            {
+                class: "text-center",
+                sortable: false,
+                data: function (val) {
+                    return "<button type='button' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='"+ val.Id +"'><span class='glyphicon glyphicon-edit'></span></button> "+
+                    "<button type='button' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='"+ val.Id +"'><span class='glyphicon glyphicon-trash'></span></button>"
+                    
+                }
+            }
+        ]
+
     });
 
     $("#close-error").on("click", function () {
