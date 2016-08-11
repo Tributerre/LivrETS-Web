@@ -16,18 +16,115 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
+    //Id for current user
+    var currentId;
+    var listRoles;
+
     //init manage users table width datables plugins
+    
     $('table').DataTable({
-        "scrollY": "500px",
-        "scrollCollapse": true
+        processing: true,
+        ajax: {
+            url: "/Admin/ListUsers",
+            type: "POST",
+            dataType: "JSON",
+            dataSrc: function (val) {
+                currentId = val.current_id;
+                listRoles = val.listRoles;
+
+                return val.listUser
+            }
+        },
+        columns: [
+            {
+                class: "check-row",
+                sortable: false,
+                data: function (val) {
+                    if (currentId != val.Id) {
+                        return "<input type='checkbox' name='check-select-user-for-action' data-user-id='" + val.Id + "'>";
+                    }
+                }
+            },
+            {
+                //data: "LivrETSID",
+                visible: false
+            },
+            {
+                data: "FirstName"
+            },
+            {
+                data: "LastName"
+            },
+            {
+                data: "BarCode"
+            },
+            {
+                data: function (val) {
+                    return new Date(parseInt(val.SubscribedAt.replace('/Date(', ''))).toDateString();
+                }
+            },
+            {
+                data: function (val) {
+                    var html = "<div class='dropdown'>"
+                    html += "<button data-toggle='dropdown' id='"+ val.Id +"' class='btn btn-default btn-sm dropdown-toggle' aria-haspopup='true' "+
+                            "aria-expanded='true'>" + val.role + " <span class='caret'></span></button>";
+                    html += "<ul class='dropdown-menu' aria-labelledby='" + val.Id + "'>";
+
+                    for (var i = 0; i < listRoles.length; i++) {
+                        if (val.role != listRoles[i].Name) {
+                            html += "<li><a href='#' data-rolename='" + listRoles[i].Name + "' data-userid='" + val.Id + "' class='elt-role'>" + listRoles[i].Name + "</a></li>";
+                        }
+                    }
+
+                    //html += "<li><input type='radio' id='User' name='UserRole' value='User'><label for='User'>User</label></li>";
+                    html += "</ul>";
+                    html += "</div>";
+                    return html;
+                }
+            },
+            {
+                sortable: false,
+                data: function (val) {
+                    if (currentId != val.Id) {
+                        return "<button type='button' class='btn-delete-user btn btn-danger btn-xs' data-user-id='" + val.Id + "'>" +
+                            "<i class='glyphicon glyphicon-trash'></i>" +
+                            "</button>"
+                    }
+                }
+            }
+        ]
+        
     });
 
     $("#close-error").on("click", function () {
         $("#errors").hide("slow");
     });
 
+    $('table tbody').on('click', '.elt-role', function (e) {
+        e.preventDefault();
+
+        $me = $(this);
+        $.ajax({
+            method: "PUT",
+            contentType: "application/json",
+            url: "/Admin/ChangeUserRole",
+            dataType: "json",
+            data: JSON.stringify({
+                UserId: $me.data("userid"),
+                NewRole: $me.data('rolename')
+            }),
+            success: function () { },
+            error: function (err) {
+                console.log(err);
+                $("#error-message").text("Une erreur est survenue lors du changement de privilège.");
+                $("#errors").show("slow");
+            }
+        });
+    });
+
     // Role change event.
-    $("input[type='radio'][name='UserRole']").on("change", function () {
+    /*$("input[type='radio'][name='UserRole']").on("change", function () {
+        console.log("good");
         $.ajax({
             method: "PUT",
             contentType: "application/json",
@@ -44,7 +141,7 @@ $(document).ready(function () {
                 $("#errors").show("slow");
             }
         });
-    });
+    });*/
 
     // Select single user event.
     $("input[type='checkbox'][name='check-select-user-for-action']").on("change", function () {
@@ -52,7 +149,7 @@ $(document).ready(function () {
     });
 
     // Delete user event.
-    $(".btn-delete-user").on("click", function () {
+    $('table tbody').on("click", ".btn-delete-user", function () {
         var button = $(this);
         var userId = $(this).attr("data-user-id");
 

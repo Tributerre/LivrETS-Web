@@ -25,6 +25,7 @@ using Microsoft.AspNet.Identity.Owin;
 using LivrETS.Models;
 using LivrETS.ViewModels;
 using System.Net;
+using System.Web.Security;
 
 namespace LivrETS.Controllers
 {
@@ -61,6 +62,8 @@ namespace LivrETS.Controllers
                 ViewBag.users = UserManager.Users.ToList();
                 ViewBag.roles = (from role in db.Roles select role).ToList();
             }
+
+            
             return View();
         }
 
@@ -88,16 +91,46 @@ namespace LivrETS.Controllers
 
         #region Ajax
 
+        // POST: /Admin/ListUsers
+        // List all user
+        [HttpPost]
+        public ActionResult ListUsers()
+        {
+            var db = new ApplicationDbContext();
+            //var list_user = UserManager.Users.ToList();
+            var listRoles = (from role in db.Roles
+                             select new { Id = role.Id, Name = role.Name }).ToList();
+
+            var listUser = (from user in db.Users
+                            orderby user.FirstName descending
+                                select new {
+                                    FirstName = user.FirstName,
+                                    LastName = user.LastName,
+                                    SubscribedAt = user.SubscribedAt,
+                                    BarCode = user.BarCode,
+                                    Email = user.Email,
+                                    UserName = user.UserName,
+                                    Id = user.Id,
+                                    //LivrETSID = user.LivrETSID,
+                                    role=user.Roles.Join(db.Roles, userRole=>userRole.RoleId, role=>role.Id, (userRole, role)=>role).Select(role=>role.Name) 
+                                }).ToList();
+
+            return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, contentType: "application/json");
+        }
+
+
         // PUT: /Admin/ChangeUserRole
         // Change the role of a user.
         [HttpPut]
         public ActionResult ChangeUserRole(AjaxManageUsersViewModel model)
         {
             var user = UserManager.FindById(model.UserId);
+            bool status = false;
+            String message = null;
             
             if (user == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                message = "Modifications annulée: l'utilisateur n'existe pas";
             }
 
             // Remove from all roles just in case.
@@ -106,9 +139,11 @@ namespace LivrETS.Controllers
             if (model.NewRole != null)
             {
                 UserManager.AddToRole(user.Id, model.NewRole);
+                status = true;
+                message = "Modifications reusie";
             }
 
-            return Json(new { }, contentType: "application/json");
+            return Json(new { status=status, message=message }, contentType: "application/json");
         }
 
         // DELETE: /Admin/Delete
