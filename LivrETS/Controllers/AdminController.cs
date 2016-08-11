@@ -57,13 +57,6 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult ManageUsers()
         {
-            using (var db = new ApplicationDbContext())
-            {
-                ViewBag.users = UserManager.Users.ToList();
-                ViewBag.roles = (from role in db.Roles select role).ToList();
-            }
-
-            
             return View();
         }
 
@@ -101,14 +94,7 @@ namespace LivrETS.Controllers
             var listUser = (from user in db.Users
                             orderby user.FirstName descending
                                 select new {
-                                    FirstName = user.FirstName,
-                                    LastName = user.LastName,
-                                    SubscribedAt = user.SubscribedAt,
-                                    BarCode = user.BarCode,
-                                    Email = user.Email,
-                                    UserName = user.UserName,
-                                    Id = user.Id,
-                                    //LivrETSID = user.LivrETSID,
+                                    user=user,
                                     role=user.Roles.Join(db.Roles, userRole=>userRole.RoleId, role=>role.Id, (userRole, role)=>role).Select(role=>role.Name) 
                                 }).ToList();
 
