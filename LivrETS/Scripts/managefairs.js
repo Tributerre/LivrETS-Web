@@ -58,8 +58,8 @@ $(document).ready(function () {
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
-                    return "<button type='button' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='"+ val.Id +"'><span class='glyphicon glyphicon-edit'></span></button> "+
-                    "<button type='button' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='"+ val.Id +"'><span class='glyphicon glyphicon-trash'></span></button>"
+                    return "<a href='#' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='"+ val.Id +"' ><span class='glyphicon glyphicon-edit'></span></a> "+
+                    "<a href='#' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='" + val.Id + "'><span class='glyphicon glyphicon-trash'></span></a>"
                     
                 }
             }
@@ -72,12 +72,12 @@ $(document).ready(function () {
     });
 
     // Select single fair event.
-    $("input[type='checkbox'][name='check-select-fair']").on("change", function () {
+    $('table tbody').on("click", ".btn-edit-fair", function () {
         updateDeleteSelectedView();
     });
 
     // Delete fair event.
-    $(".btn-delete-fair").on("click", function () {
+    $('table tbody').on("click", ".btn-delete-fair", function () {
         var button = $(this);
         var fairId = $(this).attr("data-fair-id");
 
@@ -204,7 +204,7 @@ $(document).ready(function () {
 /**
  * Updates the selected number in the actions panel.
  */
-function updateDeleteSelectedView() {
+function updateDeleteSelectedView() { 
     var checkedCount = $("tbody>tr>td").find("input[type='checkbox'][name='check-select-fair']:checked").length;
 
     if ($("#div-delete-selected").is(":visible")) {
