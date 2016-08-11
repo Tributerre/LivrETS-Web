@@ -40,7 +40,7 @@ $(document).ready(function () {
                 class: "check-row",
                 sortable: false,
                 data: function (val) {
-                    if (currentId != val.Id) {
+                    if (currentId != val.user.Id) {
                         return "<input type='checkbox' name='check-select-user-for-action' data-user-id='" + val.user.Id + "'>";
                     }
                 }
@@ -65,15 +65,15 @@ $(document).ready(function () {
             },
             {
                 data: function (val) {
-                    var val = val.user;
                     var html = "<div class='dropdown'>"
-                    html += "<button data-toggle='dropdown' id='" + val.Id + "' class='btn btn-default btn-sm dropdown-toggle' aria-haspopup='true' " +
+                    html += "<button data-toggle='dropdown' id='" + val.user.Id + "' class='btn btn-default btn-sm dropdown-toggle' aria-haspopup='true' " +
                             "aria-expanded='true'>" + val.role + " <span class='caret'></span></button>";
-                    html += "<ul class='dropdown-menu' aria-labelledby='" + val.Id + "'>";
+                    html += "<ul class='dropdown-menu' aria-labelledby='" + val.user.Id + "'>";
 
                     for (var i = 0; i < listRoles.length; i++) {
                         if (val.role != listRoles[i].Name) {
-                            html += "<li><a href='#' data-rolename='" + listRoles[i].Name + "' data-userid='" + val.Id + "' class='elt-role'>" + listRoles[i].Name + "</a></li>";
+                            html += "<li><a href='#' data-rolename='" + listRoles[i].Name + "' data-userid='" + val.user.Id + "' class='elt-role'>" +
+                                listRoles[i].Name + "</a></li>";
                         }
                     }
 
@@ -86,9 +86,8 @@ $(document).ready(function () {
             {
                 sortable: false,
                 data: function (val) {
-                    var val = val.user;
-                    if (currentId != val.Id) {
-                        return "<button type='button' class='btn-delete-user btn btn-danger btn-xs' data-user-id='" + val.Id + "'>" +
+                    if (currentId != val.user.Id) {
+                        return "<button type='button' class='btn-delete-user btn btn-danger btn-xs' data-user-id='" + val.user.Id + "'>" +
                             "<i class='glyphicon glyphicon-trash'></i>" +
                             "</button>"
                     }
