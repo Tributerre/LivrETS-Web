@@ -37,7 +37,7 @@ $(document).ready(function () {
         },
         columns: [
             {
-                class: "check-row",
+                class: "check-row text-center",
                 sortable: false,
                 data: function (val) {
                     if (currentId != val.user.Id) {

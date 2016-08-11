@@ -31,15 +31,15 @@ $(document).ready(function () {
         },
         columns: [
             {
-                class: "check-row",
+                class: "check-row text-center",
                 sortable: false,
                 data: function (val) {
-                        return "<input type='checkbox' name='check-select-user-for-action' data-user-id='" + val.Id + "'>";
+                    return "<input type='checkbox' name='check-select-fair' data-fair-id='" + val.Id + "' />";
                 }
             },
             {
                 data: "LivrETSID",
-                //visible: false
+                visible: false
             },
             {
                 data: function (val) {
@@ -73,6 +73,7 @@ $(document).ready(function () {
 
     // Select single fair event.
     $('table tbody').on("click", ".btn-edit-fair", function () {
+        console.log("1")
         updateDeleteSelectedView();
     });
 
@@ -206,6 +207,7 @@ $(document).ready(function () {
  */
 function updateDeleteSelectedView() { 
     var checkedCount = $("tbody>tr>td").find("input[type='checkbox'][name='check-select-fair']:checked").length;
+    console.log("checkout="+ checkedCount)
 
     if ($("#div-delete-selected").is(":visible")) {
         if (checkedCount === 0) {
@@ -215,6 +217,8 @@ function updateDeleteSelectedView() {
         }
     } else {
         if (checkedCount > 0) {
+            
+            console.log("2")
             var text =
             $("<p>").append(  // p
                 $("<u>")  // u
@@ -235,6 +239,7 @@ function updateDeleteSelectedView() {
                 .append(deleteButton);
 
             $("#div-actions").append(deleteDiv);
+            console.log("3")
         }
     }
 }
