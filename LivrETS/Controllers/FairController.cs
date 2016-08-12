@@ -25,6 +25,8 @@ using LivrETS.Repositories;
 using LivrETS.Models;
 using LivrETS.Service;
 using System.Net;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace LivrETS.Controllers
 {
@@ -136,6 +138,54 @@ namespace LivrETS.Controllers
         #region Ajax
 
         [HttpPost]
+        public ActionResult ConcludeSell(ICollection<string> ids)
+        {
+            bool noMatchExists = false;
+            var fair = Repository.GetCurrentFair();
+            var seller = Repository.GetUserBy(Id: User.Identity.GetUserId());
+            var sale = new Sale()
+            {
+                Date = DateTime.Now,
+            };
+
+            var helpers = ids.ToList().ConvertAll(new Converter<string, TRIBSTD01Helper>(id =>
+            {
+                TRIBSTD01Helper helper = null;
+                try
+                {
+                    helper = new TRIBSTD01Helper(id);
+                }
+                catch (RegexNoMatchException ex)
+                {
+                    noMatchExists = true;
+                    return null;
+                }
+
+                return helper;
+            }));
+
+            if (noMatchExists)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            foreach (var helper in helpers)
+            {
+                var offer = helper.GetOffer();
+                Repository.AttachToContext(offer);
+                offer.Article.MarkAsSold();
+                offer.MarkedSoldOn = DateTime.Now;
+                sale.SaleItems.Add(new SaleItem()
+                {
+                    Offer = offer
+                });
+            }
+
+            seller.Sales.Add(sale);
+            fair.Sales.Add(sale);
+            Repository.Update();
+            return Json(new { }, contentType: "application/json");
+        }
+
+        [HttpPost]
         public ActionResult OfferInfo(string LivrETSID)
         {
             var cleanLivrETSID = LivrETSID.Trim().ToUpper();
@@ -152,13 +202,16 @@ namespace LivrETS.Controllers
             var seller = helper.GetSeller();
             var offer = helper.GetOffer();
 
-            return Json(new
-            {
-                id = LivrETSID,
-                sellerFullName = $"{seller.FullName} ({seller.LivrETSID})",
-                articleTitle = offer.Article.Title,
-                offerPrice = offer.Price
-            }, contentType: "application/json");
+            if (offer.Sold)
+                return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+            else
+                return Json(new
+                {
+                    id = LivrETSID,
+                    sellerFullName = $"{seller.FullName} ({seller.LivrETSID})",
+                    articleTitle = offer.Article.Title,
+                    offerPrice = offer.Price
+                }, contentType: "application/json");
         }
 
         [HttpPost]

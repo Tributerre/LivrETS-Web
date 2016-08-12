@@ -106,8 +106,35 @@ else
 
     <div class="row">
         <div class="col-md-6">
-            <button type="button" class="btn btn-default">Réinitialiser</button>
-            <button type="button" class="btn btn-primary pull-right">Conclure</button>
+            <button id="btn-reinitialize" type="button" class="btn btn-default">Réinitialiser</button>
+            <button id="btn-conclude" type="button" class="btn btn-primary pull-right">Conclure</button>
+        </div>
+    </div>
+
+    <div id="modal-cash" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b class="modal-title">R&eacute;cup&eacute;rer l'argent</b>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">Montant re&ccedil;u</div>
+                        <div class="col-md-6">
+                            <input type="text" id="in-cash-received" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Montant &agrave; remettre</div>
+                        <div class="col-md-6">
+                            <input type="text" id="in-cash-returned" class="form-control" disabled />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-cash-ok" type="button" class="btn btn-success">OK</button>
+                </div>
+            </div>
         </div>
     </div>
 }

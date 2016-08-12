@@ -75,4 +75,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
             type: "danger"
         })
     }
+
+    /**
+     * @description Warns the user with a banner at the top right corner.
+     * @param message The message to be displayed.
+     * @type string
+     * @author Charles Levesque
+     */
+    $.notifyWarning = function (message) {
+        $.notify({
+            icon: "glyphicon glyphicon-warning",
+            message: message
+        }, {
+            type: "warning"
+        })
+    }
 })(jQuery)
