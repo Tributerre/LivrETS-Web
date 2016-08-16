@@ -104,6 +104,18 @@ namespace LivrETS.Models
 
             return $"{firstInitial}{lastInitial}{user.GeneratedNumber}";
         }
+
+        /// <summary>
+        /// Gets the LivrETS ID associated with a user, an article and a fair.
+        /// </summary>
+        /// <param name="user">A ApplicationUser from the database.</param>
+        /// <param name="article">A Article from the database.</param>
+        /// <param name="fair">A Fair from the database.</param>
+        /// <returns></returns>
+        public static string LivrETSIDOf(ApplicationUser user, Article article, Fair fair)
+        {
+            return $"{fair.LivrETSID}-{user.LivrETSID}-{article.LivrETSID}";
+        }
     }
 
     /// <summary>

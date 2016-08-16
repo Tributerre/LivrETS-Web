@@ -135,7 +135,69 @@ namespace LivrETS.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public ActionResult Retrieve()
+        {
+            var model = new RetrieveViewModel()
+            {
+                Fair = Repository.GetCurrentFair()
+            };
+
+            return View(model);
+        }
+
         #region Ajax
+
+        [HttpPost]
+        public ActionResult OffersNotSold(string UserBarCode)
+        {
+            var barCode = UserBarCode.ToUpper().Trim();
+            var user = Repository.GetUserBy(BarCode: barCode);
+            var currentFair = Repository.GetCurrentFair();
+
+            if (user == null)
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            var offersNotSold = currentFair.Offers
+                .Where(offer => !offer.Sold)
+                .Intersect(user.Offers);
+
+            return Json(
+                from offer in offersNotSold
+                select new
+                {
+                    id = TRIBSTD01Helper.LivrETSIDOf(user: user, article: offer.Article, fair: currentFair),
+                    title = offer.Article.Title,
+                    userFullName = user.FullName,
+                    price = offer.Price
+                },
+                contentType: "application/json"
+            );
+        }
+
+        [HttpPost]
+        public ActionResult RetrieveArticles(ICollection<string> ids)
+        {
+            foreach (var id in ids)
+            {
+                TRIBSTD01Helper helper;
+                try
+                {
+                    helper = new TRIBSTD01Helper(id.ToUpper().Trim());
+                }
+                catch (RegexNoMatchException ex)
+                {
+                    continue;
+                }
+
+                var offer = helper.GetOffer();
+                Repository.AttachToContext(offer);
+                offer.Article.MarkAsRetrieved();
+                Repository.Update();
+            }
+
+            return Json(new { }, contentType: "application/json");
+        }
 
         [HttpPost]
         public ActionResult ConcludeSell(ICollection<string> ids)
