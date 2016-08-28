@@ -19,37 +19,35 @@
 
 @if (Request.IsAuthenticated)
 {
-    <div class="navbar-form navbar-right">
-        <ul class="nav navbar-nav">
-            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { Id = "logoutForm" }))
-            {
-                @Html.AntiForgeryToken()
-                var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                var user = userManager.FindById(User.Identity.GetUserId());
-                <li class="dropdown">
-                    <a id="user-btn" href="#" class="btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        Bonjour @user.FirstName! <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/Account/Profile"><span class="glyphicon glyphicon-user"></span>  Profil</a></li>
-                        <li><a href="/Home/Sell"><span class="glyphicon glyphicon-usd"></span>  Vendre</a></li>
-                        @if (User.IsInRole("Administrator"))
-                        {
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/Admin/ManageUsers"><span class="glyphicon glyphicon-th-list"></span>  Utilisateurs</a></li>
-                            <li><a href="/Admin/ManageFairs"><span class="glyphicon glyphicon-book"></span>  Foires</a></li>
-                        }
+    <ul class="nav nav-header-link pull-right">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { Id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindById(User.Identity.GetUserId());
+            <li class="dropdown">
+                <a id="user-btn" href="#" class="btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    Bonjour @user.FirstName! <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/Account/Profile"><span class="glyphicon glyphicon-user"></span>  Profil</a></li>
+                    <li><a href="/Home/Sell"><span class="glyphicon glyphicon-usd"></span>  Vendre</a></li>
+                    @if (User.IsInRole("Administrator"))
+                    {
                         <li role="separator" class="divider"></li>
-                        <li><a href="#" onclick="$('#logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span>  Se d&eacute;connecter</a></li>
-                    </ul>
-                </li>
-            }
-        </ul>
-    </div>
+                        <li><a href="/Admin/ManageUsers"><span class="glyphicon glyphicon-th-list"></span>  Utilisateurs</a></li>
+                        <li><a href="/Admin/ManageFairs"><span class="glyphicon glyphicon-book"></span>  Foires</a></li>
+                    }
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#" onclick="$('#logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span>  Se d&eacute;connecter</a></li>
+                </ul>
+            </li>
+        }
+    </ul>
 }
 else
 {
-    <ul class="nav navbar-nav">
+    <ul class="nav nav-header-link pull-right">
         <li class="dropdown">
             <a id="user-btn" href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Bonjour! <span class="caret"></span>

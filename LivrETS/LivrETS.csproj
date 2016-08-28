@@ -253,6 +253,13 @@
     <Content Include=".gitignore" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\dropdowns-enhancement.css" />
+    <Content Include="Content\kytemplate\animate.min.css" />
+    <Content Include="Content\kytemplate\bootstrap-select.min.css" />
+    <Content Include="Content\kytemplate\elegant-fonts.css" />
+    <Content Include="Content\kytemplate\green.css" />
+    <Content Include="Content\kytemplate\main.css" />
+    <Content Include="Content\kytemplate\owl.carousel.css" />
+    <Content Include="Content\kytemplate\owl.transitions.css" />
     <Content Include="Content\Login.css" />
     <Content Include="Content\Uploads\Originals\24d84ce5-c2a5-4436-8879-2609d3693722-cd9a4b89-0c1b-4cc8-9c5c-eab35ef01c9a.jpg" />
     <Content Include="Content\Uploads\Originals\2c289bcb-b187-44c2-ad6a-a5413441195d-a5c744f6-32c0-48f9-a082-683ee84ebdc6.png" />
