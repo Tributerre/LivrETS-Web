@@ -43,5 +43,6 @@ namespace LivrETS.ViewModels
     public class RetrieveViewModel
     {
         public Fair Fair { get; set; }
+        public bool IsCurrentFair { get; set; }
     }
 }

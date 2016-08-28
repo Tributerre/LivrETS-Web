@@ -138,11 +138,14 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult Retrieve()
         {
+            var currentFair = Repository.GetCurrentFair();
             var model = new RetrieveViewModel()
             {
-                Fair = Repository.GetCurrentFair()
+                Fair = currentFair ?? Repository.GetLastFair(),
+                IsCurrentFair = currentFair != null
             };
 
+            Session["IsCurrentFair"] = model.IsCurrentFair;
             return View(model);
         }
 
@@ -151,16 +154,27 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult OffersNotSold(string UserBarCode)
         {
+            bool isCurrentFair = (bool)Session["IsCurrentFair"];
             var barCode = UserBarCode.ToUpper().Trim();
             var user = Repository.GetUserBy(BarCode: barCode);
-            var currentFair = Repository.GetCurrentFair();
+            var currentFair = isCurrentFair ? Repository.GetCurrentFair() : Repository.GetLastFair();
+            IEnumerable<Offer> offersNotSold;
 
             if (user == null)
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-            var offersNotSold = currentFair.Offers
-                .Where(offer => !offer.Sold)
-                .Intersect(user.Offers);
+            if (isCurrentFair)
+            {
+                offersNotSold = currentFair.Offers
+                    .Where(offer => !offer.Sold)
+                    .Intersect(user.Offers);
+            }
+            else
+            {
+                offersNotSold = currentFair.Offers
+                    .Where(offer => !offer.Sold && offer.Article.FairState != ArticleFairState.RETREIVED)
+                    .Intersect(user.Offers);
+            }
 
             return Json(
                 from offer in offersNotSold
@@ -169,7 +183,8 @@ namespace LivrETS.Controllers
                     id = TRIBSTD01Helper.LivrETSIDOf(user: user, article: offer.Article, fair: currentFair),
                     title = offer.Article.Title,
                     userFullName = user.FullName,
-                    price = offer.Price
+                    price = offer.Price,
+                    state = nameof(offer.Article.FairState)
                 },
                 contentType: "application/json"
             );
@@ -185,7 +200,7 @@ namespace LivrETS.Controllers
                 {
                     helper = new TRIBSTD01Helper(id.ToUpper().Trim());
                 }
-                catch (RegexNoMatchException ex)
+                catch (RegexNoMatchException)
                 {
                     continue;
                 }

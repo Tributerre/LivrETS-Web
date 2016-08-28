@@ -153,6 +153,21 @@ namespace LivrETS.Repositories
         }
 
         /// <summary>
+        /// Gets the last fair that has ended.
+        /// </summary>
+        /// <returns>A Fair or null if not found.</returns>
+        public Fair GetLastFair()
+        {
+            var now = DateTime.Now;
+            return (
+                from fair in _db.Fairs
+                where fair.EndDate < now
+                orderby fair.EndDate descending
+                select fair
+            ).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Gets a user.
         /// </summary>
         /// <param name="BarCode">The bar code of the user to retrieve.</param>

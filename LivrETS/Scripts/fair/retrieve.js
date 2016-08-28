@@ -21,29 +21,20 @@ $(document).ready(function () {
     })
 
     $("#btn-retrieve").on("click", function () {
-        var ids = $.map($("#articles-table").find(".article-livretsid"), function (element) {
-            return element.innerText.toUpperCase().trim()
-        })
-
-        $.ajax({
-            method: "POST",
-            url: "/Fair/RetrieveArticles",
-            dataType: "json",
-            data: {
-                ids: ids
-            },
-            success: function () {
-                setTimeout(function () {
-                    window.location.reload(true)
-                }, 0001)
-            },
-            statusCode: {
-                500: function () {
-                    $.notifyError("Une erreur est survenue. Svp réessayer.")
-                }
-            }
-        })
+        if (IsCurrentFair) {
+            retreiveArticles()
+        } else {
+            $("modal-cash").modal("show")
+        }
     })
+
+    $("#btn-cash-ok").on("click", function () {
+        if ($("#modal-cash").is(":visible")) {
+            $("modal-cash").modal("hide")
+        }
+
+        retreiveArticles()
+    });
 
     $("#in-barcode").on("keyup", function (event) {
         if (event.keyCode == 13) {  // Enter
@@ -70,6 +61,8 @@ $(document).ready(function () {
                                 $("<td>").text(value["userFullName"])
                             ).append(
                                 $("<td>").text(value["price"])
+                            ).append(
+                                $("<td>").text(value["state"])
                             )
 
                         $("#articles-table>tbody").append(tr)
@@ -87,3 +80,28 @@ $(document).ready(function () {
         }
     })
 })
+
+function retreiveArticles() {
+    var ids = $.map($("#articles-table").find(".article-livretsid"), function (element) {
+        return element.innerText.toUpperCase().trim()
+    })
+
+    $.ajax({
+        method: "POST",
+        url: "/Fair/RetrieveArticles",
+        dataType: "json",
+        data: {
+            ids: ids
+        },
+        success: function () {
+            setTimeout(function () {
+                window.location.reload(true)
+            }, 0001)
+        },
+        statusCode: {
+            500: function () {
+                $.notifyError("Une erreur est survenue. Svp réessayer.")
+            }
+        }
+    })
+}

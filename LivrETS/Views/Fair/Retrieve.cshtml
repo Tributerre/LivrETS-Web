@@ -22,7 +22,7 @@
     ViewBag.Title = "Récupérer";
 }
 
-@if (Model.Fair == null || Model.Fair.Phase != FairPhase.RETRIEVAL)
+@if (Model.Fair == null || (Model.Fair.Phase != FairPhase.RETRIEVAL && Model.Fair.Phase != FairPhase.POSTFAIR))
 {
     <h2>Vous n'&ecirc;tes pas pr&eacute;sentement en p&eacute;riode de r&eacute;cup&eacute;ration =(</h2>
 }
@@ -54,6 +54,7 @@ else
                             <th>Titre</th>
                             <th>Vendeur</th>
                             <th>Prix</th>
+                            <th>&Eacute;tat</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -68,8 +69,33 @@ else
             <button id="btn-retrieve" type="button" class="btn btn-primary pull-right">R&eacute;cup&eacute;rer</button>
         </div>
     </div>
+
+    if (!Model.IsCurrentFair)
+    {
+        <div id="modal-cash" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <b class="modal-title">R&eacute;cup&eacute;rer l'argent</b>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">Montant re&ccedil;u</div>
+                            <div class="col-md-6">
+                                <input type="text" id="in-cash-received" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-cash-ok" type="button" class="btn btn-success">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 }
 
 @section Scripts {
+    <script>var IsCurrentFair = @(Model.IsCurrentFair ? "true" : "false");</script>
     <script src="~/Scripts/fair/retrieve.js"></script>
 }
