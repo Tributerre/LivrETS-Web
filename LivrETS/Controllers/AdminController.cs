@@ -104,8 +104,22 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ListUsers()
         {
-            var listRoles = _repository.GetAllRoles();
-            var listUser = _repository.GetAllUsers();
+            /*var db = new ApplicationDbContext();
+            var list_user = UserManager.Users.ToList();
+            var listRoles = (from role in db.Roles
+                             select new { Id = role.Id, Name = role.Name }).ToList();
+
+            var listUser = (from user in db.Users
+                            orderby user.FirstName descending
+                            select new
+                            {
+                                user = user,
+                                role = user.Roles.Join(db.Roles, userRole => userRole.RoleId, role => role.Id, (userRole, role) => role).Select(role => role.Name)
+                            }).ToList();
+            db.Dispose();*/
+            var listRoles = Repository.GetAllRoles();
+            
+            var listUser = Repository.GetAllUsers();
 
             return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, contentType: "application/json");
         }
@@ -115,9 +129,9 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ListFairs()
         {
-            var ListFairs = _repository.GetAllFairs();
+            var listFairs = Repository.GetAllFairs();
 
-            return Json(new { ListFairs }, contentType: "application/json");
+            return Json(new { listFairs }, contentType: "application/json");
         }
 
         // PUT: /Admin/ChangeUserRole

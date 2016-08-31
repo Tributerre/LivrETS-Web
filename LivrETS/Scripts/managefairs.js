@@ -25,7 +25,7 @@ $(document).ready(function () {
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
-
+                //console.log(val)
                 return val.listFairs
             }
         },

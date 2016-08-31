@@ -56,8 +56,10 @@ namespace LivrETS.Repositories
         /// <returns>The roles or null if not found.</returns>
         public Object GetAllRoles()
         {
-            return (from role in _db.Roles
-                    select new { Id = role.Id, Name = role.Name });
+            var List = (from role in _db.Roles
+                    select role).ToList();
+
+            return List;
         }
 
         /// <summary>
@@ -67,13 +69,14 @@ namespace LivrETS.Repositories
         public Object GetAllUsers()
         {
 
-            return (from user in _db.Users
+            var list = (from user in _db.Users
                             orderby user.FirstName descending
                             select new
                             {
                                 user = user,
                                 role = user.Roles.Join(_db.Roles, userRole => userRole.RoleId, role => role.Id, (userRole, role) => role).Select(role => role.Name)
-                            });
+                            }).ToList();
+            return list;
         }
 
         /// <summary>
