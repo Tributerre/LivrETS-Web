@@ -77,7 +77,7 @@ $(document).ready(function () {
                         }
                     }
 
-                    //html += "<li><input type='radio' id='User' name='UserRole' value='User'><label for='User'>User</label></li>";
+                    html += "<li><input type='radio' id='User' name='UserRole' value='User'><label for='User'>User</label></li>";
                     html += "</ul>";
                     html += "</div>";
                     return html;
