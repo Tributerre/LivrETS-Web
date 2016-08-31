@@ -42,6 +42,8 @@ $(document).ready(function () {
                 data: function (val) {
                     if (currentId != val.user.Id) {
                         return "<input type='checkbox' name='check-select-user-for-action' data-user-id='" + val.user.Id + "'>";
+                    } else {
+                        return "<input type='checkbox' style='visibility: hidden;'>";
                     }
                 }
             },
@@ -90,6 +92,8 @@ $(document).ready(function () {
                         return "<button type='button' class='btn-delete-user btn btn-danger btn-xs' data-user-id='" + val.user.Id + "'>" +
                             "<i class='glyphicon glyphicon-trash'></i>" +
                             "</button>"
+                    } else {
+                        return "<button type='button' style='visibility: hidden;'></button>";
                     }
                 }
             }
