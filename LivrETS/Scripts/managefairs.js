@@ -25,7 +25,6 @@ $(document).ready(function () {
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
-                //console.log(val)
                 return val.listFairs
             }
         },
@@ -52,7 +51,11 @@ $(document).ready(function () {
                 }
             },
             {
-                data: "Phase"
+                data: function (val) {
+                    var status = ["PREFAIR", "PICKING", "SALE", "RETRIEVAL", "POSTFAIR"];
+
+                    return status[val.Phase];
+                }
             },
             {
                 class: "text-center",
