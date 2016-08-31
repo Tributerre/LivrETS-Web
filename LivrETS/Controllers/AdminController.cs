@@ -26,6 +26,7 @@ using LivrETS.Models;
 using LivrETS.ViewModels;
 using System.Net;
 using System.Web.Security;
+using LivrETS.Repositories;
 
 namespace LivrETS.Controllers
 {
@@ -78,6 +79,23 @@ namespace LivrETS.Controllers
 
             base.Dispose(disposing);
         }
+        private LivrETSRepository _repository;
+        public LivrETSRepository Repository
+        {
+            get
+            {
+                if (_repository == null)
+                {
+                    _repository = new LivrETSRepository();
+                }
+
+                return _repository;
+            }
+            private set
+            {
+                _repository = value;
+            }
+        }
 
         #region Ajax
 
@@ -86,17 +104,8 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ListUsers()
         {
-            var db = new ApplicationDbContext();
-            //var list_user = UserManager.Users.ToList();
-            var listRoles = (from role in db.Roles
-                             select new { Id = role.Id, Name = role.Name }).ToList();
-
-            var listUser = (from user in db.Users
-                            orderby user.FirstName descending
-                                select new {
-                                    user=user,
-                                    role=user.Roles.Join(db.Roles, userRole=>userRole.RoleId, role=>role.Id, (userRole, role)=>role).Select(role=>role.Name) 
-                                }).ToList();
+            var listRoles = _repository.GetAllRoles();
+            var listUser = _repository.GetAllUsers();
 
             return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, contentType: "application/json");
         }
@@ -106,14 +115,9 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ListFairs()
         {
-            var db = new ApplicationDbContext();
+            var ListFairs = _repository.GetAllFairs();
 
-            var listFairs = (from fair in db.Fairs
-                             select fair).ToList();
-
-            db.Dispose();
-
-            return Json(new { listFairs }, contentType: "application/json");
+            return Json(new { ListFairs }, contentType: "application/json");
         }
 
         // PUT: /Admin/ChangeUserRole
