@@ -111,6 +111,8 @@ namespace LivrETS.Controllers
             var listFairs = (from fair in db.Fairs
                              select fair).ToList();
 
+            db.Dispose();
+
             return Json(new { listFairs }, contentType: "application/json");
         }
 
