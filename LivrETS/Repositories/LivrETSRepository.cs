@@ -35,6 +35,8 @@ namespace LivrETS.Repositories
             _db = new ApplicationDbContext();
         }
 
+
+
         /// <summary>
         /// Returns an enumerable of all courses in the system.
         /// </summary>
@@ -46,6 +48,46 @@ namespace LivrETS.Repositories
                 orderby course.Acronym ascending
                 select course
             );
+        }
+
+        /// <summary>
+        /// Gets all the roles 
+        /// </summary>
+        /// <returns>The roles or null if not found.</returns>
+        public Object GetAllRoles()
+        {
+            var List = (from role in _db.Roles
+                    select role).ToList();
+
+            return List;
+        }
+
+        /// <summary>
+        /// Gets all the users 
+        /// </summary>
+        /// <returns>The Users or null if not found.</returns>
+        public Object GetAllUsers()
+        {
+
+            var list = (from user in _db.Users
+                            orderby user.FirstName descending
+                            select new
+                            {
+                                user = user,
+                                role = user.Roles.Join(_db.Roles, userRole => userRole.RoleId, role => role.Id, (userRole, role) => role).Select(role => role.Name)
+                            }).ToList();
+            return list;
+        }
+
+        /// <summary>
+        /// Gets all the fairs 
+        /// </summary>
+        /// <returns>The Fairs or null if not found.</returns>
+        public List<Fair> GetAllFairs()
+        {
+
+            return (from fair in _db.Fairs
+                    select fair).ToList();
         }
 
         /// <summary>
