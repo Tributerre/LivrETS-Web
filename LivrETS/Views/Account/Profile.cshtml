@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
 *@
+@using LivrETS.ViewModels
 @using LivrETS.Models
 @model ProfileViewModel
 @{
@@ -24,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 }
 
 <div class="container">
-    <h1>Votre profil... lit&eacute;ralement</h1>
+    <h1>Profil @user.FirstName @user.LastName</h1>
     <hr>
 
     @using (Html.BeginForm("Profile", "Account", FormMethod.Post, new { ReturnUrl = "/Home/Index", @class = "form-horizontal", role = "form" }))
