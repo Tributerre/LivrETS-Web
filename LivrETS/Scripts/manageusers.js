@@ -79,6 +79,7 @@ $(document).ready(function () {
                             html += "<li><a href='#' data-rolename='" + listRoles[i].Name + "' data-userid='" + val.user.Id + "' class='elt-role'>" +
                                 listRoles[i].Name + "</a></li>";
                         }
+                        
                     }
 
                     html += "<li><input type='radio' id='User' name='UserRole' value='User'><label for='User'>User</label></li>";
@@ -120,8 +121,13 @@ $(document).ready(function () {
                 UserId: $me.data("userid"),
                 NewRole: $me.data('rolename')
             }),
-            success: function () {
-                $table.ajax.reload()
+            success: function (val) {
+                $('table').append('<div>Vous avez rater</div>');
+                if (val.status) {
+                    $table.ajax.reload();
+                } else {
+                    $('table').prepend('<div>Vous avez rater</div>');
+                }
             },
             error: function (err) {
                 console.log(err);
@@ -172,7 +178,7 @@ $(document).ready(function () {
                 UserId: userId
             }),
             success: function () {
-                button.parents("tr").remove();
+                $table.ajax.reload();
                 updateDeleteSelectedView();
             },
             error: function () {
