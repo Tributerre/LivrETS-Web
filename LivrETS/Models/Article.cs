@@ -18,6 +18,9 @@ namespace LivrETS.Models
         public string Title { get; set; }
 
         [Required]
+        public double Price { get; set; }
+
+        [Required]
         public ArticleFairState FairState { get; set; }
 
         [ForeignKey(nameof(Course))]
