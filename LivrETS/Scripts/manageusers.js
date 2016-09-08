@@ -16,20 +16,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
+
+
     //Id for current user
     var currentId;
     var listRoles;
 
     //init manage users table width datables plugins
     
-    $('table').DataTable({
+    var $table = $('table').DataTable({
         processing: true,
         ajax: {
             url: "/Admin/ListUsers",
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
-                console.log(val)
                 currentId = val.current_id;
                 listRoles = val.listRoles;
 
@@ -119,7 +120,9 @@ $(document).ready(function () {
                 UserId: $me.data("userid"),
                 NewRole: $me.data('rolename')
             }),
-            success: function () { },
+            success: function () {
+                $table.ajax.reload()
+            },
             error: function (err) {
                 console.log(err);
                 $("#error-message").text("Une erreur est survenue lors du changement de privilège.");
