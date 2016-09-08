@@ -16,20 +16,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
+
+
     //Id for current user
     var currentId;
     var listRoles;
 
     //init manage users table width datables plugins
     
-    $('table').DataTable({
+    var $table = $('table').DataTable({
         processing: true,
         ajax: {
             url: "/Admin/ListUsers",
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
-                console.log(val)
                 currentId = val.current_id;
                 listRoles = val.listRoles;
 
@@ -78,6 +79,7 @@ $(document).ready(function () {
                             html += "<li><a href='#' data-rolename='" + listRoles[i].Name + "' data-userid='" + val.user.Id + "' class='elt-role'>" +
                                 listRoles[i].Name + "</a></li>";
                         }
+                        
                     }
 
                     html += "<li><input type='radio' id='User' name='UserRole' value='User'><label for='User'>User</label></li>";
@@ -119,7 +121,14 @@ $(document).ready(function () {
                 UserId: $me.data("userid"),
                 NewRole: $me.data('rolename')
             }),
-            success: function () { },
+            success: function (val) {
+                $('table').append('<div>Vous avez rater</div>');
+                if (val.status) {
+                    $table.ajax.reload();
+                } else {
+                    $('table').prepend('<div>Vous avez rater</div>');
+                }
+            },
             error: function (err) {
                 console.log(err);
                 $("#error-message").text("Une erreur est survenue lors du changement de privilège.");
@@ -169,7 +178,7 @@ $(document).ready(function () {
                 UserId: userId
             }),
             success: function () {
-                button.parents("tr").remove();
+                $table.ajax.reload();
                 updateDeleteSelectedView();
             },
             error: function () {
