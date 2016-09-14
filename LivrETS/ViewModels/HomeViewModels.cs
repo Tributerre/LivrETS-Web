@@ -58,6 +58,10 @@ namespace LivrETS.ViewModels
         [Display(Name = "Titre de l'article")]
         public string Title { get; set; }
 
+        [Required(ErrorMessage = "Veuillez indiquer un prix à votre offre.")]
+        [Display(Name = "Prix de l'article")]
+        public double Price { get; set; }
+
         [Required(ErrorMessage = "Veuillez choisir un cours ou «Non Applicable»")]
         [Display(Name = "Cours")]
         public string Acronym { get; set; }

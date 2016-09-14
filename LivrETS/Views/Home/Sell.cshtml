@@ -157,6 +157,22 @@
 
         <br />
 
+        <!-- START Price -->
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Price, new { @class = "control-label" })
+            </div>
+            <div class="col-md-7">
+                @Html.TextBoxFor(model => model.Price, new { @class = "form-control", placeholder = "Ex: 12.99", ariaDescribedby = "basic-addon2" })
+            </div>
+            <div class="col-md-12">
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!-- END Price -->
+
+        <br />
+
         <!-- START Condition -->
         <div class="row">
             <div class="col-md-12">
