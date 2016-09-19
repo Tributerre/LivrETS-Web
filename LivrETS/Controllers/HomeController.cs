@@ -123,7 +123,7 @@ namespace LivrETS.Controllers
                         {
                             Course = course,
                             Title = model.Title,
-                            SubTitle = "Sample Subtitle",  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
+                            SubTitle = model.SubTitle,  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
                             BarCode = model.ISBN
                         };
                         break;
@@ -142,11 +142,11 @@ namespace LivrETS.Controllers
                 {
                     StartDate = now,
                     MarkedSoldOn = now,
-                    Price = 0f,  // FIXME: No elements for this in the view. Weird.
+                    Price = model.Price,  // FIXME: No elements for this in the view. Weird.
                     Condition = model.Condition,
                     Article = newArticle,
                     ManagedByFair = false,
-                    Title = "Sample Title"  // FIXME: No elements for this in the view. Weird.
+                    Title = model.Title  // FIXME: No elements for this in the view. Weird.
                 };
 
                 if (model.ForNextFair)
