@@ -1,0 +1,235 @@
+/*===================================================================================*/
+/*  Green Color
+/*===================================================================================*/
+.primary-color {
+  color: #629c49;
+}
+.primary-color-fill {
+  fill: #629c49;
+}
+.logo-fill-1 {
+  fill: #619b49;
+}
+.logo-fill-2 {
+  fill: #6faf54;
+}
+.logo-fill-3 {
+  fill: #b0d3a1;
+}
+a,
+a:hover,
+a:focus,
+a:active {
+  color: #629c49;
+}
+::-moz-selection {
+  background-color: #629c49;
+}
+::selection {
+  background-color: #629c49;
+}
+.content-404 .info-404 h1 {
+  color: #629c49;
+}
+.content-404 .info-404 .primary-link {
+  color: #629c49;
+}
+.table-cart-summary .unit-price {
+  color: #629c49;
+}
+.table-cart-summary .final-total .final-total-value {
+  color: #629c49;
+}
+.order-box .btn-wishlist {
+  color: #629c49;
+}
+.order-box .selectpicker {
+  border-color: #629c49;
+}
+.order-box .selectpicker .caret {
+  color: #629c49;
+}
+.block-reinsurance .reinsurance-item {
+  background-color: #cde3c4;
+}
+.block-reinsurance .reinsurance-item .reinsurance-image-container .reinsurance-icon {
+  color: #629c49;
+}
+.block-reinsurance .reinsurance-item:nth-child(even) {
+  /*background-color: #bbdea2;*/
+  background-color: #bbd9ae;
+}
+.quoter .name {
+  color: #629c49;
+}
+.videos-section .section-title {
+  color: #629c49;
+}
+.order-steps > li:before {
+  background-color: #629c49;
+}
+.order-steps > li:after {
+  border-top: 2px solid #629c49;
+}
+.footer .module .module-header .module-title {
+  color: #629c49;
+}
+.footer address strong {
+  color: #629c49;
+}
+.footer .btn {
+  color: #629c49;
+}
+.footer .list-link > li > a:before {
+  background-color: #629c49;
+}
+.footer .navbar-footer {
+  background-color: #629c49;
+  color: #FFF;
+}
+.footer .navbar-footer .nav > li > a:hover {
+  background-color: #5e9546;
+}
+.sidebar .view-switcher li.active > a {
+  color: #629c49;
+}
+.sidebar .sidebar-sort .btn {
+  border-color: #629c49;
+}
+.btn-primary-light {
+  background-color: #91c27c;
+}
+.btn-primary-very-light {
+  background-color: #b1d4a3;
+}
+.primary {
+  color: #629c49;
+}
+.btn-primary {
+  background-color: #629c49;
+  border-color: #5e9546;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #578b41;
+  border-color: #53843e;
+}
+/*.dropdown-toggle.btn-primary{
+	background-color: @primary-color;
+	border-color: darken(@primary-color, 2%);
+}*/
+.list-kybully > li:before {
+  background-color: #b1d4a3;
+}
+.pagination > li.active > a,
+.pagination > li.active > span {
+  border-color: #629c49;
+  color: #629c49;
+}
+.pagination > li.active > a:hover,
+.pagination > li.active > span:hover,
+.pagination > li.active > a:active,
+.pagination > li.active > span:active,
+.pagination > li.active > a:focus,
+.pagination > li.active > span:focus {
+  background-color: #629c49;
+  border-color: #629c49;
+}
+.header {
+  border-top: 5px solid #629c49;
+}
+.header .nav-header-link > li > a,
+.header .nav-header-link > li > a:hover,
+.header .nav-header-link > li > a:focus,
+.header .nav-header-link > li > a:active {
+  color: #3d612d;
+}
+.header .nav-header-link > li:after {
+  border-right: 3px solid #91c27c;
+}
+.header .nav-header-link .total-cart-amount {
+  color: #629c49;
+}
+.header .btn-shopping-cart {
+  background-color: #629c49;
+  color: #FFF;
+}
+.header .navbar-primary {
+  background-color: #629c49;
+  color: #FFF;
+}
+.header .navbar-primary .nav > li > a:hover,
+.header .navbar-primary .nav > li > a:focus,
+.header .navbar-primary .nav > li > a:active {
+  background-color: #5e9546;
+  border-top: 5px solid #53843e;
+}
+.header .navbar-primary .nav > li > .dropdown-menu {
+  background-color: #5e9546;
+}
+.header .navbar-primary .nav > li > .dropdown-menu > li > a:hover {
+  background-color: #53843e;
+}
+.header .navbar-primary .nav .open > a,
+.header .navbar-primary .nav .open > a:hover,
+.header .navbar-primary .nav .open > a:focus,
+.header .navbar-primary .nav .open > a:active {
+  background-color: #5e9546;
+  border-top: 5px solid #53843e;
+}
+.slider-track {
+  background-color: #629c49;
+}
+.yamm .menu-items > li:before {
+  background-color: #b1d4a3;
+}
+.primary-text-bg {
+  background-color: #629c49;
+  color: #FFF;
+}
+.highlight-navbar-primary-link {
+  background-color: #5e9546;
+  border-top: 5px solid #53843e;
+}
+.checkbox.primary .icons,
+.radio.primary .icons {
+  color: #629c49;
+}
+#owl-main .owl-controls .owl-pagination .owl-page:active span,
+#owl-main .owl-controls .owl-pagination .owl-page:hover span {
+  background: #629c49;
+}
+.owl-prev,
+.owl-next {
+  background: #629c49;
+}
+.home-page-carousel .owl-controls .owl-pagination .owl-page span:hover,
+.home-page-carousel .owl-controls .owl-pagination .owl-page.active span {
+  background: #629c49;
+}
+.cart-modal-content .modal-header .modal-title .icon {
+  color: #629c49;
+}
+.cart-modal-content .modal-body h4 {
+  color: #629c49;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+  background: #629c49;
+  border: 1px solid #91c27c;
+}
+.block-search .input-group .form-control {
+  background: #b1d4a3;
+  border: #b1d4a3;
+}
+.header .navbar-primary {
+  border-bottom: 1px solid #3d612d;
+}
+.table-cart-summary .cart-item-quantity .btn:hover,
+.table-cart-summary .cart-item-quantity .btn:focus {
+  color: #629c49;
+}
