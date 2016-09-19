@@ -123,7 +123,7 @@ namespace LivrETS.Controllers
                         {
                             Course = course,
                             Title = model.Title,
-                            SubTitle = model.SubTitle,  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
+                            SubTitle = "Sample Subtitle",  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
                             BarCode = model.ISBN
                         };
                         break;
