@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using LivrETS.Models;
+using LivrETS.ViewModels;
 
 namespace LivrETS.Repositories
 {
@@ -113,6 +114,17 @@ namespace LivrETS.Repositories
             Course course = new Course() { Acronym = acronym, Title = title };
             _db.Courses.Add(course);
             _db.SaveChanges();
+        }
+
+        /// <summary>
+        /// Gets all the offers 
+        /// </summary>
+        /// <returns>The offers or null if not found.</returns>
+        public Object GetAllOffers()
+        {
+            return (from offer in _db.Offers
+                        select offer
+                    ).ToList();
         }
 
         /// <summary>

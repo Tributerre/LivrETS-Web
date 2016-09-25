@@ -56,6 +56,7 @@ namespace LivrETS.Controllers
 
         public HomeController(LivrETSRepository livretsRepository)
         {
+            
             Repository = livretsRepository;
         }
 
@@ -63,6 +64,7 @@ namespace LivrETS.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
+            ViewBag.ListOffer = Repository.GetAllOffers();
             return View();
         }
 

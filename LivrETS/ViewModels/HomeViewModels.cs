@@ -70,7 +70,7 @@ namespace LivrETS.ViewModels
         [Required(ErrorMessage = "Veuillez choisir un cours ou «Non Applicable»")]
         [Display(Name = "Cours")]
         public string Acronym { get; set; }
-        
+
         [Required(ErrorMessage = "Veuillez indiquer la condition de l'article.")]
         public string Condition { get; set; }
 
