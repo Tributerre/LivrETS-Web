@@ -216,13 +216,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\HomeHelpers.cs" />
     <Compile Include="Migrations\201607030820353_initial.cs" />
     <Compile Include="Migrations\201607030820353_initial.Designer.cs">
       <DependentUpon>201607030820353_initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201607121935210_second.cs" />
-    <Compile Include="Migrations\201607121935210_second.Designer.cs">
-      <DependentUpon>201607121935210_second.cs</DependentUpon>
+    <Compile Include="Migrations\201609262319142_second.cs" />
+    <Compile Include="Migrations\201609262319142_second.Designer.cs">
+      <DependentUpon>201609262319142_second.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -253,7 +254,23 @@
     <Content Include=".gitignore" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\dropdowns-enhancement.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\font-awesome\HELP-US-OUT.txt" />
+    <Content Include="Content\fonts\ElegantIcons.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Login.css" />
+    <Content Include="Content\template\animate.min.css" />
+    <Content Include="Content\template\bootstrap-select.min.css" />
+    <Content Include="Content\template\bootstrap-theme.min.css" />
+    <Content Include="Content\template\bootstrap.min.css" />
+    <Content Include="Content\template\carousel.css" />
+    <Content Include="Content\template\green.css" />
+    <Content Include="Content\template\images\grabbing.png" />
+    <Content Include="Content\template\main.css" />
+    <Content Include="Content\template\owl.carousel.css" />
+    <Content Include="Content\template\owl.transitions.css" />
     <Content Include="Content\Uploads\Originals\24d84ce5-c2a5-4436-8879-2609d3693722-cd9a4b89-0c1b-4cc8-9c5c-eab35ef01c9a.jpg" />
     <Content Include="Content\Uploads\Originals\2c289bcb-b187-44c2-ad6a-a5413441195d-a5c744f6-32c0-48f9-a082-683ee84ebdc6.png" />
     <Content Include="Content\Uploads\Originals\2c289bcb-b187-44c2-ad6a-a5413441195d-d94abb49-4534-48c4-b5e5-78b7702bbceb.jpg" />
@@ -275,6 +292,18 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\student_card_example.jpg" />
     <Content Include="packages.config" />
+    <Content Include="Content\template\bootstrap-theme.css.map" />
+    <Content Include="Content\fonts\ElegantIcons.eot" />
+    <Content Include="Content\fonts\ElegantIcons.ttf" />
+    <Content Include="Content\fonts\ElegantIcons.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\livrets - Web Deploy %282%29.pubxml" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-notify.min.js" />
@@ -336,8 +365,8 @@
     <EmbeddedResource Include="Migrations\201607030820353_initial.resx">
       <DependentUpon>201607030820353_initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607121935210_second.resx">
-      <DependentUpon>201607121935210_second.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609262319142_second.resx">
+      <DependentUpon>201609262319142_second.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

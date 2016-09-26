@@ -19,44 +19,34 @@
 
 @if (Request.IsAuthenticated)
 {
-    <div class="navbar-form navbar-right">
-        <ul class="nav navbar-nav">
+
+        <div class="dropdown">
             @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { Id = "logoutForm" }))
             {
                 @Html.AntiForgeryToken()
                 var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var user = userManager.FindById(User.Identity.GetUserId());
-                <li class="dropdown">
-                    <a id="user-btn" href="#" class="btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        Bonjour @user.FirstName! <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/Account/Profile"><span class="glyphicon glyphicon-user"></span>  Profil</a></li>
-                        <li><a href="/Home/Sell"><span class="glyphicon glyphicon-usd"></span>  Vendre</a></li>
-                        @if (User.IsInRole("Administrator"))
-                        {
+
+                <a id="user-btn" href="#" class="btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    Bonjour @user.FirstName! <span class="caret"></span>
+                </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Account/Profile"><span class="glyphicon glyphicon-user"></span>  Profil</a></li>
+                            <li><a href="/Home/Sell"><span class="glyphicon glyphicon-usd"></span>  Vendre</a></li>
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/Admin/ManageUsers"><span class="glyphicon glyphicon-th-list"></span>  Utilisateurs</a></li>
+                                <li><a href="/Admin/ManageFairs"><span class="glyphicon glyphicon-book"></span>  Foires</a></li>
+                            }
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Admin/ManageUsers"><span class="glyphicon glyphicon-th-list"></span>  Utilisateurs</a></li>
-                            <li><a href="/Admin/ManageFairs"><span class="glyphicon glyphicon-book"></span>  Foires</a></li>
-                        }
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#" onclick="$('#logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span>  Se d&eacute;connecter</a></li>
-                    </ul>
-                </li>
+                            <li><a href="#" onclick="$('#logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span>  Se d&eacute;connecter</a></li>
+                        </ul>
             }
-        </ul>
-    </div>
-}
-else
-{
-    <ul class="nav navbar-nav">
-        <li class="dropdown">
-            <a id="user-btn" href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Bonjour! <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="/Account/Login"><span class="glyphicon glyphicon-log-in"></span>  Se connecter</a></li>
-            </ul>
-        </li>
-    </ul>
-}
+        </div>
+
+        }
+        else
+        {
+        <a href="/Account/Login">connexion</a>
+        }

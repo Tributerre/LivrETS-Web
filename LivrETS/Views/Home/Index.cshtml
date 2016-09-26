@@ -15,6 +15,192 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses
 *@
+
+@using LivrETS.Models
+@using LivrETS.Helpers
 @{
     ViewData["Title"] = "Accueil";
+    List <Offer> ListOffer = ViewBag.ListOffer;
 }
+@section Styles{
+    <link rel="stylesheet" href="@Url.Content("~/Content/template/elegant-fonts.css")">
+}
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <!-- ========================================================= CONTENT ============================================================= -->
+            <div class="col-md-9 col-md-push-3">
+                <div class="featured-product margin-top-40">
+
+                </div><!-- /.featured-product -->
+                <section id="category-products">
+                    
+                    <div class="page-section wow fadeInUp">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="grid">
+                                <div class="row">
+
+                                    @foreach (Offer item in ListOffer)
+                                    {
+                                        <div class="product-item-column col-md-4 col-sm-4 col-xs-12 col-lg-4">
+                                            <div class="product-item-grid-view">
+                                                <div class="product-item">
+                                                    <div class="product-image">
+                                                        <a href="detail.html">
+                                                            <img src="@HomeHelpers.ImgArticleHelper(item.Images)" data-echo="@HomeHelpers.ImgArticleHelper(item.Images)" width="262" height="202" alt="Product" class="center-block img-responsive">
+                                                        </a>
+                                                    </div><!-- /.product-image -->
+                                                    <div class="product-detail text-md-center">
+                                                        <h3 class="product-name"><a href="detail.html">@item.Title</a></h3>
+                                                    
+                                                        <p class="product-price">
+                                                            <span class="price">$@item.Price</span>&nbsp;&nbsp;&nbsp;
+                                                            <a href="#"><span class="fa fa-shopping-basket"></span></a>
+                                                        </p>
+                                                    </div><!-- /.product-detail -->
+                                                </div><!-- /.product-item -->
+                                            </div><!-- /.product-item-grid-view -->
+                                        </div><!-- /.product-item-column -->
+                                    }
+
+                                </div><!-- /.row -->
+                            </div><!-- /.tab-pane -->
+
+                            <div class="tab-pane" id="list">
+                                <div class="row">
+                                    <div class="product-item-list-view">
+
+                                        @foreach (Offer item in ListOffer)
+                                        {
+                                            <div class="row product-item">
+                                                <div class="col-md-4 col-sm-4">
+                                                    <a href="detail.html">
+                                                        <img src="@HomeHelpers.ImgArticleHelper(item.Images)" data-echo="@HomeHelpers.ImgArticleHelper(item.Images)" width="262" height="202" alt="Product" class="center-block img-responsive">
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-8 col-sm-8 text-md-center">
+                                                    <div class="product-detail">
+                                                        <h3 class="media-heading product-name"><a href="detail.html">@item.Title</a></h3>
+                                                        <p class="product-price"><span class="price">@item.Price</span></p>
+                                                        <p class="product-description">@item.Article.FairState</p>
+                                                    </div><!-- /.product-detail -->
+                                                    <div class="product-actions">
+                                                        <div class="btn-group">
+                                                            <a href="cart.html" class="btn btn-secondary strong uppercase btn-add-to-cart"><span class="fa fa-shopping-basket"></span></a>
+                                                        </div>
+
+                                                    </div><!-- /.product-actions -->
+                                                </div><!-- /.col -->
+                                            </div><!-- /.product-item -->
+                                        }
+                                        
+                                    </div><!-- /.product-item-grid-view -->
+                                </div><!-- /.row-->
+                            </div><!-- /.tab-pane -->
+                        </div><!-- /.tab-content -->
+                    </div><!-- /.page-section -->
+                    <div class="page-section clearfix">
+                        <ul class="pagination">
+                            <li><a href="#">&laquo;</a></li>
+                            <li><a href="#">1</a></li>
+                            <li class="active"><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#">&raquo;</a></li>
+                        </ul><!-- /.pagination -->
+                    </div><!-- /.page-section-->
+                </section><!-- /#category-products -->
+            </div><!-- /.col-md-9 -->
+            <!-- ========================================= CONTENT : END ========================================= -->
+            <!-- ========================================= SIDEBAR ========================================= -->
+            <div class="col-md-3 col-md-pull-9">
+                <aside class="sidebar row">
+                    <div class="sidebar-section col-sm-4 col-xs-4 col-md-12 col-lg-12">
+                        <h4 class="sidebar-title">Affichage</h4>
+                        <ul class="nav nav-tabs view-switcher" role="tablist" id="myTab">
+                            <li class="active"><a href="#grid" role="tab" data-toggle="tab"> <span class="glyphicon glyphicon-th"></span></a></li>
+                            <li><a href="#list" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span></a></li>
+                        </ul><!-- /.nav -->
+                    </div><!-- /.sidebar section -->
+                    <div class="sidebar-section col-sm-8 col-xs-8 col-md-12 col-lg-12">
+                        <h4 class="sidebar-title text-md-center">Trier</h4>
+                        <div class="text-md-center">
+                            <select name="sort-by" id="sort-by" class="selectpicker sidebar-sort">
+                                <option value="1">Date de poste de l'article</option>
+                                <option value="1">Prix</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="sidebar-section col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <h4 class="sidebar-title text-mute text-md-center">Filtrer</h4>
+                        <section class="category">
+                            <h4 class="sidebar-title text-md-center">Category</h4>
+                            <ul class="list-checkbox list-unstyled text-md-center">
+                                <li><label class="checkbox"><input type="checkbox"> Livre</label></li>
+                                <li><label class="checkbox"><input type="checkbox"> Note de cours</label></li>
+                                <li><label class="checkbox"><input type="checkbox"> Calculatrice</label></li>
+                            </ul><!-- /.list-checkbox -->
+                        </section><!-- /.category -->
+                        <section class="price">
+                            <h4 class="sidebar-title text-md-center">Price</h4>
+                            <input type="text" class="slider" value="" data-slider-min="0" data-slider-max="20" data-slider-step="5" data-slider-value="10" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="hide">
+                        </section><!-- /.price -->
+                    </div><!-- /.section-section  -->
+                </aside><!-- /.sidebar -->
+            </div><!-- /.col-md-3 -->
+            <!-- ========================================= SIDEBAR : END ========================================= -->
+        </div><!-- /.row -->
+        <div class="row related-pets-section">
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                <div class="section-info">
+                    <h3 class="section-title text-md-center">Articles vus</h3>
+                    <p class="section-subtitle text-md-center">Retrouver des articles que vous avez deja vus.</p>
+                    <div class="controls clearfix hidden-xs hidden-sm">
+                        <a href="#" data-target="#relate-items-carousel" class="btn btn-primary pull-left owl-prev"><span data-icon="&#x23;"></span></a>
+                        <a href="#" data-target="#relate-items-carousel" class="btn btn-primary pull-right owl-next"><span data-icon="&#x24;"></span></a>
+                    </div><!-- /.controls -->
+                </div><!-- /.section-info -->
+            </div><!-- /.col -->
+            <div class="col-md-9 col-sm-9 col-xs-12">
+                <div class="row">
+                    <div class="col-xs-2 col-sm-2 hidden-md hidden-lg no-padding">
+                        <div class="controls text-right">
+                            <a href="#" data-target="#relate-items-carousel" class="btn btn-primary owl-prev"><span data-icon="&#x23;"></span></a>
+                        </div><!-- /.controls -->
+                    </div><!-- /.col -->
+                    <div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
+                        <div id="relate-items-carousel" class="grid-view home-owl-carousel">
+
+                            @foreach (Offer item in ListOffer)
+                            {
+                                <div class="product-item-column">
+                                    <div class="product-item-grid-view">
+                                        <div class="product-item">
+                                            <div class="product-image">
+                                                <a href="detail.html">
+                                                    <img src="@HomeHelpers.ImgArticleHelper(item.Images)" data-echo="@HomeHelpers.ImgArticleHelper(item.Images)" width="262" height="202" alt="Product" class="center-block img-responsive">
+                                                </a>
+                                            </div><!-- /.product-image -->
+                                            <div class="product-detail text-md-center">
+                                                <h3 class="product-name"><a href="detail.html">@item.Title</a></h3>
+                                                <p class="product-price"><span class="price">$@item.Price</span></p>
+                                            </div><!-- /.product-detail -->
+                                        </div><!-- /.product-item -->
+                                    </div><!-- /.product-item-grid-view -->
+                                </div><!-- /.product-item-column -->
+                            }
+
+                        </div><!-- /#recent-items-carousel -->
+                    </div><!-- /.col -->
+                    <div class="col-xs-2 col-sm-2 hidden-md hidden-lg no-padding">
+                        <div class="controls text-left">
+                            <a href="#" data-target="#relate-items-carousel" class="btn btn-primary owl-next"><span data-icon="&#x24;"></span></a>
+                        </div><!-- /.controls -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</div><!-- /.content -->
