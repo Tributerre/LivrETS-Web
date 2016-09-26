@@ -17,6 +17,10 @@ namespace LivrETS.Models
         [MaxLength(256)]
         public string Title { get; set; }
 
+        /*[Required]
+        [MaxLength(256)]
+        public string SubTitle { get; set; }*/
+
         [Required]
         public double Price { get; set; }
 

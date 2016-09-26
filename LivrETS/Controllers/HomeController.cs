@@ -56,6 +56,7 @@ namespace LivrETS.Controllers
 
         public HomeController(LivrETSRepository livretsRepository)
         {
+            
             Repository = livretsRepository;
         }
 
@@ -63,6 +64,7 @@ namespace LivrETS.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
+            ViewBag.ListOffer = Repository.GetAllOffers();
             return View();
         }
 
@@ -142,11 +144,11 @@ namespace LivrETS.Controllers
                 {
                     StartDate = now,
                     MarkedSoldOn = now,
-                    Price = 0f,  // FIXME: No elements for this in the view. Weird.
+                    Price = model.Price,  // FIXME: No elements for this in the view. Weird.
                     Condition = model.Condition,
                     Article = newArticle,
                     ManagedByFair = false,
-                    Title = "Sample Title"  // FIXME: No elements for this in the view. Weird.
+                    Title = model.Title  // FIXME: No elements for this in the view. Weird.
                 };
 
                 if (model.ForNextFair)
