@@ -62,17 +62,7 @@
         
 
         @Html.Partial("_footer")
-
-        <script src="https://code.jquery.com/jquery-2.2.3.min.js"
-                integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-        <script src="~/Scripts/moment.min.js"></script>
-        <script src="~/Scripts/moment-fr-ca.js"></script>
-        <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
-        <script src="~/Scripts/dropdowns-enhancement.js"></script>
-        <script src="~/Scripts/material.spinner.min.js"></script>
-        <script src="~/Scripts/bootstrap-notify.min.js"></script>
+    </div>
 
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"
             integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
@@ -84,9 +74,6 @@
     <script src="~/Scripts/dropdowns-enhancement.js"></script>
     <script src="~/Scripts/material.spinner.min.js"></script>
     <script src="~/Scripts/bootstrap-notify.min.js"></script>
-    <script src="~/Scripts/site.js"></script>
-    @RenderSection("scripts", required: false)
-    <!-- JavaScripts placed at the end of the document so the pages load faster -->
 
     <script src="~/Scripts/template/bootstrap-select.min.js"></script>
     <script src="~/Scripts/template/bootstrap-hover-dropdown.min.js"></script>
@@ -97,12 +84,11 @@
     <script src="~/Scripts/template/owl.carousel.min.js"></script>
     <script src="~/Scripts/template/wow.min.js"></script>
     <script src="~/Scripts/template/scripts.js"></script>
-    <!-- For demo purposes – can be removed on production -->
 
+    <script src="~/Scripts/site.js"></script>
     <script src="@Url.Content("~/Scripts/template/switchstylesheet/switchstylesheet.js")"></script>
 
 
-    <!-- For demo purposes – can be removed on production : End -->
-        @RenderSection("scripts", required: false)
+    @RenderSection("scripts", required: false)
 </body>
 </html>

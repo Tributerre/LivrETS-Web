@@ -36,6 +36,7 @@ namespace LivrETS.Migrations
                 .Index(t => t.OfferID)
                 .Index(t => t.Sale_Id);
             
+            AddColumn("dbo.Articles", "Price", c => c.Double(nullable: false));
             AddColumn("dbo.Articles", "GeneratedNumber", c => c.Long(nullable: false, identity: true));
             AddColumn("dbo.Fairs", "CommissionOnSale", c => c.Double(nullable: false));
             AddColumn("dbo.AspNetUsers", "GeneratedNumber", c => c.Long(nullable: false, identity: true));
@@ -78,6 +79,7 @@ DEALLOCATE users
             DropColumn("dbo.AspNetUsers", "GeneratedNumber");
             DropColumn("dbo.Fairs", "CommissionOnSale");
             DropColumn("dbo.Articles", "GeneratedNumber");
+            DropColumn("dbo.Articles", "Price");
             DropTable("dbo.SaleItems");
             DropTable("dbo.Sales");
         }
