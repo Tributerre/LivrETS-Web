@@ -106,7 +106,7 @@ $(document).ready(function () {
     });
 
     // Edit fair event
-    $(".btn-edit-fair").on("click", function () {
+    $('table tbody').on("click", ".btn-edit-fair", function () {
         var fairId = $(this).attr("data-fair-id");
 
         $.ajax({
