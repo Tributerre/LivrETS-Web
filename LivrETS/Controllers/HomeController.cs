@@ -85,6 +85,12 @@ namespace LivrETS.Controllers
             return View(model);
         }
 
+        public ActionResult DetailOffer(string id)
+        {
+            Offer offer = Repository.GetOfferBy(id);
+            return View(offer);
+        }
+
         // POST: /Home/Sell
         [HttpPost]
         [ValidateAntiForgeryToken]
