@@ -87,7 +87,14 @@ namespace LivrETS.Controllers
 
         public ActionResult DetailOffer(string id)
         {
+            if(id == null)
+                throw new HttpException(404, "Page not Found");
+
             Offer offer = Repository.GetOfferBy(id);
+
+            if(offer == null)
+                throw new HttpException(404, "Page not Found");
+
             return View(offer);
         }
 

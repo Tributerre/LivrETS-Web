@@ -24,6 +24,12 @@
 }
 @section Styles{
     <link rel="stylesheet" href="@Url.Content("~/Content/template/elegant-fonts.css")">
+    <style>
+        .avatar-article{
+            width: 262px !important;
+            height: 202px !important;
+        }
+    </style>
 }
 
 <div class="content">
@@ -48,7 +54,9 @@
                                                 <div class="product-item">
                                                     <div class="product-image">
                                                         <a href="/Home/DetailOffer?id=@item.Id">
-                                                            <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" width="262" height="202" alt="Product" class="center-block img-responsive">
+                                                            <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
+                                                                 data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title" 
+                                                                 class="center-block img-responsive avatar-article">
                                                         </a>
                                                     </div><!-- /.product-image -->
                                                     <div class="product-detail text-md-center">
@@ -78,7 +86,9 @@
                                             <div class="row product-item">
                                                 <div class="col-md-4 col-sm-4">
                                                     <a href="/Home/DetailOffer?id=@item.Id">
-                                                        <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" width="262" height="202" alt="Product" class="center-block img-responsive">
+                                                        <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
+                                                             data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title" 
+                                                             class="center-block img-responsive avatar-article">
                                                     </a>
                                                 </div>
                                                 <div class="col-md-8 col-sm-8 text-md-center">
@@ -147,7 +157,9 @@
                         </section><!-- /.category -->
                         <section class="price">
                             <h4 class="sidebar-title text-md-center">Price</h4>
-                            <input type="text" class="slider" value="" data-slider-min="0" data-slider-max="20" data-slider-step="5" data-slider-value="10" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="hide">
+                            <input type="text" class="slider" value="" data-slider-min="0" data-slider-max="20" data-slider-step="5" 
+                                   data-slider-value="10" data-slider-orientation="horizontal" data-slider-selection="after" 
+                                   data-slider-tooltip="hide">
                         </section><!-- /.price -->
                     </div><!-- /.section-section  -->
                 </aside><!-- /.sidebar -->
@@ -182,7 +194,9 @@
                                         <div class="product-item">
                                             <div class="product-image">
                                                 <a href="detail.html">
-                                                    <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" width="262" height="202" alt="Product" class="center-block img-responsive">
+                                                    <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
+                                                         data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
+                                                         alt="Product" class="center-block img-responsive avatar-article">
                                                 </a>
                                             </div><!-- /.product-image -->
                                             <div class="product-detail text-md-center">
