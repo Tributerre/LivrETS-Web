@@ -19,9 +19,15 @@
 @{
     ViewBag.Title = "S'inscrire";
 }
-<h3>Vous y &ecirc;tes presque!</h3>
+@section Styles {
+    <link rel="stylesheet" href="/Content/LoginConfirmation.css" />
+}
 
-@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+<div class="container">
+    <h3>Vous y &ecirc;tes presque!</h3>
+
+@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, 
+    FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <hr />
@@ -31,55 +37,67 @@
     </div>
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <p class="text-info">
+    
+    <p class="text-info text-center">
         Vous vous &ecirc;tes connectez avec succ&egrave;s &agrave; <strong>@ViewBag.LoginProvider</strong>.
         Svp, veuillez confirmer votre inscription en remplissant les champs ci-dessous et cliquez sur le
         bouton <strong>Confirmer!</strong>
     </p>
-    <div class="form-group">
-        <div class="row">
-            @Html.LabelFor(model => model.FirstName, new { @class = "col-md-2 control-label" })
-            <div class="col-md-2">
-                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-            </div>
-
-            @Html.LabelFor(model => model.LastName, new { @class = "col-md-2 control-label" })
-            <div class="col-md-2">
+    <div class="">
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-8">
                 @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
             </div>
         </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-        <div class="row" style="margin-top: 20px;">
-            @Html.LabelFor(model => model.Email, new { @class = "col-md-2 control-label" })
-            <div class="col-md-4">
+        <div class="form-group" >
+            @Html.LabelFor(model => model.Email, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-8">
                 @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="row text-center" style="margin-top: 20px;">
-            <p>Entour&eacute; de <strong style="color: red;">rouge</strong> est l'information recherch&eacute;.</p>
-            <img class="img-rounded" width="300px" height="175px" alt="student_card_example.jpg" src="~/Images/student_card_example.jpg" />
+        <div class="form-group" >
+            
+            <div class="col-sm-offset-2 col-sm-10" id="box-card-img">
+                <p>Entour&eacute; de <strong class="text-warning">rouge</strong> est l'information recherch&eacute;.</p>
+
+                <img class="img-rounded" id="img-card" width="300px" height="175px" alt="student_card_example.jpg" src="~/Images/student_card_example.jpg" />
+            </div>
+        
             <br>
-            @Html.TextBoxFor(model => model.BarCode, new { @class = "form-control", placeholder = "Numéro du code à barres", style = "margin: 10px auto 0; float: none;" })
-            @Html.ValidationMessageFor(model => model.BarCode, "", new { @class = "text-danger", style = "margin: 10px auto 0; float: none;" })
+            @Html.LabelFor(model => model.BarCode, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-8">
+                @Html.TextBoxFor(model => model.BarCode, new { @class = "form-control", placeholder = "Numéro du code à barres"})
+                @Html.ValidationMessageFor(model => model.BarCode, "", new { @class = "text-danger" })
+            </div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="col-sm-offset-2 col-sm-8">
         <p>
-            <input type="checkbox" id="terms-checkbox"> Je confirme avoir lu et compris les <a href="#">termes et conditions d'utilisation</a> de Livr&Eacute;TS.
+            <input type="checkbox" id="terms-checkbox"> 
+            <label  for="terms-checkbox">Je confirme avoir lu et compris les <a href="#">termes et conditions d'utilisation</a> de Livr&Eacute;TS.</label>
         </p>
     </div>
 
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10 text-right">
+        <div class="col-sm-offset-2 col-sm-8">
             <button id="btn-confirm" type="button" class="btn btn-primary">Confirmer!</button>
         </div>
     </div>
 }
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

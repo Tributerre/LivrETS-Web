@@ -25,6 +25,8 @@ using LivrETS.Repositories;
 using LivrETS.Models;
 using LivrETS.Service;
 using System.Net;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace LivrETS.Controllers
 {
@@ -58,9 +60,9 @@ namespace LivrETS.Controllers
             var currentFair = Repository.GetCurrentFair();
             var currentStep = 0;
 
-            model.Fair = currentFair;
-            model.CurrentStep = currentStep;
-            model.NumberOfPhases = NUMBER_OF_STEPS;
+            model.Fair            = currentFair;
+            model.CurrentStep     = currentStep;
+            model.NumberOfPhases  = NUMBER_OF_STEPS;
             Session[CURRENT_STEP] = currentStep;
             return View(model);
         }
@@ -93,11 +95,11 @@ namespace LivrETS.Controllers
                         if (seller == null) return RedirectToAction(nameof(Pick));
 
                         Session[CURRENT_STEP] = 1;
-                        Session[SELLER] = seller.Id;
-                        model.CurrentStep = 1;
-                        model.User = seller;
-                        model.UserOffers = seller.Offers;
-                        model.FairOffers = currentFair.Offers;
+                        Session[SELLER]       = seller.Id;
+                        model.CurrentStep     = 1;
+                        model.User            = seller;
+                        model.UserOffers      = seller.Offers;
+                        model.FairOffers      = currentFair.Offers;
                         break;
 
                     case 1:
@@ -110,8 +112,8 @@ namespace LivrETS.Controllers
                             .ConvertAll(new Converter<Offer, string>(offer => offer.Id.ToString()));
 
                         Session[CURRENT_STEP] = 2;
-                        model.CurrentStep = 2;
-                        model.User = seller1;
+                        model.CurrentStep     = 2;
+                        model.User            = seller1;
                         break;
 
                     case 2:
@@ -119,11 +121,194 @@ namespace LivrETS.Controllers
                 }
             }
 
-            
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Sell()
+        {
+            SellViewModel model = new SellViewModel()
+            {
+                Fair = Repository.GetCurrentFair()
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Retrieve()
+        {
+            var model = new RetrieveViewModel()
+            {
+                Fair = Repository.GetCurrentFair()
+            };
+
             return View(model);
         }
 
         #region Ajax
+
+        [HttpPost]
+        public ActionResult OffersNotSold(string UserBarCode)
+        {
+            var barCode = UserBarCode.ToUpper().Trim();
+            var user = Repository.GetUserBy(BarCode: barCode);
+            var currentFair = Repository.GetCurrentFair();
+
+            if (user == null)
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            var offersNotSold = currentFair.Offers
+                .Where(offer => !offer.Sold)
+                .Intersect(user.Offers);
+
+            return Json(
+                from offer in offersNotSold
+                select new
+                {
+                    id = TRIBSTD01Helper.LivrETSIDOf(user: user, article: offer.Article, fair: currentFair),
+                    title = offer.Article.Title,
+                    userFullName = user.FullName,
+                    price = offer.Price
+                },
+                contentType: "application/json"
+            );
+        }
+
+        [HttpPost]
+        public ActionResult RetrieveArticles(ICollection<string> ids)
+        {
+            foreach (var id in ids)
+            {
+                TRIBSTD01Helper helper;
+                try
+                {
+                    helper = new TRIBSTD01Helper(id.ToUpper().Trim());
+                }
+                catch (RegexNoMatchException ex)
+                {
+                    continue;
+                }
+
+                var offer = helper.GetOffer();
+                Repository.AttachToContext(offer);
+                offer.Article.MarkAsRetrieved();
+                Repository.Update();
+            }
+
+            return Json(new { }, contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult ConcludeSell(ICollection<string> ids)
+        {
+            bool noMatchExists = false;
+            var fair = Repository.GetCurrentFair();
+            var seller = Repository.GetUserBy(Id: User.Identity.GetUserId());
+            var sale = new Sale()
+            {
+                Date = DateTime.Now,
+            };
+
+            var helpers = ids.ToList().ConvertAll(new Converter<string, TRIBSTD01Helper>(id =>
+            {
+                TRIBSTD01Helper helper = null;
+                try
+                {
+                    helper = new TRIBSTD01Helper(id);
+                }
+                catch (RegexNoMatchException ex)
+                {
+                    noMatchExists = true;
+                    return null;
+                }
+
+                return helper;
+            }));
+
+            if (noMatchExists)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            foreach (var helper in helpers)
+            {
+                var offer = helper.GetOffer();
+                Repository.AttachToContext(offer);
+                offer.Article.MarkAsSold();
+                offer.MarkedSoldOn = DateTime.Now;
+                sale.SaleItems.Add(new SaleItem()
+                {
+                    Offer = offer
+                });
+            }
+
+            seller.Sales.Add(sale);
+            fair.Sales.Add(sale);
+            Repository.Update();
+            return Json(new { }, contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult OfferInfo(string LivrETSID)
+        {
+            var cleanLivrETSID = LivrETSID.Trim().ToUpper();
+            TRIBSTD01Helper helper = null;
+            try
+            {
+                helper = new TRIBSTD01Helper(cleanLivrETSID);
+            }
+            catch (RegexNoMatchException ex)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
+            }
+
+            var seller = helper.GetSeller();
+            var offer = helper.GetOffer();
+
+            if (offer.Sold)
+                return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+            else
+                return Json(new
+                {
+                    id = LivrETSID,
+                    sellerFullName = $"{seller.FullName} ({seller.LivrETSID})",
+                    articleTitle = offer.Article.Title,
+                    offerPrice = offer.Price
+                }, contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult CalculatePrices(ICollection<string> LivrETSIDs)
+        {
+            double subtotal = 0;
+            double total = 0;
+            double commission = 0;
+
+            foreach (var id in LivrETSIDs)
+            {
+                TRIBSTD01Helper helper;
+                try
+                {
+                    helper = new TRIBSTD01Helper(id);
+                }
+                catch (RegexNoMatchException ex)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
+                }
+
+                subtotal += helper.GetOffer().Price;
+            }
+
+            var currentFair = Repository.GetCurrentFair();
+            commission = subtotal * currentFair.CommissionOnSale;
+            total = subtotal + commission;
+
+            return Json(new
+            {
+                commission = commission,
+                subtotal = subtotal,
+                total = total
+            }, contentType: "application/json");
+        }
 
         [HttpPost]
         public ActionResult MarkAsPicked(string ArticleId)

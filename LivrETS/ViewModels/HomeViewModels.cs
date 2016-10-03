@@ -58,10 +58,19 @@ namespace LivrETS.ViewModels
         [Display(Name = "Titre de l'article")]
         public string Title { get; set; }
 
+        /*[Required(ErrorMessage = "Veuillez indiquer un sous-titre à votre offre.")]
+        [MaxLength(256, ErrorMessage = "Maximum de 256 caractères.")]
+        [Display(Name = "Sous-titre de l'article")]
+        public string SubTitle { get; set; }*/
+
+        [Required(ErrorMessage = "Veuillez indiquer un prix à votre offre.")]
+        [Display(Name = "Prix de l'article")]
+        public float Price { get; set; }
+
         [Required(ErrorMessage = "Veuillez choisir un cours ou «Non Applicable»")]
         [Display(Name = "Cours")]
         public string Acronym { get; set; }
-        
+
         [Required(ErrorMessage = "Veuillez indiquer la condition de l'article.")]
         public string Condition { get; set; }
 

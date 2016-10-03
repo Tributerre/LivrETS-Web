@@ -17,6 +17,13 @@ namespace LivrETS.Models
         [MaxLength(256)]
         public string Title { get; set; }
 
+        /*[Required]
+        [MaxLength(256)]
+        public string SubTitle { get; set; }*/
+
+        [Required]
+        public double Price { get; set; }
+
         [Required]
         public ArticleFairState FairState { get; set; }
 
@@ -25,14 +32,14 @@ namespace LivrETS.Models
         public virtual Course Course { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long GeneratedNumber { get; }
+        public long GeneratedNumber { get; private set; }
 
         [Required]
         [MaxLength(1)]
         public readonly string ArticleCode;
 
         [NotMapped]
-        public string LivrETSID => $"{ArticleCode}{GeneratedNumber}";
+        public string LivrETSID => $"A{ArticleCode}{GeneratedNumber}";
 
         [NotMapped]
         public const string BOOK_CODE = "L";

@@ -46,12 +46,22 @@ namespace LivrETS.Models
         public string BarCode { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long GeneratedNumber { get; }
+        public long GeneratedNumber { get; private set; }
 
+        public virtual ICollection<Sale> Sales { get; set; }
         public virtual ICollection<Offer> Offers { get; set; }
 
+        [MaxLength(length: 128)]
+        public string LivrETSID { get; set; }
+
         [NotMapped]
-        public string LivrETSID => $"{FirstName[0].ToString().ToUpper()}{LastName[0].ToString().ToUpper()}{GeneratedNumber}";
+        public string FullName => $"{FirstName} {LastName}";
+
+        public ApplicationUser()
+        {
+            Sales = new List<Sale>();
+            Offers = new List<Offer>();
+        }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

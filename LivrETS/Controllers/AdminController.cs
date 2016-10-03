@@ -25,6 +25,8 @@ using Microsoft.AspNet.Identity.Owin;
 using LivrETS.Models;
 using LivrETS.ViewModels;
 using System.Net;
+using System.Web.Security;
+using LivrETS.Repositories;
 
 namespace LivrETS.Controllers
 {
@@ -56,11 +58,6 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult ManageUsers()
         {
-            using (var db = new ApplicationDbContext())
-            {
-                ViewBag.users = UserManager.Users.ToList();
-                ViewBag.roles = (from role in db.Roles select role).ToList();
-            }
             return View();
         }
 
@@ -68,10 +65,7 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult ManageFairs()
         {
-            using (var db = new ApplicationDbContext())
-            {
-                ViewBag.fairs = (from fair in db.Fairs select fair).ToList();
-            }
+           
             return View();
         }
 
@@ -85,8 +79,60 @@ namespace LivrETS.Controllers
 
             base.Dispose(disposing);
         }
+        private LivrETSRepository _repository;
+        public LivrETSRepository Repository
+        {
+            get
+            {
+                if (_repository == null)
+                {
+                    _repository = new LivrETSRepository();
+                }
+
+                return _repository;
+            }
+            private set
+            {
+                _repository = value;
+            }
+        }
 
         #region Ajax
+
+        // POST: /Admin/ListUsers
+        // List all user
+        [HttpPost]
+        public ActionResult ListUsers()
+        {
+            /*var db = new ApplicationDbContext();
+            var list_user = UserManager.Users.ToList();
+            var listRoles = (from role in db.Roles
+                             select new { Id = role.Id, Name = role.Name }).ToList();
+
+            var listUser = (from user in db.Users
+                            orderby user.FirstName descending
+                            select new
+                            {
+                                user = user,
+                                role = user.Roles.Join(db.Roles, userRole => userRole.RoleId, role => role.Id, (userRole, role) => role).Select(role => role.Name)
+                            }).ToList();
+            db.Dispose();*/
+            var listRoles = Repository.GetAllRoles();
+            
+            var listUser = Repository.GetAllUsers();
+
+            return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, contentType: "application/json");
+        }
+
+        // POST: /Admin/ListFairs
+        // List all user
+        [HttpPost]
+        public ActionResult ListFairs()
+        {
+            var listFairs = Repository.GetAllFairs();
+
+            return Json(new { listFairs }, contentType: "application/json");
+        }
 
         // PUT: /Admin/ChangeUserRole
         // Change the role of a user.
@@ -94,10 +140,12 @@ namespace LivrETS.Controllers
         public ActionResult ChangeUserRole(AjaxManageUsersViewModel model)
         {
             var user = UserManager.FindById(model.UserId);
+            bool status = false;
+            String message = null;
             
             if (user == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                message = "Modifications annulée: l'utilisateur n'existe pas";
             }
 
             // Remove from all roles just in case.
@@ -106,9 +154,11 @@ namespace LivrETS.Controllers
             if (model.NewRole != null)
             {
                 UserManager.AddToRole(user.Id, model.NewRole);
+                status = true;
+                message = "Modifications reusie";
             }
 
-            return Json(new { }, contentType: "application/json");
+            return Json(new { status=status, message=message }, contentType: "application/json");
         }
 
         // DELETE: /Admin/Delete

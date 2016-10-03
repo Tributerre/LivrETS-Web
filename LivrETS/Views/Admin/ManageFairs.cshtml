@@ -19,11 +19,16 @@
 @{
     ViewBag.Title = "Gérer les foires";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    List<Fair> fairs = ViewBag.fairs;
 }
 
 @section Styles {
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" />
+
+    <style>
+        
+    </style>
+
 }
 
 <div id="errors" class="row" hidden>
@@ -34,7 +39,8 @@
 </div>
 
 <div class="row" id="top-row">
-    <table class="table-stripped table-bordered table-hover col-md-12">
+    <div class="col-md-12">
+    <table class="table-stripped table-bordered table-hover display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>
@@ -47,23 +53,8 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var fair in fairs)
-            {
-                <tr>
-                    <td class="text-center"><input type="checkbox" name="check-select-fair" data-fair-id="@fair.Id" /></td>
-                    <td class="text-center">@fair.LivrETSID</td>
-                    <td>@fair.StartDate</td>
-                    <td>@fair.EndDate</td>
-                    <td>@fair.Phase.ToString()</td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-sm btn-primary btn-edit-fair" style="font-size: 15px;" data-fair-id="@fair.Id"><strong><span class="glyphicon glyphicon-edit"></span></strong></button>
-                        <button type="button" class="btn btn-sm btn-danger btn-delete-fair" style="font-size: 25px;" data-fair-id="@fair.Id"><strong>&times;</strong></button>
-                    </td>
-                </tr>
-            }
-        </tbody>
     </table>
+    </div>
 </div>
 
 @* Put pager here *@
@@ -183,13 +174,14 @@
 </div>
 
 @section Actions {
-    <div class="row text-center" id="div-actions">
-        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#NewFairModal">Pr&eacute;voir une foire</button>
+    <div class="pull-right" id="div-actions">
+        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#NewFairModal">Ajouter une foire</button>
     </div>
 }
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
     <script src="~/Scripts/fullcalendar-lang-fr-ca.js"></script>
     <script type="text/javascript" src="~/Scripts/managefairs.js"></script>
     <script type="text/javascript" src="~/Scripts/managefairs-calendarhandling.js"></script>

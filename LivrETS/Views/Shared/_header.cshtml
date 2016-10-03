@@ -1,0 +1,112 @@
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses
+*@
+<!-- ======================= HEADER =================================== -->
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <!--=================================LOGO=============================== -->
+                <div class="logo text-md-center">
+                    <h1>
+                        <a href="index.html">
+                            Tributerre
+                        </a>
+                    </h1>
+                </div><!-- /.logo -->
+                <!-- ============================= LOGO : END ========================== -->
+            </div><!-- /.col -->
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                <!-- ========================== SEARCH BAR=============================== -->
+                <form role="form" class="block-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search..">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary-very-light search-button" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                    </div><!-- /input-group -->
+                </form><!-- /block-search -->
+                <!-- ========================== SEARCH BAR :END ===========================-->
+            </div><!-- /.col -->
+            <div class="col-md-5 col-sm-5 col-xs-12">
+                <!-- ======================== BLOCK HEADER LINKS========================= -->
+                <div class="block-header-links">
+                    <ul class="nav nav-header-link pull-right">
+                        <li>@Html.Partial("_LoginPartial")</li>
+                    </ul><!-- /.nav-header-link -->
+                </div><!-- /.block-header-links -->
+                <!-- =================== BLOCK HEADER LINKS :END ======================== -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        <a class="btn-shopping-cart hidden-xs" href="#" data-toggle="modal" data-target=".myCart-modal-lg">
+            <img src="~/images/template/icon-cart.png" class="icon-cart" width="20" height="18" alt="Cart Icon" />
+            <span class="cart-items-count">5</span>
+        </a>
+    </div><!-- /.container -->
+    <!-- =================== NAVBAR PRIMARY ============================== -->
+    <nav class="yamm navbar navbar-primary animate-dropdown" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button id="btn-navbar-primary-collapse" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-primary-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div><!-- /.navbar-header -->
+            <div class="collapse navbar-collapse" id="navbar-primary-collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Vendre", "Sell", "Home")</li>
+
+                        if (User.IsInRole("Administrator") || User.IsInRole("Clerk"))
+                        {
+                            <li>@Html.ActionLink("Cueillir", "Pick", "Fair")</li>
+                        }
+
+                        if (User.IsInRole("Administrator"))
+                        {
+                            <li>@Html.ActionLink("Utilisateurs", "ManageUsers", "Admin")</li>
+                            <li>@Html.ActionLink("Foires", "ManageFairs", "Admin")</li>
+                        }
+                        <li>&nbsp;</li>
+                    }
+                </ul><!-- /.nav -->
+
+                <div class="navbar-right user-options">
+                    <div class="btn-group">
+                        <button data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle btn btn-primary-very-light navbar-btn">USD <b class="caret"></b></button>
+                        <!--<ul class="dropdown-menu">
+                            <li><a href="#">EUR</a></li>
+                            <li><a href="#">INR</a></li>
+                        </ul>-->
+                    </div><!-- /.btn-group -->
+                    <div class="btn-group">
+                        <button data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle btn btn-primary-very-light navbar-btn">FR <b class="caret"></b></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">EN</a></li>
+                        </ul><!-- /.dropdown-menu -->
+                    </div><!-- /.btn-group -->
+                </div><!-- /.navbar-right -->
+            </div><!-- /.collapse navbar-collapse -->
+        </div><!-- /.container -->
+    </nav><!-- /.yamm -->
+    <!-- =================== NAVBAR PRIMARY :END ============================== -->
+</header><!-- /.header -->
+<!-- =================== HEADER :END ============================== -->

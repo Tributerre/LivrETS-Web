@@ -1,0 +1,144 @@
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
+*@
+@using LivrETS.ViewModels
+@using LivrETS.Models
+@model SellViewModel
+@{
+    ViewBag.Title = "Terminal de vente";
+}
+
+@section Styles {
+    <style>
+        div.row {
+            margin-top: 10px;
+        }
+
+        .amount-input {
+            background-color: white !important;
+        }
+    </style>
+}
+
+@if (Model.Fair == null || Model.Fair.Phase != FairPhase.SALE)
+{
+    <h2>Vous n'&ecirc;tes pas pr&eacute;sentement en p&eacute;riode de vente =(</h2>
+}
+else
+{
+    <div class="page-header">
+        <h1>Vendre des articles <small>pour la Foire @Model.Fair.StartDate.Year</small></h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <input type="text" class="form-control" id="article-livretsid" placeholder="Espace de numérisation" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Articles</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="table-responsive" style="min-height: 450px; border: 1px solid lightgray; border-radius: 3px;">
+                <table id="articles-table" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Titre</th>
+                            <th>Vendeur</th>
+                            <th>Prix</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group pull-right col-md-5">
+                <span class="input-group-addon" id="subtotal-addon">Sous-Total</span>
+                <input id="subtotal" type="text" class="form-control amount-input" aria-describedby="subtotal-addon" disabled />
+                <span class="input-group-addon">$</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group pull-right col-md-5">
+                <span class="input-group-addon" id="commission-addon">Commission</span>
+                <input id="commission" type="text" class="form-control amount-input" aria-describedby="commission-addon" disabled />
+                <span class="input-group-addon">$</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group pull-right col-md-5">
+                <span class="input-group-addon" id="total-addon"><b>Total</b></span>
+                <input id="total" type="text" class="form-control amount-input" aria-describedby="total-addon" style="font-weight: bold;" disabled />
+                <span class="input-group-addon"><b>$</b></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <button id="btn-reinitialize" type="button" class="btn btn-default">Réinitialiser</button>
+            <button id="btn-conclude" type="button" class="btn btn-primary pull-right">Conclure</button>
+        </div>
+    </div>
+
+    <div id="modal-cash" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b class="modal-title">R&eacute;cup&eacute;rer l'argent</b>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">Montant re&ccedil;u</div>
+                        <div class="col-md-6">
+                            <input type="text" id="in-cash-received" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Montant &agrave; remettre</div>
+                        <div class="col-md-6">
+                            <input type="text" id="in-cash-returned" class="form-control" disabled />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-cash-ok" type="button" class="btn btn-success">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/Scripts/fair/sell.js"></script>
+}

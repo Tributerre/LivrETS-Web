@@ -49,6 +49,10 @@ namespace LivrETS.Models
         [Required]
         public string Trimester { get; set; }
         public virtual ICollection<Offer> Offers { get; set; }
+        public virtual ICollection<Sale> Sales { get; set; }
+
+        [Required]
+        public double CommissionOnSale { get; set; }
 
         [NotMapped]
         public FairPhase Phase {
@@ -85,6 +89,7 @@ namespace LivrETS.Models
         public Fair()
         {
             Offers = new List<Offer>();
+            Sales = new List<Sale>();
         }
 
         /// <summary>

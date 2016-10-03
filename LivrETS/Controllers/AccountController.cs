@@ -109,7 +109,8 @@ namespace LivrETS.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, 
+                isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -123,7 +124,7 @@ namespace LivrETS.Controllers
             }
         }
 
-        //
+        
         // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
@@ -258,15 +259,19 @@ namespace LivrETS.Controllers
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    BarCode = model.BarCode,
+                    BarCode = model.BarCode.Trim().ToUpper(),
                     SubscribedAt = DateTime.Now
                 };
 
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    // Create the LivrETS ID
+                    user.LivrETSID = TRIBSTD01Helper.GenerateLivrETSID(user: user);
+                    UserManager.Update(user);
                     await UserManager.AddClaimAsync(user.Id, new Claim("FirstName", user.FirstName));
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
+
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);

@@ -243,3 +243,6 @@ LivrETS/Content/PDF/*
 # macOS
 .DS_Store
 ._.DS_Store
+
+# git
+*.orig

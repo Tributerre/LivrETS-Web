@@ -16,19 +16,71 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
-    $("thead>tr").find("th").addClass("text-center");
+    //init managefairs table width datables plugins
+
+    $('table').DataTable({
+        processing: true,
+        ajax: {
+            url: "/Admin/ListFairs",
+            type: "POST",
+            dataType: "JSON",
+            dataSrc: function (val) {
+                return val.listFairs
+            }
+        },
+        columns: [
+            {
+                class: "check-row text-center",
+                sortable: false,
+                data: function (val) {
+                    return "<input type='checkbox' name='check-select-fair' data-fair-id='" + val.Id + "' />";
+                }
+            },
+            {
+                data: "LivrETSID",
+                visible: false
+            },
+            {
+                data: function (val) {
+                    return new Date(parseInt(val.StartDate.replace('/Date(', ''))).toDateString();
+                }
+            },
+            {
+                data: function (val) {
+                    return new Date(parseInt(val.EndDate.replace('/Date(', ''))).toDateString();
+                }
+            },
+            {
+                data: function (val) {
+                    var status = ["PREFAIR", "PICKING", "SALE", "RETRIEVAL", "POSTFAIR"];
+
+                    return status[val.Phase];
+                }
+            },
+            {
+                class: "text-center",
+                sortable: false,
+                data: function (val) {
+                    return "<a href='#' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='"+ val.Id +"' ><span class='glyphicon glyphicon-edit'></span></a> "+
+                    "<a href='#' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='" + val.Id + "'><span class='glyphicon glyphicon-trash'></span></a>"
+                    
+                }
+            }
+        ]
+
+    });
 
     $("#close-error").on("click", function () {
         $("#errors").hide("slow");
     });
 
     // Select single fair event.
-    $("input[type='checkbox'][name='check-select-fair']").on("change", function () {
+    $('table tbody').on("click", ".btn-edit-fair", function () {
         updateDeleteSelectedView();
     });
 
     // Delete fair event.
-    $(".btn-delete-fair").on("click", function () {
+    $('table tbody').on("click", ".btn-delete-fair", function () {
         var button = $(this);
         var fairId = $(this).attr("data-fair-id");
 
@@ -54,7 +106,7 @@ $(document).ready(function () {
     });
 
     // Edit fair event
-    $(".btn-edit-fair").on("click", function () {
+    $('table tbody').on("click", ".btn-edit-fair", function () {
         var fairId = $(this).attr("data-fair-id");
 
         $.ajax({
@@ -155,7 +207,7 @@ $(document).ready(function () {
 /**
  * Updates the selected number in the actions panel.
  */
-function updateDeleteSelectedView() {
+function updateDeleteSelectedView() { 
     var checkedCount = $("tbody>tr>td").find("input[type='checkbox'][name='check-select-fair']:checked").length;
 
     if ($("#div-delete-selected").is(":visible")) {
@@ -166,6 +218,7 @@ function updateDeleteSelectedView() {
         }
     } else {
         if (checkedCount > 0) {
+
             var text =
             $("<p>").append(  // p
                 $("<u>")  // u

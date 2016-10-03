@@ -16,23 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-function checkEnter(evt) {
-    var evt = (evt) ? evt : ((event) ? event : null);
-    var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
-    if ((evt.keyCode == 13) && (node.type == "text")) { return false; }
-}
-
-document.onkeypress = checkEnter;
-
-var notifyError = function (message) {
-    $.notify({
-        icon: "glyphicon glyphicon-remove",
-        message: message
-    }, {
-        type: "danger"
-    })
-}
-
 function markArticleAsPicked(articleId, trTagToMove) {
     var modal = $("#pick-confirm-dialog")
 
@@ -52,16 +35,17 @@ function markArticleAsPicked(articleId, trTagToMove) {
         },
         statusCode: {
             500: function () {
-                notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                $.notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
             },
             409: function () {
-                notifyError("L'article en question n'existe pas dans le système. Svp, contactez un administrateur.")
+                $.notifyError("L'article en question n'existe pas dans le système. Svp, contactez un administrateur.")
             }
         }
     })
 }
 
 $(document).ready(function () {
+    $.preventEnterToSubmit()
     $(".pick-article-btn").on("click", function () {
         window.ArticleId = $(this).attr("data-article-id")
         window.TrTagOfArticle = $(this).parents("tr")
@@ -108,10 +92,10 @@ $(document).ready(function () {
                 },
                 statusCode: {
                     500: function () {
-                        notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                        $.notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
                     },
                     400: function () {
-                        notifyError("Il n'y a plus d'étiquette à imprimer ou le vendeur n'a pas d'article à vendre dans le système.")
+                        $.notifyError("Il n'y a plus d'étiquette à imprimer ou le vendeur n'a pas d'article à vendre dans le système.")
                     }
                 }
             })
@@ -132,10 +116,10 @@ $(document).ready(function () {
             },
             statusCode: {
                 500: function () {
-                    notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                    $.notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
                 },
                 400: function () {
-                    notifyError("Il n'y a plus d'étiquette à imprimer ou le vendeur n'a pas d'article à vendre dans le système.")
+                    $.notifyError("Il n'y a plus d'étiquette à imprimer ou le vendeur n'a pas d'article à vendre dans le système.")
                 }
             }
         })

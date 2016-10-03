@@ -34,4 +34,14 @@ namespace LivrETS.ViewModels
         public ICollection<Offer> FairOffers { get; set; }
         public string UserBarCode { get; set; }
     }
+
+    public class SellViewModel
+    {
+        public Fair Fair { get; set; }
+    }
+
+    public class RetrieveViewModel
+    {
+        public Fair Fair { get; set; }
+    }
 }
