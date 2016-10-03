@@ -64,8 +64,26 @@ namespace LivrETS.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            ViewBag.ListOffer = Repository.GetAllOffers();
+            var itemSearch = Request["itemSearch"];
+            List<Offer> lines = null;
+
+            if (itemSearch != null)
+            {
+                 string[] eltSearch = itemSearch.Split(':');
+                 lines = Repository.GetAllOffers(eltSearch);
+            }
+            else
+            {
+                lines = Repository.GetAllOffers();
+            }
+
+            ViewBag.ListOffer = lines;
             return View();
+        }
+
+        private void ResultSearch(string itemSearch)
+        {
+
         }
 
         // GET: /Home/Sell

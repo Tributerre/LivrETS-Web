@@ -120,11 +120,50 @@ namespace LivrETS.Repositories
         /// Gets all the offers 
         /// </summary>
         /// <returns>The offers or null if not found.</returns>
-        public Object GetAllOffers()
+        public List<Offer> GetAllOffers(string[] itemSearch = null)
         {
-            return (from offer in _db.Offers
-                        select offer
-                    ).ToList();
+            var offers = from offer in _db.Offers
+                       orderby offer.StartDate descending
+                       select offer;
+
+            if (itemSearch != null)
+            {
+                string sigle = null;
+                string elt = null; 
+
+                if(itemSearch.Count() == 2)
+                {
+                    sigle = itemSearch[0];
+                    elt = itemSearch[1];
+                }else
+                {
+                    sigle = "cr";
+                    elt = itemSearch[0];
+                }
+
+                if(sigle.Equals("cr"))
+                {
+                    offers = from offer in _db.Offers
+                           where offer.Title.Contains(elt)
+                           orderby offer.StartDate descending
+                           select offer;
+
+                    //obj.Where(offer => offer.Title.Contains(elt));
+                }else if (sigle.Equals("sg"))
+                {
+                    offers = from offer in _db.Offers
+                           where offer.Article.Course.Acronym.Contains(elt)
+                           orderby offer.StartDate descending
+                           select offer;
+
+                    //obj.Where(offer => offer.Title.Contains(elt));
+                }
+
+                return offers.ToList();
+
+            }
+
+            return offers.ToList();
         }
 
         /// <summary>
