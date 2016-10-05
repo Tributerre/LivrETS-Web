@@ -21,55 +21,57 @@
 @{
     ViewBag.Title = "Récupérer";
 }
-
-@if (Model.Fair == null || Model.Fair.Phase != FairPhase.RETRIEVAL)
-{
-    <h2>Vous n'&ecirc;tes pas pr&eacute;sentement en p&eacute;riode de r&eacute;cup&eacute;ration =(</h2>
-}
-else
-{
-    <div class="page-header">
-        <h1>R&eacute;cup&eacute;rer des articles <small>de la Foire @Model.Fair.StartDate.Year</small></h1>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <input type="text" class="form-control" id="in-barcode" placeholder="Espace de numérisation" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Articles</h4>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="table-responsive" style="min-height: 450px; border: 1px solid lightgray; border-radius: 3px;">
-                <table id="articles-table" class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Titre</th>
-                            <th>Vendeur</th>
-                            <th>Prix</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+<div class="content">
+    <div class="container">
+        @if (Model.Fair == null || Model.Fair.Phase != FairPhase.RETRIEVAL)
+        {
+            <h2>Vous n'&ecirc;tes pas pr&eacute;sentement en p&eacute;riode de r&eacute;cup&eacute;ration =(</h2>
+        }
+        else
+        {
+            <div class="page-header">
+                <h1>R&eacute;cup&eacute;rer des articles <small>de la Foire @Model.Fair.StartDate.Year</small></h1>
             </div>
-        </div>
-    </div>
 
-    <div class="row" style="margin-top: 10px;">
-        <div class="col-md-6">
-            <button id="btn-reinitialize" type="button" class="btn btn-default">Réinitialiser</button>
-            <button id="btn-retrieve" type="button" class="btn btn-primary pull-right">R&eacute;cup&eacute;rer</button>
-        </div>
-    </div>
-}
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="in-barcode" placeholder="Espace de numérisation" />
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Articles</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="table-responsive" style="min-height: 450px; border: 1px solid lightgray; border-radius: 3px;">
+                        <table id="articles-table" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Titre</th>
+                                    <th>Vendeur</th>
+                                    <th>Prix</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-6">
+                    <button id="btn-reinitialize" type="button" class="btn btn-default">Réinitialiser</button>
+                    <button id="btn-retrieve" type="button" class="btn btn-primary pull-right">R&eacute;cup&eacute;rer</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 @section Scripts {
     <script src="~/Scripts/fair/retrieve.js"></script>
 }
