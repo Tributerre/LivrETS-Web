@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -70,8 +70,8 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -121,6 +121,14 @@
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
@@ -211,6 +219,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FairController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -261,11 +270,14 @@
     <Content Include="Content\fonts\ElegantIcons.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Login.css" />
+    <Content Include="Content\LoginConfirmation.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\template\animate.min.css" />
     <Content Include="Content\template\bootstrap-select.min.css" />
     <Content Include="Content\template\bootstrap-theme.min.css" />
     <Content Include="Content\template\bootstrap.min.css" />
     <Content Include="Content\template\carousel.css" />
+    <Content Include="Content\template\elegant-fonts.css" />
     <Content Include="Content\template\green.css" />
     <Content Include="Content\template\images\grabbing.png" />
     <Content Include="Content\template\main.css" />
@@ -291,7 +303,105 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\student_card_example.jpg" />
-    <Content Include="packages.config" />
+    <Content Include="Images\template\ajax.gif" />
+    <Content Include="Images\template\AjaxLoader.gif" />
+    <Content Include="Images\template\blank.gif" />
+    <Content Include="Images\template\bone.png" />
+    <Content Include="Images\template\cart-products\product-01.jpg" />
+    <Content Include="Images\template\cart-products\product-02.jpg" />
+    <Content Include="Images\template\category-product\main-product-01.jpg" />
+    <Content Include="Images\template\category-product\product-01.jpg" />
+    <Content Include="Images\template\category-product\product-02.jpg" />
+    <Content Include="Images\template\category-product\product-03.jpg" />
+    <Content Include="Images\template\category-product\product-04.jpg" />
+    <Content Include="Images\template\category-product\product-05.jpg" />
+    <Content Include="Images\template\category-product\product-06.jpg" />
+    <Content Include="Images\template\category-product\product-07.jpg" />
+    <Content Include="Images\template\category-product\product-08.jpg" />
+    <Content Include="Images\template\category-product\product-09.jpg" />
+    <Content Include="Images\template\category-product\product-10.jpg" />
+    <Content Include="Images\template\category-product\product-11.jpg" />
+    <Content Include="Images\template\category-product\product-12.jpg" />
+    <Content Include="Images\template\favicon.ico" />
+    <Content Include="Images\template\icon-cart.png" />
+    <Content Include="Images\template\logo.png" />
+    <Content Include="Images\template\logo.svg" />
+    <Content Include="Images\template\owl-carousel\AjaxLoader.gif" />
+    <Content Include="Images\template\owl-carousel\grabbing.png" />
+    <Content Include="Images\template\payments\american-express.png" />
+    <Content Include="Images\template\payments\ebay.png" />
+    <Content Include="Images\template\payments\mastercard.png" />
+    <Content Include="Images\template\payments\paypal.png" />
+    <Content Include="Images\template\payments\visa.png" />
+    <Content Include="Images\template\popular-products\product-01.jpg" />
+    <Content Include="Images\template\popular-products\product-02.jpg" />
+    <Content Include="Images\template\popular-products\product-03.jpg" />
+    <Content Include="Images\template\popular-products\product-04.jpg" />
+    <Content Include="Images\template\popular-products\product-05.jpg" />
+    <Content Include="Images\template\popular-products\product-06.jpg" />
+    <Content Include="Images\template\popular-products\product-07.jpg" />
+    <Content Include="Images\template\popular-products\product-08.jpg" />
+    <Content Include="Images\template\prettyPhoto\dark_rounded\btnNext.png" />
+    <Content Include="Images\template\prettyPhoto\dark_rounded\btnPrevious.png" />
+    <Content Include="Images\template\prettyPhoto\dark_rounded\contentPattern.png" />
+    <Content Include="Images\template\prettyPhoto\dark_rounded\default_thumbnail.gif" />
+    <Content Include="Images\template\prettyPhoto\dark_rounded\loader.gif" />
+    <Content Include="Images\template\prettyPhoto\dark_rounded\sprite.png" />
+    <Content Include="Images\template\prettyPhoto\dark_square\btnNext.png" />
+    <Content Include="Images\template\prettyPhoto\dark_square\btnPrevious.png" />
+    <Content Include="Images\template\prettyPhoto\dark_square\contentPattern.png" />
+    <Content Include="Images\template\prettyPhoto\dark_square\default_thumbnail.gif" />
+    <Content Include="Images\template\prettyPhoto\dark_square\loader.gif" />
+    <Content Include="Images\template\prettyPhoto\dark_square\sprite.png" />
+    <Content Include="Images\template\prettyPhoto\default\default_thumb.png" />
+    <Content Include="Images\template\prettyPhoto\default\loader.gif" />
+    <Content Include="Images\template\prettyPhoto\default\sprite.png" />
+    <Content Include="Images\template\prettyPhoto\default\sprite_next.png" />
+    <Content Include="Images\template\prettyPhoto\default\sprite_prev.png" />
+    <Content Include="Images\template\prettyPhoto\default\sprite_x.png" />
+    <Content Include="Images\template\prettyPhoto\default\sprite_y.png" />
+    <Content Include="Images\template\prettyPhoto\facebook\btnNext.png" />
+    <Content Include="Images\template\prettyPhoto\facebook\btnPrevious.png" />
+    <Content Include="Images\template\prettyPhoto\facebook\contentPatternBottom.png" />
+    <Content Include="Images\template\prettyPhoto\facebook\contentPatternLeft.png" />
+    <Content Include="Images\template\prettyPhoto\facebook\contentPatternRight.png" />
+    <Content Include="Images\template\prettyPhoto\facebook\contentPatternTop.png" />
+    <Content Include="Images\template\prettyPhoto\facebook\default_thumbnail.gif" />
+    <Content Include="Images\template\prettyPhoto\facebook\loader.gif" />
+    <Content Include="Images\template\prettyPhoto\facebook\sprite.png" />
+    <Content Include="Images\template\prettyPhoto\light_rounded\btnNext.png" />
+    <Content Include="Images\template\prettyPhoto\light_rounded\btnPrevious.png" />
+    <Content Include="Images\template\prettyPhoto\light_rounded\default_thumbnail.gif" />
+    <Content Include="Images\template\prettyPhoto\light_rounded\loader.gif" />
+    <Content Include="Images\template\prettyPhoto\light_rounded\sprite.png" />
+    <Content Include="Images\template\prettyPhoto\light_square\btnNext.png" />
+    <Content Include="Images\template\prettyPhoto\light_square\btnPrevious.png" />
+    <Content Include="Images\template\prettyPhoto\light_square\default_thumbnail.gif" />
+    <Content Include="Images\template\prettyPhoto\light_square\loader.gif" />
+    <Content Include="Images\template\prettyPhoto\light_square\sprite.png" />
+    <Content Include="Images\template\products\product-gallery-01.jpg" />
+    <Content Include="Images\template\products\product-gallery-02.jpg" />
+    <Content Include="Images\template\products\product-gallery-03.jpg" />
+    <Content Include="Images\template\products\product-gallery-04.jpg" />
+    <Content Include="Images\template\products\product-small-01.jpg" />
+    <Content Include="Images\template\products\product-small-02.jpg" />
+    <Content Include="Images\template\recent-products\product-01.jpg" />
+    <Content Include="Images\template\recent-products\product-02.jpg" />
+    <Content Include="Images\template\recent-products\product-03.jpg" />
+    <Content Include="Images\template\recent-products\product-04.jpg" />
+    <Content Include="Images\template\recent-products\product-05.jpg" />
+    <Content Include="Images\template\recent-products\product-06.jpg" />
+    <Content Include="Images\template\recent-products\product-07.jpg" />
+    <Content Include="Images\template\recent-products\product-08.jpg" />
+    <Content Include="Images\template\sliders\slider01.jpg" />
+    <Content Include="Images\template\sliders\slider02.jpg" />
+    <Content Include="Images\template\sliders\slider03.jpg" />
+    <Content Include="Images\template\topseller-products\product-01.jpg" />
+    <Content Include="Images\template\topseller-products\product-02.jpg" />
+    <Content Include="Images\template\topseller-products\product-03.jpg" />
+    <Content Include="Images\template\topseller-products\product-04.jpg" />
+    <Content Include="Images\template\topseller-products\product-05.jpg" />
+    <Content Include="Images\template\topseller-products\product-06.jpg" />
     <Content Include="Content\template\bootstrap-theme.css.map" />
     <Content Include="Content\fonts\ElegantIcons.eot" />
     <Content Include="Content\fonts\ElegantIcons.ttf" />
@@ -304,6 +414,7 @@
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\livrets - Web Deploy %282%29.pubxml" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-notify.min.js" />
@@ -320,6 +431,19 @@
     <Content Include="Scripts\pick.js" />
     <Content Include="Scripts\sell.js" />
     <Content Include="Scripts\site.js" />
+    <Content Include="Scripts\template\bootstrap-hover-dropdown.min.js" />
+    <Content Include="Scripts\template\bootstrap-select.min.js" />
+    <Content Include="Scripts\template\bootstrap-slider.js" />
+    <Content Include="Scripts\template\bootstrap.min.js" />
+    <Content Include="Scripts\template\echo.min.js" />
+    <Content Include="Scripts\template\flatui-controls.js" />
+    <Content Include="Scripts\template\flowtype.js" />
+    <Content Include="Scripts\template\jquery-1.11.0.min.js" />
+    <Content Include="Scripts\template\jquery.easing-1.3.min.js" />
+    <Content Include="Scripts\template\owl.carousel.min.js" />
+    <Content Include="Scripts\template\scripts.js" />
+    <Content Include="Scripts\template\switchstylesheet\switchstylesheet.js" />
+    <Content Include="Scripts\template\wow.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -350,9 +474,10 @@
     <Content Include="Views\Fair\Pick.cshtml" />
     <Content Include="Views\Fair\Sell.cshtml" />
     <Content Include="Views\Fair\Retrieve.cshtml" />
-    <None Include="Web.Debug.sample.config" />
-    <None Include="Web.Release.sample.config" />
-    <None Include="Web.sample.config" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Home\DetailOffer.cshtml" />
+    <Content Include="Views\Shared\_footer.cshtml" />
+    <Content Include="Views\Shared\_header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -406,7 +531,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.1\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.2\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -23,7 +23,7 @@
                 <!--=================================LOGO=============================== -->
                 <div class="logo text-md-center">
                     <h1>
-                        <a href="index.html">
+                        <a href="/home/index">
                             Tributerre
                         </a>
                     </h1>
@@ -32,15 +32,27 @@
             </div><!-- /.col -->
             <div class="col-md-3 col-sm-3 col-xs-12">
                 <!-- ========================== SEARCH BAR=============================== -->
-                <form role="form" class="block-search">
+                <!--<form role="form" method="get" action="/Home/Index" class="block-search">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search..">
+                        <input type="text" name="itemSearch" class="form-control" placeholder="cr:mathematique ou sg:mat210">
                         <span class="input-group-btn">
-                            <button class="btn btn-primary-very-light search-button" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                            <button class="btn btn-primary-very-light search-button" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                         </span>
-                    </div><!-- /input-group -->
+                    </div>
+                    <small>Rechercher par <b>cr:</b>Titre cours / <b>sg:</b>Sigle cours</small>
                 </form><!-- /block-search -->
-                <!-- ========================== SEARCH BAR :END ===========================-->
+
+                @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "block-search" }))
+                {
+                    <div class="input-group">
+                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder= "cr:mathematique ou sg:mat210" })
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary-very-light search-button" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                    </div>
+                    <small>Rechercher par <b>cr:</b>Titre cours / <b>sg:</b>Sigle cours</small>
+                }
+                        <!-- ========================== SEARCH BAR :END ===========================-->
             </div><!-- /.col -->
             <div class="col-md-5 col-sm-5 col-xs-12">
                 <!-- ======================== BLOCK HEADER LINKS========================= -->

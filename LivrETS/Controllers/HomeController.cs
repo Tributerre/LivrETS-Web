@@ -27,6 +27,7 @@ using LivrETS.Repositories;
 using Microsoft.AspNet.Identity;
 using System.Threading;
 using System.Net;
+using PagedList;
 
 namespace LivrETS.Controllers
 {
@@ -62,10 +63,34 @@ namespace LivrETS.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ViewBag.ListOffer = Repository.GetAllOffers();
-            return View();
+            ViewBag.CurrentSort = sortOrder;
+            IQueryable<Offer> offers = null;
+
+            if(searchString != null)
+            {
+                page = 1;
+            }else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
+
+            if (searchString != null)
+            {
+                 
+                 offers = Repository.GetAllOffers(searchString);
+            }
+            else
+            {
+                offers = Repository.GetAllOffers();
+            }
+
+            int pageSize = 20;
+            int pageNumber = (page ?? 1);
+
+            return View(offers.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: /Home/Sell
