@@ -144,29 +144,15 @@ namespace LivrETS.Repositories
 
                 if(sigle.Equals("cr"))
                 {
-                    /*offers = from offer in _db.Offers
-                           where offer.Title.Contains(elt)
-                           orderby offer.StartDate descending
-                           select offer;*/
-
                     offers = offers.Where(offer => offer.Title.Contains(elt));
                 }else if (sigle.Equals("sg"))
                 {
-                    /*offers = from offer in _db.Offers
-                           where offer.Article.Course.Acronym.Contains(elt)
-                           orderby offer.StartDate descending
-                           select offer;*/
-
                     offers = offers.Where(offer => offer.Article.Course.Acronym.Contains(elt));
                 }
 
                 return offers;
 
             }
-
-            /*offers = from offer in _db.Offers
-                        orderby offer.StartDate descending
-                        select offer;*/
 
             return offers;
         }

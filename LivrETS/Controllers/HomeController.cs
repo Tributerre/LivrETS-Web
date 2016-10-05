@@ -66,7 +66,7 @@ namespace LivrETS.Controllers
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
-            IEnumerable<Offer> offers = null;
+            IQueryable<Offer> offers = null;
 
             if(searchString != null)
             {
@@ -87,7 +87,7 @@ namespace LivrETS.Controllers
                 offers = Repository.GetAllOffers();
             }
 
-            int pageSize = 10;
+            int pageSize = 20;
             int pageNumber = (page ?? 1);
 
             return View(offers.ToPagedList(pageNumber, pageSize));

@@ -20,6 +20,7 @@
 @using LivrETS.Helpers
 @using PagedList.Mvc
 @model PagedList.IPagedList<Offer>
+
 @{
     ViewData["Title"] = "Accueil";
 }
@@ -61,8 +62,8 @@
                                                 <div class="product-item">
                                                     <div class="product-image">
                                                         <a href="/Home/DetailOffer?id=@item.Id">
-                                                            <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
-                                                                 data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title" 
+                                                            <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())"
+                                                                 data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title"
                                                                  class="center-block img-responsive avatar-article">
                                                         </a>
                                                     </div><!-- /.product-image -->
@@ -93,8 +94,8 @@
                                             <div class="row product-item">
                                                 <div class="col-md-4 col-sm-4">
                                                     <a href="/Home/DetailOffer?id=@item.Id">
-                                                        <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
-                                                             data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title" 
+                                                        <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())"
+                                                             data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title"
                                                              class="center-block img-responsive avatar-article">
                                                     </a>
                                                 </div>
@@ -206,9 +207,11 @@
                                         <div class="product-item">
                                             <div class="product-image">
                                                 <a href="detail.html">
-                                                    <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
-                                                         data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
-                                                         alt="Product" class="center-block img-responsive avatar-article">
+                                                    <a href="/Home/DetailOffer?id=@item.Id">
+                                                        <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())"
+                                                             data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title"
+                                                             class="center-block img-responsive avatar-article">
+                                                    </a>
                                                 </a>
                                             </div><!-- /.product-image -->
                                             <div class="product-detail text-md-center">
