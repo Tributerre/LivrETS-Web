@@ -18,7 +18,8 @@
 
 @using LivrETS.Models
 @using LivrETS.Helpers
-@model List<Offer>
+@using PagedList.Mvc
+@model PagedList.IPagedList<Offer>
 @{
     ViewData["Title"] = "Accueil";
 }
@@ -26,6 +27,7 @@
 
 @section Styles{
     <link rel="stylesheet" href="@Url.Content("~/Content/template/elegant-fonts.css")">
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
     <style>
         .avatar-article{
             width: 262px !important;
@@ -118,7 +120,12 @@
                         </div><!-- /.tab-content -->
                     </div><!-- /.page-section -->
                     <div class="page-section clearfix">
-                        <ul class="pagination">
+                        <br />
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort,
+                            currentFilter = ViewBag.CurrentFilter }))
+                        <!--<ul class="pagination">
                             <li><a href="#">&laquo;</a></li>
                             <li><a href="#">1</a></li>
                             <li class="active"><a href="#">2</a></li>
