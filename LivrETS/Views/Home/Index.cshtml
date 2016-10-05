@@ -18,10 +18,12 @@
 
 @using LivrETS.Models
 @using LivrETS.Helpers
+@model List<Offer>
 @{
     ViewData["Title"] = "Accueil";
-    List <Offer> ListOffer = ViewBag.ListOffer;
 }
+
+
 @section Styles{
     <link rel="stylesheet" href="@Url.Content("~/Content/template/elegant-fonts.css")">
     <style>
@@ -46,11 +48,11 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="grid">
                                 <div class="row">
-                                    @if(ListOffer.Count == 0)
+                                    @if(Model.Count == 0)
                                     {
                                         <p>Aucun élément retrouvé</p>
                                     }
-                                    @foreach (Offer item in ListOffer)
+                                    @foreach (Offer item in Model)
                                     {
                                         <div class="product-item-column col-md-4 col-sm-4 col-xs-12 col-lg-4">
                                             <div class="product-item-grid-view">
@@ -84,7 +86,7 @@
                                 <div class="row">
                                     <div class="product-item-list-view">
 
-                                        @foreach (Offer item in ListOffer)
+                                        @foreach (Offer item in Model)
                                         {
                                             <div class="row product-item">
                                                 <div class="col-md-4 col-sm-4">
@@ -149,9 +151,9 @@
                         </div>
                     </div>
                     <div class="sidebar-section col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                        <h4 class="sidebar-title text-mute text-md-center">Filtrer</h4>
+                        <h4 class="sidebar-title text-mute text-md-center">Filtre</h4>
                         <section class="category">
-                            <h4 class="sidebar-title text-md-center">Category</h4>
+                            <h4 class="sidebar-title text-md-center">Catégori</h4>
                             <ul class="list-checkbox list-unstyled text-md-center">
                                 <li><label class="checkbox"><input type="checkbox"> Livre</label></li>
                                 <li><label class="checkbox"><input type="checkbox"> Note de cours</label></li>
@@ -159,7 +161,7 @@
                             </ul><!-- /.list-checkbox -->
                         </section><!-- /.category -->
                         <section class="price">
-                            <h4 class="sidebar-title text-md-center">Price</h4>
+                            <h4 class="sidebar-title text-md-center">Prix</h4>
                             <input type="text" class="slider" value="" data-slider-min="0" data-slider-max="20" data-slider-step="5" 
                                    data-slider-value="10" data-slider-orientation="horizontal" data-slider-selection="after" 
                                    data-slider-tooltip="hide">
@@ -190,7 +192,7 @@
                     <div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
                         <div id="relate-items-carousel" class="grid-view home-owl-carousel">
 
-                            @foreach (Offer item in ListOffer)
+                            @foreach (Offer item in Model)
                             {
                                 <div class="product-item-column">
                                     <div class="product-item-grid-view">

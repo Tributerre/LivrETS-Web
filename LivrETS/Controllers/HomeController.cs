@@ -65,25 +65,19 @@ namespace LivrETS.Controllers
         public ActionResult Index()
         {
             var itemSearch = Request["itemSearch"];
-            List<Offer> lines = null;
+            IEnumerable<Offer> offers = null;
 
             if (itemSearch != null)
             {
-                 string[] eltSearch = itemSearch.Split(':');
-                 lines = Repository.GetAllOffers(eltSearch);
+                 
+                 offers = Repository.GetAllOffers(itemSearch);
             }
             else
             {
-                lines = Repository.GetAllOffers();
+                offers = Repository.GetAllOffers();
             }
 
-            ViewBag.ListOffer = lines;
-            return View();
-        }
-
-        private void ResultSearch(string itemSearch)
-        {
-
+            return View(offers.ToList());
         }
 
         // GET: /Home/Sell

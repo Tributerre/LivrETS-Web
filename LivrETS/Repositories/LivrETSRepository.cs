@@ -120,50 +120,55 @@ namespace LivrETS.Repositories
         /// Gets all the offers 
         /// </summary>
         /// <returns>The offers or null if not found.</returns>
-        public List<Offer> GetAllOffers(string[] itemSearch = null)
+        public IQueryable<Offer> GetAllOffers(string itemSearch = null)
         {
-            var offers = from offer in _db.Offers
-                       orderby offer.StartDate descending
-                       select offer;
+            IQueryable<Offer> offers = from offer in _db.Offers
+                                       orderby offer.StartDate descending
+                                       select offer;
 
             if (itemSearch != null)
             {
+                string[] tabItemSearch = itemSearch.Split(':');
                 string sigle = null;
                 string elt = null; 
 
-                if(itemSearch.Count() == 2)
+                if(tabItemSearch.Count() == 2)
                 {
-                    sigle = itemSearch[0];
-                    elt = itemSearch[1];
+                    sigle = tabItemSearch[0];
+                    elt = tabItemSearch[1];
                 }else
                 {
                     sigle = "cr";
-                    elt = itemSearch[0];
+                    elt = tabItemSearch[0];
                 }
 
                 if(sigle.Equals("cr"))
                 {
-                    offers = from offer in _db.Offers
+                    /*offers = from offer in _db.Offers
                            where offer.Title.Contains(elt)
                            orderby offer.StartDate descending
-                           select offer;
+                           select offer;*/
 
-                    //obj.Where(offer => offer.Title.Contains(elt));
+                    offers = offers.Where(offer => offer.Title.Contains(elt));
                 }else if (sigle.Equals("sg"))
                 {
-                    offers = from offer in _db.Offers
+                    /*offers = from offer in _db.Offers
                            where offer.Article.Course.Acronym.Contains(elt)
                            orderby offer.StartDate descending
-                           select offer;
+                           select offer;*/
 
-                    //obj.Where(offer => offer.Title.Contains(elt));
+                    offers = offers.Where(offer => offer.Article.Course.Acronym.Contains(elt));
                 }
 
-                return offers.ToList();
+                return offers;
 
             }
 
-            return offers.ToList();
+            /*offers = from offer in _db.Offers
+                        orderby offer.StartDate descending
+                        select offer;*/
+
+            return offers;
         }
 
         /// <summary>
