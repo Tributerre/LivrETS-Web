@@ -47,12 +47,14 @@
                                             <div class="product-item-grid-view">
                                                 <div class="product-item">
                                                     <div class="product-image">
-                                                        <a href="detail.html">
-                                                            <img src="@HomeHelpers.ImgArticleHelper(item.Images)" data-echo="@HomeHelpers.ImgArticleHelper(item.Images)" width="262" height="202" alt="Product" class="center-block img-responsive">
+                                                        <a href="/Home/DetailOffer?id=@item.Id">
+                                                            <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" width="262" height="202" alt="Product" class="center-block img-responsive">
                                                         </a>
                                                     </div><!-- /.product-image -->
                                                     <div class="product-detail text-md-center">
-                                                        <h3 class="product-name"><a href="detail.html">@item.Title</a></h3>
+                                                        <h3 class="product-name">
+                                                            @Html.ActionLink(item.Title, "DetailOffer", "Home", new { id = item.Id }, null)
+                                                        </h3>
                                                     
                                                         <p class="product-price">
                                                             <span class="price">$@item.Price</span>&nbsp;&nbsp;&nbsp;
@@ -75,13 +77,13 @@
                                         {
                                             <div class="row product-item">
                                                 <div class="col-md-4 col-sm-4">
-                                                    <a href="detail.html">
-                                                        <img src="@HomeHelpers.ImgArticleHelper(item.Images)" data-echo="@HomeHelpers.ImgArticleHelper(item.Images)" width="262" height="202" alt="Product" class="center-block img-responsive">
+                                                    <a href="/Home/DetailOffer?id=@item.Id">
+                                                        <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" width="262" height="202" alt="Product" class="center-block img-responsive">
                                                     </a>
                                                 </div>
                                                 <div class="col-md-8 col-sm-8 text-md-center">
                                                     <div class="product-detail">
-                                                        <h3 class="media-heading product-name"><a href="detail.html">@item.Title</a></h3>
+                                                        <h3 class="media-heading product-name">@Html.ActionLink(item.Title, "DetailOffer", "Home", new { id = item.Id }, null)</h3>
                                                         <p class="product-price"><span class="price">@item.Price</span></p>
                                                         <p class="product-description">@item.Article.FairState</p>
                                                     </div><!-- /.product-detail -->
@@ -180,7 +182,7 @@
                                         <div class="product-item">
                                             <div class="product-image">
                                                 <a href="detail.html">
-                                                    <img src="@HomeHelpers.ImgArticleHelper(item.Images)" data-echo="@HomeHelpers.ImgArticleHelper(item.Images)" width="262" height="202" alt="Product" class="center-block img-responsive">
+                                                    <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" width="262" height="202" alt="Product" class="center-block img-responsive">
                                                 </a>
                                             </div><!-- /.product-image -->
                                             <div class="product-detail text-md-center">
