@@ -23,11 +23,11 @@
     <link rel="stylesheet" href="/Content/LoginConfirmation.css" />
 }
 
-
-<h3>Vous y &ecirc;tes presque!</h3>
-
 <div class="container">
-@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    <h3>Vous y &ecirc;tes presque!</h3>
+
+@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, 
+    FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <hr />
@@ -86,7 +86,8 @@
 
     <div class="col-sm-offset-2 col-sm-8">
         <p>
-            <input type="checkbox" id="terms-checkbox"> Je confirme avoir lu et compris les <a href="#">termes et conditions d'utilisation</a> de Livr&Eacute;TS.
+            <input type="checkbox" id="terms-checkbox"> 
+            <label  for="terms-checkbox">Je confirme avoir lu et compris les <a href="#">termes et conditions d'utilisation</a> de Livr&Eacute;TS.</label>
         </p>
     </div>
 
