@@ -69,7 +69,7 @@
                                                     </div><!-- /.product-image -->
                                                     <div class="product-detail text-md-center">
                                                         <h3 class="product-name">
-                                                            @Html.ActionLink(item.Title, "DetailOffer", "Home", new { id = item.Id }, null)
+                                                            @Html.ActionLink(HomeHelpers.TroncText(item.Title, 40), "DetailOffer", "Home", new { id = item.Id }, null)
                                                         </h3>
                                                     
                                                         <p class="product-price">

@@ -119,6 +119,7 @@ namespace LivrETS.Repositories
         /// <summary>
         /// Gets all the offers 
         /// </summary>
+        /// /// <param name="itemSearch">the element search</param>
         /// <returns>The offers or null if not found.</returns>
         public IQueryable<Offer> GetAllOffers(string itemSearch = null)
         {

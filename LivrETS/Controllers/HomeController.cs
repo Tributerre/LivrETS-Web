@@ -87,7 +87,7 @@ namespace LivrETS.Controllers
                 offers = Repository.GetAllOffers();
             }
 
-            int pageSize = 20;
+            int pageSize = 2;
             int pageNumber = (page ?? 1);
 
             return View(offers.ToPagedList(pageNumber, pageSize));
