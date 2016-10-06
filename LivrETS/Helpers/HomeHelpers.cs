@@ -16,7 +16,7 @@ namespace LivrETS.Helpers
         /// <returns>The path of image</returns>
         public static string ThbImgArticleHelper(OfferImage image)
         {
-            return (image == null) ? "http://placehold.it/262x202" : image.ThumbnailPathOnDisk;
+            return (image == null) ? "http://placehold.it/262x202" : image.RelativeThumbnailPath;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace LivrETS.Helpers
         /// <returns>The path of image</returns>
         public static IHtmlString ImgArticleHelper(OfferImage image, string alt, bool flag)
         {
-            var img = (image == null) ? "http://placehold.it/590x590" : image.PathOnDisk;
+            var img = (image == null) ? "http://placehold.it/590x590" : image.RelativeOriginalPath;
             string active = ""; 
 
             if (flag) active = "active";
