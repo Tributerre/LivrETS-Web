@@ -63,10 +63,10 @@ namespace LivrETS.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, double Pmin = 1, double Pmax = 500, int? page = 1)
         {
             ViewBag.CurrentSort = sortOrder;
-            IQueryable<Offer> offers = null;
+            IEnumerable<Offer> offers = null;
 
             if(searchString != null)
             {
@@ -75,22 +75,16 @@ namespace LivrETS.Controllers
             {
                 searchString = currentFilter;
             }
+
             ViewBag.CurrentFilter = searchString;
 
-            if (searchString != null)
-            {
-                 
-                 offers = Repository.GetAllOffers(searchString);
-            }
-            else
-            {
-                offers = Repository.GetAllOffers();
-            }
+            offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);
+            
 
             int pageSize = 20;
             int pageNumber = (page ?? 1);
 
-            return View(offers.ToPagedList(pageNumber, pageSize));
+            return View(offers.ToList().ToPagedList(pageNumber, pageSize));
         }
 
         // GET: /Home/Sell

@@ -34,8 +34,39 @@
             width: 262px !important;
             height: 202px !important;
         }
+
         .related-pets-section{
             display: none;
+        }
+
+        #bloc-input-price{
+            margin-bottom:10px;
+        }
+
+        .sort-link{
+            text-transform: uppercase;
+            font-variant: small-caps;
+            padding-left: 30px;
+            color: #999;
+            text-decoration: none !important;
+        }
+
+        .active-sort{
+            background-color: #629c49;
+        }
+
+        .active-sort a{
+            color: black !important;
+        }
+
+        .list-checkbox li{
+            padding: 15px 0;
+        }
+
+        .list-checkbox li a{
+            width: 100%;
+            height: 100%;
+            display: inline-block;
         }
     </style>
 }
@@ -56,7 +87,7 @@
                                 <div class="row">
                                     @if(Model.Count == 0)
                                     {
-                                        <p>Aucun élément retrouvé</p>
+                                        <p>Aucun élément trouvé</p>
                                     }
                                     @foreach (Offer item in Model)
                                     {
@@ -151,28 +182,40 @@
                     <div class="sidebar-section col-sm-8 col-xs-8 col-md-12 col-lg-12">
                         <h4 class="sidebar-title text-md-center">Trier</h4>
                         <div class="text-md-center">
-                            <select name="sort-by" id="sort-by" class="selectpicker sidebar-sort">
-                                <option value="1">Date de poste de l'article</option>
-                                <option value="1">Prix</option>
-                            </select>
+                            @HomeHelpers.GetSelectorSort(Request.Params["sortOrder"]);
                         </div>
                     </div>
                     <div class="sidebar-section col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                        <h4 class="sidebar-title text-mute text-md-center">Filtre</h4>
-                        <section class="category">
-                            <h4 class="sidebar-title text-md-center">Catégori</h4>
-                            <ul class="list-checkbox list-unstyled text-md-center">
-                                <li><label class="checkbox"><input type="checkbox"> Livre</label></li>
-                                <li><label class="checkbox"><input type="checkbox"> Note de cours</label></li>
-                                <li><label class="checkbox"><input type="checkbox"> Calculatrice</label></li>
-                            </ul><!-- /.list-checkbox -->
-                        </section><!-- /.category -->
-                        <section class="price">
-                            <h4 class="sidebar-title text-md-center">Prix</h4>
-                            <input type="text" class="slider" value="" data-slider-min="0" data-slider-max="20" data-slider-step="5" 
-                                   data-slider-value="10" data-slider-orientation="horizontal" data-slider-selection="after" 
-                                   data-slider-tooltip="hide">
-                        </section><!-- /.price -->
+                         <h4 class="sidebar-title text-mute text-md-center">Filtre</h4>
+                            <section class="category">
+                                <h4 class="sidebar-title text-md-center">Catégorie</h4>
+                                <ul class="list-checkbox list-unstyled text-md-center">
+                                    <li id="sort-book">@Html.ActionLink("Livres", "Index", "Home", new { sortOrder = Article.BOOK_CODE }, new { @class = "sort-link" })</li>
+                                    <li id="sort-nc">@Html.ActionLink("Notes de cours", "Index", "Home", new { sortOrder = Article.COURSE_NOTES_CODE }, new { @class = "sort-link" })</li>
+                                    <li id="sort-calc">@Html.ActionLink("Calculatrice", "Index", "Home", new { sortOrder = Article.CALCULATOR_CODE }, new { @class = "sort-link" })</li>
+                                </ul><!-- /.list-checkbox -->
+                            </section><!-- /.category -->
+                            <section>
+                            @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "block-search" }))
+                            {
+                                <h4 class="sidebar-title text-md-center">Prix</h4>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        @Html.TextBox("Pmin", ViewBag.CurrentFilter as string, 
+                                       new { @class = "form-control txt-price", placeholder = "de" })
+                                    </div>
+                                    <div class="col-md-2">-</div>
+                                    <div class="col-md-5">
+                                        @Html.TextBox("Pmax", ViewBag.CurrentFilter as string, 
+                                       new { @class = "form-control txt-price", placeholder = "a" })
+                                    </div>
+                                </div>
+                                
+                                <br/>
+                                <button type="submit" class="btn btn-success">Trier</button>
+                            }
+                            </section><!-- /.price -->
+                        
                     </div><!-- /.section-section  -->
                 </aside><!-- /.sidebar -->
             </div><!-- /.col-md-3 -->
@@ -237,3 +280,7 @@
         </div><!-- /.row -->
     </div><!-- /.container -->
 </div><!-- /.content -->
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/home.js"></script>
+}
