@@ -57,7 +57,6 @@ namespace LivrETS.Controllers
 
         public HomeController(LivrETSRepository livretsRepository)
         {
-            
             Repository = livretsRepository;
         }
 
@@ -204,6 +203,10 @@ namespace LivrETS.Controllers
                 }
 
                 Repository.Update();
+
+                //send notification mail
+                NotificationManager.getInstance().sendNotification(new Notification(NotificationOptions.ARTICLETRANSFEREDTOTRIBUTERRE));
+
                 return RedirectToAction(nameof(Index));
             }
             else
