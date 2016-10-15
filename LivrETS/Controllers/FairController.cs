@@ -196,6 +196,11 @@ namespace LivrETS.Controllers
                 Repository.Update();
             }
 
+            //send notification mail
+            NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION, Repository.GetAllMailUsers().ToList())
+                );
+
             return Json(new { }, contentType: "application/json");
         }
 
@@ -244,6 +249,10 @@ namespace LivrETS.Controllers
             seller.Sales.Add(sale);
             fair.Sales.Add(sale);
             Repository.Update();
+            NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, Repository.GetAllMailUsers().ToList())
+                );
+
             return Json(new { }, contentType: "application/json");
         }
 
@@ -319,6 +328,11 @@ namespace LivrETS.Controllers
 
             article.MarkAsPicked();
             Repository.Update();
+
+            //send notification mail
+            NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLEPICKEDCONFIRMATION, Repository.GetAllMailUsers().ToList())
+                );
             return Json(new { }, contentType: "application/json");
         }
 

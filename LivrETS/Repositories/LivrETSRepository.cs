@@ -80,6 +80,12 @@ namespace LivrETS.Repositories
             return list;
         }
 
+        public IQueryable<string> GetAllMailUsers()
+        {
+            return (from user in _db.Users
+                    select user.Email);
+        }
+
         /// <summary>
         /// Gets all the fairs 
         /// </summary>

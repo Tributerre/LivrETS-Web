@@ -78,7 +78,8 @@ namespace LivrETS.Controllers
             ViewBag.CurrentFilter = searchString;
 
             offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);
-            
+            NotificationManager.getInstance().sendNotification(new Notification(NotificationOptions.ARTICLETRANSFEREDTOTRIBUTERRE, Repository.GetAllMailUsers().ToList()));
+
 
             int pageSize = 20;
             int pageNumber = (page ?? 1);
@@ -203,9 +204,6 @@ namespace LivrETS.Controllers
                 }
 
                 Repository.Update();
-
-                //send notification mail
-                NotificationManager.getInstance().sendNotification(new Notification(NotificationOptions.ARTICLETRANSFEREDTOTRIBUTERRE));
 
                 return RedirectToAction(nameof(Index));
             }

@@ -10,11 +10,13 @@ namespace LivrETS.Models
     {
         public string template = null;
         public string emailProvider = null;
+        public List<string> listUser = null;
 
-        public Notification(NotificationOptions option)
+        public Notification(NotificationOptions option, List<string> listUser)
         {
             this.emailProvider = LivrETS.Properties.Resources.EMAIL_SENDER;
             this.template = GetMessage(option);
+            this.listUser = listUser;
         }
 
         public string GetMessage(NotificationOptions option)

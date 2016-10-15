@@ -10,6 +10,8 @@ namespace LivrETS.Models
     public class NotificationManager
     {       
         private const string EMAIL_SUBJECT_NOTIF = "Notification de TRIBUTERRE";
+
+
         private static NotificationManager notificationManager;
         static readonly object instanceLock = new object();
 
@@ -40,7 +42,12 @@ namespace LivrETS.Models
                 SmtpClient SmtpServer = new SmtpClient(Resources.SMTP_CLIENT);
 
                 mail.From = new MailAddress(notification.emailProvider);
-                mail.To.Add("willkoua@yahoo.fr");
+
+                foreach(string user in notification.listUser)
+                {
+                    mail.To.Add(user);
+                }
+                
                 mail.Subject = EMAIL_SUBJECT_NOTIF;
 
                 mail.IsBodyHtml = true;
