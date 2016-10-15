@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Net.Mail;
 using LivrETS.Properties;
 
 namespace LivrETS.Models
 {
     public class NotificationManager
-    {       
+    {
         private const string EMAIL_SUBJECT_NOTIF = "Notification de TRIBUTERRE";
 
 
@@ -22,7 +19,7 @@ namespace LivrETS.Models
 
         public static NotificationManager getInstance()
         {
-            if (notificationManager == null) 
+            if (notificationManager == null)
             {
                 lock (instanceLock)
                 {
@@ -43,11 +40,11 @@ namespace LivrETS.Models
 
                 mail.From = new MailAddress(notification.emailProvider);
 
-                foreach(string user in notification.listUser)
+                foreach (string user in notification.listUser)
                 {
                     mail.To.Add(user);
                 }
-                
+
                 mail.Subject = EMAIL_SUBJECT_NOTIF;
 
                 mail.IsBodyHtml = true;

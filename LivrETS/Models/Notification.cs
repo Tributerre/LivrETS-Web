@@ -83,5 +83,4 @@ namespace LivrETS.Models
         ARTICLETRANSFEREDTOTRIBUTERRE = 11
 
     }
-    
 }

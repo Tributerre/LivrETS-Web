@@ -200,6 +200,7 @@ namespace LivrETS.Controllers
             NotificationManager.getInstance().sendNotification(
                 new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION, Repository.GetAllMailUsers().ToList())
                 );
+            
 
             return Json(new { }, contentType: "application/json");
         }
