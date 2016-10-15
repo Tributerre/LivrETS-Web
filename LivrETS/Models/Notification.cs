@@ -14,7 +14,7 @@ namespace LivrETS.Models
 
         public Notification(NotificationOptions option, List<string> listUser)
         {
-            this.emailProvider = LivrETS.Properties.Resources.EMAIL_SENDER;
+            this.emailProvider = LivrETS.Properties.Resources.EMAIL_PROVIDER;
             this.template = GetMessage(option);
             this.listUser = listUser;
         }
