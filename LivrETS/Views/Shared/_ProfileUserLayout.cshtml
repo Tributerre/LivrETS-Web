@@ -1,0 +1,89 @@
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    @RenderSection("styles", required: false)
+
+<style>
+    h1 {
+        margin-bottom: 50px;
+    }
+
+    #menu-general-admin {
+        margin-bottom: 50px;
+    }
+
+        #menu-general-admin ul li {
+            padding: 5px;
+            padding-right: 10px;
+        }
+
+            #menu-general-admin ul li:not(:last-child){
+                border-right: 1px solid gray;
+            }
+
+            #menu-general-admin ul li a {
+                color: black;
+            }
+
+                #menu-general-admin ul li a:hover {
+                    color: green;
+                }
+
+    thead > tr > th {
+        padding: 5px;
+    }
+
+    #group-btn-action {
+        margin-bottom: 30px;
+        padding-right: 16px;
+    }
+</style>
+}
+
+@using (Html.BeginForm("Profile", "Account", FormMethod.Post, new { ReturnUrl = "/Home/Index", @class = "form-horizontal", role = "form" }))
+{
+<div class="container">
+    <div class="row">
+        <div class="text-center">
+            <h1>Profile</h1>
+
+            <div id="menu-general-admin"> 
+                <ul class="list-inline">
+                    <li>@Html.ActionLink("Historique", "Historic", "Account")</li>
+                    <li>@Html.ActionLink("Statistiques", "Statistic", "Account")</li>
+                    <li>@Html.ActionLink("Profile", "Profile", "Account")</li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="row" id="group-btn-action">
+            @RenderSection("actions", required: false)
+        </div>
+    </div>
+
+    @RenderBody()
+</div>
+}
+
+@section Scripts {
+    @RenderSection("scripts", required: false)
+}

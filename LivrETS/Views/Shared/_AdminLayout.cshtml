@@ -33,7 +33,7 @@
             padding: 5px;
             padding-right:10px;
         }
-        #menu-general-admin ul li:first-child{
+        #menu-general-admin ul li:not(:last-child){
             border-right: 1px solid gray;
         }
         #menu-general-admin ul li a{
@@ -80,5 +80,6 @@
 </div>
 
 @section Scripts {
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
     @RenderSection("scripts", required: false)
 }
