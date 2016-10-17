@@ -13,7 +13,7 @@ namespace LivrETS.Models
 
         public Notification(NotificationOptions option)
         {
-            this.emailProvider = LivrETS.Properties.Resources.EMAIL_SENDER;
+            this.emailProvider = LivrETS.Properties.Resources.EMAIL_PROVIDER;
             this.template = GetMessage(option);
         }
 
