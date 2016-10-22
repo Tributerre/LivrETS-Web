@@ -262,3 +262,5 @@ bin/
 App_Data/*
 *.csproj.user
 obj/
+
+LivrETS/Properties/*

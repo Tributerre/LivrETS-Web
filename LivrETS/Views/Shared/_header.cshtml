@@ -24,7 +24,7 @@
                 <div class="logo text-md-center">
                     <h1>
                         <a href="/home/index">
-                            Tributerre
+                            Tribu<span class="primary-color">terre</span>
                         </a>
                     </h1>
                 </div><!-- /.logo -->
@@ -86,7 +86,12 @@
                         if (User.IsInRole("Administrator"))
                         {
                             <li>@Html.ActionLink("Utilisateurs", "ManageUsers", "Admin")</li>
-                            <li>@Html.ActionLink("Foires", "ManageFairs", "Admin")</li>
+                            <li class="dropdown">
+                                <a href="#" data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle">Foires</a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Liste foires", "ManageFairs", "Admin")</li>
+                                </ul>
+                            </li>
                         }
                         <li>&nbsp;</li>
                     }

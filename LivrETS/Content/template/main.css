@@ -568,7 +568,7 @@ hr {
   text-decoration: none;
 }
 .header .block-search {
-  margin-top: 50px;
+  margin-top: 38px;
 }
 .header .block-search .input-group .form-control {
   padding: 7px 12px;
@@ -2661,7 +2661,7 @@ blockquote:before {
     margin: 20px 0px 17px;
   }
   .header .block-search {
-    margin-top: 50px;
+    margin-top: 38px;
   }
   .row.product-item .product-detail,
   .row.product-item .product-actions {
