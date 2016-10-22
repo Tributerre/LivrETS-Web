@@ -34,6 +34,9 @@
             width: 262px !important;
             height: 202px !important;
         }
+        .related-pets-section{
+            display: none;
+        }
     </style>
 }
 
@@ -64,17 +67,18 @@
                                                         <a href="/Home/DetailOffer?id=@item.Id">
                                                             <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())"
                                                                  data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title"
-                                                                 class="center-block img-responsive avatar-article">
+                                                                 class="center-block img-responsive avatar-article"  title="@item.Title">
                                                         </a>
                                                     </div><!-- /.product-image -->
                                                     <div class="product-detail text-md-center">
                                                         <h3 class="product-name">
-                                                            @Html.ActionLink(item.Title, "DetailOffer", "Home", new { id = item.Id }, null)
+                                                            @Html.ActionLink(HomeHelpers.TroncText(item.Title, 20), "DetailOffer", "Home",  
+                                                           new { id = item.Id, title = item.Title }, null)
                                                         </h3>
                                                     
                                                         <p class="product-price">
                                                             <span class="price">$@item.Price</span>&nbsp;&nbsp;&nbsp;
-                                                            <a href="#"><span class="fa fa-shopping-basket"></span></a>
+                                                            <a href="#" title="favoris"><span class="fa fa-heart"></span></a>
                                                         </p>
                                                     </div><!-- /.product-detail -->
                                                 </div><!-- /.product-item -->
@@ -96,20 +100,24 @@
                                                     <a href="/Home/DetailOffer?id=@item.Id">
                                                         <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())"
                                                              data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title"
-                                                             class="center-block img-responsive avatar-article">
+                                                             class="center-block img-responsive avatar-article"  title="@item.Title">
                                                     </a>
                                                 </div>
                                                 <div class="col-md-8 col-sm-8 text-md-center">
                                                     <div class="product-detail">
-                                                        <h3 class="media-heading product-name">@Html.ActionLink(item.Title, "DetailOffer", "Home", new { id = item.Id }, null)</h3>
-                                                        <p class="product-price"><span class="price">@item.Price</span></p>
+                                                        <h3 class="media-heading product-name">@Html.ActionLink(HomeHelpers.TroncText(item.Title, 40), 
+                                                                                              "DetailOffer", "Home", 
+                                                                                              new { @id = item.Id, title = item.Title }, null)</h3>
+                                                        <p>@item.Article.Course.Acronym</p>
+                                                        <p class="product-price"><span class="price">$ @item.Price</span></p>
                                                         <p class="product-description">@item.Article.FairState</p>
                                                     </div><!-- /.product-detail -->
                                                     <div class="product-actions">
                                                         <div class="btn-group">
-                                                            <a href="cart.html" class="btn btn-secondary strong uppercase btn-add-to-cart"><span class="fa fa-shopping-basket"></span></a>
+                                                            <a href="cart.html" class="btn btn-secondary strong uppercase btn-add-to-cart" title="favoris">
+                                                                <span class="fa fa-heart"></span>
+                                                            </a>
                                                         </div>
-
                                                     </div><!-- /.product-actions -->
                                                 </div><!-- /.col -->
                                             </div><!-- /.product-item -->
@@ -126,15 +134,6 @@
 
                         @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort,
                             currentFilter = ViewBag.CurrentFilter }))
-                        <!--<ul class="pagination">
-                            <li><a href="#">&laquo;</a></li>
-                            <li><a href="#">1</a></li>
-                            <li class="active"><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">&raquo;</a></li>
-                        </ul><!-- /.pagination -->
                     </div><!-- /.page-section-->
                 </section><!-- /#category-products -->
             </div><!-- /.col-md-9 -->
@@ -207,15 +206,18 @@
                                         <div class="product-item">
                                             <div class="product-image">
                                                 <a href="detail.html">
-                                                    <a href="/Home/DetailOffer?id=@item.Id">
+                                                    <a href="/Home/DetailOffer?id=@item.Id" title="@item.Title">
                                                         <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())"
                                                              data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title"
-                                                             class="center-block img-responsive avatar-article">
+                                                             class="center-block img-responsive avatar-article" title="@item.Title">
                                                     </a>
                                                 </a>
                                             </div><!-- /.product-image -->
                                             <div class="product-detail text-md-center">
-                                                <h3 class="product-name"><a href="detail.html">@item.Title</a></h3>
+                                                <h3 class="product-name">
+                                                    @Html.ActionLink(HomeHelpers.TroncText(item.Title, 15), "DetailOffer", "Home", 
+                                                                        new { id = item.Id, title = item.Title }, null)
+                                                </h3>
                                                 <p class="product-price"><span class="price">$@item.Price</span></p>
                                             </div><!-- /.product-detail -->
                                         </div><!-- /.product-item -->

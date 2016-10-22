@@ -30,11 +30,17 @@
             <div class="col-md-6 col-md-push-3 col-sm-12 col-xs-12">
                 <div id="product-image-carousel" class="product-image owl-carousel owl-theme carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
+    
                         @foreach (OfferImage item in Model.Images)
                         {
                             @HomeHelpers.ImgArticleHelper(item, @Model.Title, flagImg);
 
                             flagImg = false;
+                        }
+                        
+                        @if (flagImg)
+                        {
+                            @HomeHelpers.ImgArticleHelper(null, @Model.Title, flagImg);
                         }
                     </div><!-- /.carousel-inner -->
                 </div><!-- /.product-image-carousel -->
@@ -92,8 +98,8 @@
                             <div class="col-md-7 col-sm-7 col-xs-12">
                                 <div class="form-group form-actions">
                                     <button class="btn btn-lg btn-add-to-cart btn-primary btn-block">
-                                        <span class="fa fa-shopping-basket"></span>
-                                        Add to Cart
+                                        <span class="fa fa-heart"></span>
+                                        Add to Favoris
                                     </button>
                                 </div>
                             </div><!-- /.col-md-7 -->
