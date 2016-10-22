@@ -54,5 +54,29 @@ namespace LivrETS.Helpers
             }
             return text;
         }
+
+        /// <summary>
+        /// Get selector tri
+        /// </summary>
+        /// /// <param name="text">url parameter</param>
+        /// <returns>selector tri</returns>
+        public static IHtmlString GetSelectorSort(string urlParametor)
+        {
+            string html = "<select name='sort-by' id='sort-by' class='selectpicker sidebar-sort'>";
+
+            if (urlParametor == null || urlParametor.Equals("dateDesc"))
+            {
+                html += "<option selected value='DateDesc'>Date de diffusion l'article</option>";
+                html += "<option value='PriceDesc'>Prix</option>";
+            }else if (urlParametor != null || urlParametor.Equals("priceDesc"))
+            {
+                html += "<option value='dateDesc'>Date diffusion de l'article</option>";
+                html += "<option selected value='PriceDesc'>Prix</option>";
+            }
+
+            html += "</select>";
+
+            return new HtmlString(String.Format(html));
+        }
     }
 }

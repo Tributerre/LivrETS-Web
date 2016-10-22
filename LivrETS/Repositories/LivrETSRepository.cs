@@ -118,14 +118,20 @@ namespace LivrETS.Repositories
 
         /// <summary>
         /// Gets all the offers 
+        /// 
         /// </summary>
-        /// /// <param name="itemSearch">the element search</param>
+        /// ///  <param name="priceMin">minimal price</param>
+        /// ///  <param name="priceMax">maximal price</param>
+        /// ///  <param name="itemSearch">the element search</param>
+        /// ///  <param name="sortOrder">the element sort</param>
         /// <returns>The offers or null if not found.</returns>
-        public IQueryable<Offer> GetAllOffers(string itemSearch = null)
+        public IEnumerable<Offer> GetAllOffers(double priceMin, double priceMax, string itemSearch = null, string sortOrder = null)
         {
-            IQueryable<Offer> offers = from offer in _db.Offers
-                                       orderby offer.StartDate descending
-                                       select offer;
+            List<Offer> offers = (from offer in _db.Offers
+                                    where offer.Price >= priceMin && offer.Price <= priceMax
+                                    orderby offer.StartDate descending
+                                    select offer).ToList();
+            IEnumerable<Offer> results = offers;
 
             if (itemSearch != null)
             {
@@ -145,17 +151,43 @@ namespace LivrETS.Repositories
 
                 if(sigle.Equals("cr"))
                 {
-                    offers = offers.Where(offer => offer.Title.Contains(elt));
+                    results = offers.Where(offer => offer.Title.Contains(elt));
                 }else if (sigle.Equals("sg"))
                 {
-                    offers = offers.Where(offer => offer.Article.Course.Acronym.Contains(elt));
+                    results = offers.Where(offer => offer.Article.Course.Acronym.Contains(elt));
                 }
 
-                return offers;
-
+                //return offers;
+            }else if(sortOrder != null)
+            {
+                if (sortOrder.Equals("DateDesc"))
+                {
+                    results = offers.OrderByDescending(offer => offer.StartDate);
+                } else if (sortOrder.Equals("PriceDesc"))
+                {
+                    results = offers.OrderByDescending(offer => offer.Price);
+                } else if (sortOrder.Equals(Article.BOOK_CODE) || sortOrder.Equals(Article.CALCULATOR_CODE) || sortOrder.Equals(Article.COURSE_NOTES_CODE))
+                {
+                    results = offers.Where(offer => offer.Article.ArticleCode.Equals(sortOrder));
+                }
             }
 
-            return offers;
+            
+
+            return results;
+        }
+
+        public int CountArticle(string category = null)
+        {
+            IQueryable<Offer> offers = from offer in _db.Offers
+                                       select offer;
+
+            if (category != null)
+            {
+                offers.Where(offer => offer.Article.ArticleCode.Equals(category));
+            }
+
+            return offers.Count();
         }
 
         /// <summary>
