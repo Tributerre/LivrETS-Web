@@ -67,7 +67,7 @@ namespace LivrETS.Controllers
             ViewBag.CurrentSort = sortOrder;
             IEnumerable<Offer> offers = null;
 
-            if(searchString != null)
+            if (searchString != null)
             {
                 page = 1;
             }else
@@ -76,10 +76,7 @@ namespace LivrETS.Controllers
             }
 
             ViewBag.CurrentFilter = searchString;
-
             offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);
-            NotificationManager.getInstance().sendNotification(new Notification(NotificationOptions.ARTICLETRANSFEREDTOTRIBUTERRE, Repository.GetAllMailUsers().ToList()));
-
 
             int pageSize = 20;
             int pageNumber = (page ?? 1);

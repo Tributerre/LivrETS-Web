@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Mail;
 using LivrETS.Properties;
+using System.Configuration;
+using System.Net;
 
 namespace LivrETS.Models
 {
@@ -36,13 +38,13 @@ namespace LivrETS.Models
             try
             {
                 MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient(Resources.SMTP_CLIENT);
+                SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings["SMTP_CLIENT"]);
 
                 mail.From = new MailAddress(notification.emailProvider);
 
-                foreach (string user in notification.listUser)
+                foreach (ApplicationUser user in notification.listUser)
                 {
-                    mail.To.Add(user);
+                    mail.To.Add(user.Email);
                 }
 
                 mail.Subject = EMAIL_SUBJECT_NOTIF;
@@ -50,8 +52,9 @@ namespace LivrETS.Models
                 mail.IsBodyHtml = true;
                 mail.Body = notification.template;
 
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential(Resources.EMAIL_USERNAME, Resources.EMAIL_PWD);
+                SmtpServer.Port = Int32.Parse(ConfigurationManager.AppSettings["EMAIL_PORT"]);
+                SmtpServer.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["EMAIL_USERNAME"], 
+                    ConfigurationManager.AppSettings["EMAIL_PWD"]);
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);

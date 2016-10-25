@@ -67,7 +67,7 @@ namespace LivrETS.Repositories
         /// Gets all the users 
         /// </summary>
         /// <returns>The Users or null if not found.</returns>
-        public Object GetAllUsers()
+        public Object GetAllUsersForAdmin()
         {
 
             var list = (from user in _db.Users
@@ -80,10 +80,10 @@ namespace LivrETS.Repositories
             return list;
         }
 
-        public IQueryable<string> GetAllMailUsers()
+        public IQueryable<ApplicationUser> GetAllUsers()
         {
             return (from user in _db.Users
-                    select user.Email);
+                    select user);
         }
 
         /// <summary>

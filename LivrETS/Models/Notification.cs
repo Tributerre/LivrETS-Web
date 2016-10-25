@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using System.Configuration;
 
 namespace LivrETS.Models
 {
@@ -10,11 +11,11 @@ namespace LivrETS.Models
     {
         public string template = null;
         public string emailProvider = null;
-        public List<string> listUser = null;
+        public List<ApplicationUser> listUser = null;
 
-        public Notification(NotificationOptions option, List<string> listUser)
+        public Notification(NotificationOptions option, List<ApplicationUser> listUser)
         {
-            this.emailProvider = LivrETS.Properties.Resources.EMAIL_PROVIDER;
+            this.emailProvider = ConfigurationManager.AppSettings["EMAIL_PROVIDER"];
             this.template = GetMessage(option);
             this.listUser = listUser;
         }
