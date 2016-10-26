@@ -67,7 +67,7 @@ namespace LivrETS.Repositories
         /// Gets all the users 
         /// </summary>
         /// <returns>The Users or null if not found.</returns>
-        public Object GetAllUsers()
+        public Object GetAllUsersForAdmin()
         {
 
             var list = (from user in _db.Users
@@ -78,6 +78,12 @@ namespace LivrETS.Repositories
                                 role = user.Roles.Join(_db.Roles, userRole => userRole.RoleId, role => role.Id, (userRole, role) => role).Select(role => role.Name)
                             }).ToList();
             return list;
+        }
+
+        public IQueryable<ApplicationUser> GetAllUsers()
+        {
+            return (from user in _db.Users
+                    select user);
         }
 
         /// <summary>
