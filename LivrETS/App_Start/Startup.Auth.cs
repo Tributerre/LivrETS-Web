@@ -7,9 +7,12 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using LivrETS.Models;
 using System.Configuration;
+using Hangfire;
+using Hangfire.SqlServer;
 
 namespace LivrETS
 {
+
     public partial class Startup
     {
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
@@ -64,6 +67,28 @@ namespace LivrETS
                 ClientId = ConfigurationManager.AppSettings["GoogleClientID"],
                 ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"]
             });
+        }
+
+        
+        public void ConfigureHangFire(IAppBuilder app)
+        {
+            try
+            {
+                GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection",
+                    new SqlServerStorageOptions { QueuePollInterval = TimeSpan.FromSeconds(1) });
+
+                app.UseHangfireDashboard("/livretsJob", new DashboardOptions
+                {
+                    AuthorizationFilters = new[] { new HangfireAutjorizationFilter() }
+                });
+                app.UseHangfireServer();
+
+            }
+            catch(ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Mail;
-using LivrETS.Properties;
 using System.Configuration;
 using System.Net;
 
@@ -14,10 +13,7 @@ namespace LivrETS.Models
         private static NotificationManager notificationManager;
         static readonly object instanceLock = new object();
 
-        private NotificationManager()
-        {
-
-        }
+        private NotificationManager(){}
 
         public static NotificationManager getInstance()
         {
