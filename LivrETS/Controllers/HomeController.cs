@@ -28,6 +28,7 @@ using Microsoft.AspNet.Identity;
 using System.Threading;
 using System.Net;
 using PagedList;
+using Hangfire;
 
 namespace LivrETS.Controllers
 {
@@ -67,7 +68,7 @@ namespace LivrETS.Controllers
             ViewBag.CurrentSort = sortOrder;
             IEnumerable<Offer> offers = null;
 
-            if(searchString != null)
+            if (searchString != null)
             {
                 page = 1;
             }else
@@ -76,9 +77,7 @@ namespace LivrETS.Controllers
             }
 
             ViewBag.CurrentFilter = searchString;
-
-            offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);
-            
+            offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);  
 
             int pageSize = 20;
             int pageNumber = (page ?? 1);
@@ -203,9 +202,6 @@ namespace LivrETS.Controllers
                 }
 
                 Repository.Update();
-
-                //send notification mail
-                NotificationManager.getInstance().sendNotification(new Notification(NotificationOptions.ARTICLETRANSFEREDTOTRIBUTERRE));
 
                 return RedirectToAction(nameof(Index));
             }

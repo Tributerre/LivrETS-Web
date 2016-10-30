@@ -104,22 +104,9 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ListUsers()
         {
-            /*var db = new ApplicationDbContext();
-            var list_user = UserManager.Users.ToList();
-            var listRoles = (from role in db.Roles
-                             select new { Id = role.Id, Name = role.Name }).ToList();
-
-            var listUser = (from user in db.Users
-                            orderby user.FirstName descending
-                            select new
-                            {
-                                user = user,
-                                role = user.Roles.Join(db.Roles, userRole => userRole.RoleId, role => role.Id, (userRole, role) => role).Select(role => role.Name)
-                            }).ToList();
-            db.Dispose();*/
             var listRoles = Repository.GetAllRoles();
             
-            var listUser = Repository.GetAllUsers();
+            var listUser = Repository.GetAllUsersForAdmin();
 
             return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, contentType: "application/json");
         }

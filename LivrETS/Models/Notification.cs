@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Configuration;
 
 namespace LivrETS.Models
 {
@@ -10,11 +8,13 @@ namespace LivrETS.Models
     {
         public string template = null;
         public string emailProvider = null;
+        public List<ApplicationUser> listUser = null;
 
-        public Notification(NotificationOptions option)
+        public Notification(NotificationOptions option, List<ApplicationUser> listUser)
         {
-            this.emailProvider = LivrETS.Properties.Resources.EMAIL_SENDER;
+            this.emailProvider = ConfigurationManager.AppSettings["EMAIL_PROVIDER"];
             this.template = GetMessage(option);
+            this.listUser = listUser;
         }
 
         public string GetMessage(NotificationOptions option)
@@ -81,5 +81,4 @@ namespace LivrETS.Models
         ARTICLETRANSFEREDTOTRIBUTERRE = 11
 
     }
-    
 }

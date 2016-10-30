@@ -1,26 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Net.Mail;
-using LivrETS.Properties;
+using System.Configuration;
+using System.Net;
 
 namespace LivrETS.Models
 {
     public class NotificationManager
-    {       
+    {
         private const string EMAIL_SUBJECT_NOTIF = "Notification de TRIBUTERRE";
+
+
         private static NotificationManager notificationManager;
         static readonly object instanceLock = new object();
 
-        private NotificationManager()
-        {
-
-        }
+        private NotificationManager(){}
 
         public static NotificationManager getInstance()
         {
-            if (notificationManager == null) 
+            if (notificationManager == null)
             {
                 lock (instanceLock)
                 {
@@ -37,17 +34,23 @@ namespace LivrETS.Models
             try
             {
                 MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient(Resources.SMTP_CLIENT);
+                SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings["SMTP_CLIENT"]);
 
                 mail.From = new MailAddress(notification.emailProvider);
-                mail.To.Add("willkoua@yahoo.fr");
+
+                foreach (ApplicationUser user in notification.listUser)
+                {
+                    mail.To.Add(user.Email);
+                }
+
                 mail.Subject = EMAIL_SUBJECT_NOTIF;
 
                 mail.IsBodyHtml = true;
                 mail.Body = notification.template;
 
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential(Resources.EMAIL_USERNAME, Resources.EMAIL_PWD);
+                SmtpServer.Port = Int32.Parse(ConfigurationManager.AppSettings["EMAIL_PORT"]);
+                SmtpServer.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["EMAIL_USERNAME"], 
+                    ConfigurationManager.AppSettings["EMAIL_PWD"]);
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);

@@ -36,21 +36,7 @@ namespace LivrETS.Repositories
             _db = new ApplicationDbContext();
         }
 
-
-
-        /// <summary>
-        /// Returns an enumerable of all courses in the system.
-        /// </summary>
-        /// <returns>An enumerable of Course. Not Null.</returns>
-        public IEnumerable<Course> GetAllCourses()
-        {
-            return (
-                from course in _db.Courses
-                orderby course.Acronym ascending
-                select course
-            );
-        }
-
+        /*************************** Users ***************************/
         /// <summary>
         /// Gets all the roles 
         /// </summary>
@@ -67,7 +53,7 @@ namespace LivrETS.Repositories
         /// Gets all the users 
         /// </summary>
         /// <returns>The Users or null if not found.</returns>
-        public Object GetAllUsers()
+        public Object GetAllUsersForAdmin()
         {
 
             var list = (from user in _db.Users
@@ -80,6 +66,53 @@ namespace LivrETS.Repositories
             return list;
         }
 
+        public IQueryable<ApplicationUser> GetAllUsers()
+        {
+            return (from user in _db.Users
+                    select user);
+        }
+
+        /// <summary>
+        /// Gets a user.
+        /// </summary>
+        /// <param name="BarCode">The bar code of the user to retrieve.</param>
+        /// <param name="Id">The Id of the user.</param>
+        /// <param name="LivrETSID">The LivrETS ID of the user.</param>
+        /// <returns>An ApplicationUser or null if not found.</returns>
+        public ApplicationUser GetUserBy(string BarCode = null, string Id = null, string LivrETSID = null)
+        {
+            ApplicationUser userToReturn = null;
+
+            if (BarCode != null)
+            {
+                userToReturn = (
+                    from user in _db.Users
+                    where user.BarCode == BarCode
+                    select user
+                ).FirstOrDefault();
+            }
+            else if (Id != null)
+            {
+                userToReturn = (
+                    from user in _db.Users
+                    where user.Id == Id
+                    select user
+                ).FirstOrDefault();
+            }
+            else if (LivrETSID != null)
+            {
+                userToReturn = (
+                    from user in _db.Users
+                    where user.LivrETSID == LivrETSID
+                    select user
+                ).FirstOrDefault();
+            }
+
+            return userToReturn;
+        }
+
+        /*************************** Fairs ***************************/
+
         /// <summary>
         /// Gets all the fairs 
         /// </summary>
@@ -89,6 +122,90 @@ namespace LivrETS.Repositories
 
             return (from fair in _db.Fairs
                     select fair).ToList();
+        }
+
+        /// <summary>
+        /// Gets the next not started fair from now.
+        /// </summary>
+        /// <returns>A Fair or null if not found.</returns>
+        public Fair GetNextFair()
+        {
+            var now = DateTime.Now;
+            return (
+                from fair in _db.Fairs
+                where fair.StartDate > now
+                orderby fair.StartDate ascending
+                select fair
+            ).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Get the current fair (current date between StartDate and EndDate) if there is one.
+        /// </summary>
+        /// <returns>A Fair or null if not found.</returns>
+        public Fair GetCurrentFair()
+        {
+            var now = DateTime.Now;
+            return (
+                from fairdb in _db.Fairs
+                where fairdb.StartDate <= now && now <= fairdb.EndDate
+                select fairdb
+            ).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets an offer.
+        /// </summary>
+        /// <param name="Id">The Id of the offer.</param>
+        /// <returns>An Offer or null if not found.</returns>
+        public Offer GetOfferBy(string Id = null)
+        {
+            Offer offerToReturn = null;
+
+            if (Id != null)
+            {
+                offerToReturn = (
+                    from offer in _db.Offers
+                    where offer.Id.ToString() == Id
+                    select offer
+                ).FirstOrDefault();
+            }
+
+            return offerToReturn;
+        }
+
+        /// <summary>
+        /// Gets an offer associated with some data.
+        /// </summary>
+        /// <param name="userLivrETSID">The LivrETS ID of the associated user.</param>
+        /// <param name="andArticleLivrETSID">The article LivrETS ID of the associated article.</param>
+        /// <returns>An Offer or null if not found.</returns>
+        public Offer GetOfferAssociatedWith(string userLivrETSID, string andArticleLivrETSID)
+        {
+            Offer offerToReturn = null;
+
+            if (userLivrETSID != null && andArticleLivrETSID != null)
+            {
+                var user = GetUserBy(LivrETSID: userLivrETSID);
+                offerToReturn = user.Offers.FirstOrDefault(offer => offer.Article.LivrETSID == andArticleLivrETSID);
+            }
+
+            return offerToReturn;
+        }
+
+        /*************************** Offer ***************************/
+
+        /// <summary>
+        /// Returns an enumerable of all courses in the system.
+        /// </summary>
+        /// <returns>An enumerable of Course. Not Null.</returns>
+        public IEnumerable<Course> GetAllCourses()
+        {
+            return (
+                from course in _db.Courses
+                orderby course.Acronym ascending
+                select course
+            );
         }
 
         /// <summary>
@@ -241,74 +358,6 @@ namespace LivrETS.Repositories
         }
 
         /// <summary>
-        /// Get the current fair (current date between StartDate and EndDate) if there is one.
-        /// </summary>
-        /// <returns>A Fair or null if not found.</returns>
-        public Fair GetCurrentFair()
-        {
-            var now = DateTime.Now;
-            return (
-                from fairdb in _db.Fairs
-                where fairdb.StartDate <= now && now <= fairdb.EndDate
-                select fairdb
-            ).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the next not started fair from now.
-        /// </summary>
-        /// <returns>A Fair or null if not found.</returns>
-        public Fair GetNextFair()
-        {
-            var now = DateTime.Now;
-            return (
-                from fair in _db.Fairs
-                where fair.StartDate > now
-                orderby fair.StartDate ascending
-                select fair
-            ).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets a user.
-        /// </summary>
-        /// <param name="BarCode">The bar code of the user to retrieve.</param>
-        /// <param name="Id">The Id of the user.</param>
-        /// <param name="LivrETSID">The LivrETS ID of the user.</param>
-        /// <returns>An ApplicationUser or null if not found.</returns>
-        public ApplicationUser GetUserBy(string BarCode = null, string Id = null, string LivrETSID = null)
-        {
-            ApplicationUser userToReturn = null;
-
-            if (BarCode != null)
-            {
-                userToReturn = (
-                    from user in _db.Users
-                    where user.BarCode == BarCode
-                    select user
-                ).FirstOrDefault();
-            }
-            else if (Id != null)
-            {
-                userToReturn = (
-                    from user in _db.Users
-                    where user.Id == Id
-                    select user
-                ).FirstOrDefault();
-            }
-            else if (LivrETSID != null)
-            {
-                userToReturn = (
-                    from user in _db.Users
-                    where user.LivrETSID == LivrETSID
-                    select user
-                ).FirstOrDefault();
-            }
-
-            return userToReturn;
-        }
-
-        /// <summary>
         /// Attaches a model to a context. Does nothing if the object isn't
         /// a model of the domain.
         /// </summary>
@@ -321,45 +370,7 @@ namespace LivrETS.Repositories
             }
         }
 
-        /// <summary>
-        /// Gets an offer.
-        /// </summary>
-        /// <param name="Id">The Id of the offer.</param>
-        /// <returns>An Offer or null if not found.</returns>
-        public Offer GetOfferBy(string Id = null)
-        {
-            Offer offerToReturn = null;
-
-            if (Id != null)
-            {
-                offerToReturn = (
-                    from offer in _db.Offers
-                    where offer.Id.ToString() == Id
-                    select offer
-                ).FirstOrDefault();
-            }
-
-            return offerToReturn;
-        }
-
-        /// <summary>
-        /// Gets an offer associated with some data.
-        /// </summary>
-        /// <param name="userLivrETSID">The LivrETS ID of the associated user.</param>
-        /// <param name="andArticleLivrETSID">The article LivrETS ID of the associated article.</param>
-        /// <returns>An Offer or null if not found.</returns>
-        public Offer GetOfferAssociatedWith(string userLivrETSID, string andArticleLivrETSID)
-        {
-            Offer offerToReturn = null;
-
-            if (userLivrETSID != null && andArticleLivrETSID != null)
-            {
-                var user = GetUserBy(LivrETSID: userLivrETSID);
-                offerToReturn = user.Offers.FirstOrDefault(offer => offer.Article.LivrETSID == andArticleLivrETSID);
-            }
-
-            return offerToReturn;
-        }
+        
 
         public void Update()
         {
