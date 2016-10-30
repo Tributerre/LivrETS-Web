@@ -28,6 +28,7 @@ using Microsoft.AspNet.Identity;
 using System.Threading;
 using System.Net;
 using PagedList;
+using Hangfire;
 
 namespace LivrETS.Controllers
 {
@@ -76,7 +77,7 @@ namespace LivrETS.Controllers
             }
 
             ViewBag.CurrentFilter = searchString;
-            offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);
+            offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);  
 
             int pageSize = 20;
             int pageNumber = (page ?? 1);
