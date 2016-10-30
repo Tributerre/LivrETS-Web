@@ -4,7 +4,7 @@
     //load table offers
     $('#section-activities table').DataTable({
         processing: true,
-        ajax: {
+        ajax: {       
             url: "/Account/GetOffersByUser",
             type: "POST",
             dataType: "JSON",

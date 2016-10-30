@@ -310,13 +310,6 @@ namespace LivrETS.Controllers
             return View();
         }
 
-        // GET: /Account/Statistic
-        [HttpGet]
-        public ActionResult Statistic()
-        {
-            return View();
-        }
-
         // GET: /Account/Profile
         public new ActionResult Profile()
         {
