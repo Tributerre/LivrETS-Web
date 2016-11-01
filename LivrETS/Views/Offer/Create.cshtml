@@ -29,17 +29,18 @@
             position: relative;
             overflow: hidden;
         }
-        .fileUpload input.upload {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
+
+            .fileUpload input.upload {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                cursor: pointer;
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
     </style>
 }
 
@@ -49,7 +50,7 @@
             <h1>Vendre un article <small>Remplissez tous les champs</small></h1>
         </div>
 
-        @using (Html.BeginForm("Sell", "Home", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("Create", "Offer", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
         {
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.AntiForgeryToken()
