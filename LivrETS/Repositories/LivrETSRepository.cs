@@ -153,47 +153,7 @@ namespace LivrETS.Repositories
             ).FirstOrDefault();
         }
 
-        /// <summary>
-        /// Gets an offer.
-        /// </summary>
-        /// <param name="Id">The Id of the offer.</param>
-        /// <returns>An Offer or null if not found.</returns>
-        public Offer GetOfferBy(string Id = null)
-        {
-            Offer offerToReturn = null;
-
-            if (Id != null)
-            {
-                offerToReturn = (
-                    from offer in _db.Offers
-                    where offer.Id.ToString() == Id
-                    select offer
-                ).FirstOrDefault();
-            }
-
-            return offerToReturn;
-        }
-
-        /// <summary>
-        /// Gets an offer associated with some data.
-        /// </summary>
-        /// <param name="userLivrETSID">The LivrETS ID of the associated user.</param>
-        /// <param name="andArticleLivrETSID">The article LivrETS ID of the associated article.</param>
-        /// <returns>An Offer or null if not found.</returns>
-        public Offer GetOfferAssociatedWith(string userLivrETSID, string andArticleLivrETSID)
-        {
-            Offer offerToReturn = null;
-
-            if (userLivrETSID != null && andArticleLivrETSID != null)
-            {
-                var user = GetUserBy(LivrETSID: userLivrETSID);
-                offerToReturn = user.Offers.FirstOrDefault(offer => offer.Article.LivrETSID == andArticleLivrETSID);
-            }
-
-            return offerToReturn;
-        }
-
-        /*************************** Offer ***************************/
+        /*************************** Courses ***************************/
 
         /// <summary>
         /// Returns an enumerable of all courses in the system.
@@ -232,6 +192,9 @@ namespace LivrETS.Repositories
             _db.Courses.Add(course);
             _db.SaveChanges();
         }
+
+
+        /*************************** Offer ***************************/
 
         /// <summary>
         /// Gets all the offers 
@@ -289,9 +252,37 @@ namespace LivrETS.Repositories
                 }
             }
 
-            
-
             return results;
+        }
+
+        public void DeleteOffer(string[] Ids)
+        {
+            try
+            {
+                foreach (string Id in Ids)
+                {
+                    Offer offer = GetOfferBy(Id);
+
+                    if(offer.Images != null)
+                    {
+                        OfferImage[] tabOffer = offer.Images.ToArray();
+                        for(int i = 0; i<tabOffer.Length; i++)
+                        {
+                            _db.OfferImage.Remove(tabOffer[i]);
+                            tabOffer[i].Delete();
+                        }
+                    }       
+
+                    _db.Offers.Remove(offer);
+                }
+
+                _db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
         }
 
         public int CountArticle(string category = null)
@@ -355,6 +346,43 @@ namespace LivrETS.Repositories
             }
 
             return articleToReturn;
+        }
+
+        /// <summary>
+        /// Gets an offer.
+        /// </summary>
+        /// <param name="Id">The Id of the offer.</param>
+        /// <returns>An Offer or null if not found.</returns>
+        public Offer GetOfferBy(string Id)
+        {
+            if (Id == null)
+                return null;
+
+            return (
+                    from offer in _db.Offers
+                    where offer.Id.ToString() == Id
+                    select offer
+                ).FirstOrDefault();
+
+        }
+
+        /// <summary>
+        /// Gets an offer associated with some data.
+        /// </summary>
+        /// <param name="userLivrETSID">The LivrETS ID of the associated user.</param>
+        /// <param name="andArticleLivrETSID">The article LivrETS ID of the associated article.</param>
+        /// <returns>An Offer or null if not found.</returns>
+        public Offer GetOfferAssociatedWith(string userLivrETSID, string andArticleLivrETSID)
+        {
+            Offer offerToReturn = null;
+
+            if (userLivrETSID != null && andArticleLivrETSID != null)
+            {
+                var user = GetUserBy(LivrETSID: userLivrETSID);
+                offerToReturn = user.Offers.FirstOrDefault(offer => offer.Article.LivrETSID == andArticleLivrETSID);
+            }
+
+            return offerToReturn;
         }
 
         /// <summary>

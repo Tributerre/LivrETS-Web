@@ -39,7 +39,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 <div class="container">
     <h2>Profil @user.FirstName @user.LastName</h2>
     <hr>
-
+@using (Html.BeginForm("Profile", "Account", FormMethod.Post, new { ReturnUrl = "/Home/Index", @class = "form-horizontal", role = "form" }))
+{
         <div class="row">
             @Html.AntiForgeryToken()
             <div class="form-group">
@@ -98,8 +99,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
                 </div>
             </div>
         </div>
-        
-    
+
+} 
 </div>
 
 
