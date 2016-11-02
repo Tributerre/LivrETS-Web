@@ -15,20 +15,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using LivrETS.ViewModels;
 using LivrETS.Models;
-using LivrETS.Service.IO;
 using LivrETS.Repositories;
-using Microsoft.AspNet.Identity;
-using System.Threading;
-using System.Net;
 using PagedList;
-using Hangfire;
 
 namespace LivrETS.Controllers
 {
