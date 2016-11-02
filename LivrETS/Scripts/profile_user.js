@@ -21,14 +21,10 @@
                 }
             },
             {
+                class: "col-md-5",
                 data: function (val) {
-                    return new Date(parseInt(val.StartDate.replace('/Date(', ''))).toDateString();
-                },
-                class: "col-md-2 text-center"
-            },
-            {
-                data: "Title",
-                class: "col-md-5"
+                    return "<a href='/Offer/Details/" + val.Id + "'>"+ val.Title +"</a>";
+                }
             },
             {
                 class: "text-center",
@@ -58,10 +54,16 @@
                 }
             },
             {
+                data: function (val) {
+                    return new Date(parseInt(val.StartDate.replace('/Date(', ''))).toDateString();
+                },
+                class: "col-md-2 text-center"
+            },
+            {
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
-                    return "<a href='#' class='btn btn-sm btn-primary btn-edit-offer' data-offer-id='" + val.Id + "'>"+
+                    return "<a href='/Offer/Edit/" + val.Id  + "' class='btn btn-sm btn-primary btn-edit-offer hide' data-offer-id='" + val.Id + "'>" +
                             "<span class='glyphicon glyphicon-edit'></span></a> " +
                             "<a href='#' class='btn btn-sm btn-danger btn-delete-offer' data-offer-id='" + val.Id + "'>"+
                             "<span class='glyphicon glyphicon-trash'></span></a>"

@@ -1,0 +1,260 @@
+﻿@*
+    LivrETS - Centralized system that manages selling of pre-owned ETS goods.
+    Copyright (C) 2016  TribuTerre
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
+*@
+@using LivrETS.ViewModels
+@using LivrETS.Models
+@model ArticleViewModel
+@{
+    ViewBag.Title = "Modifier votre article";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .fileUpload {
+            position: relative;
+            overflow: hidden;
+        }
+
+            .fileUpload input.upload {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                cursor: pointer;
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+    </style>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h1>Vendre un article <small>Remplissez tous les champs</small></h1>
+        </div>
+
+        @using (Html.BeginForm("Create", "Offer", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.AntiForgeryToken()
+
+        <!-- BEGIN ISBN -->
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ISBN, new { @class = "control-label" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    @Html.TextBoxFor(model => model.ISBN, new { @class = "form-control", id = "isbn-text-input" })
+                    <!-- dropdowns-enhancement.js -->
+                    <div id="calculator-models-dropdown" class="btn-group" style="display: none;">
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Mod&egrave;le <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li>@Html.RadioButtonFor(model => model.Model, nameof(CalculatorModel.VOYAGE200), 
+                               new { id = "radio-voyage200" })<label for="radio-voyage200">Voyage 200</label></li>
+                            <li>@Html.RadioButtonFor(model => model.Model, nameof(CalculatorModel.NSPIRE), 
+                               new { id = "radio-nspire" })<label for="radio-nspire">NSpire</label></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-1 text-left">
+                    <!-- dropdowns-enhancement.js -->
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Type <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li>@Html.RadioButtonFor(model => model.Type, Article.BOOK_CODE, 
+                               new { id = "Book", name = "Article" })<label for="Book">Livre</label></li>
+                            <li>@Html.RadioButtonFor(model => model.Type, Article.COURSE_NOTES_CODE, 
+                               new { id = "CourseNotes", name = "Article" })<label for="CourseNotes">Notes de cours</label></li>
+                            <li>@Html.RadioButtonFor(model => model.Type, Article.CALCULATOR_CODE, 
+                               new { id = "Calculator", name = "Article" })<label for="Calculator">Calculatrice</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.ValidationMessageFor(model => model.ISBN, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        <!-- END ISBN -->
+
+            <br />
+
+        <!-- BEGIN Stats -->
+            <div class="row">
+
+            </div>
+        <!-- END Stats -->
+
+            <br />
+
+        <!-- BEGIN Course -->
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Acronym, new { @class = "control-label" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <!-- dropdowns-enhancement.js -->
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" id="btn-choice-class">Choisir... <span class="caret"></span></button>
+                        <ul id="courses-list" class="dropdown-menu">
+                            <li><input type="radio" id="not-applicable" name="Course" value="not-applicable" /><label for="not-applicable">Non Applicable</label></li>
+                            @foreach (Course course in Model.Courses)
+                            {
+                                <li><input type="radio" id="@course.Id" name="Course" value="@course.Acronym" /><label for="@course.Id">@course.Acronym</label></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2 col-md-offset-2">
+                    <span class="help-block" style="font-size: 12px;">Pas dans la liste? Ajoutez-le!</span>
+                </div>
+                <div class="col-md-2">
+                    <div class="input-group">
+                        <input type="text" id="newCourse" class="form-control input-sm" placeholder="Sigle du cours" />
+                        <span class="input-group-btn">
+                            <button id="btn-newCourse" class="btn btn-default btn-sm" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                        </span>
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.Acronym, new { id = "hidden-acronym" })
+                <div class="col-md-12">
+                    @Html.ValidationMessageFor(model => model.Acronym, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        <!-- END Course -->
+
+            <br />
+
+        <!-- START Title -->
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Title, new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = "Ex: Analyse économique en ingénierie" })
+                </div>
+                <div class="col-md-12">
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        <!-- END Title -->
+
+            <br />
+
+        <!-- START Price -->
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Price, new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", placeholder = "Ex: 12.99", ariaDescribedby = "basic-addon2" })
+                </div>
+                <div class="col-md-12">
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        <!-- END Price -->
+
+            <br />
+
+        <!-- START Condition -->
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Condition, new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @Html.TextAreaFor(model => model.Condition, new { @class = "form-control", placeholder = "Indiquez la condition dans laquelle est l'objet." })
+                </div>
+                <div class="col-md-12">
+                    @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        <!-- END Condition -->
+
+            <br />
+
+        <!-- BEGIN Footer of the form -->
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="col-md-4">
+                        <label for="selling-frame">Vendre dans le cadre de</label>
+                        <br />
+                        @Html.RadioButtonFor(model => model.SellingStrategy, "WEBSITE", new { @checked = "checked" })
+                        <span class="label label-success" style="font-size: 15px; margin-left: 10px;">Site Web</span>
+                        <br /><br />
+                        @Html.RadioButtonFor(model => model.SellingStrategy, "FAIR", new { })
+                        <span class="label label-info" style="font-size: 15px; margin-left: 10px;">Foire</span>
+                        <br /><br />
+                        <div id="info-sellingframe-fair" class="panel panel-info" hidden>
+                            <div class="panel-body bg-info" style="font-size: 12px;">
+                                L'article sera enregistr&eacute; pour la prochaine Foire aux Livres.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div id="images-panel" class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Images
+                                    <div class="fileUpload btn btn-xs pull-right">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        <input id="imageupload" type="file" class="upload" />
+                                    </div>
+
+                                    <div id="image-progress" class="progress pull-right" style="width: 15%; height: 10px; margin-top: 5px;" hidden>
+                                        <div class="progress-bar"
+                                             role="progressbar"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100"></div>
+                                    </div>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- END Footer of the form -->
+
+            <br />
+
+        <!-- START Buttons -->
+            <div class="row">
+                <div class="col-md-7">
+                    <button type="submit" class="btn btn-primary col-md-3">Terminer</button>
+                    <button type="button" class="btn btn-danger col-md-3 pull-right">Annuler</button>
+                </div>
+            </div>
+        <!-- END Buttons -->
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/sell.js"></script>
+}

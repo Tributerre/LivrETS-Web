@@ -173,8 +173,60 @@ namespace LivrETS.Controllers
         }
 
         // GET: Offer/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
+            /*Offer offer = Repository.GetOfferBy(id);
+            var model = new ArticleViewModel() {
+                Acronym = offer.Article.Course.Acronym,
+                Condition = offer.Condition,
+                Title = offer.Title,
+                Price = offer.Price,
+                // je ne peux pas continuer ici car, je n'ai pas 
+                //trouver comment acceder au code ISBN
+                //je chercherais plus tard 
+                Type = offer.Article.TypeName
+            };
+
+            switch (model.Type)
+            {
+                case Article.BOOK_CODE:
+                    newArticle = new Book()
+                    {
+                        Course = course,
+                        Title = model.Title,
+                        ISBN = model.ISBN
+                    };
+                    break;
+
+                case Article.COURSE_NOTES_CODE:
+                    newArticle = new CourseNotes()
+                    {
+                        Course = course,
+                        Title = model.Title,
+                        SubTitle = "Sample Subtitle",  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
+                        BarCode = model.ISBN
+                    };
+                    break;
+
+                case Article.CALCULATOR_CODE:
+                    newArticle = new Calculator()
+                    {
+                        Title = model.Title,
+                        Model = model.CalculatorModel
+                    };
+                    break;
+            }
+
+
+            Session["images"] = null;
+            model.Courses = Repository.GetAllCourses().ToList();
+            ThreadPool.QueueUserWorkItem(state =>
+            {
+                var arguments = state as Tuple<string, string>;
+                FileSystemFacade.CleanTempFolder(uploadsPath: arguments.Item1, userId: arguments.Item2);
+            }, state: new Tuple<string, string>(Server.MapPath(UPLOADS_PATH), User.Identity.GetUserId()));
+
+            return View(model);*/
             return View();
         }
 
@@ -186,7 +238,7 @@ namespace LivrETS.Controllers
             {
                 // TODO: Add update logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             catch
             {

@@ -271,8 +271,8 @@ namespace LivrETS.Repositories
                             _db.OfferImage.Remove(tabOffer[i]);
                             tabOffer[i].Delete();
                         }
-                    }       
-
+                    }
+                    _db.Articles.Remove(offer.Article);
                     _db.Offers.Remove(offer);
                 }
 
