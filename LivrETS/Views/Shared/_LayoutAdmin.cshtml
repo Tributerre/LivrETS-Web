@@ -42,13 +42,18 @@
                         <a href="/Admin/Index"><i class="fa fa-fw fa-dashboard"></i> Accueil</a>
                     </li>
                     <li>
-                        <a href="/Admin/ManageUsers"><i class="fa fa-fw fa-table"></i> Utilisateurs</a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#user">
+                            <i class="fa fa-fw fa-table"></i> Utilisateurs <i class="fa fa-fw fa-caret-down"></i>
+                        </a>
+                        <ul id="user" class="collapse">
+                            <li><a href="/Admin/ManageFairs">Liste des utilisateurs</a></li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#fair">
                             <i class="fa fa-fw fa-table"></i> Foire <i class="fa fa-fw fa-caret-down"></i>
                         </a>
-                        <ul id="demo" class="collapse">
+                        <ul id="fair" class="collapse">
                             <li><a href="/Admin/ManageFairs">Liste des foires</a></li>
                         </ul>
                     </li>
