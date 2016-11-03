@@ -54,6 +54,12 @@ namespace LivrETS.Controllers
             }
         }
 
+        // GET: Offer
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         // GET: /Admin/ManageUsers
         [HttpGet]
         public ActionResult ManageUsers()
@@ -65,7 +71,6 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult ManageFairs()
         {
-           
             return View();
         }
 

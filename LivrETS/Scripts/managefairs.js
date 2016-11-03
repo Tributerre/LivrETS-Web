@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
     //init managefairs table width datables plugins
-
+    
     $('table').DataTable({
         processing: true,
         ajax: {

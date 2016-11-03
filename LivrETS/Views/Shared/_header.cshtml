@@ -24,7 +24,7 @@
                 <div class="logo text-md-center">
                     <h1>
                         <a href="/home/index">
-                            Tributerre
+                            Tribu<span class="primary-color">terre</span>
                         </a>
                     </h1>
                 </div><!-- /.logo -->
@@ -36,9 +36,11 @@
                 @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "block-search" }))
                 {
                     <div class="input-group">
-                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder= "cr:mathematique ou sg:mat210" })
+                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, 
+                       new { @class = "form-control", placeholder= "cr:mathematique ou sg:mat210" })
                         <span class="input-group-btn">
-                            <button class="btn btn-primary-very-light search-button" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                            <button class="btn btn-primary-very-light search-button" type="submit">
+                            <span class="glyphicon glyphicon-search"></span></button>
                         </span>
                     </div>
                     <small>Rechercher par <b>cr:</b>Titre cours / <b>sg:</b>Sigle cours</small>
@@ -64,7 +66,8 @@
     <nav class="yamm navbar navbar-primary animate-dropdown" role="navigation">
         <div class="container">
             <div class="navbar-header">
-                <button id="btn-navbar-primary-collapse" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-primary-collapse">
+                <button id="btn-navbar-primary-collapse" type="button" class="navbar-toggle" 
+                        data-toggle="collapse" data-target="#navbar-primary-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -82,26 +85,22 @@
                         {
                             <li>@Html.ActionLink("Cueillir", "Pick", "Fair")</li>
                         }
-
-                        if (User.IsInRole("Administrator"))
-                        {
-                            <li>@Html.ActionLink("Utilisateurs", "ManageUsers", "Admin")</li>
-                            <li>@Html.ActionLink("Foires", "ManageFairs", "Admin")</li>
-                        }
                         <li>&nbsp;</li>
                     }
                 </ul><!-- /.nav -->
 
                 <div class="navbar-right user-options hide">
                     <div class="btn-group">
-                        <button data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle btn btn-primary-very-light navbar-btn">USD <b class="caret"></b></button>
+                        <button data-hover="dropdown" data-toggle="dropdown" 
+                                class="dropdown-toggle btn btn-primary-very-light navbar-btn">USD <b class="caret"></b></button>
                         <!--<ul class="dropdown-menu">
                             <li><a href="#">EUR</a></li>
                             <li><a href="#">INR</a></li>
                         </ul>-->
                     </div><!-- /.btn-group -->
                     <div class="btn-group">
-                        <button data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle btn btn-primary-very-light navbar-btn">FR <b class="caret"></b></button>
+                        <button data-hover="dropdown" data-toggle="dropdown" 
+                                class="dropdown-toggle btn btn-primary-very-light navbar-btn">FR <b class="caret"></b></button>
                         <ul class="dropdown-menu">
                             <li><a href="#">EN</a></li>
                         </ul><!-- /.dropdown-menu -->

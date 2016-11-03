@@ -1,0 +1,79 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewData["Title"]</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/template_admin/bootstrap.min.css")">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/template_admin/sb-admin.css")">
+    <!-- Morris Charts CSS -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/template_admin/morris.css")">
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            @Html.Partial("_HeaderAdmin")
+
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li class="active">
+                        <a href="/Admin/Index"><i class="fa fa-fw fa-dashboard"></i> Accueil</a>
+                    </li>
+                    <li>
+                        <a href="/Admin/ManageUsers"><i class="fa fa-fw fa-table"></i> Utilisateurs</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo">
+                            <i class="fa fa-fw fa-table"></i> Foire <i class="fa fa-fw fa-caret-down"></i>
+                        </a>
+                        <ul id="demo" class="collapse">
+                            <li><a href="/Admin/ManageFairs">Liste des foires</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+            @RenderBody()
+       
+    </div>
+    <!-- /#wrapper -->
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"
+            integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
+            crossorigin="anonymous"></script>
+    <script src="~/Scripts/template_admin/bootstrap.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+
+    <!-- Morris Charts JavaScript -->
+    <script src="~/Scripts/template_admin/morris/raphael.min.js"></script>
+    <script src="~/Scripts/template_admin/morris/morris.min.js"></script>
+    <script src="~/Scripts/template_admin//morris/morris-data.js"></script>
+
+
+    
+</body>
+</html>
+
