@@ -74,6 +74,13 @@ namespace LivrETS.Controllers
             return View();
         }
 
+        // GET: /Admin/ManageOffers
+        [HttpGet]
+        public ActionResult ManageOffers()
+        {
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -117,13 +124,23 @@ namespace LivrETS.Controllers
         }
 
         // POST: /Admin/ListFairs
-        // List all user
+        // List all Fairs
         [HttpPost]
         public ActionResult ListFairs()
         {
             var listFairs = Repository.GetAllFairs();
 
             return Json(new { listFairs }, contentType: "application/json");
+        }
+
+        // POST: /Admin/ListOffers
+        // List all Offers
+        [HttpPost]
+        public ActionResult ListOffers()
+        {
+            List<Offer> listOffers = Repository.GetAllAdminOffers().ToList();
+
+            return Json(new { listOffers }, contentType: "application/json");
         }
 
         // PUT: /Admin/ChangeUserRole

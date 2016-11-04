@@ -255,6 +255,13 @@ namespace LivrETS.Repositories
             return results;
         }
 
+        public IQueryable<Offer> GetAllAdminOffers()
+        {
+            return (from offer in _db.Offers
+                                  orderby offer.StartDate descending
+                                  select offer);
+        }
+
         public void DeleteOffer(string[] Ids)
         {
             try

@@ -36,11 +36,14 @@
             @Html.Partial("_HeaderAdmin")
 
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+@if (Request.IsAuthenticated)
+{
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
                         <a href="/Admin/Index"><i class="fa fa-fw fa-dashboard"></i> Accueil</a>
                     </li>
+                    @if (User.IsInRole("Administrator")){
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#user">
                             <i class="fa fa-fw fa-table"></i> Utilisateurs <i class="fa fa-fw fa-caret-down"></i>
@@ -50,6 +53,16 @@
                         </ul>
                     </li>
                     <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#offre">
+                            <i class="fa fa-fw fa-table"></i> Articles <i class="fa fa-fw fa-caret-down"></i>
+                        </a>
+                        <ul id="offre" class="collapse">
+                            <li><a href="/Admin/ManageOffers">Liste des articles</a></li>
+                        </ul>
+                    </li>
+                    }
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Clerk")){
+                                        <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#fair">
                             <i class="fa fa-fw fa-table"></i> Foire <i class="fa fa-fw fa-caret-down"></i>
                         </a>
@@ -57,8 +70,10 @@
                             <li><a href="/Admin/ManageFairs">Liste des foires</a></li>
                         </ul>
                     </li>
+                    }
                 </ul>
             </div>
+}
             <!-- /.navbar-collapse -->
         </nav>
             @RenderBody()
