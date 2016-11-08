@@ -57,10 +57,18 @@ namespace LivrETS.Controllers
         // GET: Offer
         public ActionResult Index()
         {
-            ViewBag.currentFair = Repository.GetCurrentFair();
-            ViewData["fairs"] = "Bonjour depuis le contrôleur";
-            ViewData["articles"] = "Bonjour depuis le contrôleur";
-            ViewData["saleitems"] = "Bonjour depuis le contrôleur";
+            //if current fair is finish, then take next fair 
+            Fair currentFair = Repository.GetCurrentFair();
+            Fair nextFair = Repository.GetNextFair();
+
+            ViewBag.currentFair = (currentFair != null)?currentFair:nextFair;
+            ViewData["whatFair"] = currentFair;
+            ViewData["users"] = Repository.GetAllUsers().Count();
+            ViewData["fairs"] = Repository.GetAllFairs().Count();
+            ViewData["offers"] = Repository.GetAllOffers(0,1000).Count();
+            ViewData["saleitems"] = Repository.GetAllOffers(0,1000).
+                Where(offer => offer.Article.FairState == ArticleFairState.SOLD).Count();
+
             return View();
         }
 
