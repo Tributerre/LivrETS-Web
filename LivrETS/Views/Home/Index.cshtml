@@ -95,9 +95,10 @@
                                             <div class="product-item-grid-view">
                                                 <div class="product-item">
                                                     <div class="product-image">
-                                                        <a href="/Home/DetailOffer?id=@item.Id">
+                                                        <a href="/Offer/Details/@item.Id?title=@item.Title">
                                                             <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())"
-                                                                 data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title"
+                                                                 data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
+                                                                 alt="@item.Title"
                                                                  class="center-block img-responsive avatar-article"  title="@item.Title">
                                                         </a>
                                                     </div><!-- /.product-image -->
@@ -128,7 +129,7 @@
                                         {
                                             <div class="row product-item">
                                                 <div class="col-md-4 col-sm-4">
-                                                    <a href="/Home/DetailOffer?id=@item.Id">
+                                                    <a href="/Offer/Details/@item.Id?title=@item.Title">
                                                         <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())"
                                                              data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title"
                                                              class="center-block img-responsive avatar-article"  title="@item.Title">
@@ -230,8 +231,10 @@
                     <h3 class="section-title text-md-center">Articles vus</h3>
                     <p class="section-subtitle text-md-center">Retrouver des articles que vous avez deja vus.</p>
                     <div class="controls clearfix hidden-xs hidden-sm">
-                        <a href="#" data-target="#relate-items-carousel" class="btn btn-primary pull-left owl-prev"><span data-icon="&#x23;"></span></a>
-                        <a href="#" data-target="#relate-items-carousel" class="btn btn-primary pull-right owl-next"><span data-icon="&#x24;"></span></a>
+                        <a href="#" data-target="#relate-items-carousel" class="btn btn-primary pull-left owl-prev">
+                        <span data-icon="&#x23;"></span></a>
+                        <a href="#" data-target="#relate-items-carousel" class="btn btn-primary pull-right owl-next">
+                        <span data-icon="&#x24;"></span></a>
                     </div><!-- /.controls -->
                 </div><!-- /.section-info -->
             </div><!-- /.col -->
@@ -239,7 +242,8 @@
                 <div class="row">
                     <div class="col-xs-2 col-sm-2 hidden-md hidden-lg no-padding">
                         <div class="controls text-right">
-                            <a href="#" data-target="#relate-items-carousel" class="btn btn-primary owl-prev"><span data-icon="&#x23;"></span></a>
+                            <a href="#" data-target="#relate-items-carousel" class="btn btn-primary owl-prev">
+                            <span data-icon="&#x23;"></span></a>
                         </div><!-- /.controls -->
                     </div><!-- /.col -->
                     <div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
@@ -252,9 +256,10 @@
                                         <div class="product-item">
                                             <div class="product-image">
                                                 <a href="detail.html">
-                                                    <a href="/Home/DetailOffer?id=@item.Id" title="@item.Title">
+                                                    <a href="/Offer/Details/@item.Id?title=@item.Title" title="@item.Title">
                                                         <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())"
-                                                             data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title"
+                                                             data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
+                                                             alt="@item.Title"
                                                              class="center-block img-responsive avatar-article" title="@item.Title">
                                                     </a>
                                                 </a>
