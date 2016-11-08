@@ -1,20 +1,11 @@
-﻿
+﻿@using LivrETS.Models
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Accueil";
+    Fair currentFair = ViewBag.currentFair;
+
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-
-        
-        <!-- /.row -->
-        <div class="row hide">
-            <div class="col-lg-12">
-                <div class="alert alert-info alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <i class="fa fa-info-circle"></i>  <strong>Like SB Admin?</strong> Try out <a href="http://startbootstrap.com/template-overviews/sb-admin-2" class="alert-link">SB Admin 2</a> for additional features!
-                </div>
-            </div>
-        </div>
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-3 col-md-6">
@@ -26,13 +17,13 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">26</div>
-                                <div>New Comments!</div>
+                                <div>Articles!</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="/Admin/ManageOffers">
                         <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
+                            <span class="pull-left">Liste articles</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                             <div class="clearfix"></div>
                         </div>
@@ -48,7 +39,7 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">12</div>
-                                <div>New Tasks!</div>
+                                <div>Articles vendues</div>
                             </div>
                         </div>
                     </div>
@@ -70,7 +61,7 @@
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">124</div>
-                                <div>New Orders!</div>
+                                <div>Foires</div>
                             </div>
                         </div>
                     </div>
@@ -111,7 +102,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Area Chart</h3>
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Foire en cour </h3>
                     </div>
                     <div class="panel-body">
                         <div id="morris-area-chart"></div>

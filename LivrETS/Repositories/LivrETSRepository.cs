@@ -119,9 +119,15 @@ namespace LivrETS.Repositories
         /// <returns>The Fairs or null if not found.</returns>
         public List<Fair> GetAllFairs()
         {
-
             return (from fair in _db.Fairs
                     select fair).ToList();
+        }
+
+        public Fair GetFairById(string id)
+        {
+            return (from fair in _db.Fairs
+                    where fair.Id.ToString().Equals(id)
+                    select fair).FirstOrDefault();
         }
 
         /// <summary>

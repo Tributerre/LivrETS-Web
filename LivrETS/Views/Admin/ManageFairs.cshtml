@@ -17,12 +17,13 @@
 *@
 @using LivrETS.Models
 @{
-    ViewBag.Title = "Gérer les foires";
+    ViewBag.Title = "Gérer des foires";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 @section Styles {
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" />
     <style>
         h1 {
             margin-bottom: 50px;
@@ -37,7 +38,6 @@
 <div id="page-wrapper">
     <div class="container">
 
-        <h1>Foires</h1>
         <div id="errors" class="row" hidden>
             <div class="alert alert-danger alert-dismissible fade in" role="alert">
                 <button id="close-error" type="button" class="close" aria-label="Fermer">
@@ -61,10 +61,9 @@
                 <table class="table-stripped table-bordered table-hover display" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>
-                                <input type="checkbox" name="check-select-all" />
-                            </th>
+                            <th><input type="checkbox" name="check-select-all" /></th>
                             <th>Id</th>
+                            <th>Trimestre</th>
                             <th>Date d&eacute;but</th>
                             <th>Date fin</th>
                             <th>Phase</th>
@@ -184,9 +183,14 @@
     </div>
 </div>
 @section Scripts {
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/moment-fr-ca.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/material.spinner.min.js"></script>
+    <script src="~/Scripts/bootstrap-notify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
     <script src="~/Scripts/fullcalendar-lang-fr-ca.js"></script>
     <script src="~/Scripts/managefairs.js"></script>
     <script src="~/Scripts/managefairs-calendarhandling.js"></script>
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
 }

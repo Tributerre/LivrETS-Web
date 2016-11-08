@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/template_admin/morris.css")">
     <!-- Custom Fonts -->
     <link rel="stylesheet" href="@Url.Content("~/Content/font-awesome/css/font-awesome.min.css")">
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -43,37 +44,33 @@
                         <li class="active">
                             <a href="/Admin/Index"><i class="fa fa-fw fa-dashboard"></i> Accueil</a>
                         </li>
-                        @if (User.IsInRole("Administrator"))
-                        {
-                            <li>
-                                <a href="javascript:;" data-toggle="collapse" data-target="#user">
-                                    <i class="fa fa-fw fa-table"></i> Utilisateurs <i class="fa fa-fw fa-caret-down"></i>
-                                </a>
-                                <ul id="user" class="collapse">
-                                    <li><a href="/Admin/ManageFairs">Liste des utilisateurs</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="javascript:;" data-toggle="collapse" data-target="#offre">
-                                    <i class="fa fa-fw fa-table"></i> Articles <i class="fa fa-fw fa-caret-down"></i>
-                                </a>
-                                <ul id="offre" class="collapse">
-                                    <li><a href="/Admin/ManageOffers">Liste des articles</a></li>
-                                </ul>
-                            </li>
-                        }
-                        @if (User.IsInRole("Administrator") || User.IsInRole("Clerk"))
-                        {
-                            <li>
-                                <a href="javascript:;" data-toggle="collapse" data-target="#fair">
-                                    <i class="fa fa-fw fa-table"></i> Foire <i class="fa fa-fw fa-caret-down"></i>
-                                </a>
-                                <ul id="fair" class="collapse">
-                                    <li><a href="/Admin/ManageFairs">Liste des foires</a></li>
-                                    <li>@Html.ActionLink("Cueillir", "Pick", "Fair")</li>
-                                </ul>
-                            </li>
-                        }
+                        
+                        <li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#user">
+                                <i class="fa fa-fw fa-user"></i> Utilisateurs <i class="fa fa-fw fa-caret-down"></i>
+                            </a>
+                            <ul id="user" class="collapse">
+                                <li><a href="/Admin/ManageUsers">Liste des utilisateurs</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#fair">
+                                <i class="fa fa-fw fa-table"></i> Foire <i class="fa fa-fw fa-caret-down"></i>
+                            </a>
+                            <ul id="fair" class="collapse">
+                                <li><a href="/Admin/ManageFairs">Liste des foires</a></li>
+                                <li>@Html.ActionLink("Cueillir", "Pick", "Fair")</li>
+                            </ul>
+                        </li>
+                        
+                        <li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#offre">
+                                <i class="fa fa-fw fa-book"></i> Articles <i class="fa fa-fw fa-caret-down"></i>
+                            </a>
+                            <ul id="offre" class="collapse">
+                                <li><a href="/Admin/ManageOffers">Liste des articles</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             }
@@ -86,13 +83,24 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Dashboard <small>Statistics Overview</small>
+                            @ViewData["Title"] 
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
-                                <i class="fa fa-dashboard"></i> Dashboard
+                                <i class="fa fa-dashboard"></i> 
                             </li>
                         </ol>
+                    </div>
+                </div>
+                <!-- /.row -->
+                <div class="row hide">
+                    <div class="col-lg-12">
+                        <div class="alert alert-info alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <i class="fa fa-info-circle"></i>  <strong>Like SB Admin?</strong> Try out
+                            <a href="http://startbootstrap.com/template-overviews/sb-admin-2" class="alert-link">SB Admin 2</a>
+                            for additional features!
+                        </div>
                     </div>
                 </div>
                 @RenderBody()

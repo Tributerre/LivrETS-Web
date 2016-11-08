@@ -57,6 +57,10 @@ namespace LivrETS.Controllers
         // GET: Offer
         public ActionResult Index()
         {
+            ViewBag.currentFair = Repository.GetCurrentFair();
+            ViewData["fairs"] = "Bonjour depuis le contrôleur";
+            ViewData["articles"] = "Bonjour depuis le contrôleur";
+            ViewData["saleitems"] = "Bonjour depuis le contrôleur";
             return View();
         }
 
@@ -72,6 +76,17 @@ namespace LivrETS.Controllers
         public ActionResult ManageFairs()
         {
             return View();
+        }
+
+        // GET: /Admin/ManageDetailsFair/5
+        public ActionResult ManageDetailsFair(string id)
+        {
+            if (id == null)
+                throw new HttpException(404, "Page not Found");
+
+            Fair fair = Repository.GetFairById(id);
+
+            return View(fair);
         }
 
         // GET: /Admin/ManageOffers
@@ -120,7 +135,8 @@ namespace LivrETS.Controllers
             
             var listUser = Repository.GetAllUsersForAdmin();
 
-            return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, contentType: "application/json");
+            return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, 
+                contentType: "application/json");
         }
 
         // POST: /Admin/ListFairs
@@ -131,6 +147,16 @@ namespace LivrETS.Controllers
             var listFairs = Repository.GetAllFairs();
 
             return Json(new { listFairs }, contentType: "application/json");
+        }
+
+        // POST: /Admin/ListOffersFair
+        // List all Fairs
+        [HttpPost]
+        public ActionResult ListOffersFair(string id)
+        {
+            var currentFair = Repository.GetFairById(id);
+
+            return Json(new { currentFair.Offers }, contentType: "application/json");
         }
 
         // POST: /Admin/ListOffers

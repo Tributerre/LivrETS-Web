@@ -1,0 +1,114 @@
+﻿@using LivrETS.Models
+@model Fair
+@{
+    ViewBag.Title = "Détail de la foire";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section Styles {
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+    <style>
+        h1 {
+            margin-bottom: 50px;
+        }
+
+        #group-btn-action {
+            margin-bottom: 30px;
+            padding-right: 16px;
+        }
+        #fair-stats{
+            margin-bottom: 70px;
+        }
+        .tab-stats tr td{
+            border: 1px solid black;
+            padding:5px;
+        }
+        .tab-stats tr td:first-child{
+            font-weight: bold;
+            width: 50%;
+            background-color: gray;
+        }
+    </style>
+}
+
+<div id="page-wrapper">
+    <div class="container">
+
+        <span class="fairId hide">@Model.Id</span>
+
+        <div class="row" id="top-row">
+            <div class="col-md-12">
+
+                <div class="row" id="fair-stats">
+                    <div class="col-md-4">
+                        <table class="tab-stats">
+                            <tr>
+                                <td>Debut</td>
+                                <td>@Model.StartDate.ToString("M/d/yyyy")</td>
+                            </tr>
+                            <tr>
+                                <td>Fin</td>
+                                <td>@Model.EndDate.ToString("M/d/yyyy")</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-md-4">
+                        <table class="tab-stats">
+                            <tr>
+                                <td>Session</td>
+                                <td>@Model.Trimester</td>
+                            </tr>
+                            <tr>
+                                <td>Phase</td>
+                                <td>@Model.Phase</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <table class="tab-stats">
+                            <tr>
+                                <td>Nombre d'articles</td>
+                                <td>@Model.Offers.Count()</td>
+                            </tr>
+                            <tr>
+                                <td>Articles vendus</td>
+                                <td>@Model.Offers.Where(offer => offer.Article.FairState == ArticleFairState.SOLD).ToList().Count()</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <hr />
+                </div>
+                
+
+                <div class="row" id="group-btn-action">
+                    <div class="pull-right" id="div-actions">
+                        <a href="/Offer/Create" class="btn btn-success btn-sm">
+                            Ajouter un article
+                        </a>
+                    </div>
+                </div>
+
+                <table class="table-stripped table-bordered table-hover display" cellspacing="0" width="100%" id="tab-offers">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" name="check-select-all" />
+                            </th>
+                            <th>Title</th>
+                            <th>Prix</th>
+                            <th>Vendu</th>
+                            <th>Foire</th>
+                            <th>Date de poste</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+    <script src="~/Scripts/manageDetailsFair.js"></script>
+}
