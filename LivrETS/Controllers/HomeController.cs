@@ -85,6 +85,19 @@ namespace LivrETS.Controllers
             return View(offers.ToList().ToPagedList(pageNumber, pageSize));
         }
 
+        public ActionResult DetailOffer(string id)
+        {
+            if (id == null)
+                throw new HttpException(404, "Page not Found");
+
+            Offer offer = Repository.GetOfferBy(id);
+
+            if (offer == null)
+                throw new HttpException(404, "Page not Found");
+
+            return View(offer);
+        }
+
         // GET: /Home/Sell
         [HttpGet]
         public ActionResult Sell()
@@ -102,24 +115,13 @@ namespace LivrETS.Controllers
             return View(model);
         }
 
-        public ActionResult DetailOffer(string id)
-        {
-            if(id == null)
-                throw new HttpException(404, "Page not Found");
-
-            Offer offer = Repository.GetOfferBy(id);
-
-            if(offer == null)
-                throw new HttpException(404, "Page not Found");
-
-            return View(offer);
-        }
-
         // POST: /Home/Sell
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Sell(ArticleViewModel model)
         {
+            
+            Article newArticle = null;
             var course = Repository.GetCourseByAcronym(model.Acronym);
 
             // Validating the model
@@ -132,11 +134,11 @@ namespace LivrETS.Controllers
             {
                 ModelState.AddModelError(nameof(ArticleViewModel.Acronym), "Le type choisi requiert un cours de la liste.");
             }
+            
 
             // Proceeding to add the new offer.
             if (ModelState.IsValid)
             {
-                Article newArticle = null;
                 var uploadsPath = Server.MapPath(UPLOADS_PATH);
 
                 switch (model.Type)
@@ -164,7 +166,8 @@ namespace LivrETS.Controllers
                         newArticle = new Calculator()
                         {
                             Title = model.Title,
-                            Model = model.CalculatorModel
+                            Model = model.CalculatorModel,
+                            Course = course
                         };
                         break;
                 }
