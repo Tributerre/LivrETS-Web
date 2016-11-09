@@ -79,7 +79,7 @@ namespace LivrETS
 
                 app.UseHangfireDashboard("/livretsJob", new DashboardOptions
                 {
-                    AuthorizationFilters = new[] { new HangfireAutjorizationFilter() }
+                    AuthorizationFilters = new[] { new HangfireAutorizationFilter() }
                 });
                 app.UseHangfireServer();
 
