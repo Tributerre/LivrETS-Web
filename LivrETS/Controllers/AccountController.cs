@@ -303,14 +303,21 @@ namespace LivrETS.Controllers
             return View();
         }
 
-        // GET: /Account/Profile
+        // GET: /Account/Historic
         [HttpGet]
+        public ActionResult Historic()
+        {
+            return View();
+        }
+
+        // GET: /Account/Profile
         public new ActionResult Profile()
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
 
             ViewBag.user = user;
-            return View(new ProfileViewModel {
+            return View(new ProfileViewModel
+            {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 BarCode = user.BarCode
@@ -368,6 +375,28 @@ namespace LivrETS.Controllers
 
             base.Dispose(disposing);
         }
+
+        #region AJAX
+
+        [HttpPost]
+        public JsonResult GetOffersByUser()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+
+            if (user == null)
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Aucun utilisateur trouve"
+                },
+                contentType: "application/json");
+            }
+
+            return Json(new { user.Offers }, contentType: "application/json");
+        }
+
+        #endregion
 
         #region Helpers
         // Used for XSRF protection when adding external logins
