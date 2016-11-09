@@ -19,7 +19,7 @@
 @using LivrETS.Models
 @model ArticleViewModel
 @{
-    ViewBag.Title = "Vendre";
+    ViewBag.Title = "Modifier votre article";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -29,17 +29,18 @@
             position: relative;
             overflow: hidden;
         }
-        .fileUpload input.upload {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            filter: alpha(opacity=0);
-        }
+
+            .fileUpload input.upload {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                cursor: pointer;
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
     </style>
 }
 
@@ -49,7 +50,7 @@
             <h1>Vendre un article <small>Remplissez tous les champs</small></h1>
         </div>
 
-        @using (Html.BeginForm("Sell", "Home", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("Create", "Offer", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
         {
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.AntiForgeryToken()
@@ -67,14 +68,10 @@
                     <div id="calculator-models-dropdown" class="btn-group" style="display: none;">
                         <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Mod&egrave;le <span class="caret"></span></button>
                         <ul class="dropdown-menu">
-                            <li>
-                                @Html.RadioButtonFor(model => model.TypeModel, CalculatorModel.VOYAGE200, new { id = "radio-voyage200" })
-                                <label for="radio-voyage200">Voyage 200</label>
-                            </li>
-                            <li>
-                                @Html.RadioButtonFor(model => model.TypeModel, CalculatorModel.NSPIRE, new { id = "radio-nspire" })
-                                <label for="radio-nspire">NSpire</label>
-                            </li>
+                            <li>@Html.RadioButtonFor(model => model.Model, nameof(CalculatorModel.VOYAGE200), 
+                               new { id = "radio-voyage200" })<label for="radio-voyage200">Voyage 200</label></li>
+                            <li>@Html.RadioButtonFor(model => model.Model, nameof(CalculatorModel.NSPIRE), 
+                               new { id = "radio-nspire" })<label for="radio-nspire">NSpire</label></li>
                         </ul>
                     </div>
                 </div>
@@ -83,18 +80,12 @@
                     <div class="btn-group">
                         <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Type <span class="caret"></span></button>
                         <ul class="dropdown-menu">
-                            <li>    
-                                @Html.RadioButtonFor(model => model.Type, Article.BOOK_CODE, new { id = "Book", name = "Article" })
-                                <label for="Book">Livre</label>
-                            </li>
-                            <li>
-                                @Html.RadioButtonFor(model => model.Type, Article.COURSE_NOTES_CODE, new { id = "CourseNotes", name = "Article" })
-                                <label for="CourseNotes">Notes de cours</label>
-                            </li>
-                            <li>
-                                @Html.RadioButtonFor(model => model.Type, Article.CALCULATOR_CODE, new { id = "Calculator", name = "Article" })
-                                <label for="Calculator">Calculatrice</label>
-                            </li>
+                            <li>@Html.RadioButtonFor(model => model.Type, Article.BOOK_CODE, 
+                               new { id = "Book", name = "Article" })<label for="Book">Livre</label></li>
+                            <li>@Html.RadioButtonFor(model => model.Type, Article.COURSE_NOTES_CODE, 
+                               new { id = "CourseNotes", name = "Article" })<label for="CourseNotes">Notes de cours</label></li>
+                            <li>@Html.RadioButtonFor(model => model.Type, Article.CALCULATOR_CODE, 
+                               new { id = "Calculator", name = "Article" })<label for="Calculator">Calculatrice</label></li>
                         </ul>
                     </div>
                 </div>

@@ -17,7 +17,7 @@
 *@
 @if (Request.IsAuthenticated)
 {
-    <li>@Html.ActionLink("Vendre", "Sell", "Home")</li>
+    <li>@Html.ActionLink("Vendre", "Create", "Offer")</li>
 
     if (User.IsInRole("Administrator") || User.IsInRole("Clerk"))
     {

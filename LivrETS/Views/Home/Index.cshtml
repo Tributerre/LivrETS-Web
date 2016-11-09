@@ -103,7 +103,7 @@
                                                     </div><!-- /.product-image -->
                                                     <div class="product-detail text-md-center">
                                                         <h3 class="product-name">
-                                                            @Html.ActionLink(HomeHelpers.TroncText(item.Title, 20), "DetailOffer", "Home",  
+                                                            @Html.ActionLink(HomeHelpers.TroncText(item.Title, 20), "Details", "Offer",  
                                                            new { id = item.Id, title = item.Title }, null)
                                                         </h3>
                                                     
@@ -136,8 +136,8 @@
                                                 </div>
                                                 <div class="col-md-8 col-sm-8 text-md-center">
                                                     <div class="product-detail">
-                                                        <h3 class="media-heading product-name">@Html.ActionLink(HomeHelpers.TroncText(item.Title, 40), 
-                                                                                              "DetailOffer", "Home", 
+                                                        <h3 class="media-heading product-name">@Html.ActionLink(HomeHelpers.TroncText(item.Title, 40),
+                                                                                              "Details", "Offer",
                                                                                               new { @id = item.Id, title = item.Title }, null)</h3>
                                                         <p>@item.Article.Course.Acronym</p>
                                                         <p class="product-price"><span class="price">$ @item.Price</span></p>
@@ -190,9 +190,12 @@
                             <section class="category">
                                 <h4 class="sidebar-title text-md-center">Catégorie</h4>
                                 <ul class="list-checkbox list-unstyled text-md-center">
-                                    <li id="sort-book">@Html.ActionLink("Livres", "Index", "Home", new { sortOrder = Article.BOOK_CODE }, new { @class = "sort-link" })</li>
-                                    <li id="sort-nc">@Html.ActionLink("Notes de cours", "Index", "Home", new { sortOrder = Article.COURSE_NOTES_CODE }, new { @class = "sort-link" })</li>
-                                    <li id="sort-calc">@Html.ActionLink("Calculatrice", "Index", "Home", new { sortOrder = Article.CALCULATOR_CODE }, new { @class = "sort-link" })</li>
+                                    <li id="sort-book">@Html.ActionLink("Livres", "Index", "Home", 
+                                                      new { sortOrder = Article.BOOK_CODE }, new { @class = "sort-link" })</li>
+                                    <li id="sort-nc">@Html.ActionLink("Notes de cours", "Index", "Home", 
+                                                    new { sortOrder = Article.COURSE_NOTES_CODE }, new { @class = "sort-link" })</li>
+                                    <li id="sort-calc">@Html.ActionLink("Calculatrice", "Index", "Home", 
+                                                      new { sortOrder = Article.CALCULATOR_CODE }, new { @class = "sort-link" })</li>
                                 </ul><!-- /.list-checkbox -->
                             </section><!-- /.category -->
                             <section>
@@ -258,7 +261,7 @@
                                             </div><!-- /.product-image -->
                                             <div class="product-detail text-md-center">
                                                 <h3 class="product-name">
-                                                    @Html.ActionLink(HomeHelpers.TroncText(item.Title, 15), "DetailOffer", "Home", 
+                                                    @Html.ActionLink(HomeHelpers.TroncText(item.Title, 15), "Details", "Offer", 
                                                                         new { id = item.Id, title = item.Title }, null)
                                                 </h3>
                                                 <p class="product-price"><span class="price">$@item.Price</span></p>

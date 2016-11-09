@@ -134,7 +134,7 @@ $(document).ready(function () {
             $.ajax({
                 method: "POST",
                 dataType: "json",
-                url: "/Home/AddNewCourse",
+                url: "/Offer/AddNewCourse",
                 data: { acronym: courseTextInput.val() },
                 success: function (data) {
                     var newCourseElement = $("<li>")
