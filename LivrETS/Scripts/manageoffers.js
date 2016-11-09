@@ -21,12 +21,12 @@ $(document).ready(function () {
     $('table').DataTable({
         processing: true,
         ajax: {
-            url: "/Admin/ListFairs",
+            url: "/Admin/ListOffers",
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
-                console.log(val.listFairs)
-                return val.listFairs
+                console.log(val);
+                return val.listOffers
             }
         },
         columns: [
@@ -34,46 +34,57 @@ $(document).ready(function () {
                 class: "check-row text-center",
                 sortable: false,
                 data: function (val) {
-                    return "<input type='checkbox' name='check-select-fair' data-fair-id='" + val.Id + "' />";
+                    return "<input type='checkbox' name='check-select-offer' data-offer-id='" + val.Id + "' />";
                 }
             },
             {
-                data: "LivrETSID",
-                visible: false
+                class: "col-md-5",
+                data: function (val) {
+                    return "<a href='/Offer/Details/" + val.Id + "'>" + val.Title + "</a>";
+                }
             },
             {
+                class: "text-center",
                 data: function (val) {
-                    return val.Trimester;
+                    return val.Price;
+                }
+            },
+            {
+                class: "text-center",
+                data: function (val) {
+                    if (val.Sold) {
+                        return "Vendu";
+                    } else {
+                        return "Non vendu";
+                    }
+
+                }
+            },
+            {
+                class: "text-center",
+                data: function (val) {
+                    if (val.ManagedByFair) {
+                        return "Oui";
+                    } else {
+                        return "Non";
+                    }
                 }
             },
             {
                 data: function (val) {
                     return new Date(parseInt(val.StartDate.replace('/Date(', ''))).toDateString();
-                }
-            },
-            {
-                data: function (val) {
-                    return new Date(parseInt(val.EndDate.replace('/Date(', ''))).toDateString();
-                }
-            },
-            {
-                data: function (val) {
-                    var status = ["PREFAIR", "PICKING", "SALE", "RETRIEVAL", "POSTFAIR"];
-
-                    return status[val.Phase];
-                }
+                },
+                class: "col-md-2 text-center"
             },
             {
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
-                    return "<a href='/Admin/ManageDetailsFair/" + val.Id + "' class='btn btn-sm btn-info' data-fair-id='" +
-                        val.Id + "'><span class='glyphicon glyphicon-info-sign'></span></a> "+
-                        "<a href='#' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='" +
-                        val.Id + "' ><span class='glyphicon glyphicon-edit'></span></a> " +
-                    "<a href='#' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='" +
-                        val.Id + "'><span class='glyphicon glyphicon-trash'></span></a>";
-                    
+                    return "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer hide' data-offer-id='" + val.Id + "'>" +
+                            "<span class='glyphicon glyphicon-edit'></span></a> " +
+                            "<a href='#' class='btn btn-sm btn-danger btn-delete-offer hide' data-offer-id='" + val.Id + "'>" +
+                            "<span class='glyphicon glyphicon-trash'></span></a>"
+
                 }
             }
         ]

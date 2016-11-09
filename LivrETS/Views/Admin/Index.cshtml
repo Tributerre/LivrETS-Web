@@ -1,0 +1,185 @@
+﻿@using LivrETS.Models
+@{
+    ViewBag.Title = "Accueil";
+    Fair currentFair = ViewBag.currentFair;
+
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section Styles {
+    <style>
+        .tab-stats tr td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        .tab-stats tr td:first-child {
+            font-weight: bold;
+            width: 50%;
+            background-color: gray;
+        }
+    </style>
+}
+
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-user fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">@ViewData["users"]</div>
+                                <div>Membres</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/Admin/ManageUsers">
+                        <div class="panel-footer">
+                            <span class="pull-left">Détails</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-table fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">@ViewData["fairs"]</div>
+                                <div>Foires</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/Admin/ManageFairs">
+                        <div class="panel-footer">
+                            <span class="pull-left">Détails</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-book fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">@ViewData["offers"]</div>
+                                <div>Articles</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/Admin/ManageOffers">
+                        <div class="panel-footer">
+                            <span class="pull-left">Détails</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-bookmark fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">@ViewData["saleitems"]</div>
+                                <div>Articles vendus</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">Détails</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-bar-chart fa-fw"></i>
+                            Foire 
+                            @if(ViewData["whatFair"] != null){
+                                <span>courrante</span>
+                            }else{
+                                <span>suivante</span>
+                            }
+                            en chiffres
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-4">
+                            <table class="tab-stats">
+                                <tr>
+                                    <td>Debut</td>
+                                    <td>@currentFair.StartDate.ToString("M/d/yyyy")</td>
+                                </tr>
+                                <tr>
+                                    <td>Fin</td>
+                                    <td>@currentFair.EndDate.ToString("M/d/yyyy")</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-md-4">
+                            <table class="tab-stats">
+                                <tr>
+                                    <td>Session</td>
+                                    <td>@currentFair.Trimester</td>
+                                </tr>
+                                <tr>
+                                    <td>Phase</td>
+                                    <td>@currentFair.Phase</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-md-4">
+                            <table class="tab-stats">
+                                <tr>
+                                    <td>Nombre d'articles</td>
+                                    <td>@currentFair.Offers.Count()</td>
+                                </tr>
+                                <tr>
+                                    <td>Articles vendus</td>
+                                    <td>@currentFair.Offers.Where(offer => offer.Article.FairState == ArticleFairState.SOLD).ToList().Count()</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Foire en cour </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="morris-area-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+
+

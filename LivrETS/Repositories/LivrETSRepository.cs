@@ -55,13 +55,13 @@ namespace LivrETS.Repositories
         /// <returns>The Users or null if not found.</returns>
         public Object GetAllUsersForAdmin()
         {
-
             var list = (from user in _db.Users
                             orderby user.FirstName descending
                             select new
                             {
                                 user = user,
-                                role = user.Roles.Join(_db.Roles, userRole => userRole.RoleId, role => role.Id, (userRole, role) => role).Select(role => role.Name)
+                                role = user.Roles.Join(_db.Roles, userRole => userRole.RoleId, 
+                                role => role.Id, (userRole, role) => role).Select(role => role.Name)
                             }).ToList();
             return list;
         }
@@ -119,9 +119,15 @@ namespace LivrETS.Repositories
         /// <returns>The Fairs or null if not found.</returns>
         public List<Fair> GetAllFairs()
         {
-
             return (from fair in _db.Fairs
                     select fair).ToList();
+        }
+
+        public Fair GetFairById(string id)
+        {
+            return (from fair in _db.Fairs
+                    where fair.Id.ToString().Equals(id)
+                    select fair).FirstOrDefault();
         }
 
         /// <summary>
@@ -253,6 +259,13 @@ namespace LivrETS.Repositories
             }
 
             return results;
+        }
+
+        public IQueryable<Offer> GetAllAdminOffers()
+        {
+            return (from offer in _db.Offers
+                                  orderby offer.StartDate descending
+                                  select offer);
         }
 
         public void DeleteOffer(string[] Ids)

@@ -33,7 +33,8 @@ namespace LivrETS.Helpers
 
             if (flag) active = "active";
 
-            string html = String.Format("<div class='item {0}'><a href='#'><img src='{1}' data-echo='{2}' alt='{3}' class='img-responsive img-caroussel' /></a></div>", active, img, img, alt);
+            string html = String.Format("<div class='item {0}'><a href='#'><img src='{1}' data-echo='{2}' alt='{3}' "+
+                "class='img-responsive img-caroussel' /></a></div>", active, img, img, alt);
 
             return new HtmlString(html);
         }

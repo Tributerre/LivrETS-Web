@@ -54,6 +54,24 @@ namespace LivrETS.Controllers
             }
         }
 
+        // GET: Offer
+        public ActionResult Index()
+        {
+            //if current fair is finish, then take next fair 
+            Fair currentFair = Repository.GetCurrentFair();
+            Fair nextFair = Repository.GetNextFair();
+
+            ViewBag.currentFair = (currentFair != null)?currentFair:nextFair;
+            ViewData["whatFair"] = currentFair;
+            ViewData["users"] = Repository.GetAllUsers().Count();
+            ViewData["fairs"] = Repository.GetAllFairs().Count();
+            ViewData["offers"] = Repository.GetAllOffers(0,1000).Count();
+            ViewData["saleitems"] = Repository.GetAllOffers(0,1000).
+                Where(offer => offer.Article.FairState == ArticleFairState.SOLD).Count();
+
+            return View();
+        }
+
         // GET: /Admin/ManageUsers
         [HttpGet]
         public ActionResult ManageUsers()
@@ -65,7 +83,24 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult ManageFairs()
         {
-           
+            return View();
+        }
+
+        // GET: /Admin/ManageDetailsFair/5
+        public ActionResult ManageDetailsFair(string id)
+        {
+            if (id == null)
+                throw new HttpException(404, "Page not Found");
+
+            Fair fair = Repository.GetFairById(id);
+
+            return View(fair);
+        }
+
+        // GET: /Admin/ManageOffers
+        [HttpGet]
+        public ActionResult ManageOffers()
+        {
             return View();
         }
 
@@ -108,17 +143,38 @@ namespace LivrETS.Controllers
             
             var listUser = Repository.GetAllUsersForAdmin();
 
-            return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, contentType: "application/json");
+            return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, 
+                contentType: "application/json");
         }
 
         // POST: /Admin/ListFairs
-        // List all user
+        // List all Fairs
         [HttpPost]
         public ActionResult ListFairs()
         {
             var listFairs = Repository.GetAllFairs();
 
             return Json(new { listFairs }, contentType: "application/json");
+        }
+
+        // POST: /Admin/ListOffersFair
+        // List all Fairs
+        [HttpPost]
+        public ActionResult ListOffersFair(string id)
+        {
+            var currentFair = Repository.GetFairById(id);
+
+            return Json(new { currentFair.Offers }, contentType: "application/json");
+        }
+
+        // POST: /Admin/ListOffers
+        // List all Offers
+        [HttpPost]
+        public ActionResult ListOffers()
+        {
+            List<Offer> listOffers = Repository.GetAllAdminOffers().ToList();
+
+            return Json(new { listOffers }, contentType: "application/json");
         }
 
         // PUT: /Admin/ChangeUserRole

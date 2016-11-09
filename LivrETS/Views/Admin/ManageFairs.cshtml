@@ -17,167 +17,180 @@
 *@
 @using LivrETS.Models
 @{
-    ViewBag.Title = "Gérer les foires";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Gérer des foires";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-
 @section Styles {
-    
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" />
+    <style>
+        h1 {
+            margin-bottom: 50px;
+        }
 
+        #group-btn-action {
+            margin-bottom: 30px;
+            padding-right: 16px;
+        }
+    </style>
 }
+<div id="page-wrapper">
+    <div class="container">
 
-<div id="errors" class="row" hidden>
-    <div class="alert alert-danger alert-dismissible fade in" role="alert">
-        <button id="close-error" type="button" class="close" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
-        <span id="error-message"></span>
-    </div>
-</div>
-
-<div class="row" id="top-row">
-    <div class="col-md-12">
-    <table class="table-stripped table-bordered table-hover display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>
-                    <input type="checkbox" name="check-select-all" />
-                </th>
-                <th>Id</th>
-                <th>Date d&eacute;but</th>
-                <th>Date fin</th>
-                <th>Phase</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-    </table>
-    </div>
-</div>
-
-@* Put pager here *@
-<div class="row">
-</div>
-
-<div id="NewFairModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="NewFairModal">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Nouvelle foire</h4>
+        <div id="errors" class="row" hidden>
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button id="close-error" type="button" class="close" aria-label="Fermer">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span id="error-message"></span>
             </div>
+        </div>
+        <div class="row" id="top-row">
+            <div class="col-md-12">
 
-            <div class="modal-body">
-                <div class="row">
-                    <label for="start-date" class="col-md-1 control-label">D&eacute;but</label>
-                    <div class="input-group date col-md-3" id="dp-start-date">
-                        <input id="start-date" name="start-date" type="text" class="form-control input-sm">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </div>
-                    </div>
-
-                    <label for="end-date" class="col-md-1 control-label">Fin</label>
-                    <div class="input-group date col-md-3" id="dp-end-date">
-                        <input id="end-date" name="end-date" type="text" class="form-control input-sm">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </div>
-                    </div>
-
-                    <label for="select-trimester" class="col-md-1 control-label">Trimestre</label>
-                    <select class="form-control col-md-2" id="select-trimester" name="select-trimester">
-                        <option value="A">Automne</option>
-                        <option value="H">Hiver</option>
-                        <option value="E">&Eacute;t&eacute;</option>
-                    </select>
-                </div>
-                <hr />
-                <div class="row" style="margin-top: 10px;">
-                    <div class="col-md-3">
-                        <h4><u>Cueillette</u></h4>
-                        <div class="row">
-                            <label for="picking-start-date" class="col-md-1 control-label">D&eacute;but</label><br />
-                            <div class="input-group date" id="dp-picking-start-date">
-                                <input id="picking-start-date" name="picking-start-date" type="text" class="form-control input-sm">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label for="picking-end-date" class="col-md-1 control-label">Fin</label><br />
-                            <div class="input-group date" id="dp-picking-end-date">
-                                <input id="picking-end-date" name="picking-end-date" type="text" class="form-control input-sm">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h4><u>Vente</u></h4>
-                        <div class="row">
-                            <label for="sale-start-date" class="col-md-1 control-label">D&eacute;but</label><br />
-                            <div class="input-group date" id="dp-sale-start-date">
-                                <input id="sale-start-date" name="sale-start-date" type="text" class="form-control input-sm">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label for="sale-end-date" class="col-md-1 control-label">Fin</label><br />
-                            <div class="input-group date" id="dp-sale-end-date">
-                                <input id="sale-end-date" name="sale-end-date" type="text" class="form-control input-sm">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h4><u>R&eacute;cup&eacute;ration</u></h4>
-                        <div class="row">
-                            <label for="retrieval-start-date" class="col-md-1 control-label">D&eacute;but</label><br />
-                            <div class="input-group date" id="dp-retrieval-start-date">
-                                <input id="retrieval-start-date" name="retrieval-start-date" type="text" class="form-control input-sm">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label for="retrieval-end-date" class="col-md-1 control-label">Fin</label><br />
-                            <div class="input-group date" id="dp-retrieval-end-date">
-                                <input id="retrieval-end-date" name="retrieval-end-date" type="text" class="form-control input-sm">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-9">
-                        <div id="calendar"></div>
+                <div class="row" id="group-btn-action">
+                    <div class="pull-right" id="div-actions">
+                        <button type="button" class="btn btn-success btn-sm"
+                                data-toggle="modal" data-target="#NewFairModal">
+                            Ajouter une foire
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal-footer">
-                <span id="save-spinner"></span>
-                <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-close-modal">Fermer</button>
-                <button type="button" class="btn btn-primary" id="btn-save-fair" disabled>Enregistrer</button>
+                <table class="table-stripped table-bordered table-hover display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" name="check-select-all" /></th>
+                            <th>Id</th>
+                            <th>Trimestre</th>
+                            <th>Date d&eacute;but</th>
+                            <th>Date fin</th>
+                            <th>Phase</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        @* Put pager here *@
+        <div class="row">
+        </div>
+        <div id="NewFairModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="NewFairModal">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Nouvelle foire</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <label for="start-date" class="col-md-1 control-label">D&eacute;but</label>
+                            <div class="input-group date col-md-3" id="dp-start-date">
+                                <input id="start-date" name="start-date" type="text" class="form-control input-sm">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                            <label for="end-date" class="col-md-1 control-label">Fin</label>
+                            <div class="input-group date col-md-3" id="dp-end-date">
+                                <input id="end-date" name="end-date" type="text" class="form-control input-sm">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                            </div>
+                            <label for="select-trimester" class="col-md-1 control-label">Trimestre</label>
+                            <select class="form-control col-md-2" id="select-trimester" name="select-trimester">
+                                <option value="A">Automne</option>
+                                <option value="H">Hiver</option>
+                                <option value="E">&Eacute;t&eacute;</option>
+                            </select>
+                        </div>
+                        <hr />
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-3">
+                                <h4><u>Cueillette</u></h4>
+                                <div class="row">
+                                    <label for="picking-start-date" class="col-md-1 control-label">D&eacute;but</label><br />
+                                    <div class="input-group date" id="dp-picking-start-date">
+                                        <input id="picking-start-date" name="picking-start-date" type="text" class="form-control input-sm">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="picking-end-date" class="col-md-1 control-label">Fin</label><br />
+                                    <div class="input-group date" id="dp-picking-end-date">
+                                        <input id="picking-end-date" name="picking-end-date" type="text" class="form-control input-sm">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4><u>Vente</u></h4>
+                                <div class="row">
+                                    <label for="sale-start-date" class="col-md-1 control-label">D&eacute;but</label><br />
+                                    <div class="input-group date" id="dp-sale-start-date">
+                                        <input id="sale-start-date" name="sale-start-date" type="text" class="form-control input-sm">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="sale-end-date" class="col-md-1 control-label">Fin</label><br />
+                                    <div class="input-group date" id="dp-sale-end-date">
+                                        <input id="sale-end-date" name="sale-end-date" type="text" class="form-control input-sm">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4><u>R&eacute;cup&eacute;ration</u></h4>
+                                <div class="row">
+                                    <label for="retrieval-start-date" class="col-md-1 control-label">D&eacute;but</label><br />
+                                    <div class="input-group date" id="dp-retrieval-start-date">
+                                        <input id="retrieval-start-date" name="retrieval-start-date" type="text" class="form-control input-sm">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="retrieval-end-date" class="col-md-1 control-label">Fin</label><br />
+                                    <div class="input-group date" id="dp-retrieval-end-date">
+                                        <input id="retrieval-end-date" name="retrieval-end-date" type="text" class="form-control input-sm">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div id="calendar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <span id="save-spinner"></span>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="btn-close-modal">Fermer</button>
+                        <button type="button" class="btn btn-primary" id="btn-save-fair" disabled>Enregistrer</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-@section Actions {
-    <div class="pull-right" id="div-actions">
-        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#NewFairModal">Ajouter une foire</button>
-    </div>
-}
-
 @section Scripts {
+    <script src="~/Scripts/moment.min.js"></script>
+    <script src="~/Scripts/moment-fr-ca.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/material.spinner.min.js"></script>
+    <script src="~/Scripts/bootstrap-notify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
     <script src="~/Scripts/fullcalendar-lang-fr-ca.js"></script>
-    <script type="text/javascript" src="~/Scripts/managefairs.js"></script>
-    <script type="text/javascript" src="~/Scripts/managefairs-calendarhandling.js"></script>
+    <script src="~/Scripts/managefairs.js"></script>
+    <script src="~/Scripts/managefairs-calendarhandling.js"></script>
 }

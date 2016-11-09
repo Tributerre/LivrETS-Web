@@ -16,64 +16,75 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
-    //init managefairs table width datables plugins
-    
-    $('table').DataTable({
+
+    $('#tab-offers').DataTable({
         processing: true,
         ajax: {
-            url: "/Admin/ListFairs",
+            url: "/Admin/ListOffersFair",
+            data: { id: $("span.fairId").text()},
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
-                console.log(val.listFairs)
-                return val.listFairs
+                console.log(val.Offers);
+                return val.Offers
             }
         },
         columns: [
+           {
+               class: "check-row text-center",
+               sortable: false,
+               data: function (val) {
+                   return "<input type='checkbox' name='check-select-offer' data-offer-id='" + val.Id + "' />";
+               }
+           },
             {
-                class: "check-row text-center",
-                sortable: false,
+                class: "col-md-5",
                 data: function (val) {
-                    return "<input type='checkbox' name='check-select-fair' data-fair-id='" + val.Id + "' />";
+                    return "<a href='/Offer/Details/" + val.Id + "'>" + val.Title + "</a>";
                 }
             },
             {
-                data: "LivrETSID",
-                visible: false
+                class: "text-center",
+                data: function (val) {
+                    return val.Price;
+                }
             },
             {
+                class: "text-center",
                 data: function (val) {
-                    return val.Trimester;
+                    if (val.Sold) {
+                        return "Vendu";
+                    } else {
+                        return "Non vendu";
+                    }
+
+                }
+            },
+            {
+                class: "text-center",
+                data: function (val) {
+                    if (val.ManagedByFair) {
+                        return "Oui";
+                    } else {
+                        return "Non";
+                    }
                 }
             },
             {
                 data: function (val) {
                     return new Date(parseInt(val.StartDate.replace('/Date(', ''))).toDateString();
-                }
-            },
-            {
-                data: function (val) {
-                    return new Date(parseInt(val.EndDate.replace('/Date(', ''))).toDateString();
-                }
-            },
-            {
-                data: function (val) {
-                    var status = ["PREFAIR", "PICKING", "SALE", "RETRIEVAL", "POSTFAIR"];
-
-                    return status[val.Phase];
-                }
+                },
+                class: "col-md-2 text-center"
             },
             {
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
-                    return "<a href='/Admin/ManageDetailsFair/" + val.Id + "' class='btn btn-sm btn-info' data-fair-id='" +
-                        val.Id + "'><span class='glyphicon glyphicon-info-sign'></span></a> "+
-                        "<a href='#' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='" +
-                        val.Id + "' ><span class='glyphicon glyphicon-edit'></span></a> " +
-                    "<a href='#' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='" +
-                        val.Id + "'><span class='glyphicon glyphicon-trash'></span></a>";
-                    
+                    return "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer hide' data-offer-id='" + val.Id + "'>" +
+                            "<span class='glyphicon glyphicon-edit'></span></a> " +
+                            "<a href='#' class='btn btn-sm btn-danger btn-delete-offer hide' data-offer-id='" + val.Id + "'>" +
+                            "<span class='glyphicon glyphicon-trash'></span></a>"
+
                 }
             }
         ]
@@ -217,7 +228,7 @@ $(document).ready(function () {
 /**
  * Updates the selected number in the actions panel.
  */
-function updateDeleteSelectedView() { 
+function updateDeleteSelectedView() {
     var checkedCount = $("tbody>tr>td").find("input[type='checkbox'][name='check-select-fair']:checked").length;
 
     if ($("#div-delete-selected").is(":visible")) {
