@@ -26,6 +26,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using LivrETS.Models;
 using LivrETS.ViewModels;
+using System.Collections.Generic;
+using System.Net;
 
 namespace LivrETS.Controllers
 {
@@ -395,6 +397,8 @@ namespace LivrETS.Controllers
 
             return Json(new { user.Offers }, contentType: "application/json");
         }
+
+        
 
         #endregion
 

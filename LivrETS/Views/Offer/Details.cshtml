@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/template/elegant-fonts.css")">
 
     <style>
-        .img-caroussel{
-             width: 590px !important;
-             height: 590px !important;
+        .img-caroussel {
+            width: 590px !important;
+            height: 590px !important;
         }
     </style>
 }
@@ -30,14 +30,14 @@
             <div class="col-md-6 col-md-push-3 col-sm-12 col-xs-12">
                 <div id="product-image-carousel" class="product-image owl-carousel owl-theme carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-    
+
                         @foreach (OfferImage item in Model.Images)
                         {
                             @HomeHelpers.ImgArticleHelper(item, @Model.Title, flagImg);
 
                             flagImg = false;
                         }
-                        
+
                         @if (flagImg)
                         {
                             @HomeHelpers.ImgArticleHelper(null, @Model.Title, flagImg);
@@ -84,33 +84,33 @@
             </div>
             <div class="col-md-6">
                 <div class="order-box">
-                        <div class="row">
-                            <div class="col-md-7 col-sm-7 col-xs-12">
-                                <div>
-                                    <h4 class="control-label text-md-center">Price</h4>
-                                    <p>$ @Model.Price</p>
-                                </div><!-- /.form-group -->
-                            </div><!-- /.col-md-7 -->
-                            <div class="col-md-5 col-sm-5 col-xs-12">
-                                <h4 class="control-label text-md-center">Terms</h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
-                            </div><!-- /.col-md-5 -->
-                            <div class="col-md-7 col-sm-7 col-xs-12">
-                                <div class="form-group form-actions">
-                                    <button class="btn btn-lg btn-add-to-cart btn-primary btn-block">
-                                        <span class="fa fa-heart"></span>
-                                        Add to Favoris
-                                    </button>
-                                </div>
-                            </div><!-- /.col-md-7 -->
-                            <div class="col-md-5 col-sm-5 col-xs-12">
-                                <div class="form-group form-actions">
-                                    <button class="btn btn-lg btn-wishlist uppercase btn-block">
-                                        <span data-icon="&#x50;" class="icon-btn"></span> Wishlist
-                                    </button>
-                                </div><!-- /.form-group -->
-                            </div><!-- /.col-md-5 -->
-                        </div><!-- /.row -->
+                    <div class="row">
+                        <div class="col-md-7 col-sm-7 col-xs-12">
+                            <div>
+                                <h4 class="control-label text-md-center">Price</h4>
+                                <p>$ @Model.Price</p>
+                            </div><!-- /.form-group -->
+                        </div><!-- /.col-md-7 -->
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <h4 class="control-label text-md-center">Terms</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
+                        </div><!-- /.col-md-5 -->
+                        <div class="col-md-7 col-sm-7 col-xs-12">
+                            <div class="form-group form-actions">
+                                <button class="btn btn-lg btn-add-to-cart btn-primary btn-block">
+                                    <span class="fa fa-heart"></span>
+                                    Add to Favoris
+                                </button>
+                            </div>
+                        </div><!-- /.col-md-7 -->
+                        <div class="col-md-5 col-sm-5 col-xs-12">
+                            <div class="form-group form-actions">
+                                <button class="btn btn-lg btn-wishlist uppercase btn-block">
+                                    <span data-icon="&#x50;" class="icon-btn"></span> Wishlist
+                                </button>
+                            </div><!-- /.form-group -->
+                        </div><!-- /.col-md-5 -->
+                    </div><!-- /.row -->
                 </div><!-- /.order box -->
             </div><!-- /.col -->
         </div><!-- /.product detail -->

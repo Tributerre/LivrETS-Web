@@ -1,49 +1,29 @@
-﻿/*
-LivrETS - Centralized system that manages selling of pre-owned ETS goods.
-Copyright (C) 2016  TribuTerre
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
+﻿using LivrETS.Models;
+using LivrETS.Repositories;
+using LivrETS.Service.IO;
+using LivrETS.ViewModels;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
-using LivrETS.ViewModels;
-using LivrETS.Models;
-using LivrETS.Service.IO;
-using LivrETS.Repositories;
-using Microsoft.AspNet.Identity;
-using System.Threading;
-using System.Net;
-using PagedList;
-using Hangfire;
 
 namespace LivrETS.Controllers
 {
-    [Authorize]
-    public class HomeController : Controller
+    public class OfferController : Controller
     {
+        private const string UPLOADS_PATH = "~/Content/Uploads";
+
         private LivrETSRepository _repository;
         public LivrETSRepository Repository
         {
             get
             {
                 if (_repository == null)
-                {
                     _repository = new LivrETSRepository();
-                }
 
                 return _repository;
             }
@@ -53,38 +33,21 @@ namespace LivrETS.Controllers
             }
         }
 
-        public HomeController() { }
-
-        public HomeController(LivrETSRepository livretsRepository)
+        public OfferController(LivrETSRepository livretsRepository)
         {
             Repository = livretsRepository;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, double Pmin = 1, double Pmax = 500, int? page = 1)
+        public OfferController() { }
+
+        // GET: Offer
+        public ActionResult Index()
         {
-            ViewBag.CurrentSort = sortOrder;
-            IEnumerable<Offer> offers = null;
-
-            if (searchString != null)
-            {
-                page = 1;
-            }else
-            {
-                searchString = currentFilter;
-            }
-
-            ViewBag.CurrentFilter = searchString;
-            offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);  
-
-            int pageSize = 20;
-            int pageNumber = (page ?? 1);
-
-            return View(offers.ToList().ToPagedList(pageNumber, pageSize));
+            return View();
         }
 
-        public ActionResult DetailOffer(string id)
+        // GET: Offer/Details/5
+        public ActionResult Details(string id)
         {
             if (id == null)
                 throw new HttpException(404, "Page not Found");
@@ -97,15 +60,14 @@ namespace LivrETS.Controllers
             return View(offer);
         }
 
-        // GET: /Home/Sell
-        [HttpGet]
-        public ActionResult Sell()
+        // GET: Offer/Create
+        public ActionResult Create()
         {
             var model = new ArticleViewModel();
 
             Session["images"] = null;
             model.Courses = Repository.GetAllCourses().ToList();
-            ThreadPool.QueueUserWorkItem(state => 
+            ThreadPool.QueueUserWorkItem(state =>
             {
                 var arguments = state as Tuple<string, string>;
                 FileSystemFacade.CleanTempFolder(uploadsPath: arguments.Item1, userId: arguments.Item2);
@@ -114,13 +76,10 @@ namespace LivrETS.Controllers
             return View(model);
         }
 
-        // POST: /Home/Sell
+        // POST: Offer/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Sell(ArticleViewModel model)
+        public ActionResult Create(ArticleViewModel model)
         {
-            
-            Article newArticle = null;
             var course = Repository.GetCourseByAcronym(model.Acronym);
 
             // Validating the model
@@ -133,11 +92,11 @@ namespace LivrETS.Controllers
             {
                 ModelState.AddModelError(nameof(ArticleViewModel.Acronym), "Le type choisi requiert un cours de la liste.");
             }
-            
 
             // Proceeding to add the new offer.
             if (ModelState.IsValid)
             {
+                Article newArticle = null;
                 var uploadsPath = Server.MapPath(UPLOADS_PATH);
 
                 switch (model.Type)
@@ -165,8 +124,7 @@ namespace LivrETS.Controllers
                         newArticle = new Calculator()
                         {
                             Title = model.Title,
-                            Model = model.CalculatorModel,
-                            Course = course
+                            Model = model.CalculatorModel
                         };
                         break;
                 }
@@ -190,7 +148,7 @@ namespace LivrETS.Controllers
                     offer.ManagedByFair = true;
                     nextFair?.Offers.Add(offer);
                 }
-                
+
                 Repository.AddOffer(offer, toUser: User.Identity.GetUserId());
 
                 if (Session["images"] != null)
@@ -205,7 +163,7 @@ namespace LivrETS.Controllers
 
                 Repository.Update();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -214,8 +172,128 @@ namespace LivrETS.Controllers
             }
         }
 
-        #region Ajax
+        // GET: Offer/Edit/5
+        public ActionResult Edit(string id)
+        {
+            /*Offer offer = Repository.GetOfferBy(id);
+            var model = new ArticleViewModel() {
+                Acronym = offer.Article.Course.Acronym,
+                Condition = offer.Condition,
+                Title = offer.Title,
+                Price = offer.Price,
+                // je ne peux pas continuer ici car, je n'ai pas 
+                //trouver comment acceder au code ISBN
+                //je chercherais plus tard 
+                Type = offer.Article.TypeName
+            };
+
+            switch (model.Type)
+            {
+                case Article.BOOK_CODE:
+                    newArticle = new Book()
+                    {
+                        Course = course,
+                        Title = model.Title,
+                        ISBN = model.ISBN
+                    };
+                    break;
+
+                case Article.COURSE_NOTES_CODE:
+                    newArticle = new CourseNotes()
+                    {
+                        Course = course,
+                        Title = model.Title,
+                        SubTitle = "Sample Subtitle",  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
+                        BarCode = model.ISBN
+                    };
+                    break;
+
+                case Article.CALCULATOR_CODE:
+                    newArticle = new Calculator()
+                    {
+                        Title = model.Title,
+                        Model = model.CalculatorModel
+                    };
+                    break;
+            }
+
+
+            Session["images"] = null;
+            model.Courses = Repository.GetAllCourses().ToList();
+            ThreadPool.QueueUserWorkItem(state =>
+            {
+                var arguments = state as Tuple<string, string>;
+                FileSystemFacade.CleanTempFolder(uploadsPath: arguments.Item1, userId: arguments.Item2);
+            }, state: new Tuple<string, string>(Server.MapPath(UPLOADS_PATH), User.Identity.GetUserId()));
+
+            return View(model);*/
+            return View();
+        }
+
+        // POST: Offer/Edit/5
         [HttpPost]
+        public ActionResult Edit(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add update logic here
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Offer/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: Offer/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _repository?.Dispose();
+                _repository = null;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #region AJAX
+
+        // DELETE: /Offer/DeleteOffer
+        // Deletes one or more offers.
+        [HttpDelete]
+        public ActionResult DeleteOffer(string[] offerIds)
+        {
+            if (offerIds == null)
+                return Json(new { status = false, message = "no data source" }, contentType: "application/json");
+
+            Repository.DeleteOffer(offerIds);
+
+            return Json(new { status = true, message = "data delete" }, contentType: "application/json");
+        }
+
         public JsonResult AddImage(HttpPostedFileBase image)
         {
             var uploadsPath = Server.MapPath(UPLOADS_PATH);
@@ -248,17 +326,7 @@ namespace LivrETS.Controllers
                 acronym = recentlyAddedCourse.Acronym
             }, contentType: "application/json");
         }
+
         #endregion
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _repository?.Dispose();
-                _repository = null;
-            }
-
-            base.Dispose(disposing);
-        }
     }
 }
