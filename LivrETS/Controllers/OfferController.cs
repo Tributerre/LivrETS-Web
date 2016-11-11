@@ -124,7 +124,8 @@ namespace LivrETS.Controllers
                         newArticle = new Calculator()
                         {
                             Title = model.Title,
-                            Model = model.CalculatorModel
+                            Model = model.CalculatorModel,
+                            Course = course
                         };
                         break;
                 }
