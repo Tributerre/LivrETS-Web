@@ -21,6 +21,8 @@ using System.Linq;
 using System.Web;
 using LivrETS.Models;
 using LivrETS.ViewModels;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace LivrETS.Repositories
 {
@@ -112,6 +114,42 @@ namespace LivrETS.Repositories
         }
 
         /*************************** Fairs ***************************/
+        public List<Object> GetStatsFairs()
+        {
+            SqlConnection con = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;"+
+                "Initial Catalog=aspnet-LivrETS-20160629111902;Integrated Security=True");
+            
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+            cmd.CommandText = "SELECT "+
+                                "f.Trimester Trimester, YEAR(f.StartDate) StartYear, " +
+                                "(SELECT COUNT(o.Id) "+
+                                    "FROM Offers o "+
+                                    "WHERE o.MarkedSoldOn = o.StartDate AND o.Fair_Id = f.Id) AS articles, " +
+                                "(SELECT COUNT(o.Id) "+
+                                    "FROM Offers o "+
+                                    "WHERE o.MarkedSoldOn <> o.StartDate AND o.Fair_Id = f.Id) AS articlesSold " +
+                                "FROM Fairs f "+
+                                "ORDER BY f.StartDate ASC";
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            con.Open();
+            reader = cmd.ExecuteReader();
+
+            List<Object> DataList = new List<object>();
+            while (reader.Read()){
+                DataList.Add(new
+                                {
+                                    year = reader["Trimester"] +"-"+reader["StartYear"],
+                                    articles = reader["articles"],
+                                    articles_sold = reader["articlesSold"]
+                                });
+                    
+            }
+            con.Close();
+
+            return DataList;
+        }
 
         /// <summary>
         /// Gets all the fairs 
@@ -206,12 +244,25 @@ namespace LivrETS.Repositories
         /// Gets all the offers 
         /// 
         /// </summary>
+        /// <returns>The offers or null if not found.</returns>
+        public IEnumerable<Offer> GetAllOffers()
+        {
+            return (from offer in _db.Offers
+                                  orderby offer.StartDate descending
+                                  select offer).ToList();
+        }
+
+        /// <summary>
+        /// Gets all the offers for Admin page
+        /// 
+        /// </summary>
         /// ///  <param name="priceMin">minimal price</param>
         /// ///  <param name="priceMax">maximal price</param>
         /// ///  <param name="itemSearch">the element search</param>
         /// ///  <param name="sortOrder">the element sort</param>
         /// <returns>The offers or null if not found.</returns>
-        public IEnumerable<Offer> GetAllOffers(double priceMin, double priceMax, string itemSearch = null, string sortOrder = null)
+        public IEnumerable<Offer> GetAllOffers(double priceMin, double priceMax, 
+            string itemSearch = null, string sortOrder = null)
         {
             List<Offer> offers = (from offer in _db.Offers
                                     where offer.Price >= priceMin && offer.Price <= priceMax
@@ -252,7 +303,8 @@ namespace LivrETS.Repositories
                 } else if (sortOrder.Equals("PriceDesc"))
                 {
                     results = offers.OrderByDescending(offer => offer.Price);
-                } else if (sortOrder.Equals(Article.BOOK_CODE) || sortOrder.Equals(Article.CALCULATOR_CODE) || sortOrder.Equals(Article.COURSE_NOTES_CODE))
+                } else if (sortOrder.Equals(Article.BOOK_CODE) || sortOrder.Equals(Article.CALCULATOR_CODE) || 
+                    sortOrder.Equals(Article.COURSE_NOTES_CODE))
                 {
                     results = offers.Where(offer => offer.Article.ArticleCode.Equals(sortOrder));
                 }
@@ -410,8 +462,6 @@ namespace LivrETS.Repositories
                 _db.Offers.Attach(modelToAttach as Offer);
             }
         }
-
-        
 
         public void Update()
         {
