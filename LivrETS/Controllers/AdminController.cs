@@ -27,6 +27,7 @@ using LivrETS.ViewModels;
 using System.Net;
 using System.Web.Security;
 using LivrETS.Repositories;
+using System.Web.Script.Serialization;
 
 namespace LivrETS.Controllers
 {
@@ -65,9 +66,9 @@ namespace LivrETS.Controllers
             ViewData["whatFair"] = currentFair;
             ViewData["users"] = Repository.GetAllUsers().Count();
             ViewData["fairs"] = Repository.GetAllFairs().Count();
-            ViewData["offers"] = Repository.GetAllOffers(0,1000).Count();
-            ViewData["saleitems"] = Repository.GetAllOffers(0,1000).
-                Where(offer => offer.Article.FairState == ArticleFairState.SOLD).Count();
+            ViewData["offers"] = Repository.GetAllOffers().Count();
+            ViewData["saleitems"] = Repository.GetAllOffers().
+                Where(offer => offer.MarkedSoldOn != offer.StartDate).Count();
 
             return View();
         }
@@ -217,7 +218,8 @@ namespace LivrETS.Controllers
             }
             else  // Multiple users to delete
             {
-                users = model.UserIdsList.ConvertAll(new Converter<string, ApplicationUser>(userId => UserManager.FindById(userId)));
+                users = model.UserIdsList.ConvertAll(new Converter<string, 
+                    ApplicationUser>(userId => UserManager.FindById(userId)));
             }
 
             foreach (var user in users)
@@ -276,7 +278,8 @@ namespace LivrETS.Controllers
                 var pastFairStartDate = pastFair?.StartDate ?? new DateTime(1970, 01, 01);
                 var pastOffers = (
                     from dbOffer in db.Offers
-                    where dbOffer.StartDate < fair.StartDate && dbOffer.StartDate >= pastFairStartDate && dbOffer.ManagedByFair
+                    where dbOffer.StartDate < fair.StartDate && dbOffer.StartDate >= 
+                        pastFairStartDate && dbOffer.ManagedByFair
                     select dbOffer
                 );
 
@@ -322,7 +325,8 @@ namespace LivrETS.Controllers
                 }
                 else
                 {
-                    fairs = model.IdsList.ConvertAll(new Converter<string, Fair>(id => db.Fairs.FirstOrDefault(fair => fair.Id.ToString() == id)));
+                    fairs = model.IdsList.ConvertAll(new Converter<string, Fair>
+                        (id => db.Fairs.FirstOrDefault(fair => fair.Id.ToString() == id)));
 
                     if (fairs.Any(fair => fair == null))
                     {
@@ -377,6 +381,13 @@ namespace LivrETS.Controllers
             }
         }
 
+        // POST: /Admin/GetStatsFairs
+        [HttpPost]
+        public string GetStatsFairs()
+        {
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            return jss.Serialize(Repository.GetStatsFairs());
+        }
         #endregion
 
         #region Helpers

@@ -55,10 +55,12 @@ namespace LivrETS.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, double Pmin = 1, double Pmax = 500, int? page = 1)
+        public ActionResult Index(string sortOrder, string currentFilter, 
+            string searchString, double Pmin = 1, double Pmax = 500, int? page = 1)
         {
             ViewBag.CurrentSort = sortOrder;
             IEnumerable<Offer> offers = null;
+            var oll = Repository.GetStatsFairs();
 
             if (searchString != null)
             {
