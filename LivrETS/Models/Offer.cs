@@ -58,7 +58,7 @@ namespace LivrETS.Models
 
         [Required]
         public string Condition { get; set; }
-        [Required]
+        [Required/*, System.ComponentModel.DefaultValue(false)*/]
         public DateTime MarkedSoldOn { get; set; }
         public virtual ICollection<OfferImage> Images { get; set; }
 

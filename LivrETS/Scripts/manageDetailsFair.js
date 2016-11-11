@@ -25,7 +25,6 @@ $(document).ready(function () {
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
-                console.log(val.Offers);
                 return val.Offers
             }
         },
@@ -34,6 +33,7 @@ $(document).ready(function () {
                class: "check-row text-center",
                sortable: false,
                data: function (val) {
+                   
                    return "<input type='checkbox' name='check-select-offer' data-offer-id='" + val.Id + "' />";
                }
            },
@@ -80,15 +80,51 @@ $(document).ready(function () {
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
-                    return "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer hide' data-offer-id='" + val.Id + "'>" +
-                            "<span class='glyphicon glyphicon-edit'></span></a> " +
-                            "<a href='#' class='btn btn-sm btn-danger btn-delete-offer hide' data-offer-id='" + val.Id + "'>" +
-                            "<span class='glyphicon glyphicon-trash'></span></a>"
+                    var sold = "";
+                    var nosold = "hide";
+                    if (val.Sold == true) { 
+                        nosold = "";
+                        sold = "hide"
+                    }
 
+                    return "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
+                        "data-status='1' id='sale'>vendu</a>" +
+                        "<a class='btn btn-sm btn-danger btn-sale " + nosold + "' data-offer-id='" + val.Id + "' " +
+                        "data-status='0' id='nosale'>non vendu</a>";
                 }
             }
         ]
 
+    });
+
+    // sale fair event.
+    $('table tbody').on("click", ".btn-sale", function () {
+        var $btn = $(this);
+        var offerId = $btn.data("offer-id");
+
+        $.ajax({
+            method: "POST",
+            url: "/Offer/ConcludeSell",
+            dataType: "json",
+            data: {
+                fairId: $(".fairId").text(),
+                offerIds: [offerId]
+                
+            },
+            success: function (data) {
+                if (status == "0") {
+                    $("#sale").removeClass("hide")
+                    $("#nosale").addClass("hide")
+                } else {
+                    $("#nosale").removeClass("hide")
+                    $("#sale").addClass("hide")
+                }
+            },
+            error: function () {
+                $("#error-message").text("Une erreur est survenue lors de la suppression de la foire.");
+                $("#errors").show("slow");
+            }
+        });
     });
 
     $("#close-error").on("click", function () {

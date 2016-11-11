@@ -248,7 +248,8 @@ namespace LivrETS.Controllers
 
             //send notification mail
             NotificationManager.getInstance().sendNotification(
-                new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION, Repository.GetAllUsers().ToList())
+                new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION, 
+                Repository.GetAllUsers().ToList())
                 );
             
 
