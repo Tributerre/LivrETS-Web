@@ -114,6 +114,7 @@
             </div>
         </div>
         <!-- /.row -->
+        @if (currentFair != null) {
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
@@ -121,9 +122,9 @@
                         <h3 class="panel-title">
                             <i class="fa fa-bar-chart fa-fw"></i>
                             Foire 
-                            @if(ViewData["whatFair"] != null){
+                            @if (ViewData["whatFair"] != null) {
                                 <span>courrante</span> 
-                            }else{
+                            } else {
                                 <span>suivante</span>
                             }
                             en chiffres
@@ -182,6 +183,7 @@
                 </div>
             </div>
         </div>
+        }
 @section Scripts {
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
     <script src="~/Scripts/manageOffersFair.js"></script>

@@ -446,7 +446,8 @@ namespace LivrETS.Controllers
                 Session[SELLER_PICKED_ARTICLES] = remainingOffers;
             }
 
-            return Json(new { RemainingOffersCount = numberOfOffersRemaining }, contentType: "application/json");
+            return Json(new { RemainingOffersCount = numberOfOffersRemaining }, 
+                contentType: "application/json");
         }
 
         #endregion

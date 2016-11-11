@@ -304,42 +304,9 @@ namespace LivrETS.Controllers
         // DELETE: /Admin/DeleteFair
         // Deletes one or more fairs.
         [HttpDelete]
-        public ActionResult DeleteFair(AjaxFairViewModel model)
+        public ActionResult DeleteFair(string id)
         {
-            List<Fair> fairs = new List<Fair>();
-
-            using (var db = new ApplicationDbContext())
-            {
-                if (model.Id != null)
-                {
-                    var fair = db.Fairs.FirstOrDefault(fairDb => fairDb.Id.ToString() == model.Id);
-
-                    if (fair != null)
-                    {
-                        fairs.Add(fair);
-                    }
-                    else
-                    {
-                        return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-                    }
-                }
-                else
-                {
-                    fairs = model.IdsList.ConvertAll(new Converter<string, Fair>
-                        (id => db.Fairs.FirstOrDefault(fair => fair.Id.ToString() == id)));
-
-                    if (fairs.Any(fair => fair == null))
-                    {
-                        return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-                    }
-                }
-
-                foreach (var fair in fairs)
-                {
-                    db.Fairs.Remove(fair);
-                }
-                db.SaveChanges();
-            }
+            Repository.DeleteFair(id);
             return Json(new { }, contentType: "application/json");
         }
 
