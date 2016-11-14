@@ -114,6 +114,7 @@ namespace LivrETS.Repositories
         }
 
         /*************************** Fairs ***************************/
+
         public List<Object> GetStatsFairs()
         {
             SqlConnection con = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;"+
