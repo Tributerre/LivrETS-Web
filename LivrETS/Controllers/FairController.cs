@@ -169,7 +169,6 @@ namespace LivrETS.Controllers
             DateTime fairRetrievalStartDate = (Convert.ToDateTime(fair.RetrievalStartDate));
             DateTime fairRetrievalEndDate = (Convert.ToDateTime(fair.RetrievalEndDate));
 
-
             if (CompareDate(currentDate, fairPickingStartDate))
                 return NotificationManager.getInstance().sendNotification(
                     new Notification(NotificationOptions.STARTFAIRPICKING, listUsers)
