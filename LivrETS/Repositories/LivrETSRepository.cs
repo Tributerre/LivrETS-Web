@@ -114,6 +114,7 @@ namespace LivrETS.Repositories
         }
 
         /*************************** Fairs ***************************/
+
         public List<Object> GetStatsFairs()
         {
             SqlConnection con = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;"+
@@ -460,6 +461,29 @@ namespace LivrETS.Repositories
                     select offer
                 ).FirstOrDefault();
 
+        }
+
+        public bool ConcludeSell(string[] offerIds)
+        {
+            for (int i = 0; i < offerIds.Length; i++)
+            {
+                Offer offer = this.GetOfferBy(offerIds[i]);
+                /*var sale = new Sale()
+                {
+                    Date = DateTime.Now
+                };*/
+                offer.MarkedSoldOn = DateTime.Now;
+                //offer.Article.MarkAsSold();
+                /*sale.SaleItems.Add(new SaleItem()
+                {
+                    Offer = offer
+                });*/
+                //this.AttachToContext(offer);
+            }
+
+            _db.SaveChanges();
+
+            return true;
         }
 
         /// <summary>

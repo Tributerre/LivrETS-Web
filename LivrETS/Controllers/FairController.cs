@@ -67,49 +67,6 @@ namespace LivrETS.Controllers
             return View(model);
         }
 
-        public void CheckStatusFairs()
-        {
-            List<Fair> ListFairs = Repository.GetAllFairs();
-            DateTime currentDate = (Convert.ToDateTime(DateTime.Now.ToString()));
-
-            foreach (Fair fair in ListFairs)
-            {
-                DateTime fairPickingEndDate = (Convert.ToDateTime(fair.PickingEndDate));
-                DateTime fairPickingStartDate = (Convert.ToDateTime(fair.PickingStartDate));
-                DateTime fairSaleStartDate = (Convert.ToDateTime(fair.SaleStartDate));
-                DateTime fairSaleEndDate = (Convert.ToDateTime(fair.SaleEndDate));
-                DateTime fairRetrievalStartDate = (Convert.ToDateTime(fair.RetrievalStartDate));
-                DateTime fairRetrievalEndDate = (Convert.ToDateTime(fair.RetrievalEndDate));
-                
-
-                if (CompareDate(currentDate, fairPickingStartDate))
-                    NotificationManager.getInstance().sendNotification(
-                        new Notification(NotificationOptions.STARTFAIRPICKING, Repository.GetAllUsers().ToList())
-                    );
-                else if (CompareDate(currentDate, fairPickingEndDate))
-                    NotificationManager.getInstance().sendNotification(
-                        new Notification(NotificationOptions.ENDFAIRPICKING, Repository.GetAllUsers().ToList())
-                    );
-                else if(CompareDate(currentDate, fairSaleStartDate))
-                    NotificationManager.getInstance().sendNotification(
-                        new Notification(NotificationOptions.STARTFAIRSALE, Repository.GetAllUsers().ToList())
-                    );
-                else if (CompareDate(currentDate, fairSaleEndDate))
-                    NotificationManager.getInstance().sendNotification(
-                        new Notification(NotificationOptions.ENDFAIRSALE, Repository.GetAllUsers().ToList())
-                    );
-                else if (CompareDate(currentDate, fairRetrievalStartDate))
-                    NotificationManager.getInstance().sendNotification(
-                        new Notification(NotificationOptions.STARTFAIRRETREIVAL, Repository.GetAllUsers().ToList())
-                    );
-                else if (CompareDate(currentDate, fairRetrievalEndDate))
-                    NotificationManager.getInstance().sendNotification(
-                        new Notification(NotificationOptions.ENDFAIRRETREIVAL, Repository.GetAllUsers().ToList())
-                    );
-                
-            }
-        }
-
         private bool CompareDate(DateTime currentDate, DateTime CompareDate)
         {
             return currentDate.Year == currentDate.Year &&
@@ -198,6 +155,47 @@ namespace LivrETS.Controllers
 
         #region Ajax
 
+        public bool CheckStatusFairs()
+        {
+            Fair fair = Repository.GetCurrentFair();
+            List<ApplicationUser> listUsers = Repository.GetAllUsers().ToList();
+
+            DateTime currentDate = (Convert.ToDateTime(DateTime.Now.ToString()));
+
+            DateTime fairPickingEndDate = (Convert.ToDateTime(fair.PickingEndDate));
+            DateTime fairPickingStartDate = (Convert.ToDateTime(fair.PickingStartDate));
+            DateTime fairSaleStartDate = (Convert.ToDateTime(fair.SaleStartDate));
+            DateTime fairSaleEndDate = (Convert.ToDateTime(fair.SaleEndDate));
+            DateTime fairRetrievalStartDate = (Convert.ToDateTime(fair.RetrievalStartDate));
+            DateTime fairRetrievalEndDate = (Convert.ToDateTime(fair.RetrievalEndDate));
+
+            if (CompareDate(currentDate, fairPickingStartDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.STARTFAIRPICKING, listUsers)
+                );
+            else if (CompareDate(currentDate, fairPickingEndDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.ENDFAIRPICKING, listUsers)
+                );
+            else if (CompareDate(currentDate, fairSaleStartDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.STARTFAIRSALE, listUsers)
+                );
+            else if (CompareDate(currentDate, fairSaleEndDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.ENDFAIRSALE, listUsers)
+                );
+            else if (CompareDate(currentDate, fairRetrievalStartDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.STARTFAIRRETREIVAL, listUsers)
+                );
+            else if (CompareDate(currentDate, fairRetrievalEndDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.ENDFAIRRETREIVAL, listUsers)
+                );
+            return false;
+        }
+
         [HttpPost]
         public ActionResult OffersNotSold(string UserBarCode)
         {
@@ -248,7 +246,8 @@ namespace LivrETS.Controllers
 
             //send notification mail
             NotificationManager.getInstance().sendNotification(
-                new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION, Repository.GetAllUsers().ToList())
+                new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION, 
+                Repository.GetAllUsers().ToList())
                 );
             
 

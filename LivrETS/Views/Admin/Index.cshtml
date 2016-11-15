@@ -106,7 +106,9 @@
                     <a href="#">
                         <div class="panel-footer">
                             <span class="pull-left">Détails</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <span class="pull-right">
+                                <i class="fa fa-arrow-circle-right"></i>
+                            </span>
                             <div class="clearfix"></div>
                         </div>
                     </a>
@@ -114,11 +116,13 @@
             </div>
         </div>
         <!-- /.row -->
+ 
         @if (currentFair != null) {
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
+
                         <h3 class="panel-title">
                             <i class="fa fa-bar-chart fa-fw"></i>
                             Foire 
@@ -129,6 +133,7 @@
                             }
                             en chiffres
                         </h3>
+                        
                     </div>
                     <div class="panel-body">
                         <div class="col-md-4">
@@ -175,7 +180,13 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Les Foires </h3>
+                        <h3 class="panel-title">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 
+                            Les Foires 
+                        </h3>
+                        [<a href="#" id="btn-change-fairs" data-fairId="@currentFair.Id">
+                             Mise à jour des foires 
+                        </a>]
                     </div>
                     <div class="panel-body">
                         <div id="morris-area-chart"></div>
@@ -186,11 +197,11 @@
         }
 @section Scripts {
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
-    <script src="~/Scripts/manageOffersFair.js"></script>
+    <script src="~/Scripts/home_admin.js"></script>
     <!-- Morris Charts JavaScript -->
-<script src="~/Scripts/template_admin/morris/raphael.min.js"></script>
-<script src="~/Scripts/template_admin/morris/morris.min.js"></script>
-<script src="~/Scripts/template_admin//morris/morris-data.js"></script>
+    <script src="~/Scripts/template_admin/morris/raphael.min.js"></script>
+    <script src="~/Scripts/template_admin/morris/morris.min.js"></script>
+    <script src="~/Scripts/template_admin//morris/morris-data.js"></script>
 }
        
 

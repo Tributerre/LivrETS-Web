@@ -29,7 +29,7 @@ namespace LivrETS.Models
             return notificationManager;
         }
 
-        public void sendNotification(Notification notification)
+        public bool sendNotification(Notification notification)
         {
             try
             {
@@ -54,13 +54,15 @@ namespace LivrETS.Models
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);
-
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
 
             }
+
+            return false;
         }
     }
 }

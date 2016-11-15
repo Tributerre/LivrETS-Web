@@ -328,6 +328,18 @@ namespace LivrETS.Controllers
             }, contentType: "application/json");
         }
 
+        [HttpPost]
+        public ActionResult ConcludeSell(string[] offerIds=null)
+        {
+
+            Repository.ConcludeSell(offerIds);
+
+            return Json(new
+            {
+               status = "true"
+            }, contentType: "application/json");
+        }
+
         #endregion
     }
 }
