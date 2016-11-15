@@ -61,7 +61,9 @@ namespace LivrETS.Models
                     break;
             }
 
-            return System.IO.File.ReadAllText(Path.GetFullPath(System.Web.HttpContext.Current.Server.MapPath(pathMail)));
+            return System.IO.File.ReadAllText(Path.GetFullPath(
+                System.Web.HttpContext.Current.Server.MapPath(pathMail)
+                ));
         }
     }
 
