@@ -240,6 +240,37 @@ namespace LivrETS.Repositories
 
         /*************************** Offer ***************************/
 
+        public void DeleteFair(string id)
+        {
+            Fair fair = this.GetFairById(id);
+
+            if (fair.Offers != null)
+            {
+                Offer[] tabOffer = fair.Offers.ToArray();
+                for (int j = 0; j < tabOffer.Length; j++)
+                {
+                    Offer offer = tabOffer[j];
+                    
+
+                    if (offer.Images != null)
+                    {
+                        OfferImage[] tabOfferImg = offer.Images.ToArray();
+                        for (int i = 0; i < tabOfferImg.Length; i++)
+                        {
+                            _db.OfferImage.Remove(tabOfferImg[i]);
+                            tabOfferImg[i].Delete();
+                        }
+                    }
+                    _db.Articles.Remove(offer.Article);
+                    _db.Offers.Remove(offer);
+                }
+            }
+            
+            _db.Fairs.Remove(fair);
+            
+            _db.SaveChanges();
+        }
+
         /// <summary>
         /// Gets all the offers 
         /// 

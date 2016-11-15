@@ -91,20 +91,20 @@ $(document).ready(function () {
 
     // Delete fair event.
     $('table tbody').on("click", ".btn-delete-fair", function () {
-        var button = $(this);
-        var fairId = $(this).attr("data-fair-id");
-
-        button.prop("disabled", true);
+        var $btn = $(this);
+        var fairId = $btn.data("fair-id");
+       
+        $btn.prop("disabled", true);
         $.ajax({
             method: "DELETE",
             contentType: "application/json",
             url: "/Admin/DeleteFair",
             dataType: "json",
             data: JSON.stringify({
-                Id: fairId
+                id: fairId
             }),
             success: function () {
-                button.parents("tr").remove();
+                $btn.parents("tr").remove();
                 updateDeleteSelectedView();
             },
             error: function () {
