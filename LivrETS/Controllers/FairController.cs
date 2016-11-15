@@ -67,13 +67,6 @@ namespace LivrETS.Controllers
             return View(model);
         }
 
-        private bool CompareDate(DateTime currentDate, DateTime CompareDate)
-        {
-            return currentDate.Year == currentDate.Year &&
-                currentDate.Month == CompareDate.Month &&
-                currentDate.Day == CompareDate.Day;
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Pick(FairViewModel model)
@@ -154,46 +147,27 @@ namespace LivrETS.Controllers
         }
 
         #region Ajax
-
-        public bool CheckStatusFairs()
+        
+        [HttpPost]
+        public ActionResult CheckStatusFair()
         {
+            List<ApplicationUser> listAllUsers = Repository.GetAllUsers().ToList();
+
+            /*List<ApplicationUser> listAllUsers = new List<ApplicationUser>();
+            ApplicationUser user = Repository.GetUserBy(null, User.Identity.GetUserId());
+            listAllUsers.Add(user);*/
+
             Fair fair = Repository.GetCurrentFair();
-            List<ApplicationUser> listUsers = Repository.GetAllUsers().ToList();
+            if (fair == null)
+                fair = Repository.GetNextFair();
 
-            DateTime currentDate = (Convert.ToDateTime(DateTime.Now.ToString()));
+            bool result = Fair.CheckStatusFair(fair, listAllUsers);
 
-            DateTime fairPickingEndDate = (Convert.ToDateTime(fair.PickingEndDate));
-            DateTime fairPickingStartDate = (Convert.ToDateTime(fair.PickingStartDate));
-            DateTime fairSaleStartDate = (Convert.ToDateTime(fair.SaleStartDate));
-            DateTime fairSaleEndDate = (Convert.ToDateTime(fair.SaleEndDate));
-            DateTime fairRetrievalStartDate = (Convert.ToDateTime(fair.RetrievalStartDate));
-            DateTime fairRetrievalEndDate = (Convert.ToDateTime(fair.RetrievalEndDate));
-
-            if (CompareDate(currentDate, fairPickingStartDate))
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.STARTFAIRPICKING, listUsers)
-                );
-            else if (CompareDate(currentDate, fairPickingEndDate))
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.ENDFAIRPICKING, listUsers)
-                );
-            else if (CompareDate(currentDate, fairSaleStartDate))
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.STARTFAIRSALE, listUsers)
-                );
-            else if (CompareDate(currentDate, fairSaleEndDate))
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.ENDFAIRSALE, listUsers)
-                );
-            else if (CompareDate(currentDate, fairRetrievalStartDate))
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.STARTFAIRRETREIVAL, listUsers)
-                );
-            else if (CompareDate(currentDate, fairRetrievalEndDate))
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.ENDFAIRRETREIVAL, listUsers)
-                );
-            return false;
+            return Json(new
+            {
+                status = result
+            },contentType: "application/json"
+            );
         }
 
         [HttpPost]
