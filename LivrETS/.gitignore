@@ -262,3 +262,7 @@ bin/
 App_Data/*
 *.csproj.user
 obj/
+
+# LivrETS
+LivrETS/LivrETS.csproj
+LivrETS/packages.config

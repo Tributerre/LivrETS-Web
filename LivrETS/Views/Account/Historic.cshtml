@@ -1,0 +1,61 @@
+﻿@{
+    Layout = "~/Views/Shared/_ProfileUserLayout.cshtml";
+}
+
+@section Styles {
+
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+
+    <style>
+        #menu-general-admin ul li:first-child {
+            border-bottom: 4px solid #629c49;
+        }
+
+        #menu-general-admin ul li:first-child a {
+            color: #629c49;
+        }
+    </style>
+
+}
+
+    <div class="row">
+
+        <h2> historique de poste d'article </h2>
+        <hr>
+        <div>
+            <div class="row" id="top-row">
+               
+                <table class="table-stripped table-bordered table-hover display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <button type="button" class="btn btn-default btn-sm" id="del-all">
+                                <span class='glyphicon glyphicon-trash'></span>
+                                </button>
+                            </th>
+                            <th colspan="7"><span id="request-message"></span></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input type="checkbox" name="check-select-all" />
+                            </th>
+                            <th>Title</th>
+                            <th>Prix</th>
+                            <th>Vendu</th>
+                            <th>Foire</th>
+                            <th>Date de poste</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+              
+            </div>
+        </div>
+    </div>
+
+@section Scripts {
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="~/Scripts/profile_user.js"></script>
+}
+
+

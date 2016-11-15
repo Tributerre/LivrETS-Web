@@ -24,7 +24,7 @@
                 <div class="logo text-md-center">
                     <h1>
                         <a href="/home/index">
-                            Tributerre
+                            Tribu<span class="primary-color">terre</span>
                         </a>
                     </h1>
                 </div><!-- /.logo -->
@@ -32,22 +32,15 @@
             </div><!-- /.col -->
             <div class="col-md-3 col-sm-3 col-xs-12">
                 <!-- ========================== SEARCH BAR=============================== -->
-                <!--<form role="form" method="get" action="/Home/Index" class="block-search">
-                    <div class="input-group">
-                        <input type="text" name="itemSearch" class="form-control" placeholder="cr:mathematique ou sg:mat210">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary-very-light search-button" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                        </span>
-                    </div>
-                    <small>Rechercher par <b>cr:</b>Titre cours / <b>sg:</b>Sigle cours</small>
-                </form><!-- /block-search -->
 
                 @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "block-search" }))
                 {
                     <div class="input-group">
-                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", placeholder= "cr:mathematique ou sg:mat210" })
+                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, 
+                       new { @class = "form-control", placeholder= "cr:mathematique ou sg:mat210" })
                         <span class="input-group-btn">
-                            <button class="btn btn-primary-very-light search-button" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                            <button class="btn btn-primary-very-light search-button" type="submit">
+                            <span class="glyphicon glyphicon-search"></span></button>
                         </span>
                     </div>
                     <small>Rechercher par <b>cr:</b>Titre cours / <b>sg:</b>Sigle cours</small>
@@ -65,15 +58,16 @@
             </div><!-- /.col -->
         </div><!-- /.row -->
         <a class="btn-shopping-cart hidden-xs" href="#" data-toggle="modal" data-target=".myCart-modal-lg">
-            <img src="~/images/template/icon-cart.png" class="icon-cart" width="20" height="18" alt="Cart Icon" />
-            <span class="cart-items-count">5</span>
+            <span class="fa fa-heart"></span>
+            <span class="cart-items-count">0</span>
         </a>
     </div><!-- /.container -->
     <!-- =================== NAVBAR PRIMARY ============================== -->
     <nav class="yamm navbar navbar-primary animate-dropdown" role="navigation">
         <div class="container">
             <div class="navbar-header">
-                <button id="btn-navbar-primary-collapse" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-primary-collapse">
+                <button id="btn-navbar-primary-collapse" type="button" class="navbar-toggle" 
+                        data-toggle="collapse" data-target="#navbar-primary-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -85,32 +79,27 @@
                     <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
                     @if (Request.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Vendre", "Sell", "Home")</li>
-
-                        if (User.IsInRole("Administrator") || User.IsInRole("Clerk"))
-                        {
-                            <li>@Html.ActionLink("Cueillir", "Pick", "Fair")</li>
-                        }
-
-                        if (User.IsInRole("Administrator"))
-                        {
-                            <li>@Html.ActionLink("Utilisateurs", "ManageUsers", "Admin")</li>
-                            <li>@Html.ActionLink("Foires", "ManageFairs", "Admin")</li>
-                        }
+                        <li>@Html.ActionLink("Vendre", "Create", "Offer")</li>
                         <li>&nbsp;</li>
+                    }
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Clerk"))
+                    {
+                        <li>@Html.ActionLink("Cueillir", "Pick", "Fair")</li>
                     }
                 </ul><!-- /.nav -->
 
-                <div class="navbar-right user-options">
+                <div class="navbar-right user-options hide">
                     <div class="btn-group">
-                        <button data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle btn btn-primary-very-light navbar-btn">USD <b class="caret"></b></button>
+                        <button data-hover="dropdown" data-toggle="dropdown" 
+                                class="dropdown-toggle btn btn-primary-very-light navbar-btn">USD <b class="caret"></b></button>
                         <!--<ul class="dropdown-menu">
                             <li><a href="#">EUR</a></li>
                             <li><a href="#">INR</a></li>
                         </ul>-->
                     </div><!-- /.btn-group -->
                     <div class="btn-group">
-                        <button data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle btn btn-primary-very-light navbar-btn">FR <b class="caret"></b></button>
+                        <button data-hover="dropdown" data-toggle="dropdown" 
+                                class="dropdown-toggle btn btn-primary-very-light navbar-btn">FR <b class="caret"></b></button>
                         <ul class="dropdown-menu">
                             <li><a href="#">EN</a></li>
                         </ul><!-- /.dropdown-menu -->

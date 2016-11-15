@@ -15,26 +15,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using LivrETS.ViewModels;
 using LivrETS.Models;
-using LivrETS.Service.IO;
 using LivrETS.Repositories;
-using Microsoft.AspNet.Identity;
-using System.Threading;
-using System.Net;
 using PagedList;
+using Hangfire;
 
 namespace LivrETS.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private const string UPLOADS_PATH = "~/Content/Uploads";
         private LivrETSRepository _repository;
         public LivrETSRepository Repository
         {
@@ -57,203 +50,35 @@ namespace LivrETS.Controllers
 
         public HomeController(LivrETSRepository livretsRepository)
         {
-            
             Repository = livretsRepository;
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, 
+            string searchString, double Pmin = 1, double Pmax = 500, int? page = 1)
         {
             ViewBag.CurrentSort = sortOrder;
-            IQueryable<Offer> offers = null;
-
-            if(searchString != null)
-            {
-                page = 1;
-            }else
-            {
-                searchString = currentFilter;
-            }
-            ViewBag.CurrentFilter = searchString;
+            IEnumerable<Offer> offers = null;
+            var oll = Repository.GetStatsFairs();
 
             if (searchString != null)
             {
-                 
-                 offers = Repository.GetAllOffers(searchString);
+                page = 1;
             }
             else
             {
-                offers = Repository.GetAllOffers();
+                searchString = currentFilter;
             }
+
+            ViewBag.CurrentFilter = searchString;
+            offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);
 
             int pageSize = 20;
             int pageNumber = (page ?? 1);
 
-            return View(offers.ToPagedList(pageNumber, pageSize));
+            return View(offers.ToList().ToPagedList(pageNumber, pageSize));
         }
-
-        // GET: /Home/Sell
-        [HttpGet]
-        public ActionResult Sell()
-        {
-            var model = new ArticleViewModel();
-
-            Session["images"] = null;
-            model.Courses = Repository.GetAllCourses().ToList();
-            ThreadPool.QueueUserWorkItem(state => 
-            {
-                var arguments = state as Tuple<string, string>;
-                FileSystemFacade.CleanTempFolder(uploadsPath: arguments.Item1, userId: arguments.Item2);
-            }, state: new Tuple<string, string>(Server.MapPath(UPLOADS_PATH), User.Identity.GetUserId()));
-
-            return View(model);
-        }
-
-        public ActionResult DetailOffer(string id)
-        {
-            if(id == null)
-                throw new HttpException(404, "Page not Found");
-
-            Offer offer = Repository.GetOfferBy(id);
-
-            if(offer == null)
-                throw new HttpException(404, "Page not Found");
-
-            return View(offer);
-        }
-
-        // POST: /Home/Sell
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Sell(ArticleViewModel model)
-        {
-            var course = Repository.GetCourseByAcronym(model.Acronym);
-
-            // Validating the model
-            if (model.Type != Article.CALCULATOR_CODE && string.IsNullOrEmpty(model.ISBN))
-            {
-                ModelState.AddModelError(nameof(ArticleViewModel.ISBN), "Le type choisi requiert un ISBN ou un code.");
-            }
-
-            if (course == null && model.Type != Article.CALCULATOR_CODE)
-            {
-                ModelState.AddModelError(nameof(ArticleViewModel.Acronym), "Le type choisi requiert un cours de la liste.");
-            }
-
-            // Proceeding to add the new offer.
-            if (ModelState.IsValid)
-            {
-                Article newArticle = null;
-                var uploadsPath = Server.MapPath(UPLOADS_PATH);
-
-                switch (model.Type)
-                {
-                    case Article.BOOK_CODE:
-                        newArticle = new Book()
-                        {
-                            Course = course,
-                            Title = model.Title,
-                            ISBN = model.ISBN
-                        };
-                        break;
-
-                    case Article.COURSE_NOTES_CODE:
-                        newArticle = new CourseNotes()
-                        {
-                            Course = course,
-                            Title = model.Title,
-                            SubTitle = "Sample Subtitle",  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
-                            BarCode = model.ISBN
-                        };
-                        break;
-
-                    case Article.CALCULATOR_CODE:
-                        newArticle = new Calculator()
-                        {
-                            Title = model.Title,
-                            Model = model.CalculatorModel
-                        };
-                        break;
-                }
-
-                var now = DateTime.Now;
-                Offer offer = new Offer()
-                {
-                    StartDate = now,
-                    MarkedSoldOn = now,
-                    Price = model.Price,  // FIXME: No elements for this in the view. Weird.
-                    Condition = model.Condition,
-                    Article = newArticle,
-                    ManagedByFair = false,
-                    Title = model.Title  // FIXME: No elements for this in the view. Weird.
-                };
-
-                if (model.ForNextFair)
-                {
-                    var nextFair = Repository.GetNextFair();
-
-                    offer.ManagedByFair = true;
-                    nextFair?.Offers.Add(offer);
-                }
-                
-                Repository.AddOffer(offer, toUser: User.Identity.GetUserId());
-
-                if (Session["images"] != null)
-                {
-                    List<OfferImage> images = Session["images"] as List<OfferImage>;
-                    foreach (var image in images)
-                    {
-                        image.MovePermanently(uploadsPath);
-                        offer.AddImage(image);
-                    }
-                }
-
-                Repository.Update();
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                model.Courses = Repository.GetAllCourses().ToList();
-                return View(model);
-            }
-        }
-
-        #region Ajax
-        [HttpPost]
-        public JsonResult AddImage(HttpPostedFileBase image)
-        {
-            var uploadsPath = Server.MapPath(UPLOADS_PATH);
-            var offerImage = new OfferImage();
-            offerImage.SaveImageTemporarily(image, User.Identity.GetUserId(), uploadsPath);
-
-            if (Session["images"] == null)
-            {
-                Session["images"] = new List<OfferImage>();
-            }
-
-            //offerImage.Id = Guid.NewGuid();
-            (Session["images"] as List<OfferImage>).Add(offerImage);
-            return Json(new { thumbPath = offerImage.RelativeThumbnailPath }, contentType: "application/json");
-        }
-
-        [HttpPost]
-        public ActionResult AddNewCourse(string acronym)
-        {
-            if (Repository.GetCourseByAcronym(acronym) != null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Conflict);
-            }
-
-            Repository.AddNewCourse(acronym, title: "Sample Title");  // FIXME: Temporary. Eventually, it must be handled correctly
-            var recentlyAddedCourse = Repository.GetCourseByAcronym(acronym);
-            return Json(new
-            {
-                courseId = recentlyAddedCourse.Id,
-                acronym = recentlyAddedCourse.Acronym
-            }, contentType: "application/json");
-        }
-        #endregion
 
         protected override void Dispose(bool disposing)
         {

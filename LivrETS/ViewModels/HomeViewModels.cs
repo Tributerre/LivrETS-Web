@@ -30,17 +30,17 @@ namespace LivrETS.ViewModels
         [Required(ErrorMessage = "Le type de l'article est requis.")]
         public string Type { get; set; }
 
-        public string Model { get; set; }
+        public string TypeModel { get; set; }
         public CalculatorModel CalculatorModel
         {
             get
             {
-                if (Model == null)
+                if (TypeModel == null)
                 {
                     return CalculatorModel.NSPIRE;
                 }
 
-                switch (Model.Trim().ToUpper())
+                switch (TypeModel.Trim().ToUpper())
                 {
                     case nameof(CalculatorModel.VOYAGE200):
                         return CalculatorModel.VOYAGE200;

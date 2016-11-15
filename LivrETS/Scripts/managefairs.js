@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
     //init managefairs table width datables plugins
-
+    
     $('table').DataTable({
         processing: true,
         ajax: {
@@ -25,6 +25,7 @@ $(document).ready(function () {
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
+                console.log(val.listFairs)
                 return val.listFairs
             }
         },
@@ -39,6 +40,11 @@ $(document).ready(function () {
             {
                 data: "LivrETSID",
                 visible: false
+            },
+            {
+                data: function (val) {
+                    return val.Trimester;
+                }
             },
             {
                 data: function (val) {
@@ -61,8 +67,12 @@ $(document).ready(function () {
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
-                    return "<a href='#' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='"+ val.Id +"' ><span class='glyphicon glyphicon-edit'></span></a> "+
-                    "<a href='#' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='" + val.Id + "'><span class='glyphicon glyphicon-trash'></span></a>"
+                    return "<a href='/Admin/ManageDetailsFair/" + val.Id + "' class='btn btn-sm btn-info' data-fair-id='" +
+                        val.Id + "'><span class='glyphicon glyphicon-info-sign'></span></a> "+
+                        "<a href='#' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='" +
+                        val.Id + "' ><span class='glyphicon glyphicon-edit'></span></a> " +
+                    "<a href='#' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='" +
+                        val.Id + "'><span class='glyphicon glyphicon-trash'></span></a>";
                     
                 }
             }
@@ -81,20 +91,20 @@ $(document).ready(function () {
 
     // Delete fair event.
     $('table tbody').on("click", ".btn-delete-fair", function () {
-        var button = $(this);
-        var fairId = $(this).attr("data-fair-id");
-
-        button.prop("disabled", true);
+        var $btn = $(this);
+        var fairId = $btn.data("fair-id");
+       
+        $btn.prop("disabled", true);
         $.ajax({
             method: "DELETE",
             contentType: "application/json",
             url: "/Admin/DeleteFair",
             dataType: "json",
             data: JSON.stringify({
-                Id: fairId
+                id: fairId
             }),
             success: function () {
-                button.parents("tr").remove();
+                $btn.parents("tr").remove();
                 updateDeleteSelectedView();
             },
             error: function () {

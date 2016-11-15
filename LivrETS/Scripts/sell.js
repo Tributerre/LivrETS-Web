@@ -58,7 +58,7 @@ $(document).ready(function () {
                 $("#image-progress").hide();
                 $("#image-progress>div").css("width", 0);
             };
-            xhr.open("POST", "/Home/AddImage", true);
+            xhr.open("POST", "/Offer/AddImage", true);
             xhr.send(formData);
             $("#image-progress").show();
         } else {
@@ -134,7 +134,7 @@ $(document).ready(function () {
             $.ajax({
                 method: "POST",
                 dataType: "json",
-                url: "/Home/AddNewCourse",
+                url: "/Offer/AddNewCourse",
                 data: { acronym: courseTextInput.val() },
                 success: function (data) {
                     var newCourseElement = $("<li>")

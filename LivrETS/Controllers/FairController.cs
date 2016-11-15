@@ -147,6 +147,28 @@ namespace LivrETS.Controllers
         }
 
         #region Ajax
+        
+        [HttpPost]
+        public ActionResult CheckStatusFair()
+        {
+            List<ApplicationUser> listAllUsers = Repository.GetAllUsers().ToList();
+
+            /*List<ApplicationUser> listAllUsers = new List<ApplicationUser>();
+            ApplicationUser user = Repository.GetUserBy(null, User.Identity.GetUserId());
+            listAllUsers.Add(user);*/
+
+            Fair fair = Repository.GetCurrentFair();
+            if (fair == null)
+                fair = Repository.GetNextFair();
+
+            bool result = Fair.CheckStatusFair(fair, listAllUsers);
+
+            return Json(new
+            {
+                status = result
+            },contentType: "application/json"
+            );
+        }
 
         [HttpPost]
         public ActionResult OffersNotSold(string UserBarCode)
@@ -196,6 +218,13 @@ namespace LivrETS.Controllers
                 Repository.Update();
             }
 
+            //send notification mail
+            NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION, 
+                Repository.GetAllUsers().ToList())
+                );
+            
+
             return Json(new { }, contentType: "application/json");
         }
 
@@ -244,6 +273,11 @@ namespace LivrETS.Controllers
             seller.Sales.Add(sale);
             fair.Sales.Add(sale);
             Repository.Update();
+
+            NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, Repository.GetAllUsers().ToList())
+                );
+
             return Json(new { }, contentType: "application/json");
         }
 
@@ -319,6 +353,11 @@ namespace LivrETS.Controllers
 
             article.MarkAsPicked();
             Repository.Update();
+
+            //send notification mail
+            NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLEPICKEDCONFIRMATION, Repository.GetAllUsers().ToList())
+                );
             return Json(new { }, contentType: "application/json");
         }
 
@@ -380,7 +419,8 @@ namespace LivrETS.Controllers
                 Session[SELLER_PICKED_ARTICLES] = remainingOffers;
             }
 
-            return Json(new { RemainingOffersCount = numberOfOffersRemaining }, contentType: "application/json");
+            return Json(new { RemainingOffersCount = numberOfOffersRemaining }, 
+                contentType: "application/json");
         }
 
         #endregion
