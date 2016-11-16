@@ -23,30 +23,28 @@
     @RenderSection("styles", required: false)
 
 <style>
-    h1 {
-        margin-bottom: 50px;
-    }
 
     #menu-general-admin {
-        margin-bottom: 50px;
+        padding: 40px;
     }
 
-        #menu-general-admin ul li {
-            padding: 5px;
-            padding-right: 10px;
-        }
+    #menu-general-admin ul li {
+        padding: 5px;
+        padding-right: 10px;
+    }
 
-            #menu-general-admin ul li:not(:last-child){
-                border-right: 1px solid gray;
-            }
+    #menu-general-admin ul li:not(:last-child){
+        border-right: 1px solid gray;
+    }
 
-            #menu-general-admin ul li a {
-                color: black;
-            }
+    #menu-general-admin ul li a {
+        color: black;
+        font-size: 1.5em;
+    }
 
-                #menu-general-admin ul li a:hover {
-                    color: green;
-                }
+    #menu-general-admin ul li a:hover {
+        color: green;
+    }
 
     thead > tr > th {
         padding: 5px;
@@ -63,8 +61,6 @@
 <div class="container">
     <div class="row">
         <div class="text-center">
-            <h1>Profile</h1>
-
             <div id="menu-general-admin"> 
                 <ul class="list-inline">
                     <li>@Html.ActionLink("Historique", "Historic", "Account")</li>
