@@ -40,16 +40,17 @@ namespace LivrETS.Models
                 mail.Subject = EMAIL_SUBJECT_NOTIF;
 
                 mail.IsBodyHtml = true;
-                //mail.Body = notification.template;
+                mail.Body = notification.template;
 
                 SmtpServer.Port = Int32.Parse(ConfigurationManager.AppSettings["EMAIL_PORT"]);
                 SmtpServer.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["EMAIL_USERNAME"], 
                     ConfigurationManager.AppSettings["EMAIL_PWD"]);
                 SmtpServer.EnableSsl = true;
+                
 
                 foreach (ApplicationUser user in notification.listUser)
                 {
-                    mail.Body = string.Format(notification.template,  user.FirstName);
+                    mail.Body = string.Format(notification.template, user.FirstName);
                     mail.To.Add(user.Email);
                     SmtpServer.Send(mail);
                 }
