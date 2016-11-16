@@ -39,7 +39,6 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/template/owl.transitions.css")">
     <link rel="stylesheet" href="@Url.Content("~/Content/template/animate.min.css")">
 
-
     <link href="@Url.Content("~/Content/template/green.css")" rel="alternate stylesheet" title="Green color">
 
     <!-- Fonts -->
@@ -56,11 +55,9 @@
     <div class="wrapper">
         @Html.Partial("_Header")
 
-        
-            <div class="wrapper">
-                @RenderBody()
-            </div>    
-        
+        <div class="wrapper">
+            @RenderBody()
+        </div>    
 
         @Html.Partial("_Footer")
     </div>
