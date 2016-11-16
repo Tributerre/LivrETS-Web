@@ -22,6 +22,7 @@ using LivrETS.Models;
 using LivrETS.Repositories;
 using PagedList;
 using Hangfire;
+using Microsoft.AspNet.Identity;
 
 namespace LivrETS.Controllers
 {
@@ -70,6 +71,13 @@ namespace LivrETS.Controllers
             {
                 searchString = currentFilter;
             }
+
+            List<ApplicationUser> listAllUsers = new List<ApplicationUser>();
+            ApplicationUser user = Repository.GetUserBy(null, User.Identity.GetUserId());
+            listAllUsers.Add(user);
+            NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.ENDFAIRPICKING, listAllUsers)
+                );
 
             ViewBag.CurrentFilter = searchString;
             offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);

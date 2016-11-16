@@ -37,23 +37,23 @@ namespace LivrETS.Models
                 SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings["SMTP_CLIENT"]);
 
                 mail.From = new MailAddress(notification.emailProvider);
-
-                foreach (ApplicationUser user in notification.listUser)
-                {
-                    mail.To.Add(user.Email);
-                }
-
                 mail.Subject = EMAIL_SUBJECT_NOTIF;
 
                 mail.IsBodyHtml = true;
-                mail.Body = notification.template;
+                //mail.Body = notification.template;
 
                 SmtpServer.Port = Int32.Parse(ConfigurationManager.AppSettings["EMAIL_PORT"]);
                 SmtpServer.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["EMAIL_USERNAME"], 
                     ConfigurationManager.AppSettings["EMAIL_PWD"]);
                 SmtpServer.EnableSsl = true;
 
-                SmtpServer.Send(mail);
+                foreach (ApplicationUser user in notification.listUser)
+                {
+                    mail.Body = string.Format(notification.template,  user.FirstName);
+                    mail.To.Add(user.Email);
+                    SmtpServer.Send(mail);
+                }
+                
                 return true;
             }
             catch (Exception ex)
@@ -63,6 +63,13 @@ namespace LivrETS.Models
             }
 
             return false;
+        }
+
+        private string getBetween(string strSource, string addelt)
+        {
+            int End = strSource.IndexOf("Bonjour");
+            return strSource.Insert(End, " "+ addelt);
+            
         }
     }
 }
