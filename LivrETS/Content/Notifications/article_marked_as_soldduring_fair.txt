@@ -1,1 +1,7 @@
-﻿article marked as solduring fair
+﻿<div>
+<p>Bonjour {0}</p>
+<br>
+<p>Juste pour informer que <b>article marked as solduring fair</b></p>
+<br/>
+<p>Bonne Journée</p>
+</div>

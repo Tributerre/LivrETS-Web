@@ -1,1 +1,7 @@
-﻿end fair picking
+﻿<div>
+<p>Bonjour {0}</p>
+<br>
+<p>Juste pour informer que <b>end fair picking</b></p>
+<br/>
+<p>Bonne Journée</p>
+</div>
