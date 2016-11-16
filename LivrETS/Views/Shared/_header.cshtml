@@ -30,7 +30,7 @@
                 </div><!-- /.logo -->
                 <!-- ============================= LOGO : END ========================== -->
             </div><!-- /.col -->
-            <div class="col-md-3 col-sm-3 col-xs-12">
+            <div class="col-md-5 col-sm-5 col-xs-12">
                 <!-- ========================== SEARCH BAR=============================== -->
 
                 @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "block-search" }))
@@ -47,7 +47,7 @@
                 }
                         <!-- ========================== SEARCH BAR :END ===========================-->
             </div><!-- /.col -->
-            <div class="col-md-5 col-sm-5 col-xs-12">
+            <div class="col-md-3 col-sm-3 col-xs-12">
                 <!-- ======================== BLOCK HEADER LINKS========================= -->
                 <div class="block-header-links">
                     <ul class="nav nav-header-link pull-right">
@@ -57,7 +57,7 @@
                 <!-- =================== BLOCK HEADER LINKS :END ======================== -->
             </div><!-- /.col -->
         </div><!-- /.row -->
-        <a class="btn-shopping-cart hidden-xs" href="#" data-toggle="modal" data-target=".myCart-modal-lg">
+        <a class="btn-shopping-cart hidden-xs hide" href="#" data-toggle="modal" data-target=".myCart-modal-lg">
             <span class="fa fa-heart"></span>
             <span class="cart-items-count">0</span>
         </a>
@@ -84,14 +84,28 @@
                     }
                     @if (User.IsInRole("Administrator") || User.IsInRole("Clerk"))
                     {
-                        <li>@Html.ActionLink("Cueillir", "Pick", "Fair")</li>
+                        <li class="dropdown">
+                            <a href="#" data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle">Foire</a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Cueillette", "Pick", "Fair")</li>
+                                <li><a href="category.html">Vente</a></li>
+                                <li><a href="detail.html">Récupération</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li>@Html.ActionLink("Administration", "Index", "Admin")</li>
                     }
                 </ul><!-- /.nav -->
 
                 <div class="navbar-right user-options hide">
                     <div class="btn-group">
                         <button data-hover="dropdown" data-toggle="dropdown" 
-                                class="dropdown-toggle btn btn-primary-very-light navbar-btn">USD <b class="caret"></b></button>
+                                class="dropdown-toggle btn btn-primary-very-light navbar-btn">
+                                    USD 
+                        <b class="caret"></b>
+                        </button>
                         <!--<ul class="dropdown-menu">
                             <li><a href="#">EUR</a></li>
                             <li><a href="#">INR</a></li>
@@ -99,7 +113,8 @@
                     </div><!-- /.btn-group -->
                     <div class="btn-group">
                         <button data-hover="dropdown" data-toggle="dropdown" 
-                                class="dropdown-toggle btn btn-primary-very-light navbar-btn">FR <b class="caret"></b></button>
+                                class="dropdown-toggle btn btn-primary-very-light navbar-btn">
+                                FR <b class="caret"></b></button>
                         <ul class="dropdown-menu">
                             <li><a href="#">EN</a></li>
                         </ul><!-- /.dropdown-menu -->
