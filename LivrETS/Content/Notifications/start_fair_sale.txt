@@ -1,1 +1,8 @@
-﻿start fair sale
+﻿
+<div>
+<p>Bonjour {0}</p>
+<br>
+<p>Juste pour informer que <b>start fair sale</b></p>
+<br/>
+<p>Bonne Journée</p>
+</div>

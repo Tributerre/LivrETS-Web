@@ -1,1 +1,7 @@
-﻿start_fair_picking
+﻿<div>
+<p>Bonjour {0}</p>
+<br>
+<p>Juste pour informer que <b>start_fair_picking</b></p>
+<br/>
+<p>Bonne Journée</p>
+</div>

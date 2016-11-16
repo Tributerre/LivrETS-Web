@@ -1,1 +1,7 @@
-﻿article transfered to tributerre
+﻿<div>
+<p>Bonjour {0}</p>
+<br>
+<p>Juste pour informer que <b>article transfered to tributerre</b></p>
+<br/>
+<p>Bonne Journée</p>
+</div>
