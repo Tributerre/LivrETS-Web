@@ -69,6 +69,8 @@ namespace LivrETS.Models
         [Required]
         public bool ManagedByFair { get; set; }
 
+        //public string ApplicationUser_Id { get; set; }
+
         [NotMapped]
         public bool Sold => MarkedSoldOn != StartDate;
 

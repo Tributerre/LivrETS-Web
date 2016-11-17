@@ -97,6 +97,7 @@ namespace LivrETS.Controllers
             if (ModelState.IsValid)
             {
                 Article newArticle = null;
+                var now = DateTime.Now;
                 var uploadsPath = Server.MapPath(UPLOADS_PATH);
 
                 switch (model.Type)
@@ -106,7 +107,8 @@ namespace LivrETS.Controllers
                         {
                             Course = course,
                             Title = model.Title,
-                            ISBN = model.ISBN
+                            ISBN = model.ISBN,
+                            DeletedAt = now
                         };
                         break;
 
@@ -116,7 +118,8 @@ namespace LivrETS.Controllers
                             Course = course,
                             Title = model.Title,
                             SubTitle = "Sample Subtitle",  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
-                            BarCode = model.ISBN
+                            BarCode = model.ISBN,
+                            DeletedAt = now
                         };
                         break;
 
@@ -125,12 +128,12 @@ namespace LivrETS.Controllers
                         {
                             Title = model.Title,
                             Model = model.CalculatorModel,
-                            Course = course
+                            Course = course,
+                            DeletedAt = now
                         };
                         break;
                 }
-
-                var now = DateTime.Now;
+                
                 Offer offer = new Offer()
                 {
                     StartDate = now,
@@ -287,12 +290,31 @@ namespace LivrETS.Controllers
         [HttpDelete]
         public ActionResult DeleteOffer(string[] offerIds)
         {
-            if (offerIds == null)
-                return Json(new { status = false, message = "no data source" }, contentType: "application/json");
+            bool status = Repository.DeleteOffer(offerIds);
+            string message = null;
 
-            Repository.DeleteOffer(offerIds);
+            if (!status)
+                message = "Erreur de suppression";
 
-            return Json(new { status = true, message = "data delete" }, contentType: "application/json");
+            return Json(new {
+                status = status,
+                message = message
+            }, contentType: "application/json");
+        }
+
+        public ActionResult EnableOffer(string[] offerIds)
+        {
+            bool status = Repository.DeleteOffer(offerIds);
+            string message = null;
+
+            if (!status)
+                message = "Erreur de suppression";
+
+            return Json(new
+            {
+                status = status,
+                message = message
+            }, contentType: "application/json");
         }
 
         public JsonResult AddImage(HttpPostedFileBase image)
@@ -319,7 +341,8 @@ namespace LivrETS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Conflict);
             }
 
-            Repository.AddNewCourse(acronym, title: "Sample Title");  // FIXME: Temporary. Eventually, it must be handled correctly
+            // FIXME: Temporary. Eventually, it must be handled correctly
+            Repository.AddNewCourse(acronym, title: "Sample Title");  
             var recentlyAddedCourse = Repository.GetCourseByAcronym(acronym);
             return Json(new
             {
@@ -329,11 +352,32 @@ namespace LivrETS.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConcludeSell(string[] offerIds=null)
+        public ActionResult ActivateArticle(string[] offerIds)
         {
+            bool status = Repository.ActivateArticle(offerIds);
+            string message = null;
+
+            if (!status) message = "Une erreur est survenue.";
+
             return Json(new
             {
-               status = Repository.ConcludeSell(offerIds)
+                status = status,
+                message = message
+            }, contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult ConcludeSell(string[] offerIds)
+        {
+            bool status = Repository.ConcludeSell(offerIds);
+            string message = null;
+
+            if (!status) message = "Une erreur est survenue.";
+
+            return Json(new
+            {
+                status = status,
+                message = message
             }, contentType: "application/json");
         }
 

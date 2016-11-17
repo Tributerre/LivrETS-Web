@@ -101,15 +101,15 @@ $(document).ready(function () {
     $('table tbody').on("click", ".btn-sale", function () {
         var $btn = $(this);
         var offerId = $btn.data("offer-id");
+        var fairId = $(".fairId").text();
 
         $.ajax({
             method: "POST",
-            url: "/Offer/ConcludeSell",
+            url: "/Fair/ConcludeSell",
             dataType: "json",
             data: {
-                fairId: $(".fairId").text(),
+                fairId: fairId,
                 offerIds: [offerId]
-                
             },
             success: function (data) {
                 if (status == "0") {
@@ -121,8 +121,6 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                $("#error-message").text("Une erreur est survenue lors de la suppression de la foire.");
-                $("#errors").show("slow");
             }
         });
     });

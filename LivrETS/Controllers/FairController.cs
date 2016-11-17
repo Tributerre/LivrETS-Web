@@ -161,11 +161,9 @@ namespace LivrETS.Controllers
             if (fair == null)
                 fair = Repository.GetNextFair();
 
-            bool result = Fair.CheckStatusFair(fair, listAllUsers);
-
             return Json(new
             {
-                status = result
+                status = Fair.CheckStatusFair(fair, listAllUsers)
             },contentType: "application/json"
             );
         }
@@ -229,10 +227,10 @@ namespace LivrETS.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConcludeSell(ICollection<string> ids)
+        public ActionResult ConcludeSell(ICollection<string> ids, string fairId)
         {
             bool noMatchExists = false;
-            var fair = Repository.GetCurrentFair();
+            var fair = Repository.GetFairById(fairId);
             var seller = Repository.GetUserBy(Id: User.Identity.GetUserId());
             var sale = new Sale()
             {
@@ -268,15 +266,16 @@ namespace LivrETS.Controllers
                 {
                     Offer = offer
                 });
+                //ApplicationUser user = offer.;
+
+                NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, Repository.GetAllUsers().ToList())
+                );
             }
 
             seller.Sales.Add(sale);
             fair.Sales.Add(sale);
             Repository.Update();
-
-            NotificationManager.getInstance().sendNotification(
-                new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, Repository.GetAllUsers().ToList())
-                );
 
             return Json(new { }, contentType: "application/json");
         }
