@@ -165,7 +165,9 @@ namespace LivrETS.Controllers
         {
             var currentFair = Repository.GetFairById(id);
 
-            return Json(new { currentFair.Offers }, contentType: "application/json");
+            return Json(new {
+                currentFair.Offers
+            }, contentType: "application/json");
         }
 
         // POST: /Admin/ListOffers

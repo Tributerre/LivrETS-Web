@@ -272,6 +272,43 @@ namespace LivrETS.Repositories
             _db.SaveChanges();
         }
 
+        /*public ApplicationUser GetUserByOffer(string Id)
+        {
+            SqlConnection con = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;" +
+                "Initial Catalog=aspnet-LivrETS-20160629111902;Integrated Security=True");
+
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+            cmd.CommandText = "SELECT * " +
+                                    "FROM Offers o " +
+                                    "WHERE o.Id = o. AND o.Fair_Id = f.Id) AS articles, " +
+                                "(SELECT COUNT(o.Id) " +
+                                    "FROM Offers o " +
+                                    "WHERE o.MarkedSoldOn <> o.StartDate AND o.Fair_Id = f.Id) AS articlesSold " +
+                                "FROM Fairs f " +
+                                "ORDER BY f.StartDate ASC";
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            con.Open();
+            reader = cmd.ExecuteReader();
+
+            List<Object> DataList = new List<object>();
+            while (reader.Read())
+            {
+                DataList.Add(new
+                {
+                    year = reader["Trimester"] + "-" + reader["StartYear"],
+                    articles = reader["articles"],
+                    articles_sold = reader["articlesSold"]
+                });
+
+            }
+            con.Close();
+
+            return DataList;
+            return null;
+        }*/
+
         /// <summary>
         /// Gets all the offers 
         /// 
@@ -352,7 +389,7 @@ namespace LivrETS.Repositories
                                   select offer);
         }
 
-        public void DeleteOffer(string[] Ids)
+        public bool DeleteOffer(string[] Ids)
         {
             try
             {
@@ -374,12 +411,15 @@ namespace LivrETS.Repositories
                 }
 
                 _db.SaveChanges();
+
+                return true;
+
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            
+            return false;
         }
 
         public int CountArticle(string category = null)
@@ -468,20 +508,33 @@ namespace LivrETS.Repositories
             for (int i = 0; i < offerIds.Length; i++)
             {
                 Offer offer = this.GetOfferBy(offerIds[i]);
-                /*var sale = new Sale()
-                {
-                    Date = DateTime.Now
-                };*/
-                offer.MarkedSoldOn = DateTime.Now;
-                //offer.Article.MarkAsSold();
-                /*sale.SaleItems.Add(new SaleItem()
-                {
-                    Offer = offer
-                });*/
-                //this.AttachToContext(offer);
+                if (offer == null)
+                    return false;
+                
+                this.AttachToContext(offer);
+                offer.Article.MarkAsSold();
+                offer.MarkedSoldOn = DateTime.Now;               
             }
 
-            _db.SaveChanges();
+            this.Update();
+
+            return true;
+        }
+
+
+        public bool ActivateArticle(string[] offerIds)
+        {
+            for (int i = 0; i < offerIds.Length; i++)
+            {
+                Offer offer = this.GetOfferBy(offerIds[i]);
+                if (offer == null)
+                    return false;
+                
+                this.AttachToContext(offer);
+                offer.Article.DeletedAt = DateTime.Now;               
+            }
+
+            this.Update();
 
             return true;
         }

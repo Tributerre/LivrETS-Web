@@ -17,7 +17,8 @@ namespace LivrETS.Models
         [MaxLength(256)]
         public string Title { get; set; }
 
-        //public DateTime DeletedAt { get; set; }
+        [Required]
+        public DateTime DeletedAt { get; set; }
 
         /*[Required]
         [MaxLength(256)]
