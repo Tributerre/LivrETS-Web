@@ -41,8 +41,8 @@
                             </th>
                             <th>Title</th>
                             <th>Prix</th>
-                            <th>Vendu</th>
-                            <th>Foire</th>
+                            <th>Type</th>
+                            <th>Cours</th>
                             <th>Date de poste</th>
                             <th>Actions</th>
                         </tr>
@@ -52,6 +52,34 @@
             </div>
         </div>
     </div>
+
+
+<!-- Modal ModalDelOffer -->
+<div class="modal fade" id="ModalDelOffer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ModalDelOfferLabel">Confirmation de vente</h4>
+            </div>
+            <div class="modal-body">
+                <p>Votre article est-il effectivement vendu?</p>
+                <p>Notez bien que, si vous validez votre produit comme vendu vous ne serez plus en 
+                mesure de reverser l'action </p>
+                <p class="text-danger hide">Une erreur est survenue. Veillez recharger la page et si l'erreur persiste
+                contactez nos services</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-success" data-offerId="0" id="btn-confirm-del-offer">
+                    <i class="fa fa-spinner fa-pulse fa-fw hide"></i>
+                    <span class="sr-only">Loading...</span>
+                    Confirmer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>

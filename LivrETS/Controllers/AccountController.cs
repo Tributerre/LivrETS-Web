@@ -385,17 +385,9 @@ namespace LivrETS.Controllers
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
 
-            if (user == null)
-            {
-                return Json(new
-                {
-                    status = false,
-                    message = "Aucun utilisateur trouve"
-                },
-                contentType: "application/json");
-            }
-
-            return Json(new { user.Offers }, contentType: "application/json");
+            return Json(new {
+                Offers = user.Offers.Where(offer => offer.ManagedByFair == false)
+            }, contentType: "application/json");
         }
 
         

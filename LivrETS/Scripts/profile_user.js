@@ -2,7 +2,7 @@
     $('[data-toggle="popover"]').popover();
 
     //load table offers
-    $('table').DataTable({
+    var tableOffer = $('table').DataTable({
         processing: true,
         ajax: {       
             url: "/Account/GetOffersByUser",
@@ -35,43 +35,34 @@
             {
                 class: "text-center",
                 data: function (val) {
-                    if (val.Sold){
-                        return "Vendu";
-                    } else {
-                        return "Non vendu";
-                    }
+                    return val.Article.TypeName
                         
                 }
             },
             {
                 class: "text-center",
                 data: function (val) {
-                    if (val.ManagedByFair) {
-                        return "Oui";
-                    } else {
-                        return "Non";
-                    }
+                    return val.Article.Course.Acronym
                 }
             },
             {
                 data: function (val) {
                     return new Date(parseInt(val.StartDate.replace('/Date(', ''))).toDateString();
                 },
-                class: "col-md-2 text-center"
+                class: "col-md-1 text-center"
             },
             {
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
                     var sold = "";
-                    var nosold = "hide";
                     if (val.Sold == true) {
-                        nosold = "";
                         sold = "hide"
                     }
                     return "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
+                        "data-toggle='modal' data-target='#ModalDelOffer'"+
                         "data-status='1' id='sale'>vendu</a>" +
-                        "<a class='btn btn-sm btn-danger btn-sale " + nosold + "' data-offer-id='" + val.Id + "' " +
+                        "<a class='btn btn-sm btn-danger btn-sale hide'  data-offer-id='" + val.Id + "' " +
                         "data-status='0' id='nosale'>non vendu</a>"+
                     "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer hide' data-offer-id='" + val.Id + "'>" +
                             "<span class='glyphicon glyphicon-edit'></span></a> " +
@@ -85,15 +76,22 @@
 
     });
 
-    // Select single fair event.
-    /*$('table tbody').on("click", ".btn-edit-offer", function () {
-        
-    });*/
-
-    // sale fair event.
+    //sale confirmation
     $('table tbody').on("click", ".btn-sale", function () {
         var $btn = $(this);
         var offerId = $btn.data("offer-id");
+        $("#btn-confirm-del-offer").attr("data-offerid", offerId);
+    });
+    //event sale offer
+    $("#btn-confirm-del-offer").on("click", function () {
+        var $btn = $(this);
+        var offerId = $btn.data("offerid");
+        var $modal = $('#ModalDelOffer');
+        $txtError = $modal.find(".text-danger");
+        $loading = $modal.find(".fa-spinner");
+
+        $modal.hide();
+        $loading.show();
 
         $.ajax({
             method: "POST",
@@ -103,17 +101,18 @@
                 offerIds: [offerId]
             },
             success: function (data) {
-                if (status == "0") {
-                    $("#sale").removeClass("hide")
-                    $("#nosale").addClass("hide")
+                if (data.status = "true") {
+                    tableOffer.ajax.reload();
+                    $modal.modal('hide');
+                    $loading.hide();
                 } else {
-                    $("#nosale").removeClass("hide")
-                    $("#sale").addClass("hide")
+                    $txtError.show();
+                    $loading.hide();
                 }
+               
             },
             error: function () {
-                $("#error-message").text("Une erreur est survenue lors de la suppression de la foire.");
-                $("#errors").show("slow");
+                $txtError.show();
             }
         });
     });
@@ -171,6 +170,7 @@
     $('table tbody').on("click", ".btn-delete-offer", function () {
         var $me = $(this);
         var offerId = $me.data("offer-id");
+        
         var $message = $("#request-message");
 
         $me.prop("disabled", true);

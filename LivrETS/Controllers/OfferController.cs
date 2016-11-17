@@ -331,12 +331,9 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ConcludeSell(string[] offerIds=null)
         {
-
-            Repository.ConcludeSell(offerIds);
-
             return Json(new
             {
-               status = "true"
+               status = Repository.ConcludeSell(offerIds)
             }, contentType: "application/json");
         }
 
