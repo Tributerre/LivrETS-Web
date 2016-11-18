@@ -390,6 +390,12 @@ namespace LivrETS.Repositories
                                   select offer);
         }
 
+        /// <summary>
+        /// Delete offer 
+        /// </summary>
+        /// <param name="offerIds">
+        /// Offer Id array
+        /// </param>
         public bool DeleteOffer(string[] Ids)
         {
             try
@@ -421,6 +427,27 @@ namespace LivrETS.Repositories
                 Console.WriteLine(ex.Message);
             }
             return false;
+        }
+
+        /// <summary>
+        /// Disable offer 
+        /// </summary>
+        /// <param name="offerIds">Offer Id array</param>
+        public bool DisableOffer(string[] offerIds)
+        {
+            for (int i = 0; i < offerIds.Length; i++)
+            {
+                Offer offer = this.GetOfferBy(offerIds[i]);
+                if (offer == null)
+                    return false;
+
+                this.AttachToContext(offer);
+                offer.Article.DeletedAt = DateTime.Now;
+            }
+
+            this.Update();
+
+            return true;
         }
 
         public int CountArticle(string category = null)
@@ -515,24 +542,6 @@ namespace LivrETS.Repositories
                 this.AttachToContext(offer);
                 offer.Article.MarkAsSold();
                 offer.MarkedSoldOn = DateTime.Now;               
-            }
-
-            this.Update();
-
-            return true;
-        }
-
-
-        public bool ActivateArticle(string[] offerIds)
-        {
-            for (int i = 0; i < offerIds.Length; i++)
-            {
-                Offer offer = this.GetOfferBy(offerIds[i]);
-                if (offer == null)
-                    return false;
-                
-                this.AttachToContext(offer);
-                offer.Article.DeletedAt = DateTime.Now;               
             }
 
             this.Update();
