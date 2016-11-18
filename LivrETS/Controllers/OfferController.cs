@@ -285,33 +285,24 @@ namespace LivrETS.Controllers
 
         #region AJAX
 
-        // DELETE: /Offer/DeleteOffer
-        // Deletes one or more offers.
-        [HttpDelete]
-        public ActionResult DeleteOffer(string[] offerIds)
+        /// <summary>
+        /// Delete offer
+        /// </summary>
+        /// <param name="offerIds">Offer Id array</param>
+        /// <param name="type">Define the choice between Disable and delete offer</param>
+        [HttpPost]
+        public ActionResult DeleteOffer(string[] offerIds, bool type = false)
         {
-            bool status = Repository.DeleteOffer(offerIds);
+            bool status = false;
             string message = null;
+
+            status = (type)?Repository.DeleteOffer(offerIds):
+                            Repository.DisableOffer(offerIds);
 
             if (!status)
                 message = "Erreur de suppression";
 
             return Json(new {
-                status = status,
-                message = message
-            }, contentType: "application/json");
-        }
-
-        public ActionResult EnableOffer(string[] offerIds)
-        {
-            bool status = Repository.DeleteOffer(offerIds);
-            string message = null;
-
-            if (!status)
-                message = "Erreur de suppression";
-
-            return Json(new
-            {
                 status = status,
                 message = message
             }, contentType: "application/json");
@@ -348,21 +339,6 @@ namespace LivrETS.Controllers
             {
                 courseId = recentlyAddedCourse.Id,
                 acronym = recentlyAddedCourse.Acronym
-            }, contentType: "application/json");
-        }
-
-        [HttpPost]
-        public ActionResult ActivateArticle(string[] offerIds)
-        {
-            bool status = Repository.ActivateArticle(offerIds);
-            string message = null;
-
-            if (!status) message = "Une erreur est survenue.";
-
-            return Json(new
-            {
-                status = status,
-                message = message
             }, contentType: "application/json");
         }
 

@@ -155,7 +155,7 @@
         });
         
         $.ajax({
-            method: "DELETE",
+            method: "POST",
             contentType: "application/json",
             url: "/Offer/DeleteOffer",
             dataType: "json",
@@ -194,7 +194,7 @@
         $.ajax({
             method: "POST",
             contentType: "application/json",
-            url: "/Offer/ActivateArticle",
+            url: "/Offer/DeleteOffer",
             dataType: "json",
             data: JSON.stringify({
                 offerIds: offerId
