@@ -136,6 +136,7 @@
     $('table tbody').on("click", ".btn-del-offer", function () {
         var $btn = $(this);
         var offerId = $btn.data("offer-id");
+
         $("#btn-confirm-del-offer").attr("data-offerid", offerId);
     });
 
@@ -191,7 +192,7 @@
         $txtError.text("").addClass("hide");
 
         $.ajax({
-            method: "DELETE",
+            method: "POST",
             contentType: "application/json",
             url: "/Offer/ActivateArticle",
             dataType: "json",
@@ -209,7 +210,7 @@
                 }
                 $me.prop("disabled", false);
             },
-            error: function () {
+            error: function (data) {
                 $txtError.text(data.message).removeClass("hide");
                 $loading.addClass("hide");
                 $me.prop("disabled", false);

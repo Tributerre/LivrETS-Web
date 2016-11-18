@@ -317,8 +317,8 @@ namespace LivrETS.Repositories
         public IEnumerable<Offer> GetAllOffers()
         {
             return (from offer in _db.Offers
-                                  orderby offer.StartDate descending
-                                  select offer).ToList();
+                    orderby offer.StartDate descending
+                    select offer).ToList();
         }
 
         /// <summary>
@@ -334,8 +334,9 @@ namespace LivrETS.Repositories
             string itemSearch = null, string sortOrder = null)
         {
             List<Offer> offers = (from offer in _db.Offers
-                                    where offer.Price >= priceMin && offer.Price <= priceMax
-                                    orderby offer.StartDate descending
+                                    where offer.Price >= priceMin && offer.Price <= priceMax &&
+                                    DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0
+                                  orderby offer.StartDate descending
                                     select offer).ToList();
             IEnumerable<Offer> results = offers;
 

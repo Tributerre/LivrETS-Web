@@ -97,7 +97,6 @@ namespace LivrETS.Controllers
             if (ModelState.IsValid)
             {
                 Article newArticle = null;
-                var now = DateTime.Now;
                 var uploadsPath = Server.MapPath(UPLOADS_PATH);
 
                 switch (model.Type)
@@ -108,7 +107,7 @@ namespace LivrETS.Controllers
                             Course = course,
                             Title = model.Title,
                             ISBN = model.ISBN,
-                            DeletedAt = now
+                            //DeletedAt = DateTime.Now
                         };
                         break;
 
@@ -119,7 +118,7 @@ namespace LivrETS.Controllers
                             Title = model.Title,
                             SubTitle = "Sample Subtitle",  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
                             BarCode = model.ISBN,
-                            DeletedAt = now
+                            //DeletedAt = DateTime.Now
                         };
                         break;
 
@@ -129,11 +128,12 @@ namespace LivrETS.Controllers
                             Title = model.Title,
                             Model = model.CalculatorModel,
                             Course = course,
-                            DeletedAt = now
+                            //DeletedAt = DateTime.Now
                         };
                         break;
                 }
-                
+
+                var now = DateTime.Now;
                 Offer offer = new Offer()
                 {
                     StartDate = now,

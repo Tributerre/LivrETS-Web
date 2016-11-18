@@ -386,7 +386,10 @@ namespace LivrETS.Controllers
             var user = UserManager.FindById(User.Identity.GetUserId());
 
             return Json(new {
-                Offers = user.Offers.Where(offer => offer.ManagedByFair == false)
+                Offers = user.Offers.Where(
+                    offer => offer.ManagedByFair == false &&
+                    DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0
+                    )
             }, contentType: "application/json");
         }
 
