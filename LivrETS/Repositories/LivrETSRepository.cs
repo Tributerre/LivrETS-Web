@@ -156,10 +156,17 @@ namespace LivrETS.Repositories
         /// Gets all the fairs 
         /// </summary>
         /// <returns>The Fairs or null if not found.</returns>
-        public List<Fair> GetAllFairs()
+        public IEnumerable<Object> GetAllFairs()
         {
             return (from fair in _db.Fairs
-                    select fair).ToList();
+                        select new
+                        {
+                            Id = fair.Id,
+                            Trimester = fair.Trimester,
+                            NbOffer = fair.Offers.Count(),
+                            StartDate = fair.StartDate,
+                            EndDate = fair.EndDate
+                        });
         }
 
         public Fair GetFairById(string id)
@@ -240,7 +247,19 @@ namespace LivrETS.Repositories
 
 
         /*************************** Offer ***************************/
+        public ApplicationUser GetOfferByUser(Offer offer)
+        {
+            List<ApplicationUser> listUsers = this.GetAllUsers().ToList();
 
+            foreach(ApplicationUser user in listUsers)
+            {
+                if(user.Offers.Contains(offer)){
+                    return user;
+                }
+            }
+
+            return null;
+        }
         public void DeleteFair(string id)
         {
             Fair fair = this.GetFairById(id);
@@ -562,7 +581,7 @@ namespace LivrETS.Repositories
             if (userLivrETSID != null && andArticleLivrETSID != null)
             {
                 var user = GetUserBy(LivrETSID: userLivrETSID);
-                offerToReturn = user.Offers.FirstOrDefault(offer => offer.Article.LivrETSID == andArticleLivrETSID);
+                offerToReturn = user.Offers.Where(offer => offer.Article.LivrETSID == andArticleLivrETSID).FirstOrDefault();
             }
 
             return offerToReturn;

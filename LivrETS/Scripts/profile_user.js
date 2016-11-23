@@ -11,6 +11,7 @@
     });
 
     //load table offers
+    $.fn.dataTable.ext.errMode = 'throw';
     var table = $('table').DataTable({
         processing: true,
         ajax: {       
@@ -125,7 +126,9 @@
                
             },
             error: function () {
-                $txtError.show();
+                $txtError.text("Erreur").removeClass("hide");
+                $loading.addClass("hide");
+                $btn.prop("disabled", false);
             }
         });
     });
@@ -133,9 +136,10 @@
 
     /************************************* delete offer *************************************/
     //delete confirmation
+    var idTmp = null;
     $('table tbody').on("click", ".btn-del-offer", function () {
         var $btn = $(this);
-        var offerId = $btn.data("offer-id");
+        idTmp = $btn.data("offer-id");
 
         $("#btn-confirm-del-offer").attr("data-offerid", offerId);
     });
@@ -197,7 +201,9 @@
             url: "/Offer/DeleteOffer",
             dataType: "json",
             data: JSON.stringify({
-                offerIds: offerId
+                offerIds: idTmp,
+                type: true
+
             }),
             success: function (data) { 
                 if (data.status == 1) {
