@@ -17,6 +17,9 @@ namespace LivrETS.Models
         [MaxLength(256)]
         public string Title { get; set; }
 
+        [Required]
+        public DateTime DeletedAt { get; set; }
+
         /*[Required]
         [MaxLength(256)]
         public string SubTitle { get; set; }*/
@@ -69,6 +72,7 @@ namespace LivrETS.Models
         public Article()
         {
             FairState = ArticleFairState.UNKNOWN;
+            DeletedAt = DateTime.Now;
             Id = Guid.NewGuid();
         }
 
@@ -96,7 +100,6 @@ namespace LivrETS.Models
             return this;
         }
     }
-
 
     public enum ArticleFairState
     {

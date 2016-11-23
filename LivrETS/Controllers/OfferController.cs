@@ -106,7 +106,8 @@ namespace LivrETS.Controllers
                         {
                             Course = course,
                             Title = model.Title,
-                            ISBN = model.ISBN
+                            ISBN = model.ISBN,
+                            //DeletedAt = DateTime.Now
                         };
                         break;
 
@@ -116,7 +117,8 @@ namespace LivrETS.Controllers
                             Course = course,
                             Title = model.Title,
                             SubTitle = "Sample Subtitle",  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
-                            BarCode = model.ISBN
+                            BarCode = model.ISBN,
+                            //DeletedAt = DateTime.Now
                         };
                         break;
 
@@ -125,7 +127,8 @@ namespace LivrETS.Controllers
                         {
                             Title = model.Title,
                             Model = model.CalculatorModel,
-                            Course = course
+                            Course = course,
+                            //DeletedAt = DateTime.Now
                         };
                         break;
                 }
@@ -282,17 +285,27 @@ namespace LivrETS.Controllers
 
         #region AJAX
 
-        // DELETE: /Offer/DeleteOffer
-        // Deletes one or more offers.
-        [HttpDelete]
-        public ActionResult DeleteOffer(string[] offerIds)
+        /// <summary>
+        /// Delete offer
+        /// </summary>
+        /// <param name="offerIds">Offer Id array</param>
+        /// <param name="type">Define the choice between Disable and delete offer</param>
+        [HttpPost]
+        public ActionResult DeleteOffer(string[] offerIds, bool type = false)
         {
-            if (offerIds == null)
-                return Json(new { status = false, message = "no data source" }, contentType: "application/json");
+            bool status = false;
+            string message = null;
 
-            Repository.DeleteOffer(offerIds);
+            status = (type)?Repository.DeleteOffer(offerIds):
+                            Repository.DisableOffer(offerIds);
 
-            return Json(new { status = true, message = "data delete" }, contentType: "application/json");
+            if (!status)
+                message = "Erreur de suppression";
+
+            return Json(new {
+                status = status,
+                message = message
+            }, contentType: "application/json");
         }
 
         public JsonResult AddImage(HttpPostedFileBase image)
@@ -319,7 +332,8 @@ namespace LivrETS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Conflict);
             }
 
-            Repository.AddNewCourse(acronym, title: "Sample Title");  // FIXME: Temporary. Eventually, it must be handled correctly
+            // FIXME: Temporary. Eventually, it must be handled correctly
+            Repository.AddNewCourse(acronym, title: "Sample Title");  
             var recentlyAddedCourse = Repository.GetCourseByAcronym(acronym);
             return Json(new
             {
@@ -329,14 +343,17 @@ namespace LivrETS.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConcludeSell(string[] offerIds=null)
+        public ActionResult ConcludeSell(string[] offerIds)
         {
+            bool status = Repository.ConcludeSell(offerIds);
+            string message = null;
 
-            Repository.ConcludeSell(offerIds);
+            if (!status) message = "Une erreur est survenue.";
 
             return Json(new
             {
-               status = "true"
+                status = status,
+                message = message
             }, contentType: "application/json");
         }
 

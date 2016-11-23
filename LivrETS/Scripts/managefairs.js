@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
     //init managefairs table width datables plugins
-    
+    //$.fn.dataTable.ext.errMode = 'throw';
     $('table').DataTable({
         processing: true,
         ajax: {
@@ -38,10 +38,6 @@ $(document).ready(function () {
                 }
             },
             {
-                data: "LivrETSID",
-                visible: false
-            },
-            {
                 data: function (val) {
                     return val.Trimester;
                 }
@@ -58,9 +54,7 @@ $(document).ready(function () {
             },
             {
                 data: function (val) {
-                    var status = ["PREFAIR", "PICKING", "SALE", "RETRIEVAL", "POSTFAIR"];
-
-                    return status[val.Phase];
+                    return val.NbOffer;
                 }
             },
             {
