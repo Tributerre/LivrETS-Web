@@ -43,29 +43,31 @@ namespace LivrETS.Repositories
         /// Gets all the roles 
         /// </summary>
         /// <returns>The roles or null if not found.</returns>
-        public Object GetAllRoles()
+        public IQueryable<Object> GetAllRoles()
         {
-            var List = (from role in _db.Roles
-                    select role).ToList();
-
-            return List;
+            return (from role in _db.Roles
+                    select role);
         }
 
         /// <summary>
         /// Gets all the users 
         /// </summary>
         /// <returns>The Users or null if not found.</returns>
-        public Object GetAllUsersForAdmin()
+        public IQueryable<Object> GetAllUsersForAdmin()
         {
-            var list = (from user in _db.Users
-                            orderby user.FirstName descending
-                            select new
-                            {
-                                user = user,
-                                role = user.Roles.Join(_db.Roles, userRole => userRole.RoleId, 
-                                role => role.Id, (userRole, role) => role).Select(role => role.Name)
-                            }).ToList();
-            return list;
+            return (from user in _db.Users
+                        orderby user.FirstName descending
+                        select new
+                        {
+                            Id = user.Id,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            SubscribedAt = user.SubscribedAt,
+                            BarCode = user.BarCode,
+                            Role = user.Roles.Join(_db.Roles, userRole => userRole.RoleId,
+                                                    role => role.Id, (userRole, role) => role)
+                                                    .Select(role => role.Name)
+                        });
         }
 
         public IQueryable<ApplicationUser> GetAllUsers()
@@ -156,7 +158,7 @@ namespace LivrETS.Repositories
         /// Gets all the fairs 
         /// </summary>
         /// <returns>The Fairs or null if not found.</returns>
-        public IEnumerable<Object> GetAllFairs()
+        public IQueryable<Object> GetAllFairs()
         {
             return (from fair in _db.Fairs
                         select new

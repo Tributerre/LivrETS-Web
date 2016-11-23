@@ -140,9 +140,9 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ListUsers()
         {
-            var listRoles = Repository.GetAllRoles();
+            var listRoles = Repository.GetAllRoles().ToList();
             
-            var listUser = Repository.GetAllUsersForAdmin();
+            var listUser = Repository.GetAllUsersForAdmin().ToList();
 
             return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, 
                 contentType: "application/json");
