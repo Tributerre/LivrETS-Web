@@ -30,13 +30,34 @@
         .amount-input {
             background-color: white !important;
         }
+        div.group-error {
+            margin: 10% 0;
+            min-height: 200px;
+        }
+
+        div.group-error h1 {
+            font-size: 70px;
+        }
     </style>
 }
 <div class="content">
     <div class="container">
         @if (Model.Fair == null || Model.Fair.Phase != FairPhase.SALE)
         {
-            <h2>Vous n'&ecirc;tes pas pr&eacute;sentement en p&eacute;riode de vente =(</h2>
+            <div class="row">
+                <div class="group-error text-center">
+                    <div class="col-md-12">
+                        <h1 class="primary-color">Désolé!</h1>
+                    </div>
+                    <div class="col-md-12">
+                        <h2>
+                            Vous n'&ecirc;tes pas pr&eacute;sentement en
+                            p&eacute;riode de <span class="primary-color">vente</span>  =(
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
         }
         else
         {
