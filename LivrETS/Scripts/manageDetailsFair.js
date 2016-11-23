@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 $(document).ready(function () {
 
-    $('#tab-offers').DataTable({
+    var table = $('#tab-offers').DataTable({
         processing: true,
         ajax: {
             url: "/Admin/ListOffersFair",
@@ -88,8 +88,9 @@ $(document).ready(function () {
                     }
 
                     return "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
+                        "data-toggle='modal' data-target='#ModalSaleOffer'"+
                         "data-status='1' id='sale'>vendu</a>" +
-                        "<a class='btn btn-sm btn-danger btn-sale " + nosold + "' data-offer-id='" + val.Id + "' " +
+                        "<a class='btn btn-sm btn-danger btn-sale " + nosold + " hide' data-offer-id='" + val.Id + "' " +
                         "data-status='0' id='nosale'>non vendu</a>";
                 }
             }
@@ -97,32 +98,53 @@ $(document).ready(function () {
 
     });
 
-    // sale fair event.
+    /************************************* sale offer *************************************/
+    //sale confirmation
     $('table tbody').on("click", ".btn-sale", function () {
         var $btn = $(this);
         var offerId = $btn.data("offer-id");
+        $("#btn-confirm-sale-offer").attr("data-offer-id", offerId);
+    });
+    // sale fair event.
+    $("#btn-confirm-sale-offer").on("click", function () {
+        var $btn = $(this);
+        var offerId = $btn.data("offer-id");
+        var fairId = $(".fairId").text();
+        var $modal = $('#ModalSaleOffer');
+
+        $txtError = $modal.find(".text-danger");
+        $loading = $modal.find(".fa-spinner");
+        $loading.removeClass("hide");
+        $txtError.text("").addClass("hide");
+        $btn.prop("disabled", true);
 
         $.ajax({
             method: "POST",
-            url: "/Offer/ConcludeSell",
+            url: "/Fair/ConcludeSell",
             dataType: "json",
             data: {
-                fairId: $(".fairId").text(),
+                fairId: fairId,
                 offerIds: [offerId]
-                
             },
-            success: function (data) {
-                if (status == "0") {
+            success: function (data) { 
+                if (data.status == 1){
                     $("#sale").removeClass("hide")
                     $("#nosale").addClass("hide")
+                    $btn.prop("disabled", false);
+                    $modal.modal('hide');
+                    $loading.addClass("hide");
+                    table.ajax.reload();
+                    
                 } else {
-                    $("#nosale").removeClass("hide")
-                    $("#sale").addClass("hide")
+                    $txtError.text(data.message).removeClass("hide");
+                    $loading.addClass("hide");
+                    $btn.prop("disabled", false);
                 }
             },
             error: function () {
-                $("#error-message").text("Une erreur est survenue lors de la suppression de la foire.");
-                $("#errors").show("slow");
+                $txtError.text("Erreur").removeClass("hide");
+                $loading.addClass("hide");
+                $btn.prop("disabled", false);
             }
         });
     });

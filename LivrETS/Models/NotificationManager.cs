@@ -47,13 +47,22 @@ namespace LivrETS.Models
                     ConfigurationManager.AppSettings["EMAIL_PWD"]);
                 SmtpServer.EnableSsl = true;
                 
-
-                foreach (ApplicationUser user in notification.listUser)
+                if(notification.user == null)
                 {
+                    foreach (ApplicationUser user in notification.listUser)
+                    {
+                        mail.Body = string.Format(notification.template, user.FirstName);
+                        mail.To.Add(user.Email);
+                        SmtpServer.Send(mail);
+                    }
+                }else
+                {
+                    ApplicationUser user = notification.user;
                     mail.Body = string.Format(notification.template, user.FirstName);
                     mail.To.Add(user.Email);
                     SmtpServer.Send(mail);
                 }
+                
                 
                 return true;
             }

@@ -161,11 +161,9 @@ namespace LivrETS.Controllers
             if (fair == null)
                 fair = Repository.GetNextFair();
 
-            bool result = Fair.CheckStatusFair(fair, listAllUsers);
-
             return Json(new
             {
-                status = result
+                status = Fair.CheckStatusFair(fair, listAllUsers)
             },contentType: "application/json"
             );
         }
@@ -229,25 +227,31 @@ namespace LivrETS.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConcludeSell(ICollection<string> ids)
+        public ActionResult ConcludeSell(ICollection<string> offerIds, string fairId)
         {
-            bool noMatchExists = false;
-            var fair = Repository.GetCurrentFair();
+            bool noMatchExists = false, status=false;
+            string message = null;
+            var fair = Repository.GetFairById(fairId);
             var seller = Repository.GetUserBy(Id: User.Identity.GetUserId());
             var sale = new Sale()
             {
                 Date = DateTime.Now,
+                Seller = seller,
+                Fair = fair
             };
 
-            var helpers = ids.ToList().ConvertAll(new Converter<string, TRIBSTD01Helper>(id =>
+            var helpers = offerIds.ToList().ConvertAll(new Converter<string, TRIBSTD01Helper>(id =>
             {
                 TRIBSTD01Helper helper = null;
+                Offer offer = Repository.GetOfferBy(id);
                 try
                 {
-                    helper = new TRIBSTD01Helper(id);
+                    string LivrETSID = fair.LivrETSID + "-" + seller.LivrETSID + "-" + offer.Article.LivrETSID;
+                    helper = new TRIBSTD01Helper(LivrETSID);
                 }
                 catch (RegexNoMatchException ex)
                 {
+                    message = ex.Message;
                     noMatchExists = true;
                     return null;
                 }
@@ -256,29 +260,41 @@ namespace LivrETS.Controllers
             }));
 
             if (noMatchExists)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return Json(new
+                {
+                    status = status,
+                    message = message
+                }, contentType: "application/json");
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            foreach (var helper in helpers)
+            //foreach (var helper in helpers)
+            foreach(string id in offerIds)
             {
-                var offer = helper.GetOffer();
-                Repository.AttachToContext(offer);
-                offer.Article.MarkAsSold();
-                offer.MarkedSoldOn = DateTime.Now;
+                //var currentOffer = helper.GetOffer();
+                Offer currentOffer = Repository.GetOfferBy(id);
+                Repository.AttachToContext(currentOffer);
+                currentOffer.Article.MarkAsSold();
+                currentOffer.MarkedSoldOn = DateTime.Now;
                 sale.SaleItems.Add(new SaleItem()
                 {
-                    Offer = offer
+                    Offer = currentOffer
                 });
+
+                ApplicationUser user = Repository.GetOfferByUser(currentOffer);
+
+                NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, Repository.GetAllUsers().ToList())
+                );
             }
 
             seller.Sales.Add(sale);
             fair.Sales.Add(sale);
             Repository.Update();
+            status = true;
 
-            NotificationManager.getInstance().sendNotification(
-                new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, Repository.GetAllUsers().ToList())
-                );
-
-            return Json(new { }, contentType: "application/json");
+            return Json(new {
+                status = status
+            }, contentType: "application/json");
         }
 
         [HttpPost]

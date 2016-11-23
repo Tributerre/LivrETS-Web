@@ -58,7 +58,6 @@ namespace LivrETS.Models
 
         [Required]
         public string Condition { get; set; }
-        [Required/*, System.ComponentModel.DefaultValue(false)*/]
         public DateTime MarkedSoldOn { get; set; }
         public virtual ICollection<OfferImage> Images { get; set; }
 
@@ -69,6 +68,8 @@ namespace LivrETS.Models
 
         [Required]
         public bool ManagedByFair { get; set; }
+
+        //public string ApplicationUser_Id { get; set; }
 
         [NotMapped]
         public bool Sold => MarkedSoldOn != StartDate;

@@ -33,7 +33,7 @@ $(document).ready(function () {
             dataSrc: function (val) {
                 currentId = val.current_id;
                 listRoles = val.listRoles;
-
+                console.log(val)
                 return val.listUser
             }
         },
@@ -42,47 +42,46 @@ $(document).ready(function () {
                 class: "check-row text-center",
                 sortable: false,
                 data: function (val) {
-                    if (currentId != val.user.Id) {
-                        return "<input type='checkbox' name='check-select-user-for-action' data-user-id='" + val.user.Id + "'>";
+                    if (currentId != val.Id) {
+                        return "<input type='checkbox' name='check-select-user-for-action' data-user-id='" + val.Id + "'>";
                     } else {
                         return "<input type='checkbox' style='visibility: hidden;'>";
                     }
                 }
             },
             {
-                data: "user.LivrETSID",
-                visible: false
+                data: "FirstName"
             },
             {
-                data: "user.FirstName"
+                data: "LastName"
             },
             {
-                data: "user.LastName"
-            },
-            {
-                data: "user.BarCode"
+                data: "BarCode"
             },
             {
                 data: function (val) {
-                    return new Date(parseInt(val.user.SubscribedAt.replace('/Date(', ''))).toDateString();
+                    return new Date(parseInt(val.SubscribedAt.replace('/Date(', ''))).toDateString();
                 }
             },
             {
                 data: function (val) {
                     var html = "<div class='dropdown'>"
-                    html += "<button data-toggle='dropdown' id='" + val.user.Id + "' class='btn btn-default btn-sm dropdown-toggle' aria-haspopup='true' " +
-                            "aria-expanded='true'>" + val.role + " <span class='caret'></span></button>";
-                    html += "<ul class='dropdown-menu' aria-labelledby='" + val.user.Id + "'>";
+                    html += "<button data-toggle='dropdown' id='" + val.Id + "' "+
+                        "class='btn btn-default btn-sm dropdown-toggle' aria-haspopup='true' " +
+                            "aria-expanded='true'>" + val.Role + " <span class='caret'></span></button>";
+                    html += "<ul class='dropdown-menu' aria-labelledby='" + val.Id + "'>";
 
                     for (var i = 0; i < listRoles.length; i++) {
-                        if (val.role != listRoles[i].Name) {
-                            html += "<li><a href='#' data-rolename='" + listRoles[i].Name + "' data-userid='" + val.user.Id + "' class='elt-role'>" +
+                        if (val.Role != listRoles[i].Name) {
+                            html += "<li><a href='#' data-rolename='" + listRoles[i].Name + "' "+
+                                "data-userid='" + val.Id + "' class='elt-role'>" +
                                 listRoles[i].Name + "</a></li>";
                         }
                         
                     }
 
-                    html += "<li><input type='radio' id='User' name='UserRole' value='User'><label for='User'>User</label></li>";
+                    html += "<li><input type='radio' id='User' name='UserRole' value='User'>"+
+                        "<label for='User'>User</label></li>";
                     html += "</ul>";
                     html += "</div>";
                     return html;
@@ -91,8 +90,9 @@ $(document).ready(function () {
             {
                 sortable: false,
                 data: function (val) {
-                    if (currentId != val.user.Id) {
-                        return "<button type='button' class='btn-delete-user btn btn-danger btn-xs' data-user-id='" + val.user.Id + "'>" +
+                    if (currentId != val.Id) {
+                        return "<button type='button' class='btn-delete-user btn btn-danger btn-xs'"+
+                                "data-user-id='" + val.Id + "'>" +
                             "<i class='glyphicon glyphicon-trash'></i>" +
                             "</button>"
                     } else {

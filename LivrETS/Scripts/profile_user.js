@@ -1,8 +1,18 @@
 ﻿$(function () {
     $('[data-toggle="popover"]').popover();
 
+    // Select all offer's checkbox for action
+    $("input[type='checkbox'][name='check-select-all']").on("change", function () {
+        var checked = $(this).is(":checked");
+
+        $("tbody>tr>td")
+            .find("input[type='checkbox'][name='check-select-offer']")
+            .prop("checked", checked);
+    });
+
     //load table offers
-    $('table').DataTable({
+    $.fn.dataTable.ext.errMode = 'throw';
+    var table = $('table').DataTable({
         processing: true,
         ajax: {       
             url: "/Account/GetOffersByUser",
@@ -35,48 +45,39 @@
             {
                 class: "text-center",
                 data: function (val) {
-                    if (val.Sold){
-                        return "Vendu";
-                    } else {
-                        return "Non vendu";
-                    }
-                        
+                    return val.Article.TypeName
                 }
             },
             {
                 class: "text-center",
                 data: function (val) {
-                    if (val.ManagedByFair) {
-                        return "Oui";
-                    } else {
-                        return "Non";
-                    }
+                    return val.Article.Course.Acronym
                 }
             },
             {
                 data: function (val) {
                     return new Date(parseInt(val.StartDate.replace('/Date(', ''))).toDateString();
                 },
-                class: "col-md-2 text-center"
+                class: "col-md-1 text-center"
             },
             {
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
                     var sold = "";
-                    var nosold = "hide";
                     if (val.Sold == true) {
-                        nosold = "";
                         sold = "hide"
                     }
                     return "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
+                        "data-toggle='modal' data-target='#ModalSaleOffer'" +
                         "data-status='1' id='sale'>vendu</a>" +
-                        "<a class='btn btn-sm btn-danger btn-sale " + nosold + "' data-offer-id='" + val.Id + "' " +
+                        "<a class='btn btn-sm btn-danger btn-sale hide'  data-offer-id='" + val.Id + "' " +
                         "data-status='0' id='nosale'>non vendu</a>"+
-                    "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer hide' data-offer-id='" + val.Id + "'>" +
-                            "<span class='glyphicon glyphicon-edit'></span></a> " +
-                            "<a href='#' class='btn btn-sm btn-danger btn-delete-offer' data-offer-id='" + val.Id + "'>"+
-                            "<span class='glyphicon glyphicon-trash'></span></a> "
+                        "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer hide' data-offer-id='" + val.Id + "'>" +
+                        "<span class='glyphicon glyphicon-edit'></span></a> " +
+                        "<a href='#' class='btn btn-sm btn-danger btn-del-offer' data-offer-id='" + val.Id + "'"+
+                        "data-toggle='modal' data-target='#ModalDelOffer'>" +
+                        "<span class='glyphicon glyphicon-trash'></span></a> "
                         
 
                 }
@@ -85,15 +86,24 @@
 
     });
 
-    // Select single fair event.
-    /*$('table tbody').on("click", ".btn-edit-offer", function () {
-        
-    });*/
-
-    // sale fair event.
+    /************************************* sale offer *************************************/
+    //sale confirmation
     $('table tbody').on("click", ".btn-sale", function () {
         var $btn = $(this);
         var offerId = $btn.data("offer-id");
+        $("#btn-confirm-sale-offer").attr("data-offerid", offerId);
+    });
+    //event sale offer
+    $("#btn-confirm-sale-offer").on("click", function () {
+        var $btn = $(this);
+        var offerId = $btn.data("offerid");
+        var $modal = $('#ModalSaleOffer');
+
+        $txtError = $modal.find(".text-danger");
+        $loading = $modal.find(".fa-spinner");
+        $loading.removeClass("hide");
+        $txtError.text("").addClass("hide");
+        $btn.prop("disabled", true);
 
         $.ajax({
             method: "POST",
@@ -102,29 +112,36 @@
             data: {
                 offerIds: [offerId]
             },
-            success: function (data) {
-                if (status == "0") {
-                    $("#sale").removeClass("hide")
-                    $("#nosale").addClass("hide")
-                } else {
-                    $("#nosale").removeClass("hide")
-                    $("#sale").addClass("hide")
+            success: function (data) { console.log(data)
+                if (data.status == 1) {
+                    table.ajax.reload();
+                    $modal.modal('hide');
+                    $loading.addClass("hide");
+                    $btn.prop("disabled", false);
+                } else { 
+                    $txtError.text(data.message).removeClass("hide");
+                    $loading.addClass("hide");
+                    $btn.prop("disabled", false);
                 }
+               
             },
             error: function () {
-                $("#error-message").text("Une erreur est survenue lors de la suppression de la foire.");
-                $("#errors").show("slow");
+                $txtError.text("Erreur").removeClass("hide");
+                $loading.addClass("hide");
+                $btn.prop("disabled", false);
             }
         });
     });
+    /************************************* end sale offer *************************************/
 
-    // Select all offer's checkbox for action
-    $("input[type='checkbox'][name='check-select-all']").on("change", function () { 
-        var checked = $(this).is(":checked");
+    /************************************* delete offer *************************************/
+    //delete confirmation
+    var idTmp = null;
+    $('table tbody').on("click", ".btn-del-offer", function () {
+        var $btn = $(this);
+        idTmp = $btn.data("offer-id");
 
-        $("tbody>tr>td")
-            .find("input[type='checkbox'][name='check-select-offer']")
-            .prop("checked", checked);
+        $("#btn-confirm-del-offer").attr("data-offerid", offerId);
     });
 
     // Delete selected event            
@@ -142,7 +159,7 @@
         });
         
         $.ajax({
-            method: "DELETE",
+            method: "POST",
             contentType: "application/json",
             url: "/Offer/DeleteOffer",
             dataType: "json",
@@ -158,7 +175,6 @@
                     });
                 } else 
                     $message.addClass("text-danger").text("La suppression ne s'est pas faite").show();
-                
             },
             error: function () {
                 $message.addClass("text-danger").text("La suppression ne s<est pas faite").show();
@@ -168,34 +184,45 @@
     });
 
     // Delete each offer.
-    $('table tbody').on("click", ".btn-delete-offer", function () {
+    $('#btn-confirm-del-offer').on("click", function () {
         var $me = $(this);
-        var offerId = $me.data("offer-id");
-        var $message = $("#request-message");
+        var offerId = $me.data("offerid");   
+        var $modal = $('#ModalDelOffer');
+        var $txtError = $modal.find(".text-danger");
+        var $loading = $modal.find(".fa-spinner");
 
         $me.prop("disabled", true);
-        $message.text("").hide();
+        $loading.removeClass("hide");
+        $txtError.text("").addClass("hide");
 
         $.ajax({
-            method: "DELETE",
+            method: "POST",
             contentType: "application/json",
             url: "/Offer/DeleteOffer",
             dataType: "json",
             data: JSON.stringify({
-                offerIds: offerId
+                offerIds: idTmp,
+                type: true
+
             }),
-            success: function (data) {
-                if (data.status == true) 
-                    $me.parents("tr").remove(); 
-                else
-                    $message.addClass("text-danger").text("La suppression ne s<est pas faite").show();
+            success: function (data) { 
+                if (data.status == 1) {
+                    table.ajax.reload();
+                    $modal.modal('hide');
+                    $loading.addClass("hide");
+                } else {
+                    $txtError.text(data.message).removeClass("hide");
+                    $loading.addClass("hide");
+                }
                 $me.prop("disabled", false);
             },
-            error: function () {
-                $message.addClass("text-danger").text("La suppression ne s<est pas faite").show();
+            error: function (data) {
+                $txtError.text(data.message).removeClass("hide");
+                $loading.addClass("hide");
                 $me.prop("disabled", false);
             }
         });
     });
+    /************************************* end delete offer *************************************/
 
 })

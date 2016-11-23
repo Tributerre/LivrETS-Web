@@ -43,29 +43,31 @@ namespace LivrETS.Repositories
         /// Gets all the roles 
         /// </summary>
         /// <returns>The roles or null if not found.</returns>
-        public Object GetAllRoles()
+        public IQueryable<Object> GetAllRoles()
         {
-            var List = (from role in _db.Roles
-                    select role).ToList();
-
-            return List;
+            return (from role in _db.Roles
+                    select role);
         }
 
         /// <summary>
         /// Gets all the users 
         /// </summary>
         /// <returns>The Users or null if not found.</returns>
-        public Object GetAllUsersForAdmin()
+        public IQueryable<Object> GetAllUsersForAdmin()
         {
-            var list = (from user in _db.Users
-                            orderby user.FirstName descending
-                            select new
-                            {
-                                user = user,
-                                role = user.Roles.Join(_db.Roles, userRole => userRole.RoleId, 
-                                role => role.Id, (userRole, role) => role).Select(role => role.Name)
-                            }).ToList();
-            return list;
+            return (from user in _db.Users
+                        orderby user.FirstName descending
+                        select new
+                        {
+                            Id = user.Id,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            SubscribedAt = user.SubscribedAt,
+                            BarCode = user.BarCode,
+                            Role = user.Roles.Join(_db.Roles, userRole => userRole.RoleId,
+                                                    role => role.Id, (userRole, role) => role)
+                                                    .Select(role => role.Name)
+                        });
         }
 
         public IQueryable<ApplicationUser> GetAllUsers()
@@ -156,10 +158,17 @@ namespace LivrETS.Repositories
         /// Gets all the fairs 
         /// </summary>
         /// <returns>The Fairs or null if not found.</returns>
-        public List<Fair> GetAllFairs()
+        public IQueryable<Object> GetAllFairs()
         {
             return (from fair in _db.Fairs
-                    select fair).ToList();
+                        select new
+                        {
+                            Id = fair.Id,
+                            Trimester = fair.Trimester,
+                            NbOffer = fair.Offers.Count(),
+                            StartDate = fair.StartDate,
+                            EndDate = fair.EndDate
+                        });
         }
 
         public Fair GetFairById(string id)
@@ -240,7 +249,19 @@ namespace LivrETS.Repositories
 
 
         /*************************** Offer ***************************/
+        public ApplicationUser GetOfferByUser(Offer offer)
+        {
+            List<ApplicationUser> listUsers = this.GetAllUsers().ToList();
 
+            foreach(ApplicationUser user in listUsers)
+            {
+                if(user.Offers.Contains(offer)){
+                    return user;
+                }
+            }
+
+            return null;
+        }
         public void DeleteFair(string id)
         {
             Fair fair = this.GetFairById(id);
@@ -272,6 +293,43 @@ namespace LivrETS.Repositories
             _db.SaveChanges();
         }
 
+        /*public ApplicationUser GetUserByOffer(string Id)
+        {
+            SqlConnection con = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;" +
+                "Initial Catalog=aspnet-LivrETS-20160629111902;Integrated Security=True");
+
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+            cmd.CommandText = "SELECT * " +
+                                    "FROM Offers o " +
+                                    "WHERE o.Id = o. AND o.Fair_Id = f.Id) AS articles, " +
+                                "(SELECT COUNT(o.Id) " +
+                                    "FROM Offers o " +
+                                    "WHERE o.MarkedSoldOn <> o.StartDate AND o.Fair_Id = f.Id) AS articlesSold " +
+                                "FROM Fairs f " +
+                                "ORDER BY f.StartDate ASC";
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+            con.Open();
+            reader = cmd.ExecuteReader();
+
+            List<Object> DataList = new List<object>();
+            while (reader.Read())
+            {
+                DataList.Add(new
+                {
+                    year = reader["Trimester"] + "-" + reader["StartYear"],
+                    articles = reader["articles"],
+                    articles_sold = reader["articlesSold"]
+                });
+
+            }
+            con.Close();
+
+            return DataList;
+            return null;
+        }*/
+
         /// <summary>
         /// Gets all the offers 
         /// 
@@ -280,8 +338,8 @@ namespace LivrETS.Repositories
         public IEnumerable<Offer> GetAllOffers()
         {
             return (from offer in _db.Offers
-                                  orderby offer.StartDate descending
-                                  select offer).ToList();
+                    orderby offer.StartDate descending
+                    select offer).ToList();
         }
 
         /// <summary>
@@ -297,8 +355,9 @@ namespace LivrETS.Repositories
             string itemSearch = null, string sortOrder = null)
         {
             List<Offer> offers = (from offer in _db.Offers
-                                    where offer.Price >= priceMin && offer.Price <= priceMax
-                                    orderby offer.StartDate descending
+                                    where offer.Price >= priceMin && offer.Price <= priceMax &&
+                                    DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0
+                                  orderby offer.StartDate descending
                                     select offer).ToList();
             IEnumerable<Offer> results = offers;
 
@@ -352,7 +411,13 @@ namespace LivrETS.Repositories
                                   select offer);
         }
 
-        public void DeleteOffer(string[] Ids)
+        /// <summary>
+        /// Delete offer 
+        /// </summary>
+        /// <param name="offerIds">
+        /// Offer Id array
+        /// </param>
+        public bool DeleteOffer(string[] Ids)
         {
             try
             {
@@ -374,12 +439,36 @@ namespace LivrETS.Repositories
                 }
 
                 _db.SaveChanges();
+
+                return true;
+
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            
+            return false;
+        }
+
+        /// <summary>
+        /// Disable offer 
+        /// </summary>
+        /// <param name="offerIds">Offer Id array</param>
+        public bool DisableOffer(string[] offerIds)
+        {
+            for (int i = 0; i < offerIds.Length; i++)
+            {
+                Offer offer = this.GetOfferBy(offerIds[i]);
+                if (offer == null)
+                    return false;
+
+                this.AttachToContext(offer);
+                offer.Article.DeletedAt = DateTime.Now;
+            }
+
+            this.Update();
+
+            return true;
         }
 
         public int CountArticle(string category = null)
@@ -468,20 +557,15 @@ namespace LivrETS.Repositories
             for (int i = 0; i < offerIds.Length; i++)
             {
                 Offer offer = this.GetOfferBy(offerIds[i]);
-                /*var sale = new Sale()
-                {
-                    Date = DateTime.Now
-                };*/
-                offer.MarkedSoldOn = DateTime.Now;
-                //offer.Article.MarkAsSold();
-                /*sale.SaleItems.Add(new SaleItem()
-                {
-                    Offer = offer
-                });*/
-                //this.AttachToContext(offer);
+                if (offer == null)
+                    return false;
+                
+                this.AttachToContext(offer);
+                offer.Article.MarkAsSold();
+                offer.MarkedSoldOn = DateTime.Now;               
             }
 
-            _db.SaveChanges();
+            this.Update();
 
             return true;
         }
@@ -499,7 +583,7 @@ namespace LivrETS.Repositories
             if (userLivrETSID != null && andArticleLivrETSID != null)
             {
                 var user = GetUserBy(LivrETSID: userLivrETSID);
-                offerToReturn = user.Offers.FirstOrDefault(offer => offer.Article.LivrETSID == andArticleLivrETSID);
+                offerToReturn = user.Offers.Where(offer => offer.Article.LivrETSID == andArticleLivrETSID).FirstOrDefault();
             }
 
             return offerToReturn;
