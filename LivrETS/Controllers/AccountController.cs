@@ -387,7 +387,7 @@ namespace LivrETS.Controllers
 
             return Json(new {
                 Offers = user.Offers.Where(
-                    offer => offer.ManagedByFair == false &&
+                     offer => offer.ManagedByFair == false &&
                     DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0
                     )
             }, contentType: "application/json");

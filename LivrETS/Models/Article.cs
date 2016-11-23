@@ -101,7 +101,6 @@ namespace LivrETS.Models
         }
     }
 
-
     public enum ArticleFairState
     {
         UNKNOWN = 0,
