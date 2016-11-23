@@ -65,7 +65,7 @@ namespace LivrETS.Controllers
             ViewBag.currentFair = (currentFair != null)?currentFair:nextFair;
             ViewData["whatFair"] = currentFair;
             ViewData["users"] = Repository.GetAllUsers().Count();
-            ViewData["fairs"] = Repository.GetAllFairs().Count();
+            ViewData["fairs"] = Repository.GetAllFairs().ToList().Count();
             ViewData["offers"] = Repository.GetAllOffers().Count();
             ViewData["saleitems"] = Repository.GetAllOffers().
                 Where(offer => offer.MarkedSoldOn != offer.StartDate).Count();
@@ -153,7 +153,7 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ListFairs()
         {
-            var listFairs = Repository.GetAllFairs();
+            var listFairs = Repository.GetAllFairs().ToList();
 
             return Json(new { listFairs }, contentType: "application/json");
         }
