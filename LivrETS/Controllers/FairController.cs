@@ -153,10 +153,6 @@ namespace LivrETS.Controllers
         {
             List<ApplicationUser> listAllUsers = Repository.GetAllUsers().ToList();
 
-            /*List<ApplicationUser> listAllUsers = new List<ApplicationUser>();
-            ApplicationUser user = Repository.GetUserBy(null, User.Identity.GetUserId());
-            listAllUsers.Add(user);*/
-
             Fair fair = Repository.GetCurrentFair();
             if (fair == null)
                 fair = Repository.GetNextFair();
@@ -227,11 +223,16 @@ namespace LivrETS.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConcludeSell(ICollection<string> offerIds, string fairId)
+        public ActionResult ConcludeSell(ICollection<string> offerIds, string fairId = null)
         {
             bool noMatchExists = false, status=false;
             string message = null;
-            var fair = Repository.GetFairById(fairId);
+            Fair fair = null;
+
+            if(fairId != null)
+                fair = Repository.GetFairById(fairId);
+            fair = Repository.GetCurrentFair();
+
             var seller = Repository.GetUserBy(Id: User.Identity.GetUserId());
             var sale = new Sale()
             {
@@ -437,6 +438,67 @@ namespace LivrETS.Controllers
 
             return Json(new { RemainingOffersCount = numberOfOffersRemaining }, 
                 contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult GetTotalSalesAmountByArticleType(string fairId)
+        {
+            Fair fair = Repository.GetFairById(fairId);
+            FairStatistics fairStats = new FairStatistics(fair);
+            Object[] data_1 = new Object[3];
+            int i = 0;
+            List<Object> dataList_1 = fairStats.GetTotalSalesAmountByArticleType();
+
+            foreach (Object obj_1 in dataList_1)
+            {
+                data_1[i] = obj_1;
+                i++;
+            }
+                
+            
+
+            return Json(data_1, contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult GetTotalSalesByArticleType(string fairId)
+        {
+            Fair fair = Repository.GetFairById(fairId);
+            FairStatistics fairStats = new FairStatistics(fair);
+            Object[] data_2 = new Object[3];
+            int j = 0;
+
+            List<Object> dataList_2 = fairStats.GetTotalSalesByArticleType();
+
+            foreach (Object obj_2 in dataList_2)
+            {
+                data_2[j] = obj_2;
+                j++;
+            }
+
+            return Json(data_2, contentType: "application/json");
+        }
+
+        public ActionResult GetTotalSalesBySeller(string fairId)
+        {
+            Fair fair = Repository.GetFairById(fairId);
+            FairStatistics fairStats = new FairStatistics(fair);
+
+            List<Object> dataList_2 = fairStats.GetTotalSalesBySeller();
+
+
+            return Json(dataList_2, contentType: "application/json");
+        }
+
+        public ActionResult GetTotalSalesByCourse(string fairId)
+        {
+            Fair fair = Repository.GetFairById(fairId);
+            FairStatistics fairStats = new FairStatistics(fair);
+
+            List<Object> dataList_2 = fairStats.GetTotalSalesByCourse();
+
+
+            return Json(dataList_2, contentType: "application/json");
         }
 
         #endregion

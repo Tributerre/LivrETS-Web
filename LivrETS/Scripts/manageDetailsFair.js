@@ -98,6 +98,76 @@ $(document).ready(function () {
 
     });
 
+    //table 1
+    $('#sold-by-type-article').DataTable({
+        processing: true,
+        ajax: {
+            url: "/Fair/GetTotalSalesByCourse",
+            data: { fairId: $("span.fairId").text() },
+            type: "POST",
+            dataType: "JSON",
+            dataSrc: function (val) { 
+                return val
+            }
+        },
+        columns: [
+            {
+                data: function (val) {
+                    return val.Acronym;
+                }
+            },
+            {
+                class: "text-center",
+                data: function (val) {
+                    return val.Ventes;
+                }
+            },
+            {
+                class: "text-center",
+                data: function (val) {
+                    return val.Total
+
+                }
+            }
+        ]
+
+    });
+
+    //table 2
+    $('#sold-by-user').DataTable({
+        processing: true,
+        ajax: {
+            url: "/Fair/GetTotalSalesBySeller",
+            data: { fairId: $("span.fairId").text() },
+            type: "POST",
+            dataType: "JSON",
+            dataSrc: function (val) {
+                return val
+            }
+        },
+        columns: [
+            {
+                data: function (val) {
+                    return val.FirstName+ " "+ val.LastName;
+                }
+            },
+            {
+                class: "text-center",
+                data: function (val) {
+                    return val.Ventes;
+                }
+            },
+            {
+                class: "text-center",
+                data: function (val) {
+                    return val.Total
+
+                }
+            }
+        ]
+
+    });
+
     /************************************* sale offer *************************************/
     //sale confirmation
     $('table tbody').on("click", ".btn-sale", function () {
@@ -281,6 +351,73 @@ $(document).ready(function () {
             }
         });
     });
+
+    //flot element 
+    $(".chart-one").load(
+        $.ajax({
+            method: "POST",
+            contentType: "application/json",
+            url: "/Fair/GetTotalSalesAmountByArticleType",
+            data:JSON.stringify({fairId:$(".fairId").text()}),
+            dataType: "json",
+            success: function (data) {
+                var plotObj = $.plot($("#total_sale_article_type"), data, {
+                    series: {
+                        pie: {
+                            show: true
+                        }
+                    },
+                    grid: {
+                        hoverable: true
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                        content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                        shifts: {
+                            x: 20,
+                            y: 0
+                        },
+                        defaultTheme: false
+                    }
+                });
+            }
+        })
+    );
+
+    //flot element 
+    $(".chart-one").load(
+        $.ajax({
+            method: "POST",
+            contentType: "application/json",
+            url: "/Fair/GetTotalSalesByArticleType",
+            data: JSON.stringify({ fairId: $(".fairId").text() }),
+            dataType: "json",
+            success: function (data) {
+                var plotObj = $.plot($("#nb_sale_article_type"), data, {
+                    series: {
+                        pie: {
+                            show: true
+                        }
+                    },
+                    grid: {
+                        hoverable: true
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                        content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                        shifts: {
+                            x: 20,
+                            y: 0
+                        },
+                        defaultTheme: false
+                    }
+                });
+            }
+        })
+    );
+
+        
+
 });
 
 /**
