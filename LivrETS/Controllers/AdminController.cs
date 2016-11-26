@@ -94,6 +94,10 @@ namespace LivrETS.Controllers
                 throw new HttpException(404, "Page not Found");
 
             Fair fair = Repository.GetFairById(id);
+            FairStatistics statics = new FairStatistics(fair);
+            ViewData["TotalSalesAmount"] = statics.GetTotalSalesAmount();
+            ViewData["TotalSales"] = statics.GetTotalSales();
+            ViewData["TotalAmountForLateRetreivals"] = statics.GetTotalAmountForLateRetreivals();
 
             return View(fair);
         }

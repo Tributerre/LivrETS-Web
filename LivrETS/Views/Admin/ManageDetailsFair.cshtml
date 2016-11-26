@@ -6,6 +6,7 @@
 }
 @section Styles {
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+<link rel="stylesheet" href="@Url.Content("~/Content/template_admin/morris.css")">
     <style>
         h1 {
             margin-bottom: 50px;
@@ -25,7 +26,18 @@
         .tab-stats tr td:first-child{
             font-weight: bold;
             width: 50%;
-            background-color: gray;
+            background-color: #aeaeae;
+        }
+        #group-stats-2{
+            font-size: 1.5em;
+            margin-bottom:70px;
+        }
+
+        #bloc-stats-1{
+            margin-bottom: 30px;
+        }
+        #bloc-stats-1 .text-center td{
+            font-size: 1.5em;
         }
     </style>
 }
@@ -71,9 +83,10 @@
                                 <td>Nombre d'articles</td>
                                 <td>@Model.Offers.Count()</td>
                             </tr>
-                            <tr>
+                            <tr class="hide">
                                 <td>Articles vendus</td>
-                                <td>@Model.Offers.Where(offer => offer.Article.FairState == ArticleFairState.SOLD).ToList().Count()</td>
+                                <td>@Model.Offers.Where(offer => 
+                                        offer.MarkedSoldOn != offer.StartDate).ToList().Count()</td>
                             </tr>
                         </table>
                     </div>
@@ -81,30 +94,110 @@
                 </div>
                 
 
-                <div class="row" id="group-btn-action">
-                    <div class="pull-right" id="div-actions">
-                        
-                        <a href="/Offer/Create" class="btn btn-success btn-sm">
-                            Ajouter un article
-                        </a>
+                <div class="row">
+                    <h2 class="text-center">Statistiques</h2> <hr />
+                    <div class="col-md-12" id="group-stats-2">
+                        <div class="row" id="bloc-stats-1">
+                            <div class="col-md-4">
+                                <table>
+                                    <tr><td><b><u>Montant total des ventes</u></b></td></tr>
+                                    <tr class="text-center"><td>@ViewData["TotalSalesAmount"]</td></tr>
+                                </table>
+                            </div>
+
+                            <div class="col-md-4">
+                                <table>
+                                    <tr><td><b><u>Nombre de vente</u></b</td></tr>
+                                    <tr class="text-center"><td>@ViewData["TotalSales"]</td></tr>
+                                </table>
+                            </div>
+
+                            <div class="col-md-4">
+                                <table>
+                                    <tr><td><b><u>Montant total reçu pour les retards</u></b></td></tr>
+                                    <tr class="text-center"><td>@ViewData["TotalAmountForLateRetreivals"]</td></tr>
+                                </table>
+                            </div>
+                        <hr />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-green">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Total des ventes par type d'article</h3>
+                                    </div>
+                                    <div class="panel-body chart-one">
+                                        <div class="flot-chart">
+                                            <div class="flot-chart-content" id="total_sale_article_type"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                       
+                            </div>
+
+                            <div class="col-md-6">
+                                
+                                <div class="panel panel-green">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Nombre de ventes par type d'article</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="flot-chart">
+                                            <div class="flot-chart-content" id="nb_sale_article_type"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="row hide">
+                    <table class="table-stripped table-bordered table-hover display" cellspacing="0" 
+                           width="100%" id="tab-offers">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" name="check-select-all" />
+                                </th>
+                                <th>Title</th>
+                                <th>Prix</th>
+                                <th>Vendu</th>
+                                <th>Foire</th>
+                                <th>Date de poste</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
 
-                <table class="table-stripped table-bordered table-hover display" cellspacing="0" width="100%" id="tab-offers">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" name="check-select-all" />
-                            </th>
-                            <th>Title</th>
-                            <th>Prix</th>
-                            <th>Vendu</th>
-                            <th>Foire</th>
-                            <th>Date de poste</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                </table>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2><u>Total des ventes par cours</u></h2> <br />
+                        <table class="table-stripped table-bordered table-hover display" cellspacing="0"
+                               width="100%" id="sold-by-type-article">
+                            <thead>
+                                <tr>
+                                    <th>Sigle</th>
+                                    <th>Total des ventes</th>
+                                    <th>Nombre de vente</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h2><u>Total des ventes par vendeur</u></h2><br />
+                        <table class="table-stripped table-bordered table-hover display" cellspacing="0"
+                               width="100%" id="sold-by-user">
+                            <thead>
+                                <tr>
+                                    <th>Vendeur</th>
+                                    <th>Total des ventes</th>
+                                    <th>Nombre de vente</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -147,4 +240,11 @@
 @section Scripts {
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
     <script src="~/Scripts/manageDetailsFair.js"></script>
+    <!-- Flot Charts JavaScript -->
+    <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+    <script src="~/Scripts/template_admin/flot/jquery.flot.js"></script>
+    <script src="~/Scripts/template_admin/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="~/Scripts/template_admin/flot/jquery.flot.resize.js"></script>
+    <script src="~/Scripts/template_admin/flot/jquery.flot.pie.js"></script>
+    <script src="~/Scripts/template_admin/flot/flot-data.js"></script>
 }
