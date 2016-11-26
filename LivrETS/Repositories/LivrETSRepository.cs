@@ -119,37 +119,57 @@ namespace LivrETS.Repositories
 
         public List<Object> GetStatsFairs()
         {
-            SqlConnection con = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;"+
-                "Initial Catalog=aspnet-LivrETS-20160629111902;Integrated Security=True");
-            
-            SqlCommand cmd = new SqlCommand();
-            SqlDataReader reader;
-            cmd.CommandText = "SELECT "+
-                                "f.Trimester Trimester, YEAR(f.StartDate) StartYear, " +
-                                "(SELECT COUNT(o.Id) "+
-                                    "FROM Offers o "+
-                                    "WHERE o.MarkedSoldOn = o.StartDate AND o.Fair_Id = f.Id) AS articles, " +
-                                "(SELECT COUNT(o.Id) "+
-                                    "FROM Offers o "+
-                                    "WHERE o.MarkedSoldOn <> o.StartDate AND o.Fair_Id = f.Id) AS articlesSold " +
-                                "FROM Fairs f "+
-                                "ORDER BY f.StartDate ASC";
-            cmd.CommandType = CommandType.Text;
-            cmd.Connection = con;
-            con.Open();
-            reader = cmd.ExecuteReader();
-
+            SqlDataReader reader = null;
+            SqlConnection con = null;
             List<Object> DataList = new List<object>();
-            while (reader.Read()){
-                DataList.Add(new
-                                {
-                                    year = reader["Trimester"] +"-"+reader["StartYear"],
-                                    articles = reader["articles"],
-                                    articles_sold = reader["articlesSold"]
-                                });
+            try
+            {
+                con = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;"+
+                                            "Initial Catalog=aspnet-LivrETS-20160629111902;Integrated "+
+                                            "Security=True");
+            
+                SqlCommand cmd = new SqlCommand();
+                
+                cmd.CommandText = "SELECT "+
+                                    "f.Trimester Trimester, YEAR(f.StartDate) StartYear, " +
+                                    "(SELECT COUNT(o.Id) "+
+                                        "FROM Offers o "+
+                                        "WHERE o.MarkedSoldOn = o.StartDate AND o.Fair_Id = f.Id) AS articles, " +
+                                    "(SELECT COUNT(o.Id) "+
+                                        "FROM Offers o "+
+                                        "WHERE o.MarkedSoldOn <> o.StartDate AND o.Fair_Id = f.Id) AS articlesSold " +
+                                    "FROM Fairs f "+
+                                    "ORDER BY f.StartDate ASC";
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                con.Open();
+                reader = cmd.ExecuteReader();
+
+                
+                while (reader.Read()){
+                    DataList.Add(new
+                                    {
+                                        year = reader["Trimester"] +"-"+reader["StartYear"],
+                                        articles = reader["articles"],
+                                        articles_sold = reader["articlesSold"]
+                                    });
                     
+                }
             }
-            con.Close();
+            finally
+            {
+                // close reader
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+
+                // close connection
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
 
             return DataList;
         }
