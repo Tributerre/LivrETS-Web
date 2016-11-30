@@ -257,7 +257,6 @@ namespace LivrETS.Controllers
                     CourseNotes courseNote = (CourseNotes)cArticle;
                     courseNote.Course = course;
                     courseNote.Title = model.Title;
-                    // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
                     courseNote.SubTitle = "Sample Subtitle";
                     courseNote.BarCode = model.ISBN;
                     cOffer.Article = courseNote;
@@ -280,42 +279,11 @@ namespace LivrETS.Controllers
                 {
                     Console.WriteLine(ex.Message);
                 }
-
-                /*switch (model.Type)
-                {
-                    case Article.BOOK_CODE:                         
-                        Book book = (Book)cArticle;
-                        book.Course = course;
-                        book.Title = model.Title;
-                        book.ISBN = model.ISBN;
-                        cOffer.Article = book;
-                        break;
-
-                    case Article.COURSE_NOTES_CODE:
-                        CourseNotes courseNote = (CourseNotes)cArticle;
-                        courseNote.Course = course;
-                        courseNote.Title = model.Title;
-                        // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
-                        courseNote.SubTitle = "Sample Subtitle";  
-                        courseNote.BarCode = model.BarCode;
-                        cOffer.Article = courseNote;
-                        break;
-
-                    case Article.CALCULATOR_CODE:
-                        Calculator calculator = (Calculator)cArticle;
-                        calculator.Title = model.Title;
-                        calculator.Model = model.CalculatorModel;
-                        calculator.Course = course;
-                        cOffer.Article = calculator;
-                        break;
-                }*/
-
-                // FIXME: No elements for this in the view. Weird.
+                
                 cOffer.Price = model.Price;  
                 cOffer.Condition = model.Condition;
                 cOffer.ManagedByFair = false;
                 cOffer.Article = cArticle;
-                // FIXME: No elements for this in the view. Weird.
                 cOffer.Title = model.Title;  
 
                 if (model.ForNextFair)
