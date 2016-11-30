@@ -17,10 +17,12 @@
 *@
 @using LivrETS.ViewModels
 @using LivrETS.Models
+@using LivrETS.Helpers
 @model ArticleViewModel
 @{
-    ViewBag.Title = "Modifier votre article";
+    ViewBag.Title = "Modifier "+ Model.TypeModel;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<OfferImage> images = ViewBag.Images;
 }
 
 @section Styles {
@@ -30,27 +32,50 @@
             overflow: hidden;
         }
 
-            .fileUpload input.upload {
-                position: absolute;
-                top: 0;
-                right: 0;
-                margin: 0;
-                padding: 0;
-                font-size: 20px;
-                cursor: pointer;
-                opacity: 0;
-                filter: alpha(opacity=0);
-            }
+        .fileUpload input.upload {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+
+        .avatar-article{
+            width: 95%;
+            height: 100px;
+        }
+
+        .btn-del-img{
+            padding: 5px;
+            background-color: black;
+            color: white;
+            border-radius: 10px;
+            position: relative;
+            bottom: 110px;
+            left: 80%;
+        }
     </style>
 }
 
 <div class="container">
     <div class="row">
         <div class="page-header">
-            <h1>Vendre un article <small>Remplissez tous les champs</small></h1>
+            <h1>Modifier @Model.TypeModel</h1>
+            <div>
+                <a data-toggle="popover" title="Information"
+                   data-content="Vous ne pouvez pas modifier le type de votre article. Si
+                               tout de meme vous voulez le faire, vous devez en cr/er un nouveau">
+                    À savoir
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                </a>
+            </div>
         </div>
 
-        @using (Html.BeginForm("Create", "Offer", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("Edit", "Offer", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
         {
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.AntiForgeryToken()
@@ -60,34 +85,59 @@
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.ISBN, new { @class = "control-label" })
                 </div>
+                
             </div>
             <div class="row">
                 <div class="col-md-5">
-                    @Html.TextBoxFor(model => model.ISBN, new { @class = "form-control", id = "isbn-text-input" })
+                    <div id="txt-isbn">
+                        @Html.TextBoxFor(model => model.ISBN,
+                            new { @class = "form-control", id = "isbn-text-input" })
+                    </div>
                     <!-- dropdowns-enhancement.js -->
                     <div id="calculator-models-dropdown" class="btn-group" style="display: none;">
-                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Mod&egrave;le <span class="caret"></span></button>
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                            @Model.CalculatorModel <span class="caret"></span>
+                        </button>
                         <ul class="dropdown-menu">
-                            <li>@Html.RadioButtonFor(model => model.Model, nameof(CalculatorModel.VOYAGE200), 
-                               new { id = "radio-voyage200" })<label for="radio-voyage200">Voyage 200</label></li>
-                            <li>@Html.RadioButtonFor(model => model.Model, nameof(CalculatorModel.NSPIRE), 
-                               new { id = "radio-nspire" })<label for="radio-nspire">NSpire</label></li>
+                            <li>
+                                @Html.RadioButtonFor(model => model.TypeModel, CalculatorModel.VOYAGE200, 
+                                    new { id = "radio-voyage200" })
+                                <label for="radio-voyage200">Voyage 200</label>
+                            </li>
+                            <li>
+                                @Html.RadioButtonFor(model => model.TypeModel, CalculatorModel.NSPIRE, 
+                                    new { id = "radio-nspire" })
+                                <label for="radio-nspire">NSpire</label>
+                            </li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-1 text-left">
                     <!-- dropdowns-enhancement.js -->
-                    <div class="btn-group">
-                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Type <span class="caret"></span></button>
+                    <div class="btn-group hide">
+                        
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                            @Model.TypeModel <span class="caret"></span>
+                        </button>
                         <ul class="dropdown-menu">
-                            <li>@Html.RadioButtonFor(model => model.Type, Article.BOOK_CODE, 
-                               new { id = "Book", name = "Article" })<label for="Book">Livre</label></li>
-                            <li>@Html.RadioButtonFor(model => model.Type, Article.COURSE_NOTES_CODE, 
-                               new { id = "CourseNotes", name = "Article" })<label for="CourseNotes">Notes de cours</label></li>
-                            <li>@Html.RadioButtonFor(model => model.Type, Article.CALCULATOR_CODE, 
-                               new { id = "Calculator", name = "Article" })<label for="Calculator">Calculatrice</label></li>
+                            <li>
+                                @Html.RadioButtonFor(model => model.Type, Article.BOOK_CODE, 
+                                    new { id = "Book", name = "Article" })
+                                <label for="Book">Livre</label>
+                            </li>
+                            <li>
+                                @Html.RadioButtonFor(model => model.Type, Article.COURSE_NOTES_CODE, 
+                                    new { id = "CourseNotes", name = "Article" })
+                                <label for="CourseNotes">Notes de cours</label>
+                            </li>
+                            <li>
+                                @Html.RadioButtonFor(model => model.Type, Article.CALCULATOR_CODE, 
+                                    new { id = "Calculator", name = "Article" })
+                                <label for="Calculator">Calculatrice</label>
+                            </li>
                         </ul>
                     </div>
+
                 </div>
             </div>
             <div class="row">
@@ -118,12 +168,19 @@
                 <div class="col-md-1">
                     <!-- dropdowns-enhancement.js -->
                     <div class="btn-group">
-                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" id="btn-choice-class">Choisir... <span class="caret"></span></button>
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" id="btn-choice-class">
+                            @Model.Acronym
+                        <span class="caret"></span></button>
                         <ul id="courses-list" class="dropdown-menu">
-                            <li><input type="radio" id="not-applicable" name="Course" value="not-applicable" /><label for="not-applicable">Non Applicable</label></li>
+                            <li><input type="radio" id="not-applicable" name="Course" value="not-applicable" />
+                                <label for="not-applicable">Non Applicable</label>
+                            </li>
                             @foreach (Course course in Model.Courses)
                             {
-                                <li><input type="radio" id="@course.Id" name="Course" value="@course.Acronym" /><label for="@course.Id">@course.Acronym</label></li>
+                                <li>
+                                    <input type="radio" id="@course.Id" name="Course" value="@course.Acronym" />
+                                    <label for="@course.Id">@course.Acronym</label>
+                                </li>
                             }
                         </ul>
                     </div>
@@ -171,7 +228,8 @@
                     @Html.LabelFor(model => model.Price, new { @class = "control-label" })
                 </div>
                 <div class="col-md-7">
-                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", placeholder = "Ex: 12.99", ariaDescribedby = "basic-addon2" })
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control",
+                        placeholder = "Ex: 12.99", ariaDescribedby = "basic-addon2" })
                 </div>
                 <div class="col-md-12">
                     @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
@@ -187,13 +245,15 @@
                     @Html.LabelFor(model => model.Condition, new { @class = "control-label" })
                 </div>
                 <div class="col-md-7">
-                    @Html.TextAreaFor(model => model.Condition, new { @class = "form-control", placeholder = "Indiquez la condition dans laquelle est l'objet." })
+                    @Html.TextAreaFor(model => model.Condition, new { @class = "form-control",
+                        placeholder = "Indiquez la condition dans laquelle est l'objet." })
                 </div>
                 <div class="col-md-12">
                     @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
                 </div>
             </div>
         <!-- END Condition -->
+           
 
             <br />
 
@@ -216,6 +276,24 @@
                         </div>
                     </div>
                     <div class="col-md-8">
+                        <div class="row">
+                            @if (images != null)
+                            {
+                                <ul class="list-inline">
+                                    @foreach (OfferImage img in images)
+                                    {
+                                        <li>
+                                            @HomeHelpers.ImgArticleEditHelper(img, @Model.Title)
+                                            <a href="#" data-toggle='modal' data-target='#ModalConfirmDelImg'
+                                               class="btn-del-img" data-imgid="@img.Id">
+                                                <b>X</b>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                                
+                            }
+                        </div>
                         <div id="images-panel" class="panel panel-info">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
@@ -225,7 +303,8 @@
                                         <input id="imageupload" type="file" class="upload" />
                                     </div>
 
-                                    <div id="image-progress" class="progress pull-right" style="width: 15%; height: 10px; margin-top: 5px;" hidden>
+                                    <div id="image-progress" class="progress pull-right" style="width: 15%; 
+                                            height: 10px; margin-top: 5px;" hidden>
                                         <div class="progress-bar"
                                              role="progressbar"
                                              aria-valuemin="0"
@@ -246,12 +325,39 @@
         <!-- START Buttons -->
             <div class="row">
                 <div class="col-md-7">
-                    <button type="submit" class="btn btn-primary col-md-3">Terminer</button>
+                    <button type="submit" class="btn btn-primary col-md-3">Modifier</button>
                     <button type="button" class="btn btn-danger col-md-3 pull-right">Annuler</button>
                 </div>
             </div>
         <!-- END Buttons -->
         }
+    </div>
+</div>
+
+<!-- Modal delete avatar offre -->
+<div class="modal fade" id="ModalConfirmDelImg" tabindex="-1" role="dialog" aria-labelledby="ModalConfirmDelImgLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="ModalConfirmDelImgLabel">Confirmation de suppression</h4>
+            </div>
+            <div class="modal-body">
+                <p>Merci de confirmer la supression de l'image</p>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <p class="text-danger hide"></p>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-danger" data-imgid="0" id="btn-confirm-del-img">
+                    <i class="fa fa-spinner fa-pulse fa-fw hide"></i>
+                    <span class="sr-only">Loading...</span>Confirmer
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 

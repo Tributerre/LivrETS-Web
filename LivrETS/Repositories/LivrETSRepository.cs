@@ -32,10 +32,14 @@ namespace LivrETS.Repositories
     public class LivrETSRepository : IDisposable
     {
         private ApplicationDbContext _db;
+        private SqlConnection conn = null;
 
         public LivrETSRepository()
         {
             _db = new ApplicationDbContext();
+            conn = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;" +
+                                            "Initial Catalog=aspnet-LivrETS-20160629111902;Integrated " +
+                                            "Security=True");
         }
 
         /*************************** Users ***************************/
@@ -120,14 +124,9 @@ namespace LivrETS.Repositories
         public List<Object> GetStatsFairs()
         {
             SqlDataReader reader = null;
-            SqlConnection con = null;
             List<Object> DataList = new List<object>();
             try
             {
-                con = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;"+
-                                            "Initial Catalog=aspnet-LivrETS-20160629111902;Integrated "+
-                                            "Security=True");
-            
                 SqlCommand cmd = new SqlCommand();
                 
                 cmd.CommandText = "SELECT "+
@@ -141,8 +140,8 @@ namespace LivrETS.Repositories
                                     "FROM Fairs f "+
                                     "ORDER BY f.StartDate ASC";
                 cmd.CommandType = CommandType.Text;
-                cmd.Connection = con;
-                con.Open();
+                cmd.Connection = conn;
+                conn.Open();
                 reader = cmd.ExecuteReader();
 
                 
@@ -165,9 +164,9 @@ namespace LivrETS.Repositories
                 }
 
                 // close connection
-                if (con != null)
+                if (conn != null)
                 {
-                    con.Close();
+                    conn.Close();
                 }
             }
 
@@ -376,8 +375,9 @@ namespace LivrETS.Repositories
         {
             List<Offer> offers = (from offer in _db.Offers
                                     where offer.Price >= priceMin && offer.Price <= priceMax &&
-                                    DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0
-                                  orderby offer.StartDate descending
+                                    DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0 &&
+                                    !offer.ManagedByFair
+                                    orderby offer.StartDate descending
                                     select offer).ToList();
             IEnumerable<Offer> results = offers;
 
@@ -555,6 +555,56 @@ namespace LivrETS.Repositories
         }
 
         /// <summary>
+        /// Gets an article by one of its unique fields.
+        /// </summary>
+        /// <param name="Id">The Id of the article.</param>
+        /// <param name="LivrETSID">The LivrETS ID of the article.</param>
+        /// <returns>An Article or null if not found.</returns>
+        public string[] GetISBNByArticle(string articleId)
+        {
+            SqlDataReader reader = null;
+            
+            string[] data = { null, null, null};
+            try
+            {
+                string query = "SELECT ISBN, BarCode, Model " +
+                            "FROM Articles " +
+                            "WHERE Id = @id ";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                SqlParameter param = new SqlParameter();
+                cmd.Parameters.AddWithValue("@id", articleId);
+                conn.Open();
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    data[0] = reader["ISBN"].ToString();
+                    data[1] = reader["BarCode"].ToString();
+                    data[2] = reader["Model"].ToString();
+                }
+                    
+            }
+            finally
+            {
+                // close reader
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+
+                // close connection
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+
+            return data;
+        }
+
+        /// <summary>
         /// Gets an offer.
         /// </summary>
         /// <param name="Id">The Id of the offer.</param>
@@ -586,6 +636,27 @@ namespace LivrETS.Repositories
             }
 
             this.Update();
+
+            return true;
+        }
+
+        public bool DeleteOfferImg(string[] imgIds)
+        {
+            for (int i = 0; i < imgIds.Length; i++)
+            {
+                string id = imgIds[i];
+                OfferImage img = (from image in _db.OfferImage
+                                  where image.Id.ToString().Equals(id)
+                                  select image).FirstOrDefault();
+
+                if (img == null)
+                    return false;
+
+                _db.OfferImage.Remove(img);
+                img.Delete();
+            }
+
+            _db.SaveChanges();
 
             return true;
         }

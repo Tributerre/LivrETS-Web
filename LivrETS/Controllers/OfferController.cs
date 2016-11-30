@@ -85,12 +85,14 @@ namespace LivrETS.Controllers
             // Validating the model
             if (model.Type != Article.CALCULATOR_CODE && string.IsNullOrEmpty(model.ISBN))
             {
-                ModelState.AddModelError(nameof(ArticleViewModel.ISBN), "Le type choisi requiert un ISBN ou un code.");
+                ModelState.AddModelError(nameof(ArticleViewModel.ISBN), 
+                    "Le type choisi requiert un ISBN ou un code.");
             }
 
             if (course == null && model.Type != Article.CALCULATOR_CODE)
             {
-                ModelState.AddModelError(nameof(ArticleViewModel.Acronym), "Le type choisi requiert un cours de la liste.");
+                ModelState.AddModelError(nameof(ArticleViewModel.Acronym), 
+                    "Le type choisi requiert un cours de la liste.");
             }
 
             // Proceeding to add the new offer.
@@ -106,8 +108,7 @@ namespace LivrETS.Controllers
                         {
                             Course = course,
                             Title = model.Title,
-                            ISBN = model.ISBN,
-                            //DeletedAt = DateTime.Now
+                            ISBN = model.ISBN
                         };
                         break;
 
@@ -117,8 +118,7 @@ namespace LivrETS.Controllers
                             Course = course,
                             Title = model.Title,
                             SubTitle = "Sample Subtitle",  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
-                            BarCode = model.ISBN,
-                            //DeletedAt = DateTime.Now
+                            BarCode = model.ISBN
                         };
                         break;
 
@@ -127,17 +127,13 @@ namespace LivrETS.Controllers
                         {
                             Title = model.Title,
                             Model = model.CalculatorModel,
-                            Course = course,
-                            //DeletedAt = DateTime.Now
+                            Course = course
                         };
                         break;
                 }
-
-                var now = DateTime.Now;
+                
                 Offer offer = new Offer()
                 {
-                    StartDate = now,
-                    MarkedSoldOn = now,
                     Price = model.Price,  // FIXME: No elements for this in the view. Weird.
                     Condition = model.Condition,
                     Article = newArticle,
@@ -179,78 +175,150 @@ namespace LivrETS.Controllers
         // GET: Offer/Edit/5
         public ActionResult Edit(string id)
         {
-            /*Offer offer = Repository.GetOfferBy(id);
-            var model = new ArticleViewModel() {
+            Offer offer = Repository.GetOfferBy(id);
+            Session["images"] = null;
+            string[] data = Repository.GetISBNByArticle(offer.Article.Id.ToString());
+            var model = new ArticleViewModel()
+            {
+                Id = id,
                 Acronym = offer.Article.Course.Acronym,
                 Condition = offer.Condition,
                 Title = offer.Title,
                 Price = offer.Price,
-                // je ne peux pas continuer ici car, je n'ai pas 
-                //trouver comment acceder au code ISBN
-                //je chercherais plus tard 
-                Type = offer.Article.TypeName
+                Courses = Repository.GetAllCourses().ToList(),
+                TypeModel = offer.Article.TypeName,
+                Type = offer.Article.ArticleCode,
+                ISBN = (data[0] == "")? data[1]: data[0]        
             };
 
-            switch (model.Type)
+            try
             {
-                case Article.BOOK_CODE:
-                    newArticle = new Book()
-                    {
-                        Course = course,
-                        Title = model.Title,
-                        ISBN = model.ISBN
-                    };
-                    break;
-
-                case Article.COURSE_NOTES_CODE:
-                    newArticle = new CourseNotes()
-                    {
-                        Course = course,
-                        Title = model.Title,
-                        SubTitle = "Sample Subtitle",  // FIXME: Inconsistent with Title in Article and there's no Title for Offer.
-                        BarCode = model.ISBN
-                    };
-                    break;
-
-                case Article.CALCULATOR_CODE:
-                    newArticle = new Calculator()
-                    {
-                        Title = model.Title,
-                        Model = model.CalculatorModel
-                    };
-                    break;
+                Calculator calculator = (Calculator) offer.Article;
+                model.TypeModel = (calculator.Model == CalculatorModel.VOYAGE200) ?
+                    nameof(CalculatorModel.VOYAGE200) : 
+                    nameof(CalculatorModel.NSPIRE);
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
+            ViewBag.Images = offer.Images;
 
-            Session["images"] = null;
-            model.Courses = Repository.GetAllCourses().ToList();
-            ThreadPool.QueueUserWorkItem(state =>
-            {
-                var arguments = state as Tuple<string, string>;
-                FileSystemFacade.CleanTempFolder(uploadsPath: arguments.Item1, userId: arguments.Item2);
-            }, state: new Tuple<string, string>(Server.MapPath(UPLOADS_PATH), User.Identity.GetUserId()));
+            return View(model);
 
-            return View(model);*/
-            return View();
         }
 
         // POST: Offer/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(ArticleViewModel model)
         {
-            try
+            var course = Repository.GetCourseByAcronym(model.Acronym);
+
+            // Validating the model
+             if (model.Type != Article.CALCULATOR_CODE && string.IsNullOrEmpty(model.ISBN))
             {
-                // TODO: Add update logic here
+                ModelState.AddModelError(nameof(ArticleViewModel.ISBN), 
+                    "Le type choisi requiert un ISBN ou un code.");
+            }
+
+            if (course == null && model.Type != Article.CALCULATOR_CODE)
+            {
+                ModelState.AddModelError(nameof(ArticleViewModel.Acronym), 
+                    "Le type choisi requiert un cours de la liste.");
+            }
+
+            // Proceeding to add the new offer.
+            if (ModelState.IsValid)
+            {
+                Offer cOffer = Repository.GetOfferBy(model.Id);
+                Article cArticle = cOffer.Article;
+                var uploadsPath = Server.MapPath(UPLOADS_PATH);
+
+                Repository.AttachToContext(cOffer);
+
+                //Book
+                try
+                {
+                    Book book = (Book)cArticle;
+                    book.Course = course;
+                    book.Title = model.Title;
+                    book.ISBN = model.ISBN;
+                    cOffer.Article = book;
+                }
+                catch(InvalidCastException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                //Notes de cours
+                try
+                {
+                    CourseNotes courseNote = (CourseNotes)cArticle;
+                    courseNote.Course = course;
+                    courseNote.Title = model.Title;
+                    courseNote.SubTitle = "Sample Subtitle";
+                    courseNote.BarCode = model.ISBN;
+                    cOffer.Article = courseNote;
+                }
+                catch (InvalidCastException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+                //Calculatrice
+                try
+                {
+                    Calculator calculator = (Calculator)cArticle;
+                    calculator.Title = model.Title;
+                    calculator.Model = model.CalculatorModel;
+                    calculator.Course = course;
+                    cOffer.Article = calculator;
+                }
+                catch (InvalidCastException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                
+                cOffer.Price = model.Price;  
+                cOffer.Condition = model.Condition;
+                cOffer.ManagedByFair = false;
+                cOffer.Article = cArticle;
+                cOffer.Title = model.Title;  
+
+                if (model.ForNextFair)
+                {
+                    var nextFair = Repository.GetNextFair();
+                    cOffer.ManagedByFair = true;
+                    nextFair?.Offers.Add(cOffer);
+                }
+
+                Repository.AddOffer(cOffer, toUser: User.Identity.GetUserId());
+
+                if (Session["images"] != null)
+                {
+                    List<OfferImage> images = Session["images"] as List<OfferImage>;
+                    foreach (var image in images)
+                    {
+                        image.MovePermanently(uploadsPath);
+                        cOffer.AddImage(image);
+                    }
+                }
+
+                Repository.Update();
 
                 return RedirectToAction("Index", "Home");
             }
-            catch
+            else
             {
-                return View();
+                model.Courses = Repository.GetAllCourses().ToList();
+                return View(model);
             }
         }
 
-        // GET: Offer/Delete/5
+        
+
+            // GET: Offer/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
@@ -346,6 +414,22 @@ namespace LivrETS.Controllers
         public ActionResult ConcludeSell(string[] offerIds)
         {
             bool status = Repository.ConcludeSell(offerIds);
+            string message = null;
+
+            if (!status) message = "Une erreur est survenue.";
+
+            return Json(new
+            {
+                status = status,
+                message = message
+            }, contentType: "application/json");
+        }
+
+        //delete image 
+        [HttpPost]
+        public ActionResult DeleteImg(string[] ImgIds)
+        {
+            bool status = Repository.DeleteOfferImg(ImgIds);
             string message = null;
 
             if (!status) message = "Une erreur est survenue.";

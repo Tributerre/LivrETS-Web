@@ -19,7 +19,6 @@ namespace LivrETS.Models
         }
     }
 
-
     public enum CalculatorModel
     {
         VOYAGE200 = 0,
