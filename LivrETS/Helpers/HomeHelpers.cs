@@ -40,6 +40,23 @@ namespace LivrETS.Helpers
         }
 
         /// <summary>
+        /// Get path image for article in detail page 
+        /// </summary>
+        /// /// <param name="image">the image of article</param>
+        /// /// <param name="alt">alt element of image</param>
+        /// /// <param name="flag">flag element for first image in caroussel</param>
+        /// <returns>The path of image</returns>
+        public static IHtmlString ImgArticleEditHelper(OfferImage image, string alt)
+        {
+            var img = (image == null) ? "http://placehold.it/590x590" : image.RelativeOriginalPath;
+
+            string html = String.Format("<img src='{0}' alt='{1}' " +
+                "class='avatar-article' />", img, alt);
+
+            return new HtmlString(html);
+        }
+
+        /// <summary>
         /// Get a short name of article in home page
         /// </summary>
         /// /// <param name="text">name of article</param>

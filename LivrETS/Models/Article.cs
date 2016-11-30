@@ -69,6 +69,7 @@ namespace LivrETS.Models
             }
         }
 
+        
         public Article()
         {
             FairState = ArticleFairState.UNKNOWN;

@@ -70,10 +70,10 @@
                     }
                     return "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
                         "data-toggle='modal' data-target='#ModalSaleOffer'" +
-                        "data-status='1' id='sale'>vendu</a>" +
+                        "data-status='1' id='sale'>vendu</a> " +
                         "<a class='btn btn-sm btn-danger btn-sale hide'  data-offer-id='" + val.Id + "' " +
                         "data-status='0' id='nosale'>non vendu</a>"+
-                        "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer hide' data-offer-id='" + val.Id + "'>" +
+                        "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer' data-offer-id='" + val.Id + "'>" +
                         "<span class='glyphicon glyphicon-edit'></span></a> " +
                         "<a href='#' class='btn btn-sm btn-danger btn-del-offer' data-offer-id='" + val.Id + "'"+
                         "data-toggle='modal' data-target='#ModalDelOffer'>" +
@@ -201,8 +201,8 @@
             url: "/Offer/DeleteOffer",
             dataType: "json",
             data: JSON.stringify({
-                offerIds: idTmp,
-                type: true
+                offerIds: idTmp
+                //type: true
 
             }),
             success: function (data) { 

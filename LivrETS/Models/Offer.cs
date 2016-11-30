@@ -76,6 +76,9 @@ namespace LivrETS.Models
 
         public Offer()
         {
+            var now = DateTime.Now;
+            StartDate = now;
+            MarkedSoldOn = now;
             Images = new List<OfferImage>();
             Id = Guid.NewGuid();
             ManagedByFair = false;
