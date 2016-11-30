@@ -60,7 +60,7 @@ namespace LivrETS.Repositories
         public IQueryable<Object> GetAllUsersForAdmin()
         {
             return (from user in _db.Users
-                        orderby user.FirstName descending
+                        orderby user.FirstName, user.SubscribedAt descending
                         select new
                         {
                             Id = user.Id,
@@ -180,7 +180,8 @@ namespace LivrETS.Repositories
         public IQueryable<Object> GetAllFairs()
         {
             return (from fair in _db.Fairs
-                        select new
+                    orderby fair.StartDate descending
+                    select new
                         {
                             Id = fair.Id,
                             Trimester = fair.Trimester,
