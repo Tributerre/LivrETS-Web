@@ -30,6 +30,8 @@ namespace LivrETS.ViewModels
         [Required(ErrorMessage = "Le type de l'article est requis.")]
         public string Type { get; set; }
 
+        public string Id { get; set; }
+
         public string TypeModel { get; set; }
         public CalculatorModel CalculatorModel
         {
