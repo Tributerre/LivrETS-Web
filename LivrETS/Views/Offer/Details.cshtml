@@ -7,6 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var flagImg = true;
+    ApplicationUser user = ViewBag.user;
 }
 
 @section Styles{
@@ -17,15 +18,28 @@
             width: 590px !important;
             height: 590px !important;
         }
+        #primary-info{
+            font-size:2em;
+            border: 1px solid #629c49
+        }
+        #primary-info div{
+            padding: 15px 10px;
+        }
+        #info-price{
+            color: white;
+            font-weight: bold;
+            background-color: #629c49;
+        }
     </style>
 }
 
 <div class="content">
     <div class="container">
         <h2 class="page-title text-md-center">@Model.Title</h2>
-        <p class="page-subtitle text-md-center">
-            sub title
-        </p>
+        <div class="row" id="primary-info">
+            <div class="col-md-6" id="info-cours">@Model.Article.Course.Acronym</div>
+            <div class="col-md-6" id="info-price">@Model.Price $CAD</div> 
+        </div>
         <div class="row product-carousel">
             <div class="col-md-6 col-md-push-3 col-sm-12 col-xs-12">
                 <div id="product-image-carousel" class="product-image owl-carousel owl-theme carousel slide" data-ride="carousel">
@@ -70,11 +84,12 @@
                         </div><!-- /.panel-heading -->
                         <div id="collapseDescription" class="panel-collapse collapse in">
                             <div class="panel-body">
-                                <ul class="list-kybully uppercase">
-                                    <li>Cours: @Model.Article.Course.Acronym</li>
+                                <ul class="list-kybully">
+                                    <li>Posté le @Model.StartDate </li>
+                                    <li><span class="uppercase">@Model.Article.TypeName</span> </li>
                                 </ul>
                                 <div>
-                                    @Model.Article.FairState
+                                    @Model.Condition
                                 </div>
                             </div><!-- /.panel-body -->
                         </div><!-- /.panel-collapse -->
@@ -84,17 +99,22 @@
             <div class="col-md-6">
                 <div class="order-box">
                     <div class="row">
-                        <div class="col-md-7 col-sm-7 col-xs-12">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div>
+                                <h4 class="control-label text-md-center">Informations vendeur</h4>
+                                <ul class="list-kybully ">
+                                    <li><b class="primary-color uppercase">Nom :</b> @user.FirstName @user.LastName </li>
+                                    <li><b class="primary-color uppercase">Email :</b> @user.Email </li>
+                                </ul>
                                 <h4 class="control-label text-md-center">Price</h4>
-                                <p>$ @Model.Price</p>
+                                <p>$ @Model.Price $CAD</p>
                             </div><!-- /.form-group -->
                         </div><!-- /.col-md-7 -->
-                        <div class="col-md-5 col-sm-5 col-xs-12">
+                        <div class="col-md-5 col-sm-5 col-xs-12 hide">
                             <h4 class="control-label text-md-center">Terms</h4>
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
                         </div><!-- /.col-md-5 -->
-                        <div class="col-md-7 col-sm-7 col-xs-12">
+                        <div class="col-md-7 col-sm-7 col-xs-12 hide">
                             <div class="form-group form-actions">
                                 <button class="btn btn-lg btn-add-to-cart btn-primary btn-block">
                                     <span class="fa fa-heart"></span>
@@ -102,7 +122,7 @@
                                 </button>
                             </div>
                         </div><!-- /.col-md-7 -->
-                        <div class="col-md-5 col-sm-5 col-xs-12">
+                        <div class="col-md-5 col-sm-5 col-xs-12 hide">
                             <div class="form-group form-actions">
                                 <button class="btn btn-lg btn-wishlist uppercase btn-block">
                                     <span data-icon="&#x50;" class="icon-btn"></span> Wishlist
