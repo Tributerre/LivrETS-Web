@@ -148,6 +148,57 @@ namespace LivrETS.Models
 
             return this;
         }
+
+        public static bool CheckStatusFair(Fair fair, List<ApplicationUser> listAllUsers)
+        {
+            List<ApplicationUser> listUsersParicipateFair = listAllUsers.Where(user =>
+                        user.Offers.Where(offer =>
+                        offer.ManagedByFair == true) != null).ToList();
+
+            DateTime currentDate = (Convert.ToDateTime(DateTime.Now.AddDays(1).ToString()));
+
+            DateTime fairPickingEndDate = (Convert.ToDateTime(fair.PickingEndDate));
+            DateTime fairPickingStartDate = (Convert.ToDateTime(fair.PickingStartDate));
+            DateTime fairSaleStartDate = (Convert.ToDateTime(fair.SaleStartDate));
+            DateTime fairSaleEndDate = (Convert.ToDateTime(fair.SaleEndDate));
+            DateTime fairRetrievalStartDate = (Convert.ToDateTime(fair.RetrievalStartDate));
+            DateTime fairRetrievalEndDate = (Convert.ToDateTime(fair.RetrievalEndDate));
+
+            if (CompareDate(currentDate, fairPickingStartDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.STARTFAIRPICKING, listAllUsers)
+                );
+            else if (CompareDate(currentDate, fairPickingEndDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.ENDFAIRPICKING, listAllUsers)
+                );
+            else if (CompareDate(currentDate, fairSaleStartDate))
+            {
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.STARTFAIRSALE, listAllUsers)
+                );
+            }
+            else if (CompareDate(currentDate, fairSaleEndDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.ENDFAIRSALE, listAllUsers)
+                );
+            else if (CompareDate(currentDate, fairRetrievalStartDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.STARTFAIRRETREIVAL, listUsersParicipateFair)
+                );
+            else if (CompareDate(currentDate, fairRetrievalEndDate))
+                return NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.ENDFAIRRETREIVAL, listUsersParicipateFair)
+                );
+            return false;
+        }
+
+        private static bool CompareDate(DateTime currentDate, DateTime CompareDate)
+        {
+            return currentDate.Year == currentDate.Year &&
+                currentDate.Month == CompareDate.Month &&
+                currentDate.Day == CompareDate.Day;
+        }
     }
 
     /// <summary>

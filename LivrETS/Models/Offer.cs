@@ -58,7 +58,6 @@ namespace LivrETS.Models
 
         [Required]
         public string Condition { get; set; }
-        [Required]
         public DateTime MarkedSoldOn { get; set; }
         public virtual ICollection<OfferImage> Images { get; set; }
 
@@ -70,11 +69,16 @@ namespace LivrETS.Models
         [Required]
         public bool ManagedByFair { get; set; }
 
+        //public string ApplicationUser_Id { get; set; }
+
         [NotMapped]
         public bool Sold => MarkedSoldOn != StartDate;
 
         public Offer()
         {
+            var now = DateTime.Now;
+            StartDate = now;
+            MarkedSoldOn = now;
             Images = new List<OfferImage>();
             Id = Guid.NewGuid();
             ManagedByFair = false;

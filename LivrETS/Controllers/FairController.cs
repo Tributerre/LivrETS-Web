@@ -27,6 +27,7 @@ using LivrETS.Service;
 using System.Net;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using System.Web.Script.Serialization;
 
 namespace LivrETS.Controllers
 {
@@ -147,6 +148,22 @@ namespace LivrETS.Controllers
         }
 
         #region Ajax
+        
+        [HttpPost]
+        public ActionResult CheckStatusFair()
+        {
+            List<ApplicationUser> listAllUsers = Repository.GetAllUsers().ToList();
+
+            Fair fair = Repository.GetCurrentFair();
+            if (fair == null)
+                fair = Repository.GetNextFair();
+
+            return Json(new
+            {
+                status = Fair.CheckStatusFair(fair, listAllUsers)
+            },contentType: "application/json"
+            );
+        }
 
         [HttpPost]
         public ActionResult OffersNotSold(string UserBarCode)
@@ -196,29 +213,51 @@ namespace LivrETS.Controllers
                 Repository.Update();
             }
 
+            //send notification mail
+            NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION, 
+                Repository.GetAllUsers().ToList())
+                );
+            
+
             return Json(new { }, contentType: "application/json");
         }
 
         [HttpPost]
-        public ActionResult ConcludeSell(ICollection<string> ids)
+        public ActionResult ConcludeSell(ICollection<string> offerIds, string fairId = null)
         {
-            bool noMatchExists = false;
-            var fair = Repository.GetCurrentFair();
+            bool noMatchExists = false, status=false;
+            string message = null;
+
+            Fair fair = (fairId != null)?Repository.GetFairById(fairId):
+                Repository.GetCurrentFair();
+
+            if(fair == null)
+                return Json(new {
+                status = status,
+                message = "La foire concernée n'a pas été retrouvé"
+                }, contentType: "application/json");
+
             var seller = Repository.GetUserBy(Id: User.Identity.GetUserId());
             var sale = new Sale()
             {
                 Date = DateTime.Now,
+                Seller = seller,
+                Fair = fair
             };
 
-            var helpers = ids.ToList().ConvertAll(new Converter<string, TRIBSTD01Helper>(id =>
+            var helpers = offerIds.ToList().ConvertAll(new Converter<string, TRIBSTD01Helper>(id =>
             {
                 TRIBSTD01Helper helper = null;
+                Offer offer = Repository.GetOfferBy(id);
                 try
                 {
-                    helper = new TRIBSTD01Helper(id);
+                    string LivrETSID = fair.LivrETSID + "-" + seller.LivrETSID + "-" + offer.Article.LivrETSID;
+                    helper = new TRIBSTD01Helper(LivrETSID);
                 }
                 catch (RegexNoMatchException ex)
                 {
+                    message = ex.Message;
                     noMatchExists = true;
                     return null;
                 }
@@ -227,24 +266,41 @@ namespace LivrETS.Controllers
             }));
 
             if (noMatchExists)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return Json(new
+                {
+                    status = status,
+                    message = message
+                }, contentType: "application/json");
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            foreach (var helper in helpers)
+            //foreach (var helper in helpers)
+            foreach(string id in offerIds)
             {
-                var offer = helper.GetOffer();
-                Repository.AttachToContext(offer);
-                offer.Article.MarkAsSold();
-                offer.MarkedSoldOn = DateTime.Now;
+                //var currentOffer = helper.GetOffer();
+                Offer currentOffer = Repository.GetOfferBy(id);
+                Repository.AttachToContext(currentOffer);
+                currentOffer.Article.MarkAsSold();
+                currentOffer.MarkedSoldOn = DateTime.Now;
                 sale.SaleItems.Add(new SaleItem()
                 {
-                    Offer = offer
+                    Offer = currentOffer
                 });
+
+                ApplicationUser user = Repository.GetOfferByUser(currentOffer);
+
+                NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, Repository.GetAllUsers().ToList())
+                );
             }
 
             seller.Sales.Add(sale);
             fair.Sales.Add(sale);
             Repository.Update();
-            return Json(new { }, contentType: "application/json");
+            status = true;
+
+            return Json(new {
+                status = status
+            }, contentType: "application/json");
         }
 
         [HttpPost]
@@ -319,6 +375,11 @@ namespace LivrETS.Controllers
 
             article.MarkAsPicked();
             Repository.Update();
+
+            //send notification mail
+            NotificationManager.getInstance().sendNotification(
+                new Notification(NotificationOptions.ARTICLEPICKEDCONFIRMATION, Repository.GetAllUsers().ToList())
+                );
             return Json(new { }, contentType: "application/json");
         }
 
@@ -380,7 +441,57 @@ namespace LivrETS.Controllers
                 Session[SELLER_PICKED_ARTICLES] = remainingOffers;
             }
 
-            return Json(new { RemainingOffersCount = numberOfOffersRemaining }, contentType: "application/json");
+            return Json(new { RemainingOffersCount = numberOfOffersRemaining }, 
+                contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult GetTotalSalesAmountByArticleType(string fairId)
+        {
+            FairStatistics fairStats = new FairStatistics(
+                Repository.GetFairById(fairId));
+
+            return Json(fairStats.GetTotalSalesAmountByArticleType().ToArray(), 
+                contentType: "application/json");
+        }
+
+        [HttpPost]
+        public ActionResult GetTotalSalesByArticleType(string fairId)
+        {
+            FairStatistics fairStats = new FairStatistics(
+                Repository.GetFairById(fairId));
+
+            return Json(fairStats.GetTotalSalesByArticleType().ToArray(),
+                contentType: "application/json");
+        }
+
+        public ActionResult GetTotalSalesBySeller(string fairId)
+        {
+            Fair fair = Repository.GetFairById(fairId);
+            FairStatistics fairStats = new FairStatistics(fair);
+
+            List<TabStatistics> dataList_2 = fairStats.GetTotalSalesBySeller();
+
+
+            return Json(dataList_2, contentType: "application/json");
+        }
+
+        public ActionResult GetTotalSalesByCourse(string fairId)
+        {
+            Fair fair = Repository.GetFairById(fairId);
+            FairStatistics fairStats = new FairStatistics(fair);
+
+            return Json(fairStats.GetTotalSalesByCourse(), 
+                contentType: "application/json");
+        }
+
+        // POST: /Fair/GetStatsFairs
+        [HttpPost]
+        public string GetStatsFairs()
+        {
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            List<MorrisFairsStatistic> results = new FairStatistics().GetStatsFairs();
+            return jss.Serialize(results);
         }
 
         #endregion

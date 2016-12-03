@@ -1,0 +1,121 @@
+﻿@{
+    Layout = "~/Views/Shared/_ProfileUserLayout.cshtml";
+}
+
+@section Styles {
+
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+
+    <style>
+        #menu-general-admin ul li:first-child {
+            border-bottom: 4px solid #629c49;
+        }
+
+        #menu-general-admin ul li:first-child a {
+            color: #629c49;
+        }
+    </style>
+
+}
+
+    <div class="row">
+
+        <h2> historique de poste d'article </h2>
+        <hr>
+        <div>
+            <div class="row" id="top-row">
+               
+                <table class="table-stripped table-bordered table-hover display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th colspan="8">
+                                <button type="button" class="btn btn-default btn-sm" id="del-all">
+                                    <span class='glyphicon glyphicon-trash'></span>
+                                </button>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input type="checkbox" name="check-select-all" />
+                            </th>
+                            <th>Title</th>
+                            <th>Prix</th>
+                            <th>Type</th>
+                            <th>Cours</th>
+                            <th>Date de poste</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+              
+            </div>
+        </div>
+    </div>
+
+
+<!-- Modal ModalSaleOffer -->
+<div class="modal fade" id="ModalSaleOffer" tabindex="-1" role="dialog" aria-labelledby="ModalSaleOfferLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ModalSaleOfferLabel">Confirmation de vente</h4>
+            </div>
+            <div class="modal-body">
+                <p>Votre article est-il effectivement vendu?</p>
+                <p>Notez bien que, si vous validez votre produit comme vendu vous ne serez plus en 
+                mesure de reverser l'action </p>
+                
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <p class="text-danger hide">
+                        Une erreur est survenue. Veillez recharger la page. Si l'erreur persiste,
+                        contactez nos services
+                    </p>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-success" data-offerId="0" id="btn-confirm-sale-offer">
+                    <i class="fa fa-spinner fa-pulse fa-fw hide"></i>
+                    <span class="sr-only">Loading...</span>
+                    Confirmer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ModalDelOffer -->
+<div class="modal fade" id="ModalDelOffer" tabindex="-1" role="dialog" aria-labelledby="ModalDelOfferLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="ModalDelOfferLabel">Confirmation de suppression</h4>
+            </div>
+            <div class="modal-body">
+                <p>Merci de confirmer votre suppression</p>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <p class="text-danger hide"></p>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-danger" data-offerid="0" id="btn-confirm-del-offer">
+                    <i class="fa fa-spinner fa-pulse fa-fw hide"></i>
+                    <span class="sr-only">Loading...</span>
+                    Confirmer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="~/Scripts/profile_user.js"></script>
+}
+
+

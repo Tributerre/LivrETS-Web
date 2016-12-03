@@ -54,6 +54,24 @@ namespace LivrETS.Controllers
             }
         }
 
+        // GET: Offer
+        public ActionResult Index()
+        {
+            //if current fair is finish, then take next fair 
+            Fair currentFair = Repository.GetCurrentFair();
+            Fair nextFair = Repository.GetNextFair();
+
+            ViewBag.currentFair = (currentFair != null)?currentFair:nextFair;
+            ViewData["whatFair"] = currentFair;
+            ViewData["users"] = Repository.GetAllUsers().Count();
+            ViewData["fairs"] = Repository.GetAllFairs().ToList().Count();
+            ViewData["offers"] = Repository.GetAllOffers().Count();
+            ViewData["saleitems"] = Repository.GetAllOffers().
+                Where(offer => offer.MarkedSoldOn != offer.StartDate).Count();
+
+            return View();
+        }
+
         // GET: /Admin/ManageUsers
         [HttpGet]
         public ActionResult ManageUsers()
@@ -65,7 +83,28 @@ namespace LivrETS.Controllers
         [HttpGet]
         public ActionResult ManageFairs()
         {
-           
+            return View();
+        }
+
+        // GET: /Admin/ManageDetailsFair/5
+        public ActionResult ManageDetailsFair(string id)
+        {
+            if (id == null)
+                throw new HttpException(404, "Page not Found");
+
+            Fair fair = Repository.GetFairById(id);
+            FairStatistics statics = new FairStatistics(fair);
+            ViewData["TotalSalesAmount"] = statics.GetTotalSalesAmount();
+            ViewData["TotalSales"] = statics.GetTotalSales();
+            ViewData["TotalAmountForLateRetreivals"] = statics.GetTotalAmountForLateRetreivals();
+
+            return View(fair);
+        }
+
+        // GET: /Admin/ManageOffers
+        [HttpGet]
+        public ActionResult ManageOffers()
+        {
             return View();
         }
 
@@ -104,34 +143,44 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ListUsers()
         {
-            /*var db = new ApplicationDbContext();
-            var list_user = UserManager.Users.ToList();
-            var listRoles = (from role in db.Roles
-                             select new { Id = role.Id, Name = role.Name }).ToList();
-
-            var listUser = (from user in db.Users
-                            orderby user.FirstName descending
-                            select new
-                            {
-                                user = user,
-                                role = user.Roles.Join(db.Roles, userRole => userRole.RoleId, role => role.Id, (userRole, role) => role).Select(role => role.Name)
-                            }).ToList();
-            db.Dispose();*/
-            var listRoles = Repository.GetAllRoles();
+            var listRoles = Repository.GetAllRoles().ToList();
             
-            var listUser = Repository.GetAllUsers();
+            var listUser = Repository.GetAllUsersForAdmin().ToList();
 
-            return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, contentType: "application/json");
+            return Json(new { listUser, listRoles, current_id=User.Identity.GetUserId() }, 
+                contentType: "application/json");
         }
 
         // POST: /Admin/ListFairs
-        // List all user
+        // List all Fairs
         [HttpPost]
         public ActionResult ListFairs()
         {
-            var listFairs = Repository.GetAllFairs();
+            var listFairs = Repository.GetAllFairs().ToList();
 
             return Json(new { listFairs }, contentType: "application/json");
+        }
+
+        // POST: /Admin/ListOffersFair
+        // List all Fairs
+        [HttpPost]
+        public ActionResult ListOffersFair(string id)
+        {
+            var currentFair = Repository.GetFairById(id);
+
+            return Json(new {
+                currentFair.Offers
+            }, contentType: "application/json");
+        }
+
+        // POST: /Admin/ListOffers
+        // List all Offers
+        [HttpPost]
+        public ActionResult ListOffers()
+        {
+            List<Offer> listOffers = Repository.GetAllAdminOffers().ToList();
+
+            return Json(new { listOffers }, contentType: "application/json");
         }
 
         // PUT: /Admin/ChangeUserRole
@@ -174,7 +223,8 @@ namespace LivrETS.Controllers
             }
             else  // Multiple users to delete
             {
-                users = model.UserIdsList.ConvertAll(new Converter<string, ApplicationUser>(userId => UserManager.FindById(userId)));
+                users = model.UserIdsList.ConvertAll(new Converter<string, 
+                    ApplicationUser>(userId => UserManager.FindById(userId)));
             }
 
             foreach (var user in users)
@@ -233,7 +283,8 @@ namespace LivrETS.Controllers
                 var pastFairStartDate = pastFair?.StartDate ?? new DateTime(1970, 01, 01);
                 var pastOffers = (
                     from dbOffer in db.Offers
-                    where dbOffer.StartDate < fair.StartDate && dbOffer.StartDate >= pastFairStartDate && dbOffer.ManagedByFair
+                    where dbOffer.StartDate < fair.StartDate && dbOffer.StartDate >= 
+                        pastFairStartDate && dbOffer.ManagedByFair
                     select dbOffer
                 );
 
@@ -258,41 +309,9 @@ namespace LivrETS.Controllers
         // DELETE: /Admin/DeleteFair
         // Deletes one or more fairs.
         [HttpDelete]
-        public ActionResult DeleteFair(AjaxFairViewModel model)
+        public ActionResult DeleteFair(string id)
         {
-            List<Fair> fairs = new List<Fair>();
-
-            using (var db = new ApplicationDbContext())
-            {
-                if (model.Id != null)
-                {
-                    var fair = db.Fairs.FirstOrDefault(fairDb => fairDb.Id.ToString() == model.Id);
-
-                    if (fair != null)
-                    {
-                        fairs.Add(fair);
-                    }
-                    else
-                    {
-                        return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-                    }
-                }
-                else
-                {
-                    fairs = model.IdsList.ConvertAll(new Converter<string, Fair>(id => db.Fairs.FirstOrDefault(fair => fair.Id.ToString() == id)));
-
-                    if (fairs.Any(fair => fair == null))
-                    {
-                        return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-                    }
-                }
-
-                foreach (var fair in fairs)
-                {
-                    db.Fairs.Remove(fair);
-                }
-                db.SaveChanges();
-            }
+            Repository.DeleteFair(id);
             return Json(new { }, contentType: "application/json");
         }
 
@@ -334,6 +353,7 @@ namespace LivrETS.Controllers
             }
         }
 
+        
         #endregion
 
         #region Helpers

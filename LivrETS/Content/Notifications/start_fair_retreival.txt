@@ -1,0 +1,7 @@
+﻿<div>
+<p>Bonjour {0}</p>
+<br>
+<p>Juste pour informer que <b>start_fair_retreival</b></p>
+<br/>
+<p>Bonne Journée</p>
+</div>

@@ -27,21 +27,24 @@
                 var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
                 var user = userManager.FindById(User.Identity.GetUserId());
 
-                <a id="user-btn" href="#" class="btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <a id="user-btn" href="#" class="btn dropdown-toggle" data-toggle="dropdown" 
+                   role="button" aria-haspopup="true" aria-expanded="false">
                     Bonjour @user.FirstName! <span class="caret"></span>
                 </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/Account/Profile"><span class="glyphicon glyphicon-user"></span>  Profil</a></li>
-                            <li><a href="/Home/Sell"><span class="glyphicon glyphicon-usd"></span>  Vendre</a></li>
-                            @if (User.IsInRole("Administrator"))
-                            {
-                                <li role="separator" class="divider"></li>
-                                <li><a href="/Admin/ManageUsers"><span class="glyphicon glyphicon-th-list"></span>  Utilisateurs</a></li>
-                                <li><a href="/Admin/ManageFairs"><span class="glyphicon glyphicon-book"></span>  Foires</a></li>
-                            }
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#" onclick="$('#logoutForm').submit()"><span class="glyphicon glyphicon-log-out"></span>  Se d&eacute;connecter</a></li>
-                        </ul>
+                <ul class="dropdown-menu">
+                    <li><a href="/Account/Historic"><span class="fa fa-cogs"></span>Mes infos</a></li>
+                    <li><a href="/Offer/Create"><span class="glyphicon glyphicon-usd"></span>Vendre</a></li>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li><a href="/Admin"><span class="fa fa-user"></span> Administration</a></li>
+                    }
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <a href="#" onclick="$('#logoutForm').submit()">
+                        <span class="glyphicon glyphicon-log-out"></span>  
+                        Se d&eacute;connecter</a>
+                    </li>
+                </ul>
             }
         </div>
 

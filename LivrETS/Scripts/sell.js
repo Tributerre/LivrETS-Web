@@ -19,6 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 $(document).ready(function () {
     'use strict';
 
+    $('[data-toggle="popover"]').popover();
+    changeType($("input[name='Type']:checked").val());
+
     document.getElementById("imageupload").addEventListener("change", function () {
         if ($("#images-panel>div[class='panel-body']").find("img").length < 5) {
             var image = this.files[0];
@@ -58,7 +61,7 @@ $(document).ready(function () {
                 $("#image-progress").hide();
                 $("#image-progress>div").css("width", 0);
             };
-            xhr.open("POST", "/Home/AddImage", true);
+            xhr.open("POST", "/Offer/AddImage", true);
             xhr.send(formData);
             $("#image-progress").show();
         } else {
@@ -89,17 +92,9 @@ $(document).ready(function () {
             $("#info-sellingframe-fair").hide('fast');
         }
     });
-
+    
     $("input[name='Type']").on('change', function () {
-        var value = $(this).val();
-
-        if (value === 'C') {
-            $("#calculator-models-dropdown").show('fast');
-            $("#isbn-text-input").hide('fast');
-        } else {
-            $("#calculator-models-dropdown").hide('fast');
-            $("#isbn-text-input").show('fast');
-        }
+        changeType($(this).val())
     });
 
     $("#btn-newCourse").on("click", function () {
@@ -134,7 +129,7 @@ $(document).ready(function () {
             $.ajax({
                 method: "POST",
                 dataType: "json",
-                url: "/Home/AddNewCourse",
+                url: "/Offer/AddNewCourse",
                 data: { acronym: courseTextInput.val() },
                 success: function (data) {
                     var newCourseElement = $("<li>")
@@ -173,4 +168,63 @@ $(document).ready(function () {
             });
         }
     });
+    var elt = null;
+    //delete image 
+    $(".btn-del-img").on("click", function () { 
+        var $btn = $(this);
+        elt = $btn.parent("li");
+        var imgId = $btn.data("imgid"); 
+        $("#btn-confirm-del-img").attr("data-imgid", imgId);
+        
+    });
+
+    //confirm delete image 
+    $("#btn-confirm-del-img").on("click", function () {
+        var $btn = $(this);
+        var imgId = $btn.data("imgid");
+        var $modal = $('#ModalConfirmDelImg');  
+        var $txtError = $modal.find(".text-danger");
+        var $loading = $modal.find(".fa-spinner");
+
+        $loading.removeClass("hide");
+        $txtError.text("").addClass("hide");
+        $btn.prop("disabled", true);
+
+        $.ajax({
+            method: "POST",
+            url: "/Offer/DeleteImg",
+            dataType: "json",
+            data: {
+                imgIds: [imgId]
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    $btn.prop("disabled", false);
+                    $modal.modal('hide');
+                    $loading.addClass("hide");
+                    elt.hide();
+                } else {
+                    $txtError.text(data.message).removeClass("hide");
+                    $loading.addClass("hide");
+                    $btn.prop("disabled", false);
+                }
+            },
+            error: function () {
+                $txtError.text("Erreur").removeClass("hide");
+                $loading.addClass("hide");
+                $btn.prop("disabled", false);
+            }
+        });
+    });
+
+    //update form article
+    function changeType(value) {
+        if (value === 'C') {
+            $("#calculator-models-dropdown").show('fast');
+            $("#isbn-text-input").hide('fast');
+        } else {
+            $("#calculator-models-dropdown").hide('fast');
+            $("#isbn-text-input").show('fast');
+        } 
+    }
 });

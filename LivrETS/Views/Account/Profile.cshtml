@@ -20,79 +20,87 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 @model ProfileViewModel
 @{
     ViewBag.Title = "Mon profil";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_ProfileUserLayout.cshtml";
     ApplicationUser user = ViewBag.user;
 }
 
+
+@section Styles {
+    <style>
+        #menu-general-admin ul li:last-child {
+            border-bottom: 4px solid #629c49;
+        }
+        #menu-general-admin ul li:last-child a{
+            color: #629c49;
+        }
+    </style>
+}
+
 <div class="container">
-    <h1>Profil @user.FirstName @user.LastName</h1>
+    <h2>Profil @user.FirstName @user.LastName</h2>
     <hr>
-
-    @using (Html.BeginForm("Profile", "Account", FormMethod.Post, new { ReturnUrl = "/Home/Index", @class = "form-horizontal", role = "form" }))
-    {
-        @Html.AntiForgeryToken()
-        <div class="form-group">
-            <div class="row">
-                <label class="col-md-2 text-right">Inscrit depuis:</label>
-                <label class="col-md-2">@user.SubscribedAt</label>
-            </div>
-
-            <div class="row">
-                <label class="col-md-2 text-right">ID Vendeur:</label>
-                <label class="col-md-2">@user.LivrETSID</label>
-            </div>
-
-            <div class="row" style="margin-top: 5px;">
-                <label class="col-md-2 text-right">Courriel:</label>
-                <label class="col-md-3">@user.Email</label>
-            </div>
-
-            <div class="row" style="margin-top: 5px;">
-                @Html.LabelFor(model => model.FirstName,new { @class = "col-md-2 control-label" })
-                <div class="col-md-3">
-                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+@using (Html.BeginForm("Profile", "Account", FormMethod.Post, new { ReturnUrl = "/Home/Index", @class = "form-horizontal", role = "form" }))
+{
+        <div class="row">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <div class="row">
+                    <label class="col-md-2 text-right">Inscrit depuis:</label>
+                    <label class="col-md-2">@user.SubscribedAt</label>
                 </div>
-            </div>
 
-            <div class="row" style="margin-top: 5px;">
-                @Html.LabelFor(model => model.LastName, new { @class = "col-md-2 control-label" })
-                <div class="col-md-3">
-                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                <div class="row">
+                    <label class="col-md-2 text-right">ID Vendeur:</label>
+                    <label class="col-md-2">@user.LivrETSID</label>
                 </div>
-            </div>
 
-            <div class="row" style="margin-top: 5px;">
-                <label for="BarCode" class="col-md-2 control-label">
-                    N&deg; Code &agrave; barres <a style="color: black;"
-                                                   role="button"
-                                                   data-content='<img class="img-rounded" width="200px" height="125px" alt="student_card_example.jpg" src="/images/student_card_example.jpg">'
-                                                   data-html="true"
-                                                   data-placement="top"
-                                                   data-toggle="popover">
-                        <span class="glyphicon glyphicon-question-sign"></span>
-                    </a>
-                </label>
-                <div class="col-md-3">
-                    @Html.TextBoxFor(model => model.BarCode, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.BarCode, "", new { @class = "text-danger" })
+                <div class="row" style="margin-top: 5px;">
+                    <label class="col-md-2 text-right">Courriel:</label>
+                    <label class="col-md-3">@user.Email</label>
                 </div>
-            </div>
 
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-md-5 text-right">
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <div class="row" style="margin-top: 5px;">
+                    @Html.LabelFor(model => model.FirstName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 5px;">
+                    @Html.LabelFor(model => model.LastName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 5px;">
+                    <label for="BarCode" class="col-md-2 control-label">
+                        N&deg; Code &agrave; barres <a style="color: black;"
+                                                       role="button"
+                                                       data-content='<img class="img-rounded" width="200px" height="125px" alt="student_card_example.jpg" src="/images/student_card_example.jpg">'
+                                                       data-html="true"
+                                                       data-placement="top"
+                                                       data-toggle="popover">
+                            <span class="glyphicon glyphicon-question-sign"></span>
+                        </a>
+                    </label>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.BarCode, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.BarCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 5px;">
+                    <div class="col-md-5 text-right">
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </div>
                 </div>
             </div>
         </div>
-    }
+
+} 
 </div>
 
-@section Scripts {
-    <script>
-        $(function () {
-            $('[data-toggle="popover"]').popover()
-        })
-    </script>
-}
+

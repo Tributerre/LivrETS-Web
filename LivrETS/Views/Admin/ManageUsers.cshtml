@@ -20,53 +20,48 @@
 @using Microsoft.AspNet.Identity.Owin
 @using LivrETS.Models
 @{
-    ViewBag.Title = "Admin: Utilisateurs";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Gestion des utilisateurs";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
 }
-
 @section Styles {
-
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
 }
+<div id="page-wrapper">
+    <div class="container">
 
-<div id="errors" class="row" hidden>
-    <div class="alert alert-danger alert-dismissible fade in" role="alert">
-        <button id="close-error" type="button" class="close" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
-        <span id="error-message"></span>
+        <div id="errors" class="row" hidden>
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button id="close-error" type="button" class="close" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+                <span id="error-message"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table-striped table-bordered table-hover display" id="list-users" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" name="check-select-all">
+                            </th>
+                            <th>Pr&eacute;nom</th>
+                            <th>Nom</th>
+                            <th>N&deg; Code &agrave; barres</th>
+                            <th>Inscrit le</th>
+                            <th>Privil&egrave;ge</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-    <table class="table-striped table-bordered table-hover display" id="list-users" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>
-                    <input type="checkbox" name="check-select-all">
-                </th>
-                <th>ID</th>
-                <th>Pr&eacute;nom</th>
-                <th>Nom</th>
-                <th>N&deg; Code &agrave; barres</th>
-                <th>Inscrit le</th>
-                <th>Privil&egrave;ge</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        
-    </table>
     </div>
-</div>
-
-<div class="row">
-</div>
-
-@section Actions {
-    <div class="row text-center" id="div-actions">
-    </div>
-}
-
-@section Scripts {
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="~/Scripts/manageusers.js"></script>
-}
+        @section Scripts {
+            <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+            <script type="text/javascript" src="~/Scripts/manageusers.js"></script>
+        }

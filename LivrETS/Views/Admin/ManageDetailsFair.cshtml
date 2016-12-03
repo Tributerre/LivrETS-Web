@@ -1,0 +1,251 @@
+﻿@using LivrETS.Models
+@model Fair
+@{
+    ViewBag.Title = "Détail de la foire";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section Styles {
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+<link rel="stylesheet" href="@Url.Content("~/Content/template_admin/morris.css")">
+    <style>
+        h1 {
+            margin-bottom: 50px;
+        }
+
+        #group-btn-action {
+            margin-bottom: 30px;
+            padding-right: 16px;
+        }
+        #fair-stats{
+            margin-bottom: 70px;
+        }
+        .tab-stats tr td{
+            border: 1px solid black;
+            padding:5px;
+        }
+        .tab-stats tr td:first-child{
+            font-weight: bold;
+            width: 50%;
+            background-color: #aeaeae;
+        }
+        #group-stats-2{
+            font-size: 1.5em;
+            margin-bottom:70px;
+        }
+
+        #bloc-stats-1{
+            margin-bottom: 30px;
+        }
+        #bloc-stats-1 .text-center td{
+            font-size: 1.5em;
+        }
+    </style>
+}
+
+<div id="page-wrapper">
+    <div class="container">
+
+        <span class="fairId hide">@Model.Id</span>
+
+        <div class="row" id="top-row">
+            <div class="col-md-12">
+
+                <div class="row" id="fair-stats">
+                    <div class="col-md-4">
+                        <table class="tab-stats">
+                            <tr>
+                                <td>Debut</td>
+                                <td>@Model.StartDate.ToString("M/d/yyyy")</td>
+                            </tr>
+                            <tr>
+                                <td>Fin</td>
+                                <td>@Model.EndDate.ToString("M/d/yyyy")</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-md-4">
+                        <table class="tab-stats">
+                            <tr>
+                                <td>Session</td>
+                                <td>@Model.Trimester</td>
+                            </tr>
+                            <tr>
+                                <td>Phase</td>
+                                <td>@Model.Phase</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <table class="tab-stats">
+                            <tr>
+                                <td>Nombre d'articles</td>
+                                <td>@Model.Offers.Count()</td>
+                            </tr>
+                            <tr class="hide">
+                                <td>Articles vendus</td>
+                                <td>@Model.Offers.Where(offer => 
+                                        offer.MarkedSoldOn != offer.StartDate).ToList().Count()</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <hr />
+                </div>
+                
+
+                <div class="row">
+                    <h2 class="text-center">Statistiques</h2> <hr />
+                    <div class="col-md-12" id="group-stats-2">
+                        <div class="row" id="bloc-stats-1">
+                            <div class="col-md-4">
+                                <table>
+                                    <tr><td><b><u>Montant total des ventes</u></b></td></tr>
+                                    <tr class="text-center"><td>@ViewData["TotalSalesAmount"]</td></tr>
+                                </table>
+                            </div>
+
+                            <div class="col-md-4">
+                                <table>
+                                    <tr><td><b><u>Nombre de vente</u></b</td></tr>
+                                    <tr class="text-center"><td>@ViewData["TotalSales"]</td></tr>
+                                </table>
+                            </div>
+
+                            <div class="col-md-4">
+                                <table>
+                                    <tr><td><b><u>Montant total reçu pour les retards</u></b></td></tr>
+                                    <tr class="text-center"><td>@ViewData["TotalAmountForLateRetreivals"]</td></tr>
+                                </table>
+                            </div>
+                        <hr />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-green">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Total des ventes par type d'article</h3>
+                                    </div>
+                                    <div class="panel-body chart-one">
+                                        <div class="flot-chart">
+                                            <div class="flot-chart-content" id="total_sale_article_type"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                       
+                            </div>
+
+                            <div class="col-md-6">
+                                
+                                <div class="panel panel-green">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Nombre de ventes par type d'article</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="flot-chart">
+                                            <div class="flot-chart-content" id="nb_sale_article_type"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2><u>Total des ventes par cours</u></h2> <br />
+                        <table class="table-stripped table-bordered table-hover display" cellspacing="0"
+                               width="100%" id="sold-by-type-article">
+                            <thead>
+                                <tr>
+                                    <th>Sigle</th>
+                                    <th>Total des ventes</th>
+                                    <th>Nombre de vente</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h2><u>Total des ventes par vendeur</u></h2><br />
+                        <table class="table-stripped table-bordered table-hover display" cellspacing="0"
+                               width="100%" id="sold-by-user">
+                            <thead>
+                                <tr>
+                                    <th>Vendeur</th>
+                                    <th>Total des ventes</th>
+                                    <th>Nombre de vente</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="row "><br /><br />
+                    <h2 class="text-center">Liste articles</h2> <hr />
+                    <table class="table-stripped table-bordered table-hover display" cellspacing="0"
+                           width="100%" id="tab-offers">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" name="check-select-all" />
+                                </th>
+                                <th>Title</th>
+                                <th>Prix</th>
+                                <th>Vendu</th>
+                                <th>Foire</th>
+                                <th>Date de poste</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal ModalSaleOffer -->
+<div class="modal fade" id="ModalSaleOffer" tabindex="-1" role="dialog" aria-labelledby="ModalSaleOfferLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ModalSaleOfferLabel">Confirmation de vente</h4>
+            </div>
+            <div class="modal-body">
+                <p>Votre article est-il effectivement vendu?</p>
+                <p>
+                    Notez bien que, si vous validez votre produit comme vendu vous ne serez plus en
+                    mesure de reverser l'action
+                </p>
+
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <p class="text-danger hide">
+                        Une erreur est survenue. Veillez recharger la page. Si l'erreur persiste,
+                        contactez nos services
+                    </p>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-success" data-offer-id="0" id="btn-confirm-sale-offer">
+                    <i class="fa fa-spinner fa-pulse fa-fw hide"></i>
+                    <span class="sr-only">Loading...</span>
+                    Confirmer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+    <script src="~/Scripts/manageDetailsFair.js"></script>
+    <!-- Flot Charts JavaScript -->
+    <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+    <script src="~/Scripts/template_admin/flot/jquery.flot.js"></script>
+    <script src="~/Scripts/template_admin/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="~/Scripts/template_admin/flot/jquery.flot.resize.js"></script>
+    <script src="~/Scripts/template_admin/flot/jquery.flot.pie.js"></script>
+}
