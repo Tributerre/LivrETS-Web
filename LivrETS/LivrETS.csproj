@@ -58,6 +58,14 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Hangfire.Core, Version=1.6.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.6.7\lib\net45\Hangfire.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.6.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SqlServer.1.6.7\lib\net45\Hangfire.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -222,6 +230,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FairController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OfferController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -243,6 +252,10 @@
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CourseNotes.cs" />
     <Compile Include="Models\Fair.cs" />
+    <Compile Include="Models\FairStatistics.cs" />
+    <Compile Include="Models\HangfireAutorizationFilter.cs" />
+    <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\NotificationManager.cs" />
     <Compile Include="Models\Offer.cs" />
     <Compile Include="Models\OfferImage.cs" />
     <Compile Include="Models\Sale.cs" />
@@ -256,6 +269,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\AdminViewModels.cs" />
+    <Compile Include="ViewModels\FairStaticsViewModel.cs" />
     <Compile Include="ViewModels\FairViewModels.cs" />
     <Compile Include="ViewModels\HomeViewModels.cs" />
   </ItemGroup>
@@ -271,6 +285,18 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Login.css" />
     <Content Include="Content\LoginConfirmation.css" />
+    <Content Include="Content\Notifications\article_marked_as_soldduring_fair.txt" />
+    <Content Include="Content\Notifications\article_picked_confirmation.txt" />
+    <Content Include="Content\Notifications\article_retreived_confirmation.txt" />
+    <Content Include="Content\Notifications\article_transfered_to_tributerre.txt" />
+    <Content Include="Content\Notifications\end_fair_picking.txt" />
+    <Content Include="Content\Notifications\end_fair_retreival.txt" />
+    <Content Include="Content\Notifications\end_fair_sale.txt" />
+    <Content Include="Content\Notifications\late_for_retreival_after_a_week.txt" />
+    <Content Include="Content\Notifications\late_for_retreival_before_a_week.txt" />
+    <Content Include="Content\Notifications\start_fair_picking.txt" />
+    <Content Include="Content\Notifications\start_fair_retreival.txt" />
+    <Content Include="Content\Notifications\start_fair_sale.txt" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\template\animate.min.css" />
     <Content Include="Content\template\bootstrap-select.min.css" />
@@ -283,6 +309,9 @@
     <Content Include="Content\template\main.css" />
     <Content Include="Content\template\owl.carousel.css" />
     <Content Include="Content\template\owl.transitions.css" />
+    <Content Include="Content\template_admin\bootstrap.min.css" />
+    <Content Include="Content\template_admin\morris.css" />
+    <Content Include="Content\template_admin\sb-admin.css" />
     <Content Include="Content\Uploads\Originals\24d84ce5-c2a5-4436-8879-2609d3693722-cd9a4b89-0c1b-4cc8-9c5c-eab35ef01c9a.jpg" />
     <Content Include="Content\Uploads\Originals\2c289bcb-b187-44c2-ad6a-a5413441195d-a5c744f6-32c0-48f9-a082-683ee84ebdc6.png" />
     <Content Include="Content\Uploads\Originals\2c289bcb-b187-44c2-ad6a-a5413441195d-d94abb49-4534-48c4-b5e5-78b7702bbceb.jpg" />
@@ -302,6 +331,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\ets.png" />
     <Content Include="Images\student_card_example.jpg" />
     <Content Include="Images\template\ajax.gif" />
     <Content Include="Images\template\AjaxLoader.gif" />
@@ -422,13 +452,18 @@
     <Content Include="Scripts\fair\retrieve.js" />
     <Content Include="Scripts\fair\sell.js" />
     <Content Include="Scripts\fullcalendar-lang-fr-ca.js" />
+    <Content Include="Scripts\home.js" />
+    <Content Include="Scripts\home_admin.js" />
+    <Content Include="Scripts\manageDetailsFair.js" />
     <Content Include="Scripts\managefairs-calendarhandling.js" />
     <Content Include="Scripts\managefairs.js" />
+    <Content Include="Scripts\manageoffers.js" />
     <Content Include="Scripts\manageusers.js" />
     <Content Include="Scripts\material.spinner.min.js" />
     <Content Include="Scripts\moment-fr-ca.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\pick.js" />
+    <Content Include="Scripts\profile_user.js" />
     <Content Include="Scripts\sell.js" />
     <Content Include="Scripts\site.js" />
     <Content Include="Scripts\template\bootstrap-hover-dropdown.min.js" />
@@ -444,6 +479,17 @@
     <Content Include="Scripts\template\scripts.js" />
     <Content Include="Scripts\template\switchstylesheet\switchstylesheet.js" />
     <Content Include="Scripts\template\wow.min.js" />
+    <Content Include="Scripts\template_admin\bootstrap.min.js" />
+    <Content Include="Scripts\template_admin\flot\excanvas.min.js" />
+    <Content Include="Scripts\template_admin\flot\jquery.flot.js" />
+    <Content Include="Scripts\template_admin\flot\jquery.flot.pie.js" />
+    <Content Include="Scripts\template_admin\flot\jquery.flot.resize.js" />
+    <Content Include="Scripts\template_admin\flot\jquery.flot.tooltip.min.js" />
+    <Content Include="Scripts\template_admin\manageOffersFair.js" />
+    <Content Include="Scripts\template_admin\morris\morris-data.js" />
+    <Content Include="Scripts\template_admin\morris\morris.js" />
+    <Content Include="Scripts\template_admin\morris\morris.min.js" />
+    <Content Include="Scripts\template_admin\morris\raphael.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -478,10 +524,18 @@
     <Content Include="Views\Home\DetailOffer.cshtml" />
     <Content Include="Views\Shared\_footer.cshtml" />
     <Content Include="Views\Shared\_header.cshtml" />
+    <Content Include="Views\Offer\Create.cshtml" />
+    <Content Include="Views\Offer\Details.cshtml" />
+    <Content Include="Views\Offer\Edit.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\ManageDetailsFair.cshtml" />
+    <Content Include="Views\Admin\ManageOffers.cshtml" />
+    <Content Include="Views\Account\Historic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\PDF\" />
+    <Folder Include="fonts\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.html" />

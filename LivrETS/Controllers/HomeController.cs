@@ -71,11 +71,13 @@ namespace LivrETS.Controllers
                 searchString = currentFilter;
             }
 
-            /*List<ApplicationUser> listAllUsers = new List<ApplicationUser>();
-            ApplicationUser user = Repository.GetUserBy(null, User.Identity.GetUserId());
-            listAllUsers.Add(user);
-            NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.ENDFAIRPICKING, listAllUsers)
+            //List<ApplicationUser> listAllUsers = new List<ApplicationUser>();
+            //ApplicationUser user = Repository.GetUserBy(null, User.Identity.GetUserId());
+            //listAllUsers.Add(user);
+            //List<ApplicationUser> listAllUsers = Repository.GetAllUsers().ToList();
+            //listAllUsers.Add(user);
+            /*NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.STARTFAIRPICKING, listAllUsers)
                 );*/
 
             ViewBag.CurrentFilter = searchString;
