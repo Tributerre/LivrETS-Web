@@ -6,7 +6,7 @@ using System.Web;
 
 namespace LivrETS.ViewModels
 {
-    public class FairStaticsViewModels
+    public class FairStaticsViewModel
     {
 
     }
