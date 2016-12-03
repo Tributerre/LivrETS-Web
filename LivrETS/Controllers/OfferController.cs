@@ -189,7 +189,7 @@ namespace LivrETS.Controllers
                 Courses = Repository.GetAllCourses().ToList(),
                 TypeModel = offer.Article.TypeName,
                 Type = offer.Article.ArticleCode,
-                ISBN = (data[0] == "")? data[1]: data[0]        
+                ISBN = (data[0] == null)? data[1]: data[0]        
             };
 
             try

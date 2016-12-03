@@ -6,7 +6,7 @@ $(function () {
         $.ajax({
             method: "POST",
             contentType: "application/json",
-            url: "/Admin/GetStatsFairs",
+            url: "/Fair/GetStatsFairs",
             dataType: "json",
             success: function (data) {
                 Morris.Bar({

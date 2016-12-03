@@ -61,7 +61,6 @@ namespace LivrETS.Controllers
         {
             ViewBag.CurrentSort = sortOrder;
             IEnumerable<Offer> offers = null;
-            var oll = Repository.GetStatsFairs();
 
             if (searchString != null)
             {
