@@ -204,6 +204,7 @@ namespace LivrETS.Controllers
                 }
                 catch (RegexNoMatchException ex)
                 {
+                    Console.WriteLine(ex.Message);
                     continue;
                 }
 

@@ -35,7 +35,7 @@ namespace LivrETS.Models
                 }
                 catch(Exception ex)
                 {
-                    result = 0;
+                    Console.WriteLine(ex.Message);
                 }
             }
 
@@ -62,7 +62,7 @@ namespace LivrETS.Models
                 }
                 catch (Exception ex)
                 {
-                    result = null;
+                    Console.WriteLine(ex.Message);
                 }
             }
 
@@ -93,7 +93,7 @@ namespace LivrETS.Models
                 }
                 catch (Exception ex)
                 {
-                    result = null;
+                    Console.WriteLine(ex.Message);
                 }
             }
 
@@ -118,7 +118,7 @@ namespace LivrETS.Models
                 }
                 catch (Exception ex)
                 {
-                    result = null;
+                    Console.WriteLine(ex.Message);
                 }
             }
 
@@ -144,7 +144,7 @@ namespace LivrETS.Models
                 }
                 catch (Exception ex)
                 {
-                    result = null;
+                    Console.WriteLine(ex.Message);
                 }
             }
 
@@ -169,7 +169,7 @@ namespace LivrETS.Models
                                 this.fair.Id).Single();
                 }catch(Exception ex)
                 {
-                    result = 0;
+                    Console.WriteLine(ex.Message);
                 }
                 
             }
@@ -199,7 +199,7 @@ namespace LivrETS.Models
                 }
                 catch (Exception ex)
                 {
-                    result = null;
+                    Console.WriteLine(ex.Message);
                 }
             }
 
