@@ -27,6 +27,7 @@ using LivrETS.Service;
 using System.Net;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using System.Web.Script.Serialization;
 
 namespace LivrETS.Controllers
 {
@@ -227,11 +228,15 @@ namespace LivrETS.Controllers
         {
             bool noMatchExists = false, status=false;
             string message = null;
-            Fair fair = null;
 
-            if(fairId != null)
-                fair = Repository.GetFairById(fairId);
-            fair = Repository.GetCurrentFair();
+            Fair fair = (fairId != null)?Repository.GetFairById(fairId):
+                Repository.GetCurrentFair();
+
+            if(fair == null)
+                return Json(new {
+                status = status,
+                message = "La foire concernée n'a pas été retrouvé"
+                }, contentType: "application/json");
 
             var seller = Repository.GetUserBy(Id: User.Identity.GetUserId());
             var sale = new Sale()
@@ -443,40 +448,21 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult GetTotalSalesAmountByArticleType(string fairId)
         {
-            Fair fair = Repository.GetFairById(fairId);
-            FairStatistics fairStats = new FairStatistics(fair);
-            Object[] data_1 = new Object[3];
-            int i = 0;
-            List<Object> dataList_1 = fairStats.GetTotalSalesAmountByArticleType();
+            FairStatistics fairStats = new FairStatistics(
+                Repository.GetFairById(fairId));
 
-            foreach (Object obj_1 in dataList_1)
-            {
-                data_1[i] = obj_1;
-                i++;
-            }
-                
-            
-
-            return Json(data_1, contentType: "application/json");
+            return Json(fairStats.GetTotalSalesAmountByArticleType().ToArray(), 
+                contentType: "application/json");
         }
 
         [HttpPost]
         public ActionResult GetTotalSalesByArticleType(string fairId)
         {
-            Fair fair = Repository.GetFairById(fairId);
-            FairStatistics fairStats = new FairStatistics(fair);
-            Object[] data_2 = new Object[3];
-            int j = 0;
+            FairStatistics fairStats = new FairStatistics(
+                Repository.GetFairById(fairId));
 
-            List<Object> dataList_2 = fairStats.GetTotalSalesByArticleType();
-
-            foreach (Object obj_2 in dataList_2)
-            {
-                data_2[j] = obj_2;
-                j++;
-            }
-
-            return Json(data_2, contentType: "application/json");
+            return Json(fairStats.GetTotalSalesByArticleType().ToArray(),
+                contentType: "application/json");
         }
 
         public ActionResult GetTotalSalesBySeller(string fairId)
@@ -484,7 +470,7 @@ namespace LivrETS.Controllers
             Fair fair = Repository.GetFairById(fairId);
             FairStatistics fairStats = new FairStatistics(fair);
 
-            List<Object> dataList_2 = fairStats.GetTotalSalesBySeller();
+            List<TabStatistics> dataList_2 = fairStats.GetTotalSalesBySeller();
 
 
             return Json(dataList_2, contentType: "application/json");
@@ -495,10 +481,17 @@ namespace LivrETS.Controllers
             Fair fair = Repository.GetFairById(fairId);
             FairStatistics fairStats = new FairStatistics(fair);
 
-            List<Object> dataList_2 = fairStats.GetTotalSalesByCourse();
+            return Json(fairStats.GetTotalSalesByCourse(), 
+                contentType: "application/json");
+        }
 
-
-            return Json(dataList_2, contentType: "application/json");
+        // POST: /Fair/GetStatsFairs
+        [HttpPost]
+        public string GetStatsFairs()
+        {
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            List<MorrisFairsStatistic> results = new FairStatistics().GetStatsFairs();
+            return jss.Serialize(results);
         }
 
         #endregion

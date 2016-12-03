@@ -37,9 +37,6 @@ namespace LivrETS.Repositories
         public LivrETSRepository()
         {
             _db = new ApplicationDbContext();
-            conn = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;" +
-                                            "Initial Catalog=aspnet-LivrETS-20160629111902;Integrated " +
-                                            "Security=True");
         }
 
         /*************************** Users ***************************/
@@ -120,59 +117,6 @@ namespace LivrETS.Repositories
         }
 
         /*************************** Fairs ***************************/
-
-        public List<Object> GetStatsFairs()
-        {
-            SqlDataReader reader = null;
-            List<Object> DataList = new List<object>();
-            try
-            {
-                SqlCommand cmd = new SqlCommand();
-                
-                cmd.CommandText = "SELECT "+
-                                    "f.Trimester Trimester, YEAR(f.StartDate) StartYear, " +
-                                    "(SELECT COUNT(o.Id) "+
-                                        "FROM Offers o "+
-                                        "WHERE o.MarkedSoldOn = o.StartDate AND o.Fair_Id = f.Id) AS articles, " +
-                                    "(SELECT COUNT(o.Id) "+
-                                        "FROM Offers o "+
-                                        "WHERE o.MarkedSoldOn <> o.StartDate AND o.Fair_Id = f.Id) AS articlesSold " +
-                                    "FROM Fairs f "+
-                                    "ORDER BY f.StartDate ASC";
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = conn;
-                conn.Open();
-                reader = cmd.ExecuteReader();
-
-                
-                while (reader.Read()){
-                    DataList.Add(new
-                                    {
-                                        year = reader["Trimester"] +"-"+reader["StartYear"],
-                                        articles = reader["articles"],
-                                        articles_sold = reader["articlesSold"]
-                                    });
-                    
-                }
-            }
-            finally
-            {
-                // close reader
-                if (reader != null)
-                {
-                    reader.Close();
-                }
-
-                // close connection
-                if (conn != null)
-                {
-                    conn.Close();
-                }
-            }
-
-            return DataList;
-        }
-
         /// <summary>
         /// Gets all the fairs 
         /// </summary>
@@ -563,44 +507,27 @@ namespace LivrETS.Repositories
         /// <returns>An Article or null if not found.</returns>
         public string[] GetISBNByArticle(string articleId)
         {
-            SqlDataReader reader = null;
-            
-            string[] data = { null, null, null};
-            try
+            DataArticleViewModel results = null;
+            string[] data = { null, null };
+
+            using (var db = new ApplicationDbContext())
             {
-                string query = "SELECT ISBN, BarCode, Model " +
+                try
+                {
+                    results = db.Database.SqlQuery<DataArticleViewModel>(
+                            "SELECT ISBN, BarCode " +
                             "FROM Articles " +
-                            "WHERE Id = @id ";
+                            "WHERE Id = @p0", articleId).SingleOrDefault();
 
-                SqlCommand cmd = new SqlCommand(query, conn);
-
-                SqlParameter param = new SqlParameter();
-                cmd.Parameters.AddWithValue("@id", articleId);
-                conn.Open();
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    data[0] = reader["ISBN"].ToString();
-                    data[1] = reader["BarCode"].ToString();
-                    data[2] = reader["Model"].ToString();
                 }
-                    
-            }
-            finally
-            {
-                // close reader
-                if (reader != null)
+                catch (Exception ex)
                 {
-                    reader.Close();
-                }
-
-                // close connection
-                if (conn != null)
-                {
-                    conn.Close();
+                    results = null;
                 }
             }
+
+            data[0] = results.ISBN;
+            data[1] = results.BarCode;
 
             return data;
         }

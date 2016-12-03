@@ -68,18 +68,19 @@
                     if (val.Sold == true) {
                         sold = "hide"
                     }
-                    return "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
+                    var btn1 = "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
                         "data-toggle='modal' data-target='#ModalSaleOffer'" +
-                        "data-status='1' id='sale'>vendu</a> " +
-                        "<a class='btn btn-sm btn-danger btn-sale hide'  data-offer-id='" + val.Id + "' " +
-                        "data-status='0' id='nosale'>non vendu</a>"+
-                        "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer' data-offer-id='" + val.Id + "'>" +
-                        "<span class='glyphicon glyphicon-edit'></span></a> " +
-                        "<a href='#' class='btn btn-sm btn-danger btn-del-offer' data-offer-id='" + val.Id + "'"+
-                        "data-toggle='modal' data-target='#ModalDelOffer'>" +
-                        "<span class='glyphicon glyphicon-trash'></span></a> "
-                        
+                        "data-status='1' id='sale'>vendu</a> ";
+                    var btn2 = "<a class='btn btn-sm btn-danger btn-sale hide'  data-offer-id='" + val.Id + "' " +
+                        "data-status='0' id='nosale'>non vendu</a>";
+                    var btn3 = "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer' "+
+                        "data-offer-id='" + val.Id + "'>" +
+                        "<span class='glyphicon glyphicon-edit'></span></a> ";
+                    var btn4 = "<a href='#' class='btn btn-sm btn-danger btn-del-offer' data-offer-id='" + val.Id + "'" +
+                        "data-toggle='modal' data-target='#ModalDelOffer'><span class='glyphicon glyphicon-trash'></span></a>"
 
+                    return btn1 + " " + btn3 + " " + btn4;
+                     
                 }
             }
         ]

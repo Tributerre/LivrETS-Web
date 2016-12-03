@@ -88,4 +88,10 @@ namespace LivrETS.ViewModels
 
         public List<Course> Courses;
     }
+
+    public class DataArticleViewModel
+    {
+        public string ISBN { get; set; }
+        public string BarCode { get; set; }
+    }
 }

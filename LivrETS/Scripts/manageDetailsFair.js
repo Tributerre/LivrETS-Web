@@ -79,6 +79,7 @@ $(document).ready(function () {
             {
                 class: "text-center",
                 sortable: false,
+                visible: false,
                 data: function (val) {
                     var sold = "";
                     var nosold = "hide";
@@ -113,6 +114,7 @@ $(document).ready(function () {
         columns: [
             {
                 data: function (val) {
+                    console.log(val.Acronym);
                     return val.Acronym;
                 }
             },
@@ -360,7 +362,7 @@ $(document).ready(function () {
             url: "/Fair/GetTotalSalesAmountByArticleType",
             data:JSON.stringify({fairId:$(".fairId").text()}),
             dataType: "json",
-            success: function (data) {
+            success: function (data) { console.log(data)
                 var plotObj = $.plot($("#total_sale_article_type"), data, {
                     series: {
                         pie: {

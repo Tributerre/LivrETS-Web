@@ -27,7 +27,6 @@ using LivrETS.ViewModels;
 using System.Net;
 using System.Web.Security;
 using LivrETS.Repositories;
-using System.Web.Script.Serialization;
 
 namespace LivrETS.Controllers
 {
@@ -354,13 +353,7 @@ namespace LivrETS.Controllers
             }
         }
 
-        // POST: /Admin/GetStatsFairs
-        [HttpPost]
-        public string GetStatsFairs()
-        {
-            JavaScriptSerializer jss = new JavaScriptSerializer();
-            return jss.Serialize(Repository.GetStatsFairs());
-        }
+        
         #endregion
 
         #region Helpers
