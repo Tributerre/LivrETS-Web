@@ -2433,9 +2433,7 @@ blockquote:before {
   text-transform: uppercase;
   margin-bottom: 35px;
 }
-.footer .module .module-body p {
-  text-transform: uppercase;
-}
+
 .footer address {
   line-height: 30px;
   text-transform: uppercase;
@@ -2443,37 +2441,16 @@ blockquote:before {
 .footer address strong {
   font-weight: bold;
 }
-.footer form {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-.footer .input-group {
-  width: 75%;
-}
+
 @media (max-width: 768px) {
   .footer .input-group {
     margin: 0 auto;
   }
 }
-.footer .form-control {
-  border-color: #373636;
-  background-color: #373636;
-  box-shadow: none;
-  color: #666666;
-}
-.footer .form-control:placeholder {
-  color: #666;
-}
-.footer .btn {
-  border-color: #373636;
-  background-color: #373636;
-  box-shadow: none;
-}
+
 .footer .list-social-icons {
   list-style: none;
   padding-left: 0;
-  margin-top: 40px;
-  margin-bottom: 35px;
 }
 .footer .list-social-icons:before,
 .footer .list-social-icons:after {
