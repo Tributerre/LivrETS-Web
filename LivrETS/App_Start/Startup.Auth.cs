@@ -9,6 +9,7 @@ using LivrETS.Models;
 using System.Configuration;
 using Hangfire;
 using Hangfire.SqlServer;
+using Hangfire.Dashboard;
 
 namespace LivrETS
 {
@@ -72,23 +73,19 @@ namespace LivrETS
         
         public void ConfigureHangFire(IAppBuilder app)
         {
-            try
-            {
-                GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection",
-                    new SqlServerStorageOptions { QueuePollInterval = TimeSpan.FromSeconds(1) });
-
-                app.UseHangfireDashboard("/livretsJob", new DashboardOptions
-                {
-                    AuthorizationFilters = new[] { new HangfireAutorizationFilter() }
-                });
-                app.UseHangfireServer();
-
-            }
-            catch(ArgumentException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
             
+            GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection",
+                new SqlServerStorageOptions { QueuePollInterval = TimeSpan.FromSeconds(1) });
+
+            app.UseHangfireServer();
+            ConfigureAuth(app);
+
+            app.UseHangfireDashboard("/livretsJob", new DashboardOptions
+            {
+                Authorization = new[] { new HangfireAutorizationFilter() }
+            });
+            
+
         }
     }
 }
