@@ -32,7 +32,6 @@ namespace LivrETS.Repositories
     public class LivrETSRepository : IDisposable
     {
         private ApplicationDbContext _db;
-        private SqlConnection conn = null;
 
         public LivrETSRepository()
         {
@@ -522,6 +521,7 @@ namespace LivrETS.Repositories
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                     results = null;
                 }
             }
