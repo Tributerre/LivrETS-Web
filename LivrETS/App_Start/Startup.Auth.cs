@@ -63,18 +63,6 @@ namespace LivrETS
             //   appId: "",
             //   appSecret: "");
 
-            //configuration hangfire 
-            /*GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection",
-                new SqlServerStorageOptions { QueuePollInterval = TimeSpan.FromSeconds(1) });
-
-            app.UseHangfireServer();
-            ConfigureAuth(app);
-
-            app.UseHangfireDashboard("/livretsJob", new DashboardOptions
-            {
-                Authorization = new[] { new HangfireAutorizationFilter() }
-            });*/
-
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
                 ClientId = ConfigurationManager.AppSettings["GoogleClientID"],
