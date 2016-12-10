@@ -78,7 +78,6 @@ namespace LivrETS
                 new SqlServerStorageOptions { QueuePollInterval = TimeSpan.FromSeconds(1) });
 
             app.UseHangfireServer();
-            ConfigureAuth(app);
 
             app.UseHangfireDashboard("/livretsJob", new DashboardOptions
             {
