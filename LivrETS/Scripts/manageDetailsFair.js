@@ -85,7 +85,7 @@ $(document).ready(function () {
                     var nosold = "hide";
                     if (val.Sold == true) { 
                         nosold = "";
-                        sold = "hide"
+                        sold = "hide";
                     }
 
                     return "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +

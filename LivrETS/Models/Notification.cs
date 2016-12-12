@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Configuration;
+using System;
 
 namespace LivrETS.Models
 {
@@ -36,6 +37,7 @@ namespace LivrETS.Models
             string footer_mail = "<br><p>L'équipe LivrÈTS</p><p>livrets@tributerre.com</p>"+
                                    "<div style='background:#629c49;padding:3px 10px;color:black;'>"+
                                    "<h1>MERCI</h1>";
+            string message = null;
 
             switch (option)
             {
@@ -77,9 +79,17 @@ namespace LivrETS.Models
                     break;
             }
 
-            string message = System.IO.File.ReadAllText(Path.GetFullPath(
-                System.Web.HttpContext.Current.Server.MapPath(pathMail)
+            try
+            {
+                message = System.IO.File.ReadAllText(Path.GetFullPath(
+                            System.Web.HttpContext.Current.Server.MapPath(pathMail)
                 ));
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
 
             return header_mail +"<div color:black;>"+ message +"</div>"+ footer_mail;
         }

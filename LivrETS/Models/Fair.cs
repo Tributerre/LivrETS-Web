@@ -149,13 +149,41 @@ namespace LivrETS.Models
             return this;
         }
 
-        public static bool CheckStatusFair(Fair fair, List<ApplicationUser> listAllUsers)
+        public static bool CheckStatusFair()
         {
-            List<ApplicationUser> listUsersParicipateFair = listAllUsers.Where(user =>
-                        user.Offers.Where(offer =>
-                        offer.ManagedByFair == true) != null).ToList();
+            List<ApplicationUser> listAllUsers = null;
+            List<ApplicationUser> listUsersParicipateFair = null;
+            Fair fair = null;
 
-            DateTime currentDate = (Convert.ToDateTime(DateTime.Now.AddDays(1).ToString()));
+            using (var db = new ApplicationDbContext())
+            {
+                var now = DateTime.Now;
+                Fair nextFair =  (
+                    from fairF in db.Fairs
+                    where fairF.StartDate > now
+                    orderby fairF.StartDate ascending
+                    select fairF
+                ).FirstOrDefault();
+
+                Fair currentFair = (
+                            from fairdb in db.Fairs
+                            where fairdb.StartDate <= now && now <= fairdb.EndDate
+                            select fairdb
+                        ).FirstOrDefault();
+
+                fair = (currentFair != null) ? currentFair : nextFair;
+
+                if (fair == null)
+                    return false;
+
+                listAllUsers = (from user in db.Users
+                                select user).ToList();
+                listUsersParicipateFair = listAllUsers.Where(user =>
+                                        user.Offers.Where(offer =>
+                                        offer.ManagedByFair == true) != null).ToList();
+            }
+
+            DateTime currentDate = (Convert.ToDateTime(DateTime.Now.ToString()));
 
             DateTime fairPickingEndDate = (Convert.ToDateTime(fair.PickingEndDate));
             DateTime fairPickingStartDate = (Convert.ToDateTime(fair.PickingStartDate));

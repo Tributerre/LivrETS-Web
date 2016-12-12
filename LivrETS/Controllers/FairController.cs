@@ -152,15 +152,10 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult CheckStatusFair()
         {
-            List<ApplicationUser> listAllUsers = Repository.GetAllUsers().ToList();
-
-            Fair fair = Repository.GetCurrentFair();
-            if (fair == null)
-                fair = Repository.GetNextFair();
 
             return Json(new
             {
-                status = Fair.CheckStatusFair(fair, listAllUsers)
+                status = Fair.CheckStatusFair()
             },contentType: "application/json"
             );
         }
