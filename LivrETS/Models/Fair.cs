@@ -173,6 +173,9 @@ namespace LivrETS.Models
 
                 fair = (currentFair != null) ? currentFair : nextFair;
 
+                if (fair == null)
+                    return false;
+
                 listAllUsers = (from user in db.Users
                                 select user).ToList();
                 listUsersParicipateFair = listAllUsers.Where(user =>

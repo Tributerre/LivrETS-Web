@@ -77,8 +77,6 @@ namespace LivrETS
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection",
                 new SqlServerStorageOptions { QueuePollInterval = TimeSpan.FromSeconds(1) });
 
-                
-
                 RecurringJob.AddOrUpdate(() => Fair.CheckStatusFair(), Cron.Daily);
 
                 app.UseHangfireServer();
