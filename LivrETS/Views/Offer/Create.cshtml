@@ -118,22 +118,30 @@
 
             <br />
 
-        <!-- BEGIN Course -->
-            <div class="row">
+        <!-- BEGIN Course --> 
+            <div class="row" id="bloc-course">
+                
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.Acronym, new { @class = "control-label" })
                 </div>
-            </div>
-            <div class="row">
+         
                 <div class="col-md-1">
                     <!-- dropdowns-enhancement.js -->
                     <div class="btn-group">
-                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" id="btn-choice-class">Choisir... <span class="caret"></span></button>
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" id="btn-choice-class">
+                            Choisir... <span class="caret"></span>
+                        </button>
                         <ul id="courses-list" class="dropdown-menu">
-                            <li><input type="radio" id="not-applicable" name="Course" value="not-applicable" /><label for="not-applicable">Non Applicable</label></li>
+                            <li>
+                                <input type="radio" id="not-applicable" name="Course" value="not-applicable" />
+                                <label for="not-applicable">Non Applicable</label>
+                            </li>
                             @foreach (Course course in Model.Courses)
                             {
-                                <li><input type="radio" id="@course.Id" name="Course" value="@course.Acronym" /><label for="@course.Id">@course.Acronym</label></li>
+                                <li>
+                                    <input type="radio" id="@course.Id" name="Course" value="@course.Acronym" />
+                                    <label for="@course.Id">@course.Acronym</label>
+                                </li>
                             }
                         </ul>
                     </div>
@@ -145,7 +153,9 @@
                     <div class="input-group">
                         <input type="text" id="newCourse" class="form-control input-sm" placeholder="Sigle du cours" />
                         <span class="input-group-btn">
-                            <button id="btn-newCourse" class="btn btn-default btn-sm" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                            <button id="btn-newCourse" class="btn btn-default btn-sm" type="button">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
                         </span>
                     </div>
                 </div>

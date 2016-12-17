@@ -222,9 +222,11 @@ $(document).ready(function () {
         if (value === 'C') {
             $("#calculator-models-dropdown").show('fast');
             $("#isbn-text-input").hide('fast');
+            $("#bloc-course").hide('fast');
         } else {
             $("#calculator-models-dropdown").hide('fast');
             $("#isbn-text-input").show('fast');
+            $("#bloc-course").show('fast');
         } 
     }
 });

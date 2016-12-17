@@ -128,7 +128,7 @@ namespace LivrETS.Controllers
                         {
                             Title = model.Title,
                             Model = model.CalculatorModel,
-                            Course = course
+                            Course = Repository.GetCourseByAcronym("mat145")
                         };
                         break;
                 }
