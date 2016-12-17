@@ -114,7 +114,9 @@ namespace LivrETS.Models
                                 "INNER JOIN Sales s ON u.Id = s.SellerID " +
                                 "INNER JOIN SaleItems si ON s.Id = si.sale_Id " +
                                 "INNER JOIN Offers o ON o.Id = si.OfferID " +
-                                "GROUP BY u.FirstName, u.LastName, u.BarCode").ToList();
+                                "INNER JOIN Fairs f ON f.Id = o.Fair_id " +
+                                "WHERE f.Id = @p0 " +
+                                "GROUP BY u.FirstName, u.LastName, u.BarCode", this.fair.Id).ToList();
                 }
                 catch (Exception ex)
                 {
@@ -138,9 +140,11 @@ namespace LivrETS.Models
                                 "COUNT(si.Id) Total FROM Sales s " +
                                 "INNER JOIN SaleItems si ON s.Id = si.sale_Id " +
                                 "INNER JOIN Offers o ON o.Id = si.OfferID " +
+                                "INNER JOIN Fairs f ON f.Id = o.Fair_id " +
                                 "INNER JOIN Articles a ON o.ArticleId = a.Id " +
                                 "INNER JOIN Courses c ON a.CourseID = c.Id " +
-                                "GROUP BY c.Acronym").ToList();
+                                "WHERE f.Id = @p0 " +
+                                "GROUP BY c.Acronym", this.fair.Id).ToList();
                 }
                 catch (Exception ex)
                 {

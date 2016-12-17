@@ -235,7 +235,8 @@
                                         <input id="imageupload" type="file" class="upload" />
                                     </div>
 
-                                    <div id="image-progress" class="progress pull-right" style="width: 15%; height: 10px; margin-top: 5px;" hidden>
+                                    <div id="image-progress" 
+                                         class="progress pull-right" style="width: 15%; height: 10px; margin-top: 5px;" hidden>
                                         <div class="progress-bar"
                                              role="progressbar"
                                              aria-valuemin="0"
@@ -244,6 +245,20 @@
                                 </h3>
                             </div>
                             <div class="panel-body">
+                                @{
+                                
+                                    if (Session["images"] != null){
+                                        ICollection<OfferImage> images = 
+                                            (ICollection<OfferImage>)Session["images"];
+
+                                        foreach(OfferImage img in images)
+                                        {
+                                            <img src="@img.RelativeThumbnailPath" class="img-responsive img-rounded"
+                                                    alt="Preview image" width="10%"/>
+                                        }
+                                    }
+                                    
+                                }
                             </div>
                         </div>
                     </div>

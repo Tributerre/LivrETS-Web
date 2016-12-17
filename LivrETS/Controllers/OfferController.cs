@@ -369,7 +369,7 @@ namespace LivrETS.Controllers
                             Repository.DisableOffer(offerIds);
 
             if (!status)
-                message = "Erreur de suppression";
+                message = "Erreur lors de la suppression";
 
             return Json(new {
                 status = status,
