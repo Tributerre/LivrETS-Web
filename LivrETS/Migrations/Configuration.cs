@@ -50,6 +50,15 @@ namespace LivrETS.Migrations
                 new IdentityRole { Name = "Administrator" },
                 new IdentityRole { Name = "Clerk" }
             );
+
+            context.Courses.AddOrUpdate(
+                course => course.Acronym,
+                new Models.Course
+                {
+                    Acronym = "mat145",
+                    Title = "Sample Title"
+                }    
+            );
         }
     }
 }

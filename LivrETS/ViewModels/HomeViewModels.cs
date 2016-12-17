@@ -69,7 +69,7 @@ namespace LivrETS.ViewModels
         [Display(Name = "Prix de l'article")]
         public float Price { get; set; }
 
-        [Required(ErrorMessage = "Veuillez choisir un cours ou «Non Applicable»")]
+        
         [Display(Name = "Cours")]
         public string Acronym { get; set; }
 

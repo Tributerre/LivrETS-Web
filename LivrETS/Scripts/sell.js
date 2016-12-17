@@ -222,9 +222,19 @@ $(document).ready(function () {
         if (value === 'C') {
             $("#calculator-models-dropdown").show('fast');
             $("#isbn-text-input").hide('fast');
+            $("#bloc-course").hide('fast');
+            /*$("#courses-list").children("li").each(function(){
+                var $me = $(this);
+                if ($me.text() == "mat145") {
+                    $me.attr("selected");
+                    $me.children("input").attr("checked");
+                    $("#btn-choice-class").text("mat145")
+                }
+            });*/
         } else {
             $("#calculator-models-dropdown").hide('fast');
             $("#isbn-text-input").show('fast');
+            $("#bloc-course").show('fast');
         } 
     }
 });
