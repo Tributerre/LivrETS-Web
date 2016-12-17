@@ -79,7 +79,7 @@ $(document).ready(function () {
             {
                 class: "text-center",
                 sortable: false,
-                visible: true,
+                visible: false,
                 data: function (val) {
                     var sold = "";
                     var nosold = "hide";
