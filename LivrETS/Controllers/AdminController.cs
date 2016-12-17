@@ -311,8 +311,11 @@ namespace LivrETS.Controllers
         [HttpDelete]
         public ActionResult DeleteFair(string id)
         {
-            Repository.DeleteFair(id);
-            return Json(new { }, contentType: "application/json");
+            bool status = Repository.DeleteFair(id);
+            return Json(new {
+                status = status,
+                message = (status) ? "suppression reussit" : "Erreur"
+            }, contentType: "application/json");
         }
 
         // POST: /Admin/GetFairData
