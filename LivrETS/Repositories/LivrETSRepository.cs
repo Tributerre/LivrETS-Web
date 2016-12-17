@@ -234,35 +234,38 @@ namespace LivrETS.Repositories
 
             return result;
         }
-        public void DeleteFair(string id)
+        public bool DeleteFair(string id)
         {
             Fair fair = this.GetFairById(id);
 
-            if (fair.Offers != null)
+            if (fair.Offers == null)
+                return false;
+            
+            Offer[] tabOffer = fair.Offers.ToArray();
+            for (int j = 0; j < tabOffer.Length; j++)
             {
-                Offer[] tabOffer = fair.Offers.ToArray();
-                for (int j = 0; j < tabOffer.Length; j++)
-                {
-                    Offer offer = tabOffer[j];
+                Offer offer = tabOffer[j];
                     
 
-                    if (offer.Images != null)
+                if (offer.Images != null)
+                {
+                    OfferImage[] tabOfferImg = offer.Images.ToArray();
+                    for (int i = 0; i < tabOfferImg.Length; i++)
                     {
-                        OfferImage[] tabOfferImg = offer.Images.ToArray();
-                        for (int i = 0; i < tabOfferImg.Length; i++)
-                        {
-                            _db.OfferImage.Remove(tabOfferImg[i]);
-                            tabOfferImg[i].Delete();
-                        }
+                        _db.OfferImage.Remove(tabOfferImg[i]);
+                        tabOfferImg[i].Delete();
                     }
-                    _db.Articles.Remove(offer.Article);
-                    _db.Offers.Remove(offer);
                 }
+                _db.Articles.Remove(offer.Article);
+                _db.Offers.Remove(offer);
             }
+            
             
             _db.Fairs.Remove(fair);
             
             _db.SaveChanges();
+
+            return true;
         }
 
         /*public ApplicationUser GetUserByOffer(string Id)

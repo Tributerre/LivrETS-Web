@@ -18,14 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 $(document).ready(function () {
     //init managefairs table width datables plugins
     //$.fn.dataTable.ext.errMode = 'throw';
-    $('table').DataTable({
+    var table = $('table').DataTable({
         processing: true,
         ajax: {
             url: "/Admin/ListFairs",
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
-                console.log(val.listFairs)
                 return val.listFairs
             }
         },
@@ -61,12 +60,16 @@ $(document).ready(function () {
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
-                    return "<a href='/Admin/ManageDetailsFair/" + val.Id + "' class='btn btn-sm btn-info' data-fair-id='" +
-                        val.Id + "'><span class='glyphicon glyphicon-info-sign'></span></a> "+
-                        "<a href='#' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='" +
-                        val.Id + "' ><span class='glyphicon glyphicon-edit'></span></a> " +
-                    "<a href='#' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='" +
-                        val.Id + "'><span class='glyphicon glyphicon-trash'></span></a>";
+
+                    var btn1 = "<a href='/Admin/ManageDetailsFair/" + val.Id + "' class='btn btn-sm btn-info' "+
+                    "data-fair-id='" + val.Id + "'><span class='glyphicon glyphicon-info-sign'></span></a>";
+                    var btn2 = "<a href='#' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='" +
+                                val.Id + "' ><span class='glyphicon glyphicon-edit'></span></a>";
+                    var btn3 = "<a href='#' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='" +
+                                val.Id + "' data-toggle='modal' data-target='#ModalDelFair'>" +
+                                "<span class='glyphicon glyphicon-trash'></span></a>"
+
+                    return btn1 + " " + btn2 + " " + btn3;
                     
                 }
             }
@@ -84,9 +87,23 @@ $(document).ready(function () {
     });
 
     // Delete fair event.
+    //sale confirmation
     $('table tbody').on("click", ".btn-delete-fair", function () {
         var $btn = $(this);
         var fairId = $btn.data("fair-id");
+        $("#btn-confirm-del-fair").attr("data-fair-id", fairId);
+    });
+
+    $("#btn-confirm-del-fair").on("click", function () {
+        var $btn = $(this);
+        var fairId = $btn.data("fair-id");
+        var $modal = $('#ModalDelFair');
+
+        $txtError = $modal.find(".text-danger");
+        $loading = $modal.find(".fa-spinner");
+        $loading.removeClass("hide");
+        $txtError.text("").addClass("hide");
+        $btn.prop("disabled", true);
        
         $btn.prop("disabled", true);
         $.ajax({
@@ -97,14 +114,22 @@ $(document).ready(function () {
             data: JSON.stringify({
                 id: fairId
             }),
-            success: function () {
-                $btn.parents("tr").remove();
-                updateDeleteSelectedView();
+            success: function (data) { console.log(data)
+                $btn.prop("disabled", false);
+                $loading.addClass("hide");
+                if (data.status == 1) {                   
+                    $modal.modal('hide');
+                    table.ajax.reload();
+                } else {
+                    $txtError.text(data.message).removeClass("hide");
+                }
+                
             },
             error: function () {
-                button.prop("disabled", false);
-                $("#error-message").text("Une erreur est survenue lors de la suppression de la foire.");
-                $("#errors").show("slow");
+                $btn.prop("disabled", false);
+                $txtError.text("Une erreur est survenue lors de la suppression de la foire.")
+                        .removeClass("hide");
+                $loading.addClass("hide");
             }
         });
     });

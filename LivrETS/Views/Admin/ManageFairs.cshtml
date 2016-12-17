@@ -181,6 +181,36 @@
         </div>
     </div>
 </div>
+
+<!-- Modal delete fair -->
+<div class="modal fade" id="ModalDelFair" tabindex="-1" role="dialog" aria-labelledby="ModalDelFairLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="ModalDelFairLabel">Confirmation de suppression de foire</h4>
+            </div>
+            <div class="modal-body">
+                <p>Confirmer votre supression</p>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <p class="text-danger hide">
+                        Une erreur est survenue. Veillez recharger la page.
+                    </p>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-success" data-fair-id="0" id="btn-confirm-del-fair">
+                    <i class="fa fa-spinner fa-pulse fa-fw hide"></i>
+                    <span class="sr-only">Loading...</span>
+                    Confirmer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
     <script src="~/Scripts/moment.min.js"></script>
     <script src="~/Scripts/moment-fr-ca.js"></script>
