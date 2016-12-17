@@ -214,16 +214,25 @@ namespace LivrETS.Repositories
         /*************************** Offer ***************************/
         public ApplicationUser GetOfferByUser(Offer offer)
         {
-            List<ApplicationUser> listUsers = this.GetAllUsers().ToList();
+            if (offer == null)
+                return null;
 
-            foreach(ApplicationUser user in listUsers)
+            ApplicationUser result = null;
+
+            try
             {
-                if(user.Offers.Contains(offer)){
-                    return user;
-                }
+                result = _db.Database.SqlQuery<ApplicationUser>(
+                            "SELECT * " +
+                            "FROM AspNetUsers u " +
+                            "INNER JOIN Offers o ON o.ApplicationUser_Id = u.Id " +
+                            "WHERE o.Id = @p0 ", offer.Id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
-            return null;
+            return result;
         }
         public void DeleteFair(string id)
         {

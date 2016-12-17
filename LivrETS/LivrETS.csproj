@@ -531,6 +531,9 @@
     <Content Include="Views\Admin\ManageDetailsFair.cshtml" />
     <Content Include="Views\Admin\ManageOffers.cshtml" />
     <Content Include="Views\Account\Historic.cshtml" />
+    <Content Include="Views\Shared\_HeaderAdmin.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Shared\_ProfileUserLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

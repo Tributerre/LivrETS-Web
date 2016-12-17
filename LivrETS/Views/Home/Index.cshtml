@@ -133,22 +133,27 @@
                                                 <div class="col-md-4 col-sm-4">
                                                     <a href="/Offer/Details/@item.Id?title=@item.Title">
                                                         <img src="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())"
-                                                             data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" alt="@item.Title"
+                                                             data-echo="@HomeHelpers.ThbImgArticleHelper(item.Images.FirstOrDefault())" 
+                                                             alt="@item.Title"
                                                              class="center-block img-responsive avatar-article"  title="@item.Title">
                                                     </a>
                                                 </div>
                                                 <div class="col-md-8 col-sm-8 text-md-center">
                                                     <div class="product-detail">
-                                                        <h3 class="media-heading product-name">@Html.ActionLink(HomeHelpers.TroncText(item.Title, 40),
-                                                                                              "Details", "Offer",
-                                                                                              new { @id = item.Id, title = item.Title }, null)</h3>
+                                                        <h3 class="media-heading product-name">
+                                                            @Html.ActionLink(HomeHelpers.TroncText(item.Title, 40),
+                                                                                "Details", "Offer",
+                                                                                new { @id = item.Id, title = item.Title }, null)
+                                                        </h3>
                                                         <p>@item.Article.Course.Acronym</p>
                                                         <p class="product-price"><span class="price">$ @item.Price</span></p>
                                                         <p class="product-description">@item.Article.FairState</p>
                                                     </div><!-- /.product-detail -->
                                                     <div class="product-actions">
                                                         <div class="btn-group">
-                                                            <a href="cart.html" class="btn btn-secondary strong uppercase btn-add-to-cart hide" title="favoris">
+                                                            <a href="cart.html" 
+                                                               class="btn btn-secondary strong uppercase btn-add-to-cart hide" 
+                                                               title="favoris">
                                                                 <span class="fa fa-heart"></span>
                                                             </a>
                                                         </div>
@@ -178,8 +183,14 @@
                     <div class="sidebar-section col-sm-4 col-xs-4 col-md-12 col-lg-12">
                         <h4 class="sidebar-title">Affichage</h4>
                         <ul class="nav nav-tabs view-switcher" role="tablist" id="myTab">
-                            <li class="active"><a href="#grid" role="tab" data-toggle="tab"> <span class="glyphicon glyphicon-th"></span></a></li>
-                            <li><a href="#list" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-th-list"></span></a></li>
+                            <li class="active">
+                                <a href="#grid" role="tab" data-toggle="tab">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </a>
+                            </li>
+                            <li><a href="#list" role="tab" data-toggle="tab">
+                                <span class="glyphicon glyphicon-th-list"></span></a>
+                            </li>
                         </ul><!-- /.nav -->
                     </div><!-- /.sidebar section -->
                     <div class="sidebar-section col-sm-8 col-xs-8 col-md-12 col-lg-12">
@@ -194,15 +205,19 @@
                                 <h4 class="sidebar-title text-md-center">Catégorie</h4>
                                 <ul class="list-checkbox list-unstyled text-md-center">
                                     <li id="sort-book">@Html.ActionLink("Livres", "Index", "Home", 
-                                                      new { sortOrder = Article.BOOK_CODE }, new { @class = "sort-link" })</li>
+                                                      new { sortOrder = Article.BOOK_CODE }, 
+                                                      new { @class = "sort-link" })</li>
                                     <li id="sort-nc">@Html.ActionLink("Notes de cours", "Index", "Home", 
-                                                    new { sortOrder = Article.COURSE_NOTES_CODE }, new { @class = "sort-link" })</li>
+                                                    new { sortOrder = Article.COURSE_NOTES_CODE }, 
+                                                    new { @class = "sort-link" })</li>
                                     <li id="sort-calc">@Html.ActionLink("Calculatrice", "Index", "Home", 
-                                                      new { sortOrder = Article.CALCULATOR_CODE }, new { @class = "sort-link" })</li>
+                                                      new { sortOrder = Article.CALCULATOR_CODE }, 
+                                                      new { @class = "sort-link" })</li>
                                 </ul><!-- /.list-checkbox -->
                             </section><!-- /.category -->
                             <section>
-                            @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "block-search" }))
+                            @using (Html.BeginForm("Index", "Home", FormMethod.Get, 
+                                new { @class = "block-search" }))
                             {
                                 <h4 class="sidebar-title text-md-center">Prix</h4>
                                 <div class="row">

@@ -230,8 +230,8 @@ namespace LivrETS.Controllers
 
             if(fair == null)
                 return Json(new {
-                status = status,
-                message = "La foire concernée n'a pas été retrouvé"
+                    status = status,
+                    message = "La foire concernée n'a pas été retrouvé"
                 }, contentType: "application/json");
 
             var seller = Repository.GetUserBy(Id: User.Identity.GetUserId());
@@ -253,7 +253,6 @@ namespace LivrETS.Controllers
                 }
                 catch (RegexNoMatchException ex)
                 {
-                    message = ex.Message;
                     noMatchExists = true;
                     return null;
                 }
@@ -265,7 +264,7 @@ namespace LivrETS.Controllers
                 return Json(new
                 {
                     status = status,
-                    message = message
+                    message = "erreur"
                 }, contentType: "application/json");
                 //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -285,7 +284,8 @@ namespace LivrETS.Controllers
                 ApplicationUser user = Repository.GetOfferByUser(currentOffer);
 
                 NotificationManager.getInstance().sendNotification(
-                new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, Repository.GetAllUsers().ToList())
+                    new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, 
+                        user)
                 );
             }
 
