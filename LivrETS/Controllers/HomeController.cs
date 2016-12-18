@@ -23,6 +23,7 @@ using LivrETS.Repositories;
 using PagedList;
 using Hangfire;
 using Microsoft.AspNet.Identity;
+using System.Configuration;
 
 namespace LivrETS.Controllers
 {
@@ -63,27 +64,14 @@ namespace LivrETS.Controllers
             IEnumerable<Offer> offers = null;
 
             if (searchString != null)
-            {
                 page = 1;
-            }
             else
-            {
                 searchString = currentFilter;
-            }
-
-            //List<ApplicationUser> listAllUsers = new List<ApplicationUser>();
-            //ApplicationUser user = Repository.GetUserBy(null, User.Identity.GetUserId());
-            //listAllUsers.Add(user);
-            //List<ApplicationUser> listAllUsers = Repository.GetAllUsers().ToList();
-            //listAllUsers.Add(user);
-            /*NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.STARTFAIRPICKING, listAllUsers)
-                );*/
-
+            
             ViewBag.CurrentFilter = searchString;
             offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);
 
-            int pageSize = 20;
+            int pageSize = int.Parse(ConfigurationManager.AppSettings["MAX_HOME_PAGE"]);
             int pageNumber = (page ?? 1);
 
             return View(offers.ToList().ToPagedList(pageNumber, pageSize));
