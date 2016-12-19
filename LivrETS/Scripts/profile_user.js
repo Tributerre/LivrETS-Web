@@ -66,7 +66,7 @@
                 sortable: false,
                 data: function (val) {
                     if (val.ManagedByFair)
-                        return "Article de foire";
+                        return "Article de la foire";
 
                     var sold = "";
                     if (val.Sold == true) {
