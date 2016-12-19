@@ -63,11 +63,20 @@ $(document).ready(function () {
             {
                 class: "text-center",
                 data: function (val) {
-                    if (val.ManagedByFair) {
-                        return "Oui";
-                    } else {
-                        return "Non";
-                    }
+                    var fairState = val.Article.FairState;
+                    var UNKNOWN = 0,
+                        PICKED = 1,
+                        SOLD = 2,
+                        RETREIVED = 3;
+
+                    if (fairState == RETREIVED)
+                        return "Récupéré";
+                    else if (fairState == PICKED)
+                        return "Ceuilli";
+                    else if (fairState == SOLD)
+                        return "Vendu";
+
+                    return "En stock";
                 }
             },
             {
