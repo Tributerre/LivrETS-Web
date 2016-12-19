@@ -419,7 +419,8 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ConfirmPrint()
         {
-            if (Session[SELLER_PICKED_ARTICLES] == null || Session[SELLER] == null || Session[LAST_NUMBER_OF_STICKERS_LEFT_ON_SHEET] == null)
+            if (Session[SELLER_PICKED_ARTICLES] == null || Session[SELLER] == null || 
+                Session[LAST_NUMBER_OF_STICKERS_LEFT_ON_SHEET] == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var offersPicked = Session[SELLER_PICKED_ARTICLES] as IEnumerable<string>;
