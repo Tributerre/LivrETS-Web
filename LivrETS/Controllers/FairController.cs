@@ -207,14 +207,13 @@ namespace LivrETS.Controllers
                 Repository.AttachToContext(offer);
                 offer.Article.MarkAsRetrieved();
                 Repository.Update();
-            }
 
-            //send notification mail
-            NotificationManager.getInstance().sendNotification(
-                new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION, 
-                Repository.GetAllUsers().ToList())
-                );
-            
+                //send notification mail
+                NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION,
+                                Repository.GetOfferByUser(offer))
+                    );
+            }
 
             return Json(new { }, contentType: "application/json");
         }
@@ -281,11 +280,9 @@ namespace LivrETS.Controllers
                     Offer = currentOffer
                 });
 
-                ApplicationUser user = Repository.GetOfferByUser(currentOffer);
-
                 NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, 
-                        user)
+                    new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR,
+                        Repository.GetOfferByUser(currentOffer))
                 );
             }
 
@@ -374,7 +371,8 @@ namespace LivrETS.Controllers
 
             //send notification mail
             NotificationManager.getInstance().sendNotification(
-                new Notification(NotificationOptions.ARTICLEPICKEDCONFIRMATION, Repository.GetAllUsers().ToList())
+                new Notification(NotificationOptions.ARTICLEPICKEDCONFIRMATION, 
+                        Repository.GetOfferByUser(article: article))
                 );
             return Json(new { }, contentType: "application/json");
         }

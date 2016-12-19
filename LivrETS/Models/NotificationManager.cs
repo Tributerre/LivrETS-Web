@@ -53,19 +53,16 @@ namespace LivrETS.Models
                     {
                         mail.Body = string.Format(notification.template, user.FirstName);
                         mail.To.Add(user.Email);
-                        
                     }
-                    SmtpServer.Send(mail);
                 }
                 else
                 {
                     ApplicationUser user = notification.user;
                     mail.Body = string.Format(notification.template, user.FirstName);
-                    mail.To.Add(user.Email);
-                    SmtpServer.Send(mail);
+                    mail.To.Add(user.Email); 
                 }
                 
-                
+                SmtpServer.Send(mail);
                 return true;
             }
             catch (Exception ex)
