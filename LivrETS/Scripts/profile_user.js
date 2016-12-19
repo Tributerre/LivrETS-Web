@@ -65,6 +65,9 @@
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
+                    if (val.ManagedByFair)
+                        return "Article de foire";
+
                     var sold = "";
                     if (val.Sold == true) {
                         sold = "hide"
