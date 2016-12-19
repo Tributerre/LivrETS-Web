@@ -212,20 +212,28 @@ namespace LivrETS.Repositories
 
 
         /*************************** Offer ***************************/
-        public ApplicationUser GetOfferByUser(Offer offer)
+        public ApplicationUser GetOfferByUser(Offer offer = null, Article article = null)
         {
-            if (offer == null)
+            if (offer == null && article == null)
                 return null;
 
             ApplicationUser result = null;
 
             try
             {
-                result = _db.Database.SqlQuery<ApplicationUser>(
-                            "SELECT * " +
-                            "FROM AspNetUsers u " +
-                            "INNER JOIN Offers o ON o.ApplicationUser_Id = u.Id " +
-                            "WHERE o.Id = @p0 ", offer.Id).FirstOrDefault();
+                if(offer != null)
+                    result = _db.Database.SqlQuery<ApplicationUser>(
+                                "SELECT * " +
+                                "FROM AspNetUsers u " +
+                                "INNER JOIN Offers o ON o.ApplicationUser_Id = u.Id " +
+                                "WHERE o.Id = @p0 ", offer.Id).FirstOrDefault();
+                else
+                    result = _db.Database.SqlQuery<ApplicationUser>(
+                                "SELECT * " +
+                                "FROM AspNetUsers u " +
+                                "INNER JOIN Offers o ON o.ApplicationUser_Id = u.Id "+
+                                "INNER JOIN Articles a ON o.ArticleID = a.Id "+
+                                "WHERE a.Id = @p0 ", article.Id).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -268,43 +276,6 @@ namespace LivrETS.Repositories
 
             return true;
         }
-
-        /*public ApplicationUser GetUserByOffer(string Id)
-        {
-            SqlConnection con = new SqlConnection("Data Source=(LocalDb)\\MSSQLLocalDB;" +
-                "Initial Catalog=aspnet-LivrETS-20160629111902;Integrated Security=True");
-
-            SqlCommand cmd = new SqlCommand();
-            SqlDataReader reader;
-            cmd.CommandText = "SELECT * " +
-                                    "FROM Offers o " +
-                                    "WHERE o.Id = o. AND o.Fair_Id = f.Id) AS articles, " +
-                                "(SELECT COUNT(o.Id) " +
-                                    "FROM Offers o " +
-                                    "WHERE o.MarkedSoldOn <> o.StartDate AND o.Fair_Id = f.Id) AS articlesSold " +
-                                "FROM Fairs f " +
-                                "ORDER BY f.StartDate ASC";
-            cmd.CommandType = CommandType.Text;
-            cmd.Connection = con;
-            con.Open();
-            reader = cmd.ExecuteReader();
-
-            List<Object> DataList = new List<object>();
-            while (reader.Read())
-            {
-                DataList.Add(new
-                {
-                    year = reader["Trimester"] + "-" + reader["StartYear"],
-                    articles = reader["articles"],
-                    articles_sold = reader["articlesSold"]
-                });
-
-            }
-            con.Close();
-
-            return DataList;
-            return null;
-        }*/
 
         /// <summary>
         /// Gets all the offers 

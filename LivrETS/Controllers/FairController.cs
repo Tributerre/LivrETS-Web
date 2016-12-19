@@ -207,14 +207,13 @@ namespace LivrETS.Controllers
                 Repository.AttachToContext(offer);
                 offer.Article.MarkAsRetrieved();
                 Repository.Update();
-            }
 
-            //send notification mail
-            NotificationManager.getInstance().sendNotification(
-                new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION, 
-                Repository.GetAllUsers().ToList())
-                );
-            
+                //send notification mail
+                NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION,
+                                Repository.GetOfferByUser(offer))
+                    );
+            }
 
             return Json(new { }, contentType: "application/json");
         }
@@ -281,11 +280,9 @@ namespace LivrETS.Controllers
                     Offer = currentOffer
                 });
 
-                ApplicationUser user = Repository.GetOfferByUser(currentOffer);
-
                 NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR, 
-                        user)
+                    new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR,
+                        Repository.GetOfferByUser(currentOffer))
                 );
             }
 
@@ -374,7 +371,8 @@ namespace LivrETS.Controllers
 
             //send notification mail
             NotificationManager.getInstance().sendNotification(
-                new Notification(NotificationOptions.ARTICLEPICKEDCONFIRMATION, Repository.GetAllUsers().ToList())
+                new Notification(NotificationOptions.ARTICLEPICKEDCONFIRMATION, 
+                        Repository.GetOfferByUser(article: article))
                 );
             return Json(new { }, contentType: "application/json");
         }
@@ -419,7 +417,8 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ConfirmPrint()
         {
-            if (Session[SELLER_PICKED_ARTICLES] == null || Session[SELLER] == null || Session[LAST_NUMBER_OF_STICKERS_LEFT_ON_SHEET] == null)
+            if (Session[SELLER_PICKED_ARTICLES] == null || Session[SELLER] == null || 
+                Session[LAST_NUMBER_OF_STICKERS_LEFT_ON_SHEET] == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var offersPicked = Session[SELLER_PICKED_ARTICLES] as IEnumerable<string>;
