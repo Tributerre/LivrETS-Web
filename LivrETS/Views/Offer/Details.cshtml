@@ -38,7 +38,7 @@
         <h2 class="page-title text-md-center">@Model.Title</h2>
         <div class="row" id="primary-info">
             <div class="col-md-6" id="info-cours">@Model.Article.Course.Acronym</div>
-            <div class="col-md-6" id="info-price">@Model.Price $CAD</div> 
+            <div class="col-md-6" id="info-price">@Model.Price.ToString("00.00") $</div> 
         </div>
         <div class="row product-carousel">
             <div class="col-md-6 col-md-push-3 col-sm-12 col-xs-12">
@@ -107,7 +107,7 @@
                                     <li><b class="primary-color uppercase">Email :</b> @user.Email </li>
                                 </ul>
                                 <h4 class="control-label text-md-center">Price</h4>
-                                <p>$ @Model.Price $CAD</p>
+                                <p>@Model.Price.ToString("00.00") $</p>
                             </div><!-- /.form-group -->
                         </div><!-- /.col-md-7 -->
                         <div class="col-md-5 col-sm-5 col-xs-12 hide">

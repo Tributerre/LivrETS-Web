@@ -74,7 +74,7 @@
 <div class="content">
     <div class="container">
         <div class="row">
-            <!-- ========================================================= CONTENT ============================================================= -->
+            <!-- =================================================== CONTENT ======================================================= -->
             <div class="col-md-9 col-md-push-3">
                 <div class="featured-product margin-top-40">
 
@@ -109,7 +109,7 @@
                                                         </h3>
                                                     
                                                         <p class="product-price">
-                                                            <span class="price">$@item.Price</span>&nbsp;&nbsp;&nbsp;
+                                                            <span class="price">@item.Price.ToString("00.00") $</span>&nbsp;&nbsp;&nbsp;
                                                             <a href="#" title="favoris" class="hide">
                                                                 <span class="fa fa-heart"></span>
                                                             </a>
@@ -146,7 +146,7 @@
                                                                                 new { @id = item.Id, title = item.Title }, null)
                                                         </h3>
                                                         <p>@item.Article.Course.Acronym</p>
-                                                        <p class="product-price"><span class="price">$ @item.Price</span></p>
+                                                        <p class="product-price"><span class="price">@item.Price.ToString("00.00") $</span></p>
                                                         <p class="product-description">@item.Article.FairState</p>
                                                     </div><!-- /.product-detail -->
                                                     <div class="product-actions">
@@ -286,7 +286,7 @@
                                                     @Html.ActionLink(HomeHelpers.TroncText(item.Title, 15), "Details", "Offer", 
                                                                         new { id = item.Id, title = item.Title }, null)
                                                 </h3>
-                                                <p class="product-price"><span class="price">$@item.Price</span></p>
+                                                <p class="product-price"><span class="price">@item.Price.ToString("00.00") $</span></p>
                                             </div><!-- /.product-detail -->
                                         </div><!-- /.product-item -->
                                     </div><!-- /.product-item-grid-view -->

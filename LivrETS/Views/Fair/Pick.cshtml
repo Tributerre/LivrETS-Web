@@ -63,7 +63,8 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100" style="width: @progress%; min-width: 2em;">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="@progress" aria-valuemin="0" 
+                             aria-valuemax="100" style="width: @progress%; min-width: 2em;">
                             @progress%
                         </div>
                     </div>
@@ -77,13 +78,18 @@
                     @switch ((int)(Model.CurrentStep))
                     {
                         case 0:
-                            <h3>Num&eacute;risez ou entrez manuellement<br />le code &agrave; barres de la<br />carte &eacute;tudiante du vendeur.</h3>
+                            <h3>Num&eacute;risez ou entrez manuellement<br />le code &agrave; barres de la<br />
+                                carte &eacute;tudiante du vendeur.
+                            </h3>
                             <div class="row">
                                 <div class="col-md-4">
-                                    @Html.TextBoxFor(model => model.UserBarCode, new { @class = "form-control", placeholder = "Ex: FF000000", autofocus = "autofocus" })
+                                    @Html.TextBoxFor(model => model.UserBarCode,
+                                        new { @class = "form-control", placeholder = "Ex: FF000000",
+                                            autofocus = "autofocus" })
                                 </div>
                                 <div class="col-md-12">
-                                    @Html.ValidationMessageFor(model => model.UserBarCode, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.UserBarCode, "", 
+                                        new { @class = "text-danger" })
                                 </div>
                             </div>
                             break;
@@ -91,7 +97,8 @@
                         case 1:
                             <div class="row">
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" id="article-code-input" placeholder="Code à barres ou ISBN de l'article" autofocus />
+                                    <input type="text" class="form-control" id="article-code-input" 
+                                           placeholder="Code à barres ou ISBN de l'article" autofocus />
                                 </div>
                             </div>
                             <div class="row">
@@ -134,7 +141,10 @@
                                                             }
                                                         </td>
                                                         <td>
-                                                            <button class="btn btn-sm btn-success pick-article-btn" data-article-id="@offer.Article.Id" type="button">Cueillir</button>
+                                                            <button class="btn btn-sm btn-success pick-article-btn" 
+                                                                    data-article-id="@offer.Article.Id" type="button">
+                                                                        Cueillir
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 }

@@ -55,9 +55,6 @@ namespace LivrETS.Controllers
             Offer offer = Repository.GetOfferBy(id);
             ViewBag.user = Repository.GetOfferByUser(offer);
 
-            if (offer == null)
-                throw new HttpException(404, "Page not Found");
-
             return View(offer);
         }
 
