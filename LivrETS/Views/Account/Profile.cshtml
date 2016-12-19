@@ -77,12 +77,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
                 <div class="row" style="margin-top: 5px;">
                     <label for="BarCode" class="col-md-2 control-label">
-                        N&deg; carte étudiant<a style="color: black;"
-                                                       role="button"
-                                                       data-content='<img class="img-rounded" width="200px" height="125px" alt="student_card_example.jpg" src="/images/student_card_example.jpg">'
-                                                       data-html="true"
-                                                       data-placement="top"
-                                                       data-toggle="popover">
+                        N&deg; carte étudiant
+                        <a style="color: black;"
+                                role="button"
+                                data-content='<img class="img-rounded" width="200px" height="125px" alt="student_card_example.jpg" src="/images/student_card_example.jpg">'
+                                data-html="true"
+                                data-placement="top"
+                                data-toggle="popover">
                             <span class="glyphicon glyphicon-question-sign"></span>
                         </a>
                     </label>
@@ -102,5 +103,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 } 
 </div>
-
+@section Scripts {
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+    </script>
+}
 
