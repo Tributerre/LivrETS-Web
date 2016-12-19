@@ -45,7 +45,7 @@ $(document).ready(function () {
             {
                 class: "text-center",
                 data: function (val) {
-                    return val.Price;
+                    return parseFloat(val.Price).toFixed(2) + " $";;
                 }
             },
             {

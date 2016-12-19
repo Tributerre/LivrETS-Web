@@ -27,7 +27,8 @@
                 class: "check-row text-center",
                 sortable: false,
                 data: function (val) {
-                    return "<input type='checkbox' name='check-select-offer' data-offer-id='" + val.Id + "' />";
+                    return "<input type='checkbox' name='check-select-offer' " +
+                        "data-offer-id='" + val.Id + "' />";
                 }
             },
             {
@@ -39,7 +40,7 @@
             {
                 class: "text-center",
                 data: function (val) {
-                    return val.Price;
+                    return parseFloat(val.Price).toFixed(2) + " $";
                 }
             },
             {

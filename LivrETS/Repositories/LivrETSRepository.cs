@@ -234,6 +234,7 @@ namespace LivrETS.Repositories
 
             return result;
         }
+
         public bool DeleteFair(string id)
         {
             Fair fair = this.GetFairById(id);
