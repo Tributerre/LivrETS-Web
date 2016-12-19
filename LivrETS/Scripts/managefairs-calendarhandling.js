@@ -60,7 +60,6 @@ $(document).ready(function () {
     $(".date").on("dp.change", function (date, oldDate) {
         var pickerId = $(this).attr("id");
         var events = [];
-
         switch (pickerId) {
             case START_DATE_ID:
                 // When event is triggered manually, date.date contains the called element instead

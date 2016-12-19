@@ -261,10 +261,13 @@ namespace LivrETS.Controllers
                     }
                 }
 
-                fair.SetDates(model.StartDate, model.EndDate)
-                    .SetDates(model.PickingStartDate, model.PickingEndDate, forPhase: FairPhase.PICKING)
-                    .SetDates(model.SaleStartDate, model.SaleEndDate, forPhase: FairPhase.SALE)
-                    .SetDates(model.RetrievalStartDate, model.RetrievalEndDate, forPhase: FairPhase.RETRIEVAL);
+                fair.SetDates(model.StartDate, model.EndDate.AddSeconds(model.EndDate.Second * -1))
+                    .SetDates(model.PickingStartDate, model.PickingEndDate.AddSeconds(model.EndDate.Second * -1), 
+                                forPhase: FairPhase.PICKING)
+                    .SetDates(model.SaleStartDate, model.SaleEndDate.AddSeconds(model.EndDate.Second * -1), 
+                                forPhase: FairPhase.SALE)
+                    .SetDates(model.RetrievalStartDate, model.RetrievalEndDate.AddSeconds(model.EndDate.Second * -1), 
+                                forPhase: FairPhase.RETRIEVAL);
                 fair.Trimester = model.Trimester;
 
                 if (model.Id == null)
