@@ -201,7 +201,7 @@ $(document).ready(function () {
 
         $.ajax({
             method: "POST",
-            url: "/Fair/ConcludeSell",
+            url: "/Fair/ConcludeSellTest",
             dataType: "json",
             data: {
                 fairId: fairId,

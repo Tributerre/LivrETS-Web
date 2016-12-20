@@ -218,8 +218,60 @@ namespace LivrETS.Controllers
             return Json(new { }, contentType: "application/json");
         }
 
+        public ActionResult ConcludeSell(ICollection<string> ids)
+        {
+            bool noMatchExists = false;
+            var fair = Repository.GetCurrentFair();
+            var seller = Repository.GetUserBy(Id: User.Identity.GetUserId());
+            var sale = new Sale()
+            {
+                Date = DateTime.Now,
+            };
+
+            var helpers = ids.ToList().ConvertAll(new Converter<string, TRIBSTD01Helper>(id =>
+            {
+                TRIBSTD01Helper helper = null;
+                try
+                {
+                    helper = new TRIBSTD01Helper(id);
+                }
+                catch (RegexNoMatchException ex)
+                {
+                    noMatchExists = true;
+                    return null;
+                }
+
+                return helper;
+            }));
+
+            if (noMatchExists)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            foreach (var helper in helpers)
+            {
+                var offer = helper.GetOffer();
+                Repository.AttachToContext(offer);
+                offer.Article.MarkAsSold();
+                offer.MarkedSoldOn = DateTime.Now;
+                sale.SaleItems.Add(new SaleItem()
+                {
+                    Offer = offer
+                });
+
+                NotificationManager.getInstance().sendNotification(
+                    new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR,
+                        Repository.GetOfferByUser(offer))
+                );
+            }
+
+            seller.Sales.Add(sale);
+            fair.Sales.Add(sale);
+            Repository.Update();
+            return Json(new { }, contentType: "application/json");
+        }
+
         [HttpPost]
-        public ActionResult ConcludeSell(ICollection<string> offerIds, string fairId = null)
+        public ActionResult ConcludeSellTest(ICollection<string> offerIds, string fairId = null)
         {
             bool noMatchExists = false, status=false;
             string message = null;
@@ -244,10 +296,12 @@ namespace LivrETS.Controllers
             var helpers = offerIds.ToList().ConvertAll(new Converter<string, TRIBSTD01Helper>(id =>
             {
                 TRIBSTD01Helper helper = null;
-                Offer offer = Repository.GetOfferBy(id);
+                
                 try
                 {
+                    Offer offer = Repository.GetOfferBy(id);
                     string LivrETSID = fair.LivrETSID + "-" + seller.LivrETSID + "-" + offer.Article.LivrETSID;
+   
                     helper = new TRIBSTD01Helper(LivrETSID);
                 }
                 catch (RegexNoMatchException ex)
