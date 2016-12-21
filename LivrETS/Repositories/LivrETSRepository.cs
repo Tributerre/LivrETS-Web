@@ -150,7 +150,7 @@ namespace LivrETS.Repositories
             var now = DateTime.Now;
             return (
                 from fair in _db.Fairs
-                where fair.StartDate > now
+                where DateTime.Compare(now, fair.StartDate) < 0
                 orderby fair.StartDate ascending
                 select fair
             ).FirstOrDefault();
