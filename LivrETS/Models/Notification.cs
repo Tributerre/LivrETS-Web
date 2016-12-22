@@ -33,7 +33,7 @@ namespace LivrETS.Models
             string header_mail = "<div style='background:#629c49;padding:3px 10px;color:black;'>"+
                                     "<div style='float:left;'><h1>TRIBUTERRE</h1></div>"+
                                     "<div style='margin-left:70%;'><h1 style='color:white;'>"+
-                                    "Notification de LivRÈTS</h1></div></div></div>";
+                                    "Notification de LivrÈTS</h1></div></div></div>";
             string footer_mail = "<br><p>L'équipe LivrÈTS</p><p>livrets@tributerre.com</p>"+
                                    "<div style='background:#629c49;padding:3px 10px;color:black;'>"+
                                    "<h1>MERCI</h1>";

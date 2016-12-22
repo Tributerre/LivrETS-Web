@@ -29,8 +29,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
     padding-top: 75px; 
   }
 
-    
-
   #input-search {
       width: 500px;
   }
@@ -49,6 +47,7 @@ body {
 .body-content>.container {
     width: 100%;
 }
+
 /* Set widths on the form inputs since otherwise they're 100% wide
 input,
 select,

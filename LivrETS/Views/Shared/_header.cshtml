@@ -33,17 +33,22 @@
             <div class="col-md-5 col-sm-5 col-xs-12">
                 <!-- ========================== SEARCH BAR=============================== -->
 
-                @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "block-search" }))
+                @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "block-search form-inline" }))
                 {
+                    <div class="form-group">
+                        <select class="form-control" name="select_search">
+                            <option selected value="title">Titre</option>
+                            <option value="course">Cours</option>
+                        </select>
+                    </div>
                     <div class="input-group">
                         @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, 
-                       new { @class = "form-control", placeholder= "cr:mathematique ou sg:mat210" })
+                       new { @class = "form-control", placeholder= "Rechercher votre article" })
                         <span class="input-group-btn">
                             <button class="btn btn-primary-very-light search-button" type="submit">
                             <span class="glyphicon glyphicon-search"></span></button>
                         </span>
-                    </div>
-                    <small>Rechercher par <b>cr:</b>Titre cours / <b>sg:</b>Sigle cours</small>
+                    </div><br />
                 }
                         <!-- ========================== SEARCH BAR :END ===========================-->
             </div><!-- /.col -->

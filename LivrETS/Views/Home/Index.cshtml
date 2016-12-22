@@ -113,7 +113,6 @@
                                                             <a href="#" title="favoris" class="hide">
                                                                 <span class="fa fa-heart"></span>
                                                             </a>
-                                                            <span>@item.Article.LivrETSID</span>
                                                         </p>
                                                     </div><!-- /.product-detail -->
                                                 </div><!-- /.product-item -->
@@ -197,7 +196,7 @@
                     <div class="sidebar-section col-sm-8 col-xs-8 col-md-12 col-lg-12">
                         <h4 class="sidebar-title text-md-center">Trier</h4>
                         <div class="text-md-center">
-                            @HomeHelpers.GetSelectorSort(Request.Params["sortOrder"]);
+                            @HomeHelpers.GetSelectorSort(Request.Params["sortOrder"])
                         </div>
                     </div>
                     <div class="sidebar-section col-md-12 col-lg-12 col-sm-12 col-xs-12">
