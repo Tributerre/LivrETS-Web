@@ -101,14 +101,28 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div>
-                                <h4 class="control-label text-md-center">Informations vendeur</h4>
-                                <ul class="list-kybully ">
-                                    <li><b class="primary-color uppercase">Nom :</b> @user.FirstName @user.LastName </li>
-                                    <li><b class="primary-color uppercase">Email :</b> @user.Email </li>
-                                </ul>
-                                <h4 class="control-label text-md-center">Price</h4>
-                                <p>@Model.Price.ToString("00.00") $</p>
+                                <h3 class="control-label text-md-center">Envoyez un mail au vendeur</h3>
+                                <form method="post" action="/home/sendMailForOffer">
+                                    <input type="hidden" value="@Model.Id" name="to_offer" />
+                                    <div class="form-group">
+                                        <label for="to_address">votre mail</label>
+                                        <input type="email" class="form-control" name="to_address"
+                                               value="@user.Email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="to_name">votre nom</label>
+                                        <input type="text" class="form-control" name="to_name" id="to_name"
+                                               value="@user.LastName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="to_message">votre message</label>
+                                        <textarea class="form-control" name="to_message"
+                                                  id="to_message"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Envoyez</button>
+                                </form>
                             </div><!-- /.form-group -->
+                            
                         </div><!-- /.col-md-7 -->
                         <div class="col-md-5 col-sm-5 col-xs-12 hide">
                             <h4 class="control-label text-md-center">Terms</h4>
