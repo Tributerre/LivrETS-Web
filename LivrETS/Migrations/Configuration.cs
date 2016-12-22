@@ -55,7 +55,7 @@ namespace LivrETS.Migrations
                 course => course.Acronym,
                 new Models.Course
                 {
-                    Acronym = "mat145",
+                    Acronym = "MAT145",
                     Title = "Sample Title"
                 }    
             );
