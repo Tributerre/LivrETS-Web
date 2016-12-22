@@ -50,7 +50,8 @@
             <h1>Vendre un article <small>Remplissez tous les champs</small></h1>
         </div>
 
-        @using (Html.BeginForm("Create", "Offer", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("Create", "Offer", FormMethod.Post, new { @class = "form",
+            enctype = "multipart/form-data" }))
         {
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.AntiForgeryToken()
@@ -77,14 +78,18 @@
                     @Html.TextBoxFor(model => model.ISBN, new { @class = "form-control", id = "isbn-text-input" })
                     <!-- dropdowns-enhancement.js -->
                     <div id="calculator-models-dropdown" class="btn-group" style="display: none;">
-                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Mod&egrave;le <span class="caret"></span></button>
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                                Mod&egrave;le <span class="caret"></span>
+                        </button>
                         <ul class="dropdown-menu">
                             <li>
-                                @Html.RadioButtonFor(model => model.TypeModel, CalculatorModel.VOYAGE200, new { id = "radio-voyage200" })
+                                @Html.RadioButtonFor(model => model.TypeModel, CalculatorModel.VOYAGE200, 
+                                    new { id = "radio-voyage200" })
                                 <label for="radio-voyage200">Voyage 200</label>
                             </li>
                             <li>
-                                @Html.RadioButtonFor(model => model.TypeModel, CalculatorModel.NSPIRE, new { id = "radio-nspire" })
+                                @Html.RadioButtonFor(model => model.TypeModel, CalculatorModel.NSPIRE, 
+                                    new { id = "radio-nspire" })
                                 <label for="radio-nspire">NSpire</label>
                             </li>
                         </ul>
@@ -162,7 +167,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="input-group">
-                        <input type="text" id="newCourse" class="form-control input-sm" placeholder="Sigle du cours" />
+                        <input type="text" id="newCourse" class="form-control input-sm" placeholder="ex:MAT145" />
                         <span class="input-group-btn">
                             <button id="btn-newCourse" class="btn btn-default btn-sm" type="button">
                                 <span class="glyphicon glyphicon-plus"></span>

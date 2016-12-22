@@ -99,6 +99,7 @@ $(document).ready(function () {
 
     $("#btn-newCourse").on("click", function () {
         var courseTextInput = $("#newCourse");
+        var courseTxt = courseTextInput.val();
         var spinner = $("<div>");
         var btnCourseText = $(this).html();
         var restoreButton = function () {
@@ -113,8 +114,13 @@ $(document).ready(function () {
             });
         };
 
-        if (courseTextInput.val() === "") {
+        var pattern = /^[A-Z]{3}[0-9]{3}$/;
+        var resultReg = pattern.test(courseTxt);
+
+        if (courseTxt === "") {
             courseTextInput.parent().addClass("has-error");
+        } else if (!resultReg) {
+            notifyError("erreur format sigle du cours")
         } else {
             $(this).html(spinner);
             spinner.spinner({
@@ -130,7 +136,7 @@ $(document).ready(function () {
                 method: "POST",
                 dataType: "json",
                 url: "/Offer/AddNewCourse",
-                data: { acronym: courseTextInput.val() },
+                data: { acronym: courseTxt },
                 success: function (data) {
                     var newCourseElement = $("<li>")
                         .append($("<input>") 
