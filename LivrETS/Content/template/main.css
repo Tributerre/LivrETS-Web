@@ -570,6 +570,9 @@ hr {
 .header .block-search {
   margin-top: 37px;
 }
+.header .block-search .input-group{
+    width: 80% !important;
+}
 .header .block-search .input-group .form-control {
   padding: 7px 12px;
   box-shadow: none;
@@ -589,6 +592,10 @@ hr {
     text-align: center;
     margin-right: 0;
   }
+
+  .header .block-search .form-group{
+    width: 80% !important;
+}
 }
 .header .nav-header-link > li {
   float: left;

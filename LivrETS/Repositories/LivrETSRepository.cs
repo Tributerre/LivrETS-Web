@@ -295,23 +295,24 @@ namespace LivrETS.Repositories
         /// </summary>
         /// ///  <param name="priceMin">minimal price</param>
         /// ///  <param name="priceMax">maximal price</param>
-        /// ///  <param name="itemSearch">the element search</param>
+        /// ///  <param name="searchString">the element search</param>
         /// ///  <param name="sortOrder">the element sort</param>
         /// <returns>The offers or null if not found.</returns>
-        public IEnumerable<Offer> GetAllOffers(double priceMin, double priceMax, 
-            string itemSearch = null, string sortOrder = null)
+        public IEnumerable<Offer> GetAllOffers(double priceMin, double priceMax, string select_search = null,
+            string searchString = null, string sortOrder = null)
         {
             List<Offer> offers = (from offer in _db.Offers
                                     where offer.Price >= priceMin && offer.Price <= priceMax &&
                                     DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0 &&
-                                    !offer.ManagedByFair && DateTime.Compare(offer.MarkedSoldOn, offer.StartDate) == 0
+                                    !offer.ManagedByFair && 
+                                    DateTime.Compare(offer.MarkedSoldOn, offer.StartDate) == 0
                                   orderby offer.StartDate descending
                                     select offer).ToList();
             IEnumerable<Offer> results = offers;
 
-            if (itemSearch != null)
+            if (searchString != null && select_search != null)
             {
-                string[] tabItemSearch = itemSearch.Split(':');
+                /*string[] tabItemSearch = itemSearch.Split(':');
                 string sigle = null;
                 string elt = null; 
 
@@ -323,17 +324,11 @@ namespace LivrETS.Repositories
                 {
                     sigle = "cr";
                     elt = tabItemSearch[0];
-                }
+                }*/
 
-                if(sigle.Equals("cr"))
-                {
-                    results = offers.Where(offer => offer.Title.Contains(elt));
-                }else if (sigle.Equals("sg"))
-                {
-                    results = offers.Where(offer => offer.Article.Course.Acronym.Contains(elt));
-                }
+                results = (select_search.Equals("title"))?offers.Where(offer => offer.Title.Contains(searchString)):
+                    offers.Where(offer => offer.Article.Course.Acronym.Contains(searchString));
 
-                //return offers;
             }else if(sortOrder != null)
             {
                 if (sortOrder.Equals("DateDesc"))

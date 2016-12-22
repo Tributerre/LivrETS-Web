@@ -60,7 +60,7 @@ namespace LivrETS.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Index(string sortOrder, string currentFilter, 
+        public ActionResult Index(string sortOrder, string currentFilter, string select_search, 
             string searchString, double Pmin = 1, double Pmax = 500, int? page = 1)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -72,7 +72,7 @@ namespace LivrETS.Controllers
                 searchString = currentFilter;
             
             ViewBag.CurrentFilter = searchString;
-            offers = Repository.GetAllOffers(Pmin, Pmax, searchString, sortOrder);
+            offers = Repository.GetAllOffers(Pmin, Pmax, select_search, searchString, sortOrder);
 
             int pageSize = int.Parse(ConfigurationManager.AppSettings["MAX_HOME_PAGE"]);
             int pageNumber = (page ?? 1);
