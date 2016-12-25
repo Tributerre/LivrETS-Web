@@ -27,7 +27,6 @@ $(document).ready(function () {
     
     var $table = $('table').DataTable({
         processing: true,
-        serverSide: true,
         ajax: {
             url: "/Admin/ListUsers",
             type: "POST",
@@ -121,7 +120,7 @@ $(document).ready(function () {
         $('table').find(".selected").removeClass('selected');
     });
 
-    $('table tbody').on('click', 'tr', function () {
+    $('table tbody').on('click', 'tr td:not(tr td:last-child)', function () {
         var $modal = $('#myModal');
         var data = $table.row(this).data();
 
