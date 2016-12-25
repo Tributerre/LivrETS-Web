@@ -223,7 +223,11 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                <button id="btn-confirm-pick" type="button" class="btn btn-primary">Cueillir</button>
+                                <button id="btn-confirm-pick" type="button" class="btn btn-primary">
+                                    <i class="fa fa-spinner fa-pulse fa-fw hide"></i>
+                                    <span class="sr-only">Loading...</span>
+                                    Cueillir
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -232,7 +236,7 @@
             }
 
             @section Scripts {
-                <script src="~/Scripts/pick.js"></script>
+                <script src="~/Scripts/fair/pick.js"></script>
             }
         }
     </div>
