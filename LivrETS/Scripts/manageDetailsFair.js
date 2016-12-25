@@ -88,7 +88,7 @@ $(document).ready(function () {
             {
                 class: "text-center",
                 sortable: false,
-                visible: false,
+                //visible: false,
                 data: function (val) {
                     var sold = "";
                     var nosold = "hide";

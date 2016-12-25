@@ -21,11 +21,13 @@ $(document).ready(function () {
     //Id for current user
     var currentId;
     var listRoles;
+    var selected = [];
 
     //init manage users table width datables plugins
     
     var $table = $('table').DataTable({
         processing: true,
+        serverSide: true,
         ajax: {
             url: "/Admin/ListUsers",
             type: "POST",
@@ -33,20 +35,31 @@ $(document).ready(function () {
             dataSrc: function (val) {
                 currentId = val.current_id;
                 listRoles = val.listRoles;
-                console.log(val)
                 return val.listUser
+            }
+        },
+        rowCallback: function( row, data ) {
+            if ( $.inArray(data.DT_RowId, selected) !== -1 ) {
+                $(row).addClass('selected');
             }
         },
         columns: [
             {
                 class: "check-row text-center",
                 sortable: false,
+                visible: false,
                 data: function (val) {
                     if (currentId != val.Id) {
                         return "<input type='checkbox' name='check-select-user-for-action' data-user-id='" + val.Id + "'>";
                     } else {
                         return "<input type='checkbox' style='visibility: hidden;'>";
                     }
+                }
+            },
+            {
+                visible: false,
+                data: function(val){
+                    return val.Id;
                 }
             },
             {
@@ -103,6 +116,61 @@ $(document).ready(function () {
         ]
         
     });
+
+    $('#myModal').on("hide.bs.modal", function () {
+        $('table').find(".selected").removeClass('selected');
+    });
+
+    $('table tbody').on('click', 'tr', function () {
+        var $modal = $('#myModal');
+        var data = $table.row(this).data();
+
+        //change background row
+        var id = this.id;
+        var index = $.inArray(id, selected);
+
+        if (index === -1) {
+            selected.push(id);
+        } else {
+            selected.splice(index, 1);
+        }
+        $(this).toggleClass('selected');
+
+        $modal.modal('show');
+
+        $modal.on('shown.bs.modal', function () {
+            $.ajax({
+                method: "PUT",
+                contentType: "application/json",
+                url: "/Account/GetUserBy",
+                dataType: "json",
+                data: JSON.stringify({
+                    id: data.Id 
+                }),
+                success: function (val) {
+                    if (val.status) {
+                        $("#data-user").html(
+                            "<li><b>Nom :</b> "+ val.firstname +"</li>"+
+                            "<li><b>Prénpm :</b> "+ val.lastname +"</li>"+
+                            "<li><b>Email :</b> "+ val.email +"</li>"+
+                            "<li><b>Bar code :</b> "+ val.barcode +"</li>"+
+                            "<li><b>Article posté :</b> "+ val.articles +"</li>"+
+                            "<li><b>Numéro de téléphone :</b> "+ val.phone +"</li>"
+                            );
+                    } else {
+                        $('table').prepend('<div>Vous avez rater</div>');
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                    $("#error-message").text("Une erreur est survenue lors du changement de privilège.");
+                    $("#errors").show("slow");
+                }
+            });
+        });
+    });
+
+    
 
     $("#close-error").on("click", function () {
         $("#errors").hide("slow");

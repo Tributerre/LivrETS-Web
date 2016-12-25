@@ -395,7 +395,30 @@ namespace LivrETS.Controllers
             }, contentType: "application/json");
         }
 
-        
+        public JsonResult GetUserBy(string id)
+        {
+            ApplicationUser user = UserManager.FindById(id);
+
+            if(user != null)
+                return Json(new
+                {
+                    status = true,
+                    message = "affichage de l'utilisateur",
+                    firstname = user.FirstName,
+                    lastname = user.LastName,
+                    email = user.Email,
+                    barcode = user.BarCode,
+                    startdate = user.SubscribedAt,
+                    articles = user.Offers.Count,
+                    phone = (user.PhoneNumber == null)? "pas de numéro" : user.PhoneNumber
+                }, contentType: "application/json");
+
+            return Json(new
+            {
+                status = false,
+                message = "Erreur"
+            }, contentType: "application/json");
+        }
 
         #endregion
 

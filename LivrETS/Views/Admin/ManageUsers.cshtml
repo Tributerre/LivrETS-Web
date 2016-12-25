@@ -44,6 +44,7 @@
                             <th>
                                 <input type="checkbox" name="check-select-all">
                             </th>
+                            <th>Id</th>
                             <th>Pr&eacute;nom</th>
                             <th>Nom</th>
                             <th>N&deg; Code &agrave; barres</th>
@@ -61,6 +62,37 @@
         </div>
     </div>
     </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Informations</h4>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-md-3"><img src="http://placehold.it/120x120" /></div>
+              <div class="col-md-9">
+                  <ul id="data-user">
+                      <li><b>Nom :</b>kouagnia</li>
+                      <li><b>Prenom :</b>willy</li>
+                      <li><b>Email :</b>willkoua@yahoo.fr</li>
+                      <li><b>barcode :</b>f126258</li>
+                      <li><b>Article poste :</b>16</li>
+                      <li><b>phone :</b>5144319459</li>
+                  </ul>
+              </div>
+          </div>
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal --
         @section Scripts {
             <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
             <script type="text/javascript" src="~/Scripts/manageusers.js"></script>

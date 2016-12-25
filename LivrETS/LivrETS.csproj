@@ -462,7 +462,7 @@
     <Content Include="Scripts\material.spinner.min.js" />
     <Content Include="Scripts\moment-fr-ca.js" />
     <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\pick.js" />
+    <Content Include="Scripts\fair\pick.js" />
     <Content Include="Scripts\profile_user.js" />
     <Content Include="Scripts\sell.js" />
     <Content Include="Scripts\site.js" />
