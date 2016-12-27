@@ -102,25 +102,34 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div>
                                 <h3 class="control-label text-md-center">Envoyez un mail au vendeur</h3>
-                                <form method="post" action="/home/sendMailForOffer">
-                                    <input type="hidden" value="@Model.Id" name="to_offer" />
-                                    <div class="form-group">
-                                        <label for="to_address">votre mail</label>
-                                        <input type="email" class="form-control" name="to_address"
-                                               value="@user.Email">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="to_name">votre nom</label>
-                                        <input type="text" class="form-control" name="to_name" id="to_name"
-                                               value="@user.LastName">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="to_message">votre message</label>
-                                        <textarea class="form-control" name="to_message"
-                                                  id="to_message"></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-success">Envoyez</button>
-                                </form>
+                                @if (Request.IsAuthenticated)
+                                {
+                                    <form method="post" action="/home/sendMailForOffer">
+                                        <input type="hidden" value="@Model.Id" name="to_offer" />
+                                        <div class="form-group">
+                                            <label for="to_address">Mail</label>
+                                            <input type="email" class="form-control" name="to_address"
+                                                   value="@user.Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="to_name">Nom</label>
+                                            <input type="text" class="form-control" name="to_name" id="to_name"
+                                                   value="@user.LastName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="to_message">Message</label>
+                                            <textarea class="form-control" name="to_message"
+                                                      id="to_message"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-success">Envoyez</button>
+                                    </form>
+                                }else
+                                {
+                                    <br />
+                                    <p>
+                                        Pour contacter le vendeur, vous devez avoir un compte et être connecté
+                                    </p>
+                                }
                             </div><!-- /.form-group -->
                             
                         </div><!-- /.col-md-7 -->
