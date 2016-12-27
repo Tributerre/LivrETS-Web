@@ -32,6 +32,7 @@ $(document).ready(function () {
             {
                 class: "check-row text-center",
                 sortable: false,
+                visible: false,
                 data: function (val) {
                     return "<input type='checkbox' name='check-select-fair' data-fair-id='" + val.Id + "' />";
                 }
