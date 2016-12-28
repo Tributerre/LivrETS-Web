@@ -295,6 +295,7 @@ namespace LivrETS.Repositories
         /// </summary>
         /// ///  <param name="priceMin">minimal price</param>
         /// ///  <param name="priceMax">maximal price</param>
+        /// /// ///  <param name="select_search">search type</param>
         /// ///  <param name="searchString">the element search</param>
         /// ///  <param name="sortOrder">the element sort</param>
         /// <returns>The offers or null if not found.</returns>
@@ -312,20 +313,6 @@ namespace LivrETS.Repositories
 
             if (searchString != null && select_search != null)
             {
-                /*string[] tabItemSearch = itemSearch.Split(':');
-                string sigle = null;
-                string elt = null; 
-
-                if(tabItemSearch.Count() == 2)
-                {
-                    sigle = tabItemSearch[0];
-                    elt = tabItemSearch[1];
-                }else
-                {
-                    sigle = "cr";
-                    elt = tabItemSearch[0];
-                }*/
-
                 results = (select_search.Equals("title"))?offers.Where(offer => offer.Title.Contains(searchString)):
                     offers.Where(offer => offer.Article.Course.Acronym.Contains(searchString));
 

@@ -61,7 +61,7 @@ namespace LivrETS.Controllers
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Index(string sortOrder, string currentFilter, string select_search, 
-            string searchString, double Pmin = 1, double Pmax = 500, int? page = 1)
+            string searchString, double Pmin = 1, double Pmax = 1000, int? page = 1)
         {
             ViewBag.CurrentSort = sortOrder;
             IEnumerable<Offer> offers = null;
