@@ -147,6 +147,7 @@ namespace LivrETS.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         public ActionResult Program()
         {
             Fair curentFair = Repository.GetCurrentFair();
