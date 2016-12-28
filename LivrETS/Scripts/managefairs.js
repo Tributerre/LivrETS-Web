@@ -32,6 +32,7 @@ $(document).ready(function () {
             {
                 class: "check-row text-center",
                 sortable: false,
+                visible: false,
                 data: function (val) {
                     return "<input type='checkbox' name='check-select-fair' data-fair-id='" + val.Id + "' />";
                 }
@@ -88,15 +89,16 @@ $(document).ready(function () {
 
     // Delete fair event.
     //sale confirmation
+    var fairId = null;
     $('table tbody').on("click", ".btn-delete-fair", function () {
         var $btn = $(this);
-        var fairId = $btn.data("fair-id");
-        $("#btn-confirm-del-fair").attr("data-fair-id", fairId);
+        fairId = $btn.data("fair-id");
+        //$("#btn-confirm-del-fair").attr("data-fair-id", fairId);
     });
 
     $("#btn-confirm-del-fair").on("click", function () {
         var $btn = $(this);
-        var fairId = $btn.data("fair-id");
+        //var fairId = $btn.data("fair-id");
         var $modal = $('#ModalDelFair');
 
         $txtError = $modal.find(".text-danger");
@@ -120,6 +122,7 @@ $(document).ready(function () {
                 if (data.status == 1) {                   
                     $modal.modal('hide');
                     table.ajax.reload();
+                    $("#btn-confirm-del-fair").attr("data-fair-id", "");
                 } else {
                     $txtError.text(data.message).removeClass("hide");
                 }
