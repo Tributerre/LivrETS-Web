@@ -534,6 +534,7 @@
     <Content Include="Views\Shared\_HeaderAdmin.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Shared\_ProfileUserLayout.cshtml" />
+    <Content Include="Views\Fair\Program.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

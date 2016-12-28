@@ -1,0 +1,99 @@
+﻿@model LivrETS.Models.Fair
+
+@{
+    ViewBag.Title = "Program";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content">
+    <div class="container">
+
+        <div class="page-header">
+            <h1>Programme <small>Foire</small></h1>
+        </div>
+
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.StartDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.EndDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PickingStartDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PickingStartDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.PickingEndDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PickingEndDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.SaleStartDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.SaleStartDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.SaleEndDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.SaleEndDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.RetrievalStartDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.RetrievalStartDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.RetrievalEndDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.RetrievalEndDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Trimester)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Trimester)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.CommissionOnSale)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CommissionOnSale)
+                </dd>
+
+            </dl>
+        </div>
+    </div>
+</div>
