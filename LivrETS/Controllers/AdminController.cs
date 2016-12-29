@@ -72,6 +72,13 @@ namespace LivrETS.Controllers
             return View();
         }
 
+        // GET: /Admin/CreateFair
+        [HttpGet]
+        public ActionResult CreateFair()
+        {
+            return View();
+        }
+
         // GET: /Admin/ManageUsers
         [HttpGet]
         public ActionResult ManageUsers()
