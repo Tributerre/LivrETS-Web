@@ -50,6 +50,7 @@ namespace LivrETS.Models
         public string Trimester { get; set; }
         public virtual ICollection<Offer> Offers { get; set; }
         public virtual ICollection<Sale> Sales { get; set; }
+        public virtual ICollection<FairStep> FairSteps { get; set; }
 
         [Required]
         public double CommissionOnSale { get; set; }
@@ -59,6 +60,27 @@ namespace LivrETS.Models
             get
             {
                 DateTime now = DateTime.Now;
+                FairPhase fp = 
+                    (DateTime.Compare(now, FairSteps.LastOrDefault().EndDateTime) > 0)?
+                    FairPhase.POSTFAIR: 
+                    FairPhase.PREFAIR;
+                
+                if(fp != FairPhase.POSTFAIR)
+                {
+                    FairSteps.OrderBy(stp => stp.StartDateTime);
+                    foreach(FairStep step in FairSteps)
+                    {
+                    
+                        if(DateTime.Compare(now, step.StartDateTime) > 0 &&
+                            DateTime.Compare(now, step.EndDateTime) < 0){
+                            fp = step.CodeStep;
+                        }
+                    }
+                }
+                
+                
+                return fp;
+                /*DateTime now = DateTime.Now;
 
                 if (now < StartDate || now < PickingStartDate)
                 {
@@ -79,7 +101,7 @@ namespace LivrETS.Models
                 else
                 {
                     return FairPhase.POSTFAIR;
-                }
+                }*/
             }
         }
 
@@ -90,6 +112,7 @@ namespace LivrETS.Models
         {
             Offers = new List<Offer>();
             Sales = new List<Sale>();
+            FairSteps = new List<FairStep>();
         }
 
         /// <summary>
