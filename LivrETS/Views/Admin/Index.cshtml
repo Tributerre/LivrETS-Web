@@ -143,11 +143,11 @@
                             <table class="tab-stats">
                                 <tr>
                                     <td>Debut</td>
-                                    <td>@currentFair.StartDate.ToString("M/d/yyyy")</td>
+                                    <td>@currentFair.StartDate.ToString("MM/dd/yyyy")</td>
                                 </tr>
                                 <tr>
                                     <td>Fin</td>
-                                    <td>@currentFair.EndDate.ToString("M/d/yyyy")</td>
+                                    <td>@currentFair.EndDate.ToString("MM/dd/yyyy")</td>
                                 </tr>
                             </table>
                         </div>
@@ -160,7 +160,16 @@
                                 </tr>
                                 <tr>
                                     <td>Phase</td>
-                                    <td>@currentFair.Phase</td>
+                                    <td>
+                                    @if (currentFair.Phase != null)
+                                    {
+                                        @currentFair.Phase.TypeNamePhase;
+                                    }
+                                    else
+                                    {
+                                        <span>Aucune etape en cours</span>
+                                    }
+                                    </td>
                                 </tr>
                             </table>
                         </div>

@@ -9,33 +9,87 @@ namespace LivrETS.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        [ForeignKey(nameof(Fair))]
+        public Guid FairID { get; set; }
+        public virtual Fair Fair { get; set; }
 
         [Required]
-        public FairPhase CodeStep;
+        [MaxLength(1)]
+        public readonly string PhaseCode;
+        [NotMapped]
+        public const string PICKING_CODE = "P";
+        [NotMapped]
+        public const string SALE_CODE = "S";
+        [NotMapped]
+        public const string RETRIEVAL_CODE = "R";
+
+        [Required]
+        [MaxLength(1)]
+        public readonly string PlaceCode;
+        [NotMapped]
+        public const string PA_CODE = "PA";
+        [NotMapped]
+        public const string PB_CODE = "PB";
+        [NotMapped]
+        public const string PE_CODE = "PE";
+
         [Required]
         public string Place { get; set; }
+        [Required]
+        public string Phase { get; set; }
         [Required]
         public DateTime StartDateTime { get; set; }
         [Required]
         public DateTime EndDateTime { get; set; }
 
         [NotMapped]
-        public string TypeName
+        public string TypeNamePhase
         {
             get
             {
-                switch (CodeStep)
+                switch (Phase)
                 {
-                    case FairPhase.PICKING:
+                    case PICKING_CODE:
                         return "Ceuillette";
-                    case FairPhase.SALE:
+                    case SALE_CODE:
                         return "Vente";
-                    case FairPhase.RETRIEVAL:
+                    case RETRIEVAL_CODE:
                         return "Récupération";
                     default:
                         return string.Empty;
                 }
             }
         }
+
+        [NotMapped]
+        public string TypeNamePlace
+        {
+            get
+            {
+                switch (Place)
+                {
+                    case PA_CODE:
+                        return "Hall Pavillon A";
+                    case PB_CODE:
+                        return "Hall Pavillon B";
+                    case PE_CODE:
+                        return "Hall Pavillon E";
+                    default:
+                        return string.Empty;
+                }
+            }
+        }
+
+        public FairStep(string PhaseCode, string PlaceCode) 
+        {
+            this.PhaseCode = PhaseCode;
+            this.PlaceCode = PlaceCode;
+            this.Place = PlaceCode;
+            this.Phase = PhaseCode;  
+        }
+
+        public FairStep(){}
     }
+
+    
 }

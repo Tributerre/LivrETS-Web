@@ -79,6 +79,8 @@ namespace LivrETS.Controllers
             return View();
         }
 
+        
+
         // GET: /Admin/ManageUsers
         [HttpGet]
         public ActionResult ManageUsers()
@@ -268,13 +270,13 @@ namespace LivrETS.Controllers
                     }
                 }
 
-                fair.SetDates(model.StartDate, model.EndDate.AddSeconds(model.EndDate.Second * -1))
+                /*fair.SetDates(model.StartDate, model.EndDate.AddSeconds(model.EndDate.Second * -1))
                     .SetDates(model.PickingStartDate, model.PickingEndDate.AddSeconds(model.EndDate.Second * -1), 
                                 forPhase: FairPhase.PICKING)
                     .SetDates(model.SaleStartDate, model.SaleEndDate.AddSeconds(model.EndDate.Second * -1), 
                                 forPhase: FairPhase.SALE)
                     .SetDates(model.RetrievalStartDate, model.RetrievalEndDate.AddSeconds(model.EndDate.Second * -1), 
-                                forPhase: FairPhase.RETRIEVAL);
+                                forPhase: FairPhase.RETRIEVAL);*/
                 fair.Trimester = model.Trimester;
 
                 if (model.Id == null)
@@ -350,7 +352,7 @@ namespace LivrETS.Controllers
             }
             else
             {
-                return Json(new AjaxFairViewModel
+                /*return Json(new AjaxFairViewModel
                 {
                     Id = fair.Id.ToString(),
                     StartDate = fair.StartDate,
@@ -362,11 +364,76 @@ namespace LivrETS.Controllers
                     RetrievalStartDate = fair.RetrievalStartDate,
                     RetrievalEndDate = fair.RetrievalEndDate,
                     Trimester = fair.Trimester
-                }, contentType: "application/json");
+                }, contentType: "application/json");*/
+                return Json(new AjaxFairViewModel
+                {}, contentType: "application/json");
             }
         }
 
-        
+        // POST: /Admin/CreateFairSubmit
+        // Adds Fair
+        [HttpPost]
+        public ActionResult CreateFairSubmit(string session, string startDate, string endDate, string[] steps)
+        {
+            string message = "Erreur de dates";
+            using (var db = new ApplicationDbContext())
+            {
+                Fair fair = new Fair();
+                FairStep fs = null;
+
+                fair.Trimester = session;
+                DateTime startDateTmp = DateTime.Parse(startDate);
+                DateTime endDateTmp = DateTime.Parse(endDate);
+
+                if (DateTime.Compare(startDateTmp, endDateTmp) > 0)
+                    return Json(new
+                            {
+                                status = false,
+                                message = message
+                            }, contentType: "application/json");
+
+                fair.StartDate = startDateTmp;
+                fair.EndDate = endDateTmp;
+
+                db.Fairs.Add(fair);
+
+                if (steps != null)
+                {
+                    for (int i = 0; i < steps.Count(); i++)
+                    {
+                        dynamic dynamicObject = new System.Web.Script.Serialization
+                            .JavaScriptSerializer().Deserialize<dynamic>(steps[i]);
+                        DateTime start = DateTime.Parse(dynamicObject["StartDateTime"]);
+                        DateTime end = DateTime.Parse(dynamicObject["EndDateTime"]);
+
+                        fs = new FairStep(Convert.ToString(dynamicObject["CodeStep"]),
+                            Convert.ToString(dynamicObject["Place"]));
+
+                        if(DateTime.Compare(start, end) > 0)
+                            return Json(new
+                                    {
+                                        status = false,
+                                        message = message
+                                    }, contentType: "application/json");
+
+                        fs.StartDateTime = start;
+                        fs.EndDateTime = end;
+                        fs.Fair = fair;
+
+                        db.FairSteps.Add(fs);
+                    }
+                }
+
+                db.SaveChanges();
+                
+            }
+
+            return Json(new 
+                    {
+                        status = true,
+                        message = "Foire enregistrée"
+                    }, contentType: "application/json");
+        }
         #endregion
 
         #region Helpers

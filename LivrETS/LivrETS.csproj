@@ -247,6 +247,10 @@
     <Compile Include="Migrations\201612311640193_add-table-fairstep.Designer.cs">
       <DependentUpon>201612311640193_add-table-fairstep.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612311857200_update-table-fair.cs" />
+    <Compile Include="Migrations\201612311857200_update-table-fair.Designer.cs">
+      <DependentUpon>201612311857200_update-table-fair.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -560,6 +564,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612311640193_add-table-fairstep.resx">
       <DependentUpon>201612311640193_add-table-fairstep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612311857200_update-table-fair.resx">
+      <DependentUpon>201612311857200_update-table-fair.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

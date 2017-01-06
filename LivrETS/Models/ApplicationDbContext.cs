@@ -10,10 +10,12 @@ namespace LivrETS.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Fair> Fairs { get; set; }
+        public DbSet<FairStep> FairSteps { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Offer> Offers { get; set; }
         public DbSet<OfferImage> OfferImage { get; set; }
         public DbSet<Article> Articles { get; set; }
+        
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

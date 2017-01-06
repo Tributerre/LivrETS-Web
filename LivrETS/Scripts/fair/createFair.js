@@ -1,11 +1,14 @@
-﻿$(function () {
+﻿var FairStep = function (StartDateTime, EndDateTime, CodeStep, Place) {
+    this.StartDateTime = StartDateTime;
+    this.EndDateTime = EndDateTime;
+    this.CodeStep = CodeStep;
+    this.Place = Place;
+}
+
+$(function () {
     $(".date").datetimepicker({
         locale: "fr-ca",
-        format: "DD-MM-YYYY",
         minDate: new Date()
-    });
-    $(".date").each(function () {
-        $(this).data("DateTimePicker").date(null);
     });
 
     $("#btn-add-activity").on("click", function () {
@@ -16,10 +19,8 @@
             .appendTo("#grp-activity");
 
         $("#grp-activity").find(".date").datetimepicker({
-            locale: "fr-ca"
-        });
-        $("#grp-activity").find(".date").each(function () {
-            $(this).data("DateTimePicker").date(null);
+            locale: "fr-ca",
+            minDate: new Date()
         });
     });
 
@@ -27,4 +28,72 @@
         var $me = $(this);
         $me.parents(".add-activity").remove();
     });
+
+    
+
+    $("#btn-submit").on("click", function () {
+        var $btn = $(this);
+        var alert = $("#group-alert-mess");
+        $loading = $btn.find(".fa-spinner");
+        $loading.removeClass("hide");
+        alert.addClass("hide");
+        $btn.prop("disabled", true);
+
+        var session = $("#session").val();
+        var startDate = $("#start_date").val();
+        var endDate = $("#end_date").val();
+        var steps = [];
+        $(".add-activity").each(function () {
+            var $me = $(this)
+            var act_start_date = $me.find(".activity_start_date").val();
+            var act_end_date = $me.find(".activity_end_date").val();
+            var act_activity = $me.find(".activity_activity").val();
+            var act_place = $me.find(".activity_place").val();
+
+            var my_step = new FairStep(act_start_date, act_end_date, act_activity, act_place);
+            steps.push(JSON.stringify(my_step));
+            
+        });
+        
+        $.ajax({
+            method: "POST",
+            dataType: "json",
+            url: "/Admin/CreateFairSubmit",
+            data: {
+                session: session, startDate: startDate,
+                endDate: endDate, steps: steps
+            },
+            success: function (data) {
+                $loading.addClass("hide");
+                alert.removeClass("hide");
+                $btn.prop("disabled", false);
+                if (data.status == 1) {
+                    alert
+                        .find("#alert-mess")
+                        .html(data.message);
+                } else {
+                    alert.removeClass("alert-success")
+                        .addClass("alert-danger")
+                        .find("#alert-mess")
+                        .html(data.message);
+                }
+            },
+            statusCode: {
+                500: function () {
+                    $("#alert-mess").removeClass("alert-success")
+                        .addClass("alert-danger")
+                        .find("#alert-mess")
+                        .html("erreur");
+                },
+                409: function () {
+                    $("#alert-mess").removeClass("alert-success")
+                        .addClass("alert-danger")
+                        .find("#alert-mess")
+                        .html("erreur");
+                }
+            }
+        })
+    });
+
+    
 });

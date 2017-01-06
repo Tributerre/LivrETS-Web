@@ -4,69 +4,43 @@
     ViewBag.Title = "Program";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles {
+    <style>
+        table{
+            width: 100%;
+        }
+    </style>
+}
 <div class="content">
     <div class="container">
 
         <div class="page-header">
-            <h1>Programme <small>Foire</small></h1>
+            <h1>Programme <small>Foire @Model.ToString()</small></h1>
         </div>
 
-        <div>
-            <dl class="dl-horizontal">
-                <dt>Trimestre :</dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Trimester)
-                </dd>
-
-                <dt>Début :</dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.StartDate)
-                </dd>
-
-                <dt>Fin :</dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.EndDate)
-                </dd>
-
-                <dt>Debut Ceuillette :</dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.PickingStartDate)
-                </dd>
-
-                <dt>Fin ceuillette</dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.PickingEndDate)
-                </dd>
-
-                <dt>Début vente :</dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.SaleStartDate)
-                </dd>
-
-                <dt>Fin vente :</dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.SaleEndDate)
-                </dd>
-
-                <dt>Début récupération :</dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.RetrievalStartDate)
-                </dd>
-
-                <dt>Fin récupération</dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.RetrievalEndDate)
-                </dd>
-            </dl>
-        </div>
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Activité</th>
+                    <th>Emplacement</th>
+                </tr>
+            </thead>
+            @foreach (var fs in Model.FairSteps)
+            {
+                <tr>
+                    <td>@fs.StartDateTime.ToString("dd MMMM")</td>
+                    <td>
+                        @fs.StartDateTime.ToString("hh:mm:ss") - 
+                        @fs.EndDateTime.ToString("hh:mm:ss")
+                    </td>
+                    <td>@fs.TypeNamePhase</td>
+                    <td>@fs.TypeNamePlace</td>
+                </tr>
+            }
+        </table>
     </div>
+
 </div>

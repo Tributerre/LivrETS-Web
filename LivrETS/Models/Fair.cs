@@ -37,14 +37,14 @@ namespace LivrETS.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public DateTime PickingStartDate { get; set; }
+        /*public DateTime PickingStartDate { get; set; }
         public DateTime PickingEndDate { get; set; }
 
         public DateTime SaleStartDate { get; set; }
         public DateTime SaleEndDate { get; set; }
 
         public DateTime RetrievalStartDate { get; set; }
-        public DateTime RetrievalEndDate { get; set; }
+        public DateTime RetrievalEndDate { get; set; }*/
 
         [Required]
         public string Trimester { get; set; }
@@ -56,30 +56,21 @@ namespace LivrETS.Models
         public double CommissionOnSale { get; set; }
 
         [NotMapped]
-        public FairPhase Phase {
+        public FairStep Phase {
             get
             {
                 DateTime now = DateTime.Now;
-                FairPhase fp = 
-                    (DateTime.Compare(now, FairSteps.LastOrDefault().EndDateTime) > 0)?
-                    FairPhase.POSTFAIR: 
-                    FairPhase.PREFAIR;
-                
-                if(fp != FairPhase.POSTFAIR)
+
+                FairSteps.OrderBy(stp => stp.StartDateTime);
+                foreach (FairStep step in FairSteps)
                 {
-                    FairSteps.OrderBy(stp => stp.StartDateTime);
-                    foreach(FairStep step in FairSteps)
+                    if (DateTime.Compare(now, step.StartDateTime) == 0)
                     {
-                    
-                        if(DateTime.Compare(now, step.StartDateTime) > 0 &&
-                            DateTime.Compare(now, step.EndDateTime) < 0){
-                            fp = step.CodeStep;
-                        }
+                        return step;
                     }
                 }
                 
-                
-                return fp;
+                return null;
                 /*DateTime now = DateTime.Now;
 
                 if (now < StartDate || now < PickingStartDate)
@@ -138,7 +129,7 @@ namespace LivrETS.Models
         /// <param name="start">Start date of the fair or phase</param>
         /// <param name="end">End date of the fair or phase</param>
         /// <param name="forPhase">Phase to set the dates for. Choose PREFAIR or POSTFAIR for fair.</param>
-        public Fair SetDates(DateTime start, DateTime end, FairPhase forPhase = FairPhase.PREFAIR)
+        /*public Fair SetDates(DateTime start, DateTime end, FairPhase forPhase = FairPhase.PREFAIR)
         {
             if (end <= start)
             {
@@ -170,11 +161,11 @@ namespace LivrETS.Models
             }
 
             return this;
-        }
+        }*/
 
         public static bool CheckStatusFair()
         {
-            List<ApplicationUser> listAllUsers = null;
+            /*List<ApplicationUser> listAllUsers = null;
             List<ApplicationUser> listUsersParicipateFair = null;
             Fair fair = null;
 
@@ -240,7 +231,7 @@ namespace LivrETS.Models
             else if (CompareDate(currentDate, fairRetrievalEndDate))
                 return NotificationManager.getInstance().sendNotification(
                     new Notification(NotificationOptions.ENDFAIRRETREIVAL, listUsersParicipateFair)
-                );
+                );*/
             return false;
         }
 
@@ -250,18 +241,34 @@ namespace LivrETS.Models
                 currentDate.Month == CompareDate.Month &&
                 currentDate.Day == CompareDate.Day;
         }
+
+        public string ToString()
+        {
+            string name = null;
+            string year = StartDate.ToString("yyyy");
+
+            if (Trimester.Equals("A"))
+                name = "Automne ";
+            else if (Trimester.Equals("H"))
+                name = "Hiver ";
+            else
+                name = "Été ";
+
+            return name + year;
+        }
     }
 
     /// <summary>
     /// Enumerations of the different fair phases. Learn about
     /// those phases in the documentation.
     /// </summary>
-    public enum FairPhase
+    /*public enum FairPhase
     {
         PREFAIR = 0,
         PICKING,
         SALE,
         RETRIEVAL,
         POSTFAIR
-    }
+    }*/
+
 }

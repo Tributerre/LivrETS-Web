@@ -18,15 +18,20 @@
 <div id="page-wrapper">
     <div class="container">
 
-
         <div class="row">
-            @using (Html.BeginForm("Create", "Offer", FormMethod.Post, new { @class = "form" }))
+            <div class="alert alert-success hide" id="group-alert-mess" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span id="alert-mess"></span>
+            </div>
+            @using (Html.BeginForm("CreateFair", "Admin", FormMethod.Post, new { @class = "form" }))
             {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Session</label>
-                            <select class="form-control input-sm">
+                            <select class="form-control input-sm" id="session">
                                 <option value="A">Automne</option>
                                 <option value="H">Hiver</option>
                                 <option value="E">Été</option>
@@ -39,7 +44,7 @@
                         <div class="form-group">
                             <label>Date de début :</label>
                             <div class="input-group date">
-                                <input name="start_date" type="text" class="form-control input-sm">
+                                <input id="start_date" type="text" class="form-control input-sm">
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </div>
@@ -50,7 +55,7 @@
                         <div class="form-group">
                             <label>Date de fin :</label>
                             <div class="input-group date">
-                                <input name="end_date" type="text" class="form-control input-sm">
+                                <input id="end_date" type="text" class="form-control input-sm">
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </div>
@@ -60,7 +65,7 @@
                 </div>
                 <div class="row">
                     <h2>Ajouter des activités</h2>
-                    <a href="#" class="btn btn-success" id="btn-add-activity">Ajouter une étape</a>
+                    
                     <div class="row" id="grp-activity">
                         <div id="add-activity" class="hide">
                             <div class="col-md-1 text-center">
@@ -71,7 +76,7 @@
                             <div class="col-md-3">
                                 <label>Date de début :</label>
                                 <div class="input-group date">
-                                    <input name="fair_start_date" type="text" class="form-control input-sm">
+                                    <input type="text" class="form-control input-sm activity_start_date">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </div>
@@ -80,31 +85,41 @@
                             <div class="col-md-3">
                                 <label>Date de fin :</label>
                                 <div class="input-group date">
-                                    <input name="fair_end_date" type="text" class="form-control input-sm">
+                                    <input type="text" class="form-control input-sm activity_end_date">
                                     <div class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <label for="exampleInputEmail1">Activité :</label>
-                                <select class="form-control">
-                                    <option value="">Ceuillete</option>
-                                    <option value="">Vente</option>
-                                    <option value="">Récuperation</option>
+                                <label>Activité :</label>
+                                <select class="form-control activity_activity">
+                                    <option value="P">Ceuillete</option>
+                                    <option value="S">Vente</option>
+                                    <option value="R">Récuperation</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1">Emplacement :</label>
-                                <select class="form-control">
-                                    <option value="A">Hall Batiment A</option>
-                                    <option value="B">Hall Batiment B</option>
-                                    <option value="C">Hall Batiment E</option>
+                                <label>Emplacement :</label>
+                                <select class="form-control activity_place">
+                                    <option value="PA">Hall Pavillon A</option>
+                                    <option value="PB">Hall Pavillon B</option>
+                                    <option value="PE">Hall Pavillon E</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                    <a href="#" class="btn btn-success" id="btn-add-activity">
+                        <i class="fa fa-plus"></i> Ajouter une étape
+                    </a>
+                </div>
+                <div class="row">
                     
+                    <a href="#" id="btn-submit" class="btn btn-success">
+                        <i class="fa fa-spinner fa-pulse fa-fw hide"></i>
+                        <span class="sr-only">Loading...</span>
+                        Enregistrer
+                    </a>
                 </div>
             }
         </div>
