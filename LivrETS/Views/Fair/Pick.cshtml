@@ -38,7 +38,7 @@
 }
 <div class="content">
     <div class="container">
-        @if (Model.Fair == null || Model.Fair.Phase != FairPhase.PICKING)
+        @if (Model.Fair == null /*|| Model.Fair.Phase != FairPhase.PICKING*/)
         {
             <div class="row">
                 <div class="group-error text-center">

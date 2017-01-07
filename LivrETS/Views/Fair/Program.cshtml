@@ -9,6 +9,23 @@
         table{
             width: 100%;
         }
+        th{
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr th{
+            font-size: 1.3em;
+        }
+        td, th{
+            padding: 10px;
+        }
+        tr:nth-child(even) {background-color: #f2f2f2}
+        table, th, td{
+            border: 1px solid black;
+        }
+        #group-table{
+            min-height:300px;
+        }
     </style>
 }
 <div class="content">
@@ -18,29 +35,31 @@
             <h1>Programme <small>Foire @Model.ToString()</small></h1>
         </div>
 
-
-        <table id="table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Heure</th>
-                    <th>Activité</th>
-                    <th>Emplacement</th>
-                </tr>
-            </thead>
-            @foreach (var fs in Model.FairSteps)
+        <div class="row" id="group-table">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th>Activité</th>
+                        <th>Emplacement</th>
+                    </tr>
+                </thead>
+                @foreach (var fs in Model.FairSteps)
             {
-                <tr>
-                    <td>@fs.StartDateTime.ToString("dd MMMM")</td>
-                    <td>
-                        @fs.StartDateTime.ToString("hh:mm:ss") - 
-                        @fs.EndDateTime.ToString("hh:mm:ss")
-                    </td>
-                    <td>@fs.TypeNamePhase</td>
-                    <td>@fs.TypeNamePlace</td>
-                </tr>
-            }
-        </table>
+                    <tr>
+                        <td>@fs.StartDateTime.ToString("dd MMMM")</td>
+                        <td>
+                            @fs.StartDateTime.ToString("hh:mm:ss") -
+                            @fs.EndDateTime.ToString("hh:mm:ss")
+                        </td>
+                        <td>@fs.TypeNamePhase</td>
+                        <td>@fs.TypeNamePlace</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        
     </div>
 
 </div>

@@ -8,6 +8,7 @@
 $(function () {
     $(".date").datetimepicker({
         locale: "fr-ca",
+        format: 'MM/DD/YYYY',
         minDate: new Date()
     });
 

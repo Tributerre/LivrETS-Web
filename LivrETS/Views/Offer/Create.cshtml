@@ -186,11 +186,20 @@
 
         <!-- START Title -->
             <div class="row">
+                
                 <div class="col-md-12">
+                    <div class="row hide" id="warning-isbn">
+                        <div class="col-md-6 alert alert-warning" role="alert">
+                            Si vous avez choisi de mettre en ligne un livre,
+                            le titre de votre article doit exactement correspondre
+                            à celui écrit sur le livre sinon le code ISBN ne sera pas validé.
+                        </div>
+                    </div>
                     @Html.LabelFor(model => model.Title, new { @class = "control-label" })
                 </div>
                 <div class="col-md-7">
-                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control", placeholder = "Ex: Analyse économique en ingénierie" })
+                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control",
+                            placeholder = "Ex: Analyse économique en ingénierie" })
                 </div>
                 <div class="col-md-12">
                     @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })

@@ -13,9 +13,6 @@ namespace LivrETS.Models
         public Guid FairID { get; set; }
         public virtual Fair Fair { get; set; }
 
-        [Required]
-        [MaxLength(1)]
-        public readonly string PhaseCode;
         [NotMapped]
         public const string PICKING_CODE = "P";
         [NotMapped]
@@ -23,9 +20,6 @@ namespace LivrETS.Models
         [NotMapped]
         public const string RETRIEVAL_CODE = "R";
 
-        [Required]
-        [MaxLength(1)]
-        public readonly string PlaceCode;
         [NotMapped]
         public const string PA_CODE = "PA";
         [NotMapped]
@@ -82,8 +76,6 @@ namespace LivrETS.Models
 
         public FairStep(string PhaseCode, string PlaceCode) 
         {
-            this.PhaseCode = PhaseCode;
-            this.PlaceCode = PlaceCode;
             this.Place = PlaceCode;
             this.Phase = PhaseCode;  
         }
