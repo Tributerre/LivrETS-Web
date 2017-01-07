@@ -46,7 +46,7 @@ Le projet est relativement simple à démarrer. Il s'agit d'un projet ASP.NET ve
 	
 	URI de redirection autorisés : http://localhost:PORT/signin-google
 	
-	Ajoutez Google+ API  
+	Ajoutez Google+ API et Google Books API
 	
     ```xml
     <appSettings>
@@ -56,6 +56,8 @@ Le projet est relativement simple à démarrer. Il s'agit d'un projet ASP.NET ve
         <add key="UnobtrusiveJavaScriptEnabled" value="true" />
         <add key="GoogleClientID" value="YOUR_GOOGLE_CLIENT_ID" />
         <add key="GoogleClientSecret" value="YOUR_GOOGLE_CLIENT_SECRET" />
+		<add key="GoogleBookApiKey" value="YOUR_GOOGLE_API_KEY" />
+		<add key="GoogleProject" value="YOUR_GOOGLE_PROJECT" />
     </appSettings>
     ```
     Les clés `GoogleClientID` et `GoogleClientSecret` sont utilisées par ASP.NET directement. Voyez l'exemple suivant tiré du projet:
