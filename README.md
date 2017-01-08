@@ -46,7 +46,7 @@ Le projet est relativement simple à démarrer. Il s'agit d'un projet ASP.NET ve
 	
 	URI de redirection autorisés : http://localhost:PORT/signin-google
 	
-	Ajoutez Google+ API et Google Books API
+	Ajoutez Google+ API, Google Books API et vos informations d'envoie de mail 
 	
     ```xml
     <appSettings>
@@ -58,8 +58,16 @@ Le projet est relativement simple à démarrer. Il s'agit d'un projet ASP.NET ve
         <add key="GoogleClientSecret" value="YOUR_GOOGLE_CLIENT_SECRET" />
 		<add key="GoogleBookApiKey" value="YOUR_GOOGLE_API_KEY" />
 		<add key="GoogleProject" value="YOUR_GOOGLE_PROJECT" />
+		<!-- emails parameters -->
+		<add key="EMAIL_PROVIDER" value="YOUR_EMAIL_PROVIDER" />
+		<add key="EMAIL_PWD" value="YOUR_EMAIL_PWD" />
+		<!-- votre compte email que vous voulez utiliser pour  -->
+		<add key="EMAIL_USERNAME" value="YOUR_EMAIL_USERNAME" />
+		<add key="SMTP_CLIENT" value="smtp.gmail.com" />
+		<add key="EMAIL_PORT" value="587" />
     </appSettings>
     ```
+	
     Les clés `GoogleClientID` et `GoogleClientSecret` sont utilisées par ASP.NET directement. Voyez l'exemple suivant tiré du projet:
     ```c#
     app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
