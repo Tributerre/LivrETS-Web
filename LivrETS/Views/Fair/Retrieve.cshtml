@@ -35,7 +35,7 @@
 }
 <div class="content">
     <div class="container">
-        @if (Model.Fair == null || Model.Fair.Phase != FairPhase.RETRIEVAL)
+        @if (Model.Fair == null /*|| Model.Fair.Phase != FairPhase.RETRIEVAL*/)
         {
             <div class="row">
                 <div class="group-error text-center">

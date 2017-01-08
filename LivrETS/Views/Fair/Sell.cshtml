@@ -42,7 +42,7 @@
 }
 <div class="content">
     <div class="container">
-        @if (Model.Fair == null || Model.Fair.Phase != FairPhase.SALE)
+        @if (Model.Fair == null /*|| Model.Fair.Phase != FairPhase.SALE*/)
         {
             <div class="row">
                 <div class="group-error text-center">
@@ -153,7 +153,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button id="btn-cash-ok" type="button" class="btn btn-success">OK</button>
+                            <button id="btn-cash-ok" type="button" class="btn btn-success">Terminer</button>
                         </div>
                     </div>
                 </div>

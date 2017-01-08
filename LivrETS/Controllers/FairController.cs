@@ -147,6 +147,16 @@ namespace LivrETS.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+        public ActionResult Program()
+        {
+            Fair curentFair = Repository.GetCurrentFair();
+            Fair nextFair = Repository.GetNextFair();
+
+            return View((curentFair != null) ? curentFair : nextFair);
+                
+        }
+
         #region Ajax
         
         [HttpPost]

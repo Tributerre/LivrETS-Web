@@ -59,7 +59,7 @@ $(document).ready(function () {
             },
             {
                 class: "text-center",
-                sortable: false,
+                sortable: true,
                 data: function (val) {
 
                     var btn1 = "<a href='/Admin/ManageDetailsFair/" + val.Id + "' class='btn btn-sm btn-info' "+

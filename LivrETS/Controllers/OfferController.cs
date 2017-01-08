@@ -1,4 +1,5 @@
-﻿using LivrETS.Models;
+﻿using Google.Apis.Books.v1.Data;
+using LivrETS.Models;
 using LivrETS.Repositories;
 using LivrETS.Service.IO;
 using LivrETS.ViewModels;
@@ -80,7 +81,18 @@ namespace LivrETS.Controllers
         {
             var course = Repository.GetCourseByAcronym(model.Acronym);
 
-            // Validating the model
+            if (model.Type.Equals(Article.BOOK_CODE))
+            {
+                var result = BookApi.Search(model.ISBN, model.Title);
+
+                // Validating the model
+                if (!result)
+                {
+                    ModelState.AddModelError(nameof(ArticleViewModel.ISBN),
+                        "Votre ISBN ne correspond pas au Titre de l'article ");
+                }
+            }
+            
             if (model.Type != Article.CALCULATOR_CODE && string.IsNullOrEmpty(model.ISBN))
             {
                 ModelState.AddModelError(nameof(ArticleViewModel.ISBN), 

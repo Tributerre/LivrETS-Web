@@ -58,12 +58,40 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Google.Apis, Version=1.20.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.20.0\lib\net45\Google.Apis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Auth, Version=1.20.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.20.0\lib\net45\Google.Apis.Auth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.20.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.20.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Books.v1, Version=1.20.0.705, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Books.v1.1.20.0.705\lib\net45\Google.Apis.Books.v1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Core, Version=1.20.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Core.1.20.0\lib\net45\Google.Apis.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.20.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.20.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Hangfire.Core, Version=1.6.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Core.1.6.7\lib\net45\Hangfire.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Hangfire.SqlServer, Version=1.6.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.SqlServer.1.6.7\lib\net45\Hangfire.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -217,6 +245,10 @@
       <HintPath>..\packages\Zen.Barcode.Rendering.Framework.3.1.10729.1\lib\Zen.Barcode.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Zlib.Portable, Version=1.11.0.0, Culture=neutral, PublicKeyToken=431cba815f6a8b5b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Zlib.Portable.Signed.1.11.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -243,6 +275,14 @@
     <Compile Include="Migrations\201609262319142_second.Designer.cs">
       <DependentUpon>201609262319142_second.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612311640193_add-table-fairstep.cs" />
+    <Compile Include="Migrations\201612311640193_add-table-fairstep.Designer.cs">
+      <DependentUpon>201612311640193_add-table-fairstep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612311857200_update-table-fair.cs" />
+    <Compile Include="Migrations\201612311857200_update-table-fair.Designer.cs">
+      <DependentUpon>201612311857200_update-table-fair.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -253,6 +293,7 @@
     <Compile Include="Models\CourseNotes.cs" />
     <Compile Include="Models\Fair.cs" />
     <Compile Include="Models\FairStatistics.cs" />
+    <Compile Include="Models\FairStep.cs" />
     <Compile Include="Models\HangfireAutorizationFilter.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\NotificationManager.cs" />
@@ -449,6 +490,7 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-notify.min.js" />
     <Content Include="Scripts\dropdowns-enhancement.js" />
+    <Content Include="Scripts\fair\createFair.js" />
     <Content Include="Scripts\fair\retrieve.js" />
     <Content Include="Scripts\fair\sell.js" />
     <Content Include="Scripts\fullcalendar-lang-fr-ca.js" />
@@ -534,6 +576,8 @@
     <Content Include="Views\Shared\_HeaderAdmin.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Shared\_ProfileUserLayout.cshtml" />
+    <Content Include="Views\Fair\Program.cshtml" />
+    <Content Include="Views\Admin\CreateFair.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -549,6 +593,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609262319142_second.resx">
       <DependentUpon>201609262319142_second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612311640193_add-table-fairstep.resx">
+      <DependentUpon>201612311640193_add-table-fairstep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612311857200_update-table-fair.resx">
+      <DependentUpon>201612311857200_update-table-fair.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

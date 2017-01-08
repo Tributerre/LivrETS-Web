@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 **/
 
 $(document).ready(function () {
+    $("#btn-cash-ok").prop("disabled", true);
+
     $.sameWidthForElements.apply(this, [
         $("#subtotal-addon"),
         $("#commission-addon"),
@@ -66,6 +68,7 @@ $(document).ready(function () {
     $("#in-cash-received").on("keyup", function () {
         var currentText = $(this).val()
         var inCashReturned = $("#in-cash-returned")
+        $("#btn-cash-ok").prop("disabled", true);
 
         if (isNaN(currentText)) {
             inCashReturned.val("ERREUR")
@@ -75,6 +78,11 @@ $(document).ready(function () {
             } else {
                 var cashReceived = parseFloat(currentText)
                 var total = parseFloat($("#total").val())
+                if ((cashReceived - total) < 0) 
+                    $("#btn-cash-ok").prop("disabled", true);
+                else 
+                    $("#btn-cash-ok").prop("disabled", false);
+
                 inCashReturned.val(cashReceived - total)
             }
         }
