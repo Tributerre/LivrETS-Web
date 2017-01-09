@@ -4,6 +4,7 @@ using LivrETS.Repositories;
 using LivrETS.Service.IO;
 using LivrETS.ViewModels;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -194,10 +195,30 @@ namespace LivrETS.Controllers
             }
         }
 
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
         // GET: Offer/Edit/5
+        [Authorize]
         public ActionResult Edit(string id)
         {
+
+            var user = UserManager.FindById(User.Identity.GetUserId());
             Offer offer = Repository.GetOfferBy(id);
+
+            if (user.Offers.Where(offerTmp => offerTmp.Id.ToString().Equals(offer.Id.ToString())) == null)
+                throw new HttpException(404, "Page not Found");
+
             Session["images"] = null;
             string[] data = Repository.GetISBNByArticle(offer.Article.Id.ToString());
             var model = new ArticleViewModel()
@@ -340,7 +361,7 @@ namespace LivrETS.Controllers
 
         
 
-            // GET: Offer/Delete/5
+        // GET: Offer/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
