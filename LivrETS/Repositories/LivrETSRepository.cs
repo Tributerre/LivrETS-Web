@@ -313,8 +313,8 @@ namespace LivrETS.Repositories
 
             if (searchString != null && select_search != null)
             {
-                results = (select_search.Equals("title"))?offers.Where(offer => offer.Title.Contains(searchString)):
-                    offers.Where(offer => offer.Article.Course.Acronym.Contains(searchString));
+                results = (select_search.Equals("title"))?offers.Where(offer => offer.Title.ToLower().Contains(searchString.ToLower())):
+                    offers.Where(offer => offer.Article.Course.Acronym.ToLower().Contains(searchString.ToLower()));
 
             }else if(sortOrder != null)
             {
