@@ -83,18 +83,26 @@ namespace LivrETS.Controllers
         {
             var course = Repository.GetCourseByAcronym(model.Acronym);
 
-            if (model.Type.Equals(Article.BOOK_CODE))
+            if (string.IsNullOrEmpty(model.Type))
             {
-                var result = BookApi.Search(model.ISBN, model.Title);
-
-                // Validating the model
-                if (!result)
-                {
-                    ModelState.AddModelError(nameof(ArticleViewModel.ISBN),
-                        "Votre ISBN ne correspond pas au Titre de l'article ");
-                }
+                ModelState.AddModelError(nameof(ArticleViewModel.ISBN),
+                    "");
             }
-            
+            else if (model.Type.Equals(Article.BOOK_CODE))
+            {
+                
+                
+                    var result = BookApi.Search(model.ISBN, model.Title);
+
+                    // Validating the model
+                    if (!result)
+                    {
+                        ModelState.AddModelError(nameof(ArticleViewModel.ISBN),
+                            "Votre ISBN ne correspond pas au Titre de l'article ");
+                    }
+                
+            }
+
             if (model.Type != Article.CALCULATOR_CODE && string.IsNullOrEmpty(model.ISBN))
             {
                 ModelState.AddModelError(nameof(ArticleViewModel.ISBN), 
@@ -106,6 +114,8 @@ namespace LivrETS.Controllers
                 ModelState.AddModelError(nameof(ArticleViewModel.Acronym), 
                     "Le type choisi requiert un cours de la liste.");
             }
+
+            
 
             // Proceeding to add the new offer.
             if (ModelState.IsValid)

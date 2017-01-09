@@ -36,10 +36,17 @@ namespace LivrETS.Models
             if (result != null && result.Items != null)
             {
                 var items = result.Items;
+                
                 for (int i =0; i < items.Count(); i++)
-                    if (items[i].VolumeInfo.Title.ToLower().Equals(title.ToLower().Trim()))
-                        return true; 
+                {
+                    var name = items[i].VolumeInfo.Title;
+                    if (items[i].VolumeInfo.Title.ToLower().IndexOf(title.ToLower().Trim()) >= 0)
+                        return true;
+                }
+                    
             }
+            /*if (result != null)
+                return true;*/
             return false;
         }
     }
