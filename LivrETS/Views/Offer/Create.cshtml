@@ -61,13 +61,10 @@
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.ISBN, new { @class = "control-label" })
 
-                        <a style="color: black;"
-                           role="button"
-                           data-content='<div><b>ISBN</b> Numéro qui se trouve derriere votre livre juste au dessus du code barre</div>
-                                            <div><b>Code</b> Numéro qui se trouve derriere votre Note de cours</div>'
-                           data-html="true"
-                           data-placement="top"
-                           data-toggle="popover">
+                        <a style="color: black;" role="button" data-html="true" data-placement="right" data-toggle="popover"
+                           data-content='<div><b>ISBN</b><br><img src="/Images/isbn.jpg" ></div><div><b>Code</b><br> <img src="/Images/code_barre.jpg" ></div>'>
+                           
+                           
                             <span class="glyphicon glyphicon-question-sign"></span>
                         </a>
 
