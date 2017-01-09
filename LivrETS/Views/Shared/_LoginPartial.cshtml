@@ -32,7 +32,8 @@
                     Bonjour @user.FirstName! <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="/Account/Historic"><span class="fa fa-cogs"></span>Mes infos</a></li>
+                    <li><a href="/Account/Profile"><span class="fa fa-cogs"></span>Mon profile</a></li>
+                    <li><a href="/Account/Historic"><span class="fa fa-cogs"></span>Mes annonces</a></li>
                     <li><a href="/Offer/Create"><span class="glyphicon glyphicon-usd"></span>Vendre</a></li>
                     @if (User.IsInRole("Administrator"))
                     {
