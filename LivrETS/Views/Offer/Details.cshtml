@@ -102,8 +102,8 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div>
                                 <h3 class="control-label text-md-center">Envoyez un mail au vendeur</h3>
-                           
-                                    <form method="post" action="/home/sendMailForOffer">
+                                    <div class="alert alert-success txtmsg hide" role="alert"></div>
+                                    <form method="post" action="/Offer/sendMailForOffer" id="sendMail">
                                         <input type="hidden" value="@Model.Id" name="to_offer" />
                                         <div class="form-group">
                                             <label for="to_address">Mail</label>
@@ -120,7 +120,11 @@
                                             <textarea class="form-control" name="to_message"
                                                       id="to_message"></textarea>
                                         </div>
-                                        <button type="submit" class="btn btn-success">Envoyez</button>
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fa fa-spinner fa-pulse fa-fw hide"></i>
+                                            <span class="sr-only">Loading...</span>
+                                            Envoyez
+                                        </button>
                                     </form>
            
                             </div><!-- /.form-group -->
@@ -151,3 +155,6 @@
         </div><!-- /.product detail -->
     </div>
 </div>
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/offerDetail.js"></script>
+}
