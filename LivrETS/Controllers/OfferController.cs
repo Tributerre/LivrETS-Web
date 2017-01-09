@@ -463,28 +463,40 @@ namespace LivrETS.Controllers
             string header_mail = "<div style='background:#629c49;padding:3px 10px;color:black;'>" +
                                     "<div style='float:left;'><h1>TRIBUTERRE</h1></div>" +
                                     "<div style='margin-left:70%;'><h1 style='color:white;'>" +
-                                    "Notification de LivrÈTS</h1></div></div></div>";
+                                    "Notification de LivrÈTS</h1></div></div></div><br>";
             string footer_mail = "<br><div style='background:#629c49;padding:3px 10px;color:black;'>" +
                                    "<h1>MERCI</h1></div>";
-            string footer_message = "<div><a href='/Offer/Details/" + offer.Id + "'>Article concernée</a></div>";
-            string infos_article = "<div>Répondé au mail " + to_address + "</div>" +
-                                    "<div><ul>" +
+            string footer_message = "<div><p><a href='/Offer/Details/" + offer.Id + "'>Article concernée</a></p></div>";
+            string infos_article = "<p>Répondé au mail " + to_address + "</p>" +
+                                    "<div><div><h2>Informations sur l'annonce</h3></div><ul>" +
                                     "<li><b>Titre: </b> " + offer.Title + "</li>" +
                                     "<li><b>Cours: </b> " + offer.Article.Course.Acronym + "</li>" +
                                     "<li><b>Poster le: </b> " + offer.StartDate + "</li>" +
                                     "<li><b>Prix: </b> " + offer.Price.ToString("00.00") + "</li>" +
                                     "</ul></div>";
 
-            mail.Body = string.Format("<div>{0}<div><div>{1}</div>{2}{3}</div>{4}" +
+            mail.Body = string.Format("<div>{0}<div><div><p>{1}</p></div><div><p>{2}<p></div>{3}</div>{4}" +
                 "<div>", header_mail, to_message, infos_article, footer_message, footer_mail);
 
-            SmtpServer.Port = Int32.Parse(ConfigurationManager.AppSettings["EMAIL_PORT"]);
-            SmtpServer.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["EMAIL_USERNAME"],
-                ConfigurationManager.AppSettings["EMAIL_PWD"]);
-            SmtpServer.EnableSsl = true;
-            mail.To.Add(to_address);
-            SmtpServer.Send(mail);
+            try
+            {
+                SmtpServer.Port = Int32.Parse(ConfigurationManager.AppSettings["EMAIL_PORT"]);
+                SmtpServer.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["EMAIL_USERNAME"],
+                    ConfigurationManager.AppSettings["EMAIL_PWD"]);
+                SmtpServer.EnableSsl = true;
+                mail.To.Add(to_address);
+                SmtpServer.Send(mail);
 
+            }catch(Exception ex)
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Votre message n'a pas été envoyé",
+                    message_2= ex.Message
+                }, contentType: "application/json");
+            }
+            
             return Json(new
             {
                 status = true,

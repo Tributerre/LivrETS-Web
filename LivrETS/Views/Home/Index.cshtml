@@ -184,17 +184,17 @@
                         <h4 class="sidebar-title">Affichage</h4>
                         <ul class="nav nav-tabs view-switcher" role="tablist" id="myTab">
                             <li class="active">
-                                <a href="#grid" role="tab" data-toggle="tab">
+                                <a href="#grid" role="tab" data-toggle="tab" title="mosaïque">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </a>
                             </li>
-                            <li><a href="#list" role="tab" data-toggle="tab">
+                            <li><a href="#list" role="tab" data-toggle="tab" title="liste">
                                 <span class="glyphicon glyphicon-th-list"></span></a>
                             </li>
                         </ul><!-- /.nav -->
                     </div><!-- /.sidebar section -->
                     <div class="sidebar-section col-sm-8 col-xs-8 col-md-12 col-lg-12">
-                        <h4 class="sidebar-title text-md-center">Trier</h4>
+                        <h4 class="sidebar-title text-md-center">Trier les annonces</h4>
                         <div class="text-md-center">
                             @HomeHelpers.GetSelectorSort(Request.Params["sortOrder"])
                         </div>
@@ -233,7 +233,7 @@
                                 </div>
                                 
                                 <br/>
-                                <button type="submit" class="btn btn-success">Trier</button>
+                                <button type="submit" class="btn btn-success">Mettre à jour</button>
                             }
                             </section><!-- /.price -->
                         
