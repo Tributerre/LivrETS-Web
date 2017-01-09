@@ -16,7 +16,7 @@ namespace LivrETS.Helpers
         /// <returns>The path of image</returns>
         public static string ThbImgArticleHelper(OfferImage image)
         {
-            return (image == null) ? "http://placehold.it/262x202" : image.RelativeThumbnailPath;
+            return (image == null) ? "http://placehold.it/262x202?text=no+image" : image.RelativeThumbnailPath;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace LivrETS.Helpers
         /// <returns>The path of image</returns>
         public static IHtmlString ImgArticleHelper(OfferImage image, string alt, bool flag)
         {
-            var img = (image == null) ? "http://placehold.it/590x590" : image.RelativeOriginalPath;
+            var img = (image == null) ? "http://placehold.it/590x590?text=no+image" : image.RelativeOriginalPath;
             string active = ""; 
 
             if (flag) active = "active";
@@ -84,11 +84,11 @@ namespace LivrETS.Helpers
 
             if (urlParametor == null || urlParametor.Equals("dateDesc"))
             {
-                html += "<option selected value='DateDesc'>Date de diffusion l'article</option>";
+                html += "<option selected value='DateDesc'>Date de diffusion</option>";
                 html += "<option value='PriceDesc'>Prix</option>";
             }else if (urlParametor != null || urlParametor.Equals("priceDesc"))
             {
-                html += "<option value='dateDesc'>Date diffusion de l'article</option>";
+                html += "<option value='dateDesc'>Date diffusion</option>";
                 html += "<option selected value='PriceDesc'>Prix</option>";
             }
 

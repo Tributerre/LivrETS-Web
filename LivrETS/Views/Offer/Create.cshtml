@@ -47,7 +47,7 @@
 <div class="container">
     <div class="row">
         <div class="page-header">
-            <h1>Vendre un article <small>Remplissez tous les champs</small></h1>
+            <h1>Afficher votre annonce</h1>
         </div>
 
         @using (Html.BeginForm("Create", "Offer", FormMethod.Post, new { @class = "form",
@@ -58,13 +58,17 @@
 
         <!-- BEGIN ISBN -->
             <div class="row">
+                <div class="col-md-12 text-danger">
+                    <small>Tous les champs sont obligatoires</small>
+                </div>
+            </div><br />
+            <div class="row">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.ISBN, new { @class = "control-label" })
 
                         <a style="color: black;" role="button" data-html="true" data-placement="right" data-toggle="popover"
                            data-content='<div><b>ISBN</b><br><img src="/Images/isbn.jpg" ></div><div><b>Code</b><br> <img src="/Images/code_barre.jpg" ></div>'>
-                           
-                           
+
                             <span class="glyphicon glyphicon-question-sign"></span>
                         </a>
 
