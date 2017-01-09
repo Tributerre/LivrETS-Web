@@ -372,7 +372,9 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\code_barre.jpg" />
     <Content Include="Images\ets.png" />
+    <Content Include="Images\isbn.jpg" />
     <Content Include="Images\student_card_example.jpg" />
     <Content Include="Images\template\ajax.gif" />
     <Content Include="Images\template\AjaxLoader.gif" />
