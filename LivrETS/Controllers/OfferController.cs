@@ -84,7 +84,7 @@ namespace LivrETS.Controllers
         {
             var course = Repository.GetCourseByAcronym(model.Acronym);
 
-            if (string.IsNullOrEmpty(model.Type))
+            /*if (string.IsNullOrEmpty(model.Type))
             {
                 ModelState.AddModelError(nameof(ArticleViewModel.ISBN),
                     "");
@@ -102,7 +102,7 @@ namespace LivrETS.Controllers
                             "Votre ISBN ne correspond pas au Titre de l'article ");
                     }
                 
-            }
+            }*/
 
             if (model.Type != Article.CALCULATOR_CODE && string.IsNullOrEmpty(model.ISBN))
             {
