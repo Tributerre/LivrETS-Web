@@ -23,6 +23,7 @@
     ViewBag.Title = "Modifier "+ Model.TypeModel;
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<OfferImage> images = ViewBag.Images;
+    int i = 0;
 }
 
 @section Styles {
@@ -43,22 +44,7 @@
             opacity: 0;
             filter: alpha(opacity=0);
         }
-        .list-inline li{
-            width: 20%;
-        }
-        .avatar-article{
-            width: 100%;
-        }
 
-        .btn-del-img{
-            padding: 5px;
-            background-color: black;
-            color: white;
-            border-radius: 10px;
-            position: relative;
-            bottom: 60px;
-            left: 87%;
-        }
     </style>
 }
 
@@ -275,24 +261,7 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <div class="row">
-                            @if (images != null)
-                            {
-                                <ul class="list-inline">
-                                    @foreach (OfferImage img in images)
-                                    {
-                                        <li>
-                                            @HomeHelpers.ImgArticleEditHelper(img, @Model.Title)
-                                            <a href="#" data-toggle='modal' data-target='#ModalConfirmDelImg'
-                                               class="btn-del-img" data-imgid="@img.Id">
-                                                <b>X</b>
-                                            </a>
-                                        </li>
-                                    }
-                                </ul>
-                                
-                            }
-                        </div>
+
                         <div id="images-panel" class="panel panel-info">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
@@ -312,6 +281,22 @@
                                 </h3>
                             </div>
                             <div class="panel-body">
+                                @if (images != null)
+                                {
+                                    
+                                        foreach (OfferImage img in images)
+                                        {
+                                            <div class="col-md-2">
+                                                <img src="@img.RelativeThumbnailPath" class="img-responsive img-rounded"
+                                                     alt="Preview image"  />
+                                                <a href="#" data-toggle='modal' data-target='#ModalConfirmDelImg'
+                                                   class="btn btn-link btn-sm btn-del-img" data-imgid="@img.Id">
+                                                    <span class="fa fa-trash"></span>
+                                                </a>
+                                            </div>
+                                        }
+                           
+                                }
                             </div>
                         </div>
                     </div>
