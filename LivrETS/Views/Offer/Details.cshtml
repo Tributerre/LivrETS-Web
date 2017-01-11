@@ -1,13 +1,16 @@
 ﻿@using LivrETS.Models
 @using LivrETS.Helpers
 @model Offer
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.Owin
 
 @{
     ViewBag.Title = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var flagImg = true;
-    ApplicationUser user = ViewBag.user;
+    var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+    var userCurrent = userManager.FindById(User.Identity.GetUserId());
 }
 
 @section Styles{
@@ -107,13 +110,30 @@
                                         <input type="hidden" value="@Model.Id" name="to_offer" />
                                         <div class="form-group">
                                             <label for="to_address">Mail</label>
-                                            <input type="email" class="form-control" name="to_address"
-                                                   value="@user.Email">
+                                            @if (userCurrent != null)
+                                            {
+                                                <input type="email" class="form-control" name="to_address"
+                                                       value="@userCurrent.Email ">
+                                            }
+                                            else
+                                            {
+                                                <input type="email" class="form-control" name="to_address"
+                                                       placeholder="Votre email">
+                                            }
+
                                         </div>
                                         <div class="form-group">
                                             <label for="to_name">Nom</label>
+                                        @if (userCurrent != null)
+                                        {
                                             <input type="text" class="form-control" name="to_name" id="to_name"
-                                                   value="@user.LastName">
+                                                   value="@userCurrent.LastName">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" name="to_name" id="to_name"
+                                                   placeholder="Votre nom">
+                                        }
                                         </div>
                                         <div class="form-group">
                                             <label for="to_message">Message</label>
