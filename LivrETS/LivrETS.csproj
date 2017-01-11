@@ -267,21 +267,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HomeHelpers.cs" />
-    <Compile Include="Migrations\201607030820353_initial.cs" />
-    <Compile Include="Migrations\201607030820353_initial.Designer.cs">
-      <DependentUpon>201607030820353_initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609262319142_second.cs" />
-    <Compile Include="Migrations\201609262319142_second.Designer.cs">
-      <DependentUpon>201609262319142_second.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612311640193_add-table-fairstep.cs" />
-    <Compile Include="Migrations\201612311640193_add-table-fairstep.Designer.cs">
-      <DependentUpon>201612311640193_add-table-fairstep.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612311857200_update-table-fair.cs" />
-    <Compile Include="Migrations\201612311857200_update-table-fair.Designer.cs">
-      <DependentUpon>201612311857200_update-table-fair.cs</DependentUpon>
+    <Compile Include="Migrations\201701110118582_initial.cs" />
+    <Compile Include="Migrations\201701110118582_initial.Designer.cs">
+      <DependentUpon>201701110118582_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -559,13 +547,10 @@
     <Content Include="Views\Admin\ManageFairs.cshtml" />
     <Content Include="Views\Admin\ManageUsers.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
-    <Content Include="Views\Shared\_AdminLayout.cshtml" />
-    <Content Include="Views\Shared\_MenuPartial.cshtml" />
     <Content Include="Views\Fair\Pick.cshtml" />
     <Content Include="Views\Fair\Sell.cshtml" />
     <Content Include="Views\Fair\Retrieve.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
-    <Content Include="Views\Home\DetailOffer.cshtml" />
     <Content Include="Views\Shared\_footer.cshtml" />
     <Content Include="Views\Shared\_header.cshtml" />
     <Content Include="Views\Offer\Create.cshtml" />
@@ -590,21 +575,12 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201607030820353_initial.resx">
-      <DependentUpon>201607030820353_initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609262319142_second.resx">
-      <DependentUpon>201609262319142_second.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612311640193_add-table-fairstep.resx">
-      <DependentUpon>201612311640193_add-table-fairstep.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612311857200_update-table-fair.resx">
-      <DependentUpon>201612311857200_update-table-fair.cs</DependentUpon>
-    </EmbeddedResource>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <EmbeddedResource Include="Migrations\201701110118582_initial.resx">
+      <DependentUpon>201701110118582_initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
