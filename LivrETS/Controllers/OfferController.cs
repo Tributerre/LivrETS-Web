@@ -57,7 +57,6 @@ namespace LivrETS.Controllers
                 throw new HttpException(404, "Page not Found");
 
             Offer offer = Repository.GetOfferBy(id);
-            ViewBag.user = Repository.GetOfferByUser(offer);
 
             return View(offer);
         }
@@ -476,9 +475,9 @@ namespace LivrETS.Controllers
 
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings["SMTP_CLIENT"]);
-            mail.From = new MailAddress(userOffer.Email);
-            mail.Subject = "Un utilisateur est intéssé par votre article ";
-
+            mail.From = new MailAddress(to_address);
+            mail.To.Add(userOffer.Email);
+            mail.Subject = "Un utilisateur est intéssé par votre article - "+ offer.Title;
             mail.IsBodyHtml = true;
 
             string header_mail = "<div style='background:#629c49;padding:3px 10px;color:black;'>" +
@@ -505,7 +504,7 @@ namespace LivrETS.Controllers
                 SmtpServer.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["EMAIL_USERNAME"],
                     ConfigurationManager.AppSettings["EMAIL_PWD"]);
                 SmtpServer.EnableSsl = true;
-                mail.To.Add(to_address);
+                
                 SmtpServer.Send(mail);
 
             }catch(Exception ex)
