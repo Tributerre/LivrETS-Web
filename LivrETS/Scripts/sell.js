@@ -23,9 +23,12 @@ $(document).ready(function () {
     changeType($("input[name='Type']:checked").val());
 
     document.getElementById("imageupload").addEventListener("change", function () {
+        var $error = $(".error-img");
+        $error.hide();
         if ($("#images-panel>div[class='panel-body']").find("img").length < 5) {
             var image = this.files[0];
             var xhr = new XMLHttpRequest();
+            
             var formData = new FormData();
             var progressHandler = function (event) {
                 var done = event.position || event.loaded,
@@ -65,11 +68,8 @@ $(document).ready(function () {
             xhr.send(formData);
             $("#image-progress").show();
         } else {
-            $.notify({
-                message: "5 images maximum par offre."
-            }, {
-                type: 'warning'
-            });
+            //$.notifyWarning("5 images maximum par annonce.");
+            $error.text("5 images maximum par annonce.").show();
         }
     }, false);
 
@@ -100,20 +100,23 @@ $(document).ready(function () {
     $("#btn-newCourse").on("click", function () {
         var courseTextInput = $("#newCourse");
         var courseTxt = courseTextInput.val();
+        var $error = $(".error-acronym");
         var spinner = $("<div>");
         var btnCourseText = $(this).html();
         var restoreButton = function () {
             $("#btn-newCourse").html(btnCourseText);
         };
+        $error.hide();
 
         var pattern = /^[A-Z]{3}[0-9]{3}$/;
         var resultReg = pattern.test(courseTxt);
 
         if (courseTxt === "") {
-            $.notifyError("Champ obligatoire");
-            courseTextInput.parent().addClass("has-error");
+            $error.text("Champ obligatoire").show();
+            //courseTextInput.parent().addClass("has-error");
         } else if (!resultReg) {
-            $.notifyError("erreur format sigle du cours. Ex: MAT145");
+            //$.notifyError("erreur format sigle du cours. Ex: MAT145");
+            $error.text("erreur format sigle du cours. Ex: MAT145").show();
         } else {
             $(this).html(spinner);
             spinner.spinner({
@@ -152,11 +155,14 @@ $(document).ready(function () {
                 statusCode: {
                     500: function () {
                         restoreButton();
-                        $.notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                        //$.notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                        $error.text("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                                .show();
                     },
                     409: function () {
                         restoreButton();
-                        $.notifyError("Le cours exsite déjà dans la liste.");
+                        //$.notifyError("Le cours exsite déjà dans la liste.");
+                        $error.text("Le cours exsite déjà dans la liste.").show();
                     }
                 }
             });
