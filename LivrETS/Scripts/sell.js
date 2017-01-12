@@ -105,22 +105,15 @@ $(document).ready(function () {
         var restoreButton = function () {
             $("#btn-newCourse").html(btnCourseText);
         };
-        var notifyError = function (message) {
-            $.notify({
-                icon: "glyphicon glyphicon-remove",
-                message: message
-            }, {
-                type: "danger"
-            });
-        };
 
         var pattern = /^[A-Z]{3}[0-9]{3}$/;
         var resultReg = pattern.test(courseTxt);
 
         if (courseTxt === "") {
+            $.notifyError("Champ obligatoire");
             courseTextInput.parent().addClass("has-error");
         } else if (!resultReg) {
-            notifyError("erreur format sigle du cours")
+            $.notifyError("erreur format sigle du cours. Ex: MAT145");
         } else {
             $(this).html(spinner);
             spinner.spinner({
@@ -154,21 +147,16 @@ $(document).ready(function () {
                     $("#courses-list").append(newCourseElement);
                     courseTextInput.val("");
                     restoreButton();
-                    $.notify({
-                        icon: "glyphicon glyphicon-ok",
-                        message: "Le cours a été ajouté à la liste avec succès!"
-                    }, {
-                        type: 'success'
-                    });
+                    $.notifySuccess("Le cours a été ajouté à la liste avec succès!");
                 },
                 statusCode: {
                     500: function () {
                         restoreButton();
-                        notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                        $.notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
                     },
                     409: function () {
                         restoreButton();
-                        notifyError("Le cours exsite déjà dans la liste.");
+                        $.notifyError("Le cours exsite déjà dans la liste.");
                     }
                 }
             });

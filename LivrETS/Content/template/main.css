@@ -550,6 +550,14 @@ hr {
 .header .container {
   position: relative;
 }
+#beta {
+    position: absolute;
+    left: 75%;
+    color: black;
+    bottom: 18%;
+    font-weight: bold;
+    font-size: 1.25em;
+}
 .header .logo {
   margin-top: 28px;
   margin-bottom: 28px;
