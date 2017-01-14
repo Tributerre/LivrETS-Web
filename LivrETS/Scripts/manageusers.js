@@ -77,6 +77,8 @@ $(document).ready(function () {
             },
             {
                 data: function (val) {
+                    if (currentId == val.Id)
+                        return val.Role
                     var html = "<div class='dropdown'>"
                     html += "<button data-toggle='dropdown' id='" + val.Id + "' "+
                         "class='btn btn-default btn-sm dropdown-toggle' aria-haspopup='true' " +
@@ -92,8 +94,7 @@ $(document).ready(function () {
                         
                     }
 
-                    html += "<li><input type='radio' id='User' name='UserRole' value='User'>"+
-                        "<label for='User'>User</label></li>";
+                    html += "<li><a href='#' data-rolename='anonymous' data-userid='" + val.Id + "' class='elt-role'>user</a></li>";
                     html += "</ul>";
                     html += "</div>";
                     return html;
@@ -103,8 +104,8 @@ $(document).ready(function () {
                 sortable: false,
                 data: function (val) {
                     if (currentId != val.Id) {
-                        return "<button type='button' class='btn-delete-user btn btn-danger btn-xs'"+
-                                "data-user-id='" + val.Id + "'>" +
+                        return "<button type='button' class='btn-delete-user btn btn-danger btn-xs btn-del'"+
+                                "data-user-id='" + val.Id + "'data-toggle='modal' data-target='#ModalDelUser'>" +
                             "<i class='glyphicon glyphicon-trash'></i>" +
                             "</button>"
                     } else {
@@ -120,7 +121,7 @@ $(document).ready(function () {
         $('table').find(".selected").removeClass('selected');
     });
 
-    $('table tbody').on('click', 'tr td:not(tr td:last-child)', function () {
+    $('table tbody').on('click', 'tr td:not(tr td:nth-child(5), tr td:last-child)', function () {
         var $modal = $('#myModal');
         var data = $table.row(this).data();
 
@@ -189,17 +190,16 @@ $(document).ready(function () {
                 NewRole: $me.data('rolename')
             }),
             success: function (val) {
-                $('table').append('<div>Vous avez rater</div>');
-                if (val.status) {
+                
+                if (val.status == 1) {
                     $table.ajax.reload();
+                    $.notifySuccess('Modification réussit');
                 } else {
-                    $('table').prepend('<div>Vous avez rater</div>');
+                    $.notifyError('Erreur');
                 }
             },
             error: function (err) {
-                console.log(err);
-                $("#error-message").text("Une erreur est survenue lors du changement de privilège.");
-                $("#errors").show("slow");
+                $.notifySuccess("erreur");
             }
         });
     });
@@ -230,12 +230,22 @@ $(document).ready(function () {
         updateDeleteSelectedView();
     });
 
+    var userId = null;
+    $('table tbody').on("click", ".btn-del", function () {
+        var $btn = $(this);
+        userId = $btn.data("user-id");console.log(userId)
+    });
     // Delete user event.
-    $('table tbody').on("click", ".btn-delete-user", function () {
-        var button = $(this);
-        var userId = $(this).attr("data-user-id");
+    $("#btn-confirm-del-user").on("click", function () {
+        var $btn = $(this);
+        var $modal = $('#ModalDelUser'); 
 
-        button.prop("disabled", true);
+        $btn.prop("disabled", true);
+        $txtError = $modal.find(".text-danger");
+        $loading = $modal.find(".fa-spinner");
+        $loading.removeClass("hide");
+        $txtError.text("").addClass("hide");
+
         $.ajax({
             method: "DELETE",
             contentType: "application/json",
@@ -245,13 +255,16 @@ $(document).ready(function () {
                 UserId: userId
             }),
             success: function () {
+                $btn.prop("disabled", false);
+                $modal.modal('hide');
+                $loading.addClass("hide");
                 $table.ajax.reload();
                 updateDeleteSelectedView();
+                $.notifySuccess("Suppression réussit")
             },
             error: function () {
                 button.prop("disabled", false);
-                $("#error-message").text("Une erreur est survenue lors de la suppression de l'utilisateur.");
-                $("#errors").show("slow");
+                $.notifyError("Erreur")
             }
         });
     });
