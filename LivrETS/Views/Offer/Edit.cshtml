@@ -71,6 +71,11 @@
             <div class="row">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.ISBN, new { @class = "control-label" })
+                    <a style="color: black;" role="button" data-html="true" data-placement="right" data-toggle="popover"
+                       data-content='<div><b>ISBN</b><br><img src="/Images/isbn.jpg" ></div><div><b>Code</b><br> <img src="/Images/code_barre.jpg" ></div>'>
+
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                    </a>
                 </div>
                 
             </div>
@@ -180,6 +185,11 @@
                             <button id="btn-newCourse" class="btn btn-default btn-sm" type="button"><span class="glyphicon glyphicon-plus"></span></button>
                         </span>
                     </div>
+                    <div class="row">
+                        <div class="text-danger error error-acronym">
+                            <span class=""></span>
+                        </div>
+                    </div>
                 </div>
                 @Html.HiddenFor(model => model.Acronym, new { id = "hidden-acronym" })
                 <div class="col-md-12">
@@ -261,7 +271,11 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-
+                        <div class="row">
+                            <div class="text-danger error error-img">
+                                <span class=""></span>
+                            </div>
+                        </div>
                         <div id="images-panel" class="panel panel-info">
                             <div class="panel-heading">
                                 <h3 class="panel-title">

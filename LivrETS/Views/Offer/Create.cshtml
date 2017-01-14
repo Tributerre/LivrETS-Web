@@ -173,7 +173,7 @@
                     </div>
                     <div class="row">
                         <div class="text-danger error error-acronym">
-                            <span class="">erreur format sigle du cours. Ex: MAT145</span>
+                            <span class=""></span>
                         </div>
                     </div>
                 </div>
@@ -188,7 +188,6 @@
 
         <!-- START Title -->
             <div class="row">
-                
                 <div class="col-md-12">
                     <div class="row hide" id="warning-isbn">
                         <div class="col-md-6 alert alert-warning" role="alert">
@@ -218,7 +217,8 @@
                     @Html.LabelFor(model => model.Price, new { @class = "control-label" })
                 </div>
                 <div class="col-md-7">
-                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", placeholder = "Ex: 12.99", ariaDescribedby = "basic-addon2" })
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control",
+                        placeholder = "Ex: 12.99", ariaDescribedby = "basic-addon2" })
                 </div>
                 <div class="col-md-12">
                     @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
