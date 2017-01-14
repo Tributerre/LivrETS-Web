@@ -304,10 +304,10 @@ namespace LivrETS.Repositories
         {
             List<Offer> offers = (from offer in _db.Offers
                                     where offer.Price >= priceMin && offer.Price <= priceMax &&
-                                    DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0 &&
-                                    !offer.ManagedByFair && 
-                                    DateTime.Compare(offer.MarkedSoldOn, offer.StartDate) == 0
-                                  orderby offer.StartDate descending
+                                        !offer.ManagedByFair &&
+                                        DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0 &&
+                                        DateTime.Compare(offer.MarkedSoldOn, offer.StartDate) == 0
+                                    orderby offer.StartDate descending
                                     select offer).ToList();
             IEnumerable<Offer> results = offers;
 

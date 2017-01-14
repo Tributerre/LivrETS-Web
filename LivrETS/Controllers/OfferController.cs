@@ -120,7 +120,9 @@ namespace LivrETS.Controllers
             // Proceeding to add the new offer.
             if (ModelState.IsValid)
             {
+                DateTime now = DateTime.Now;
                 Article newArticle = null;
+                
                 var uploadsPath = Server.MapPath(UPLOADS_PATH);
 
                 switch (model.Type)
@@ -153,9 +155,12 @@ namespace LivrETS.Controllers
                         };
                         break;
                 }
-                
+
+                newArticle.DeletedAt = now;
                 Offer offer = new Offer()
                 {
+                    StartDate = now,
+                    MarkedSoldOn = now,
                     Price = model.Price,  // FIXME: No elements for this in the view. Weird.
                     Condition = model.Condition,
                     Article = newArticle,

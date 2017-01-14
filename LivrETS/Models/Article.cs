@@ -69,11 +69,9 @@ namespace LivrETS.Models
             }
         }
 
-        
         public Article()
         {
             FairState = ArticleFairState.UNKNOWN;
-            DeletedAt = DateTime.Now;
             Id = Guid.NewGuid();
         }
 
