@@ -30,17 +30,18 @@
             overflow: hidden;
         }
 
-            .fileUpload input.upload {
-                position: absolute;
-                top: 0;
-                right: 0;
-                margin: 0;
-                padding: 0;
-                font-size: 20px;
-                cursor: pointer;
-                opacity: 0;
-                filter: alpha(opacity=0);
-            }
+        .fileUpload input.upload {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+        .error{ display: none; }
     </style>
 }
 
@@ -59,19 +60,13 @@
         <!-- BEGIN ISBN -->
             <div class="row">
                 <div class="col-md-12">
-                    <small>Tous les champs sont obligatoires</small>
-                </div>
-            </div><br />
-            <div class="row">
-                <div class="col-md-12">
                     @Html.LabelFor(model => model.ISBN, new { @class = "control-label" })
 
-                        <a style="color: black;" role="button" data-html="true" data-placement="right" data-toggle="popover"
-                           data-content='<div><b>ISBN</b><br><img src="/Images/isbn.jpg" ></div><div><b>Code</b><br> <img src="/Images/code_barre.jpg" ></div>'>
+                    <a style="color: black;" role="button" data-html="true" data-placement="right" data-toggle="popover"
+                        data-content='<div><b>ISBN</b><br><img src="/Images/isbn.jpg" ></div><div><b>Code</b><br> <img src="/Images/code_barre.jpg" ></div>'>
 
-                            <span class="glyphicon glyphicon-question-sign"></span>
-                        </a>
-
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                    </a>
                 </div>
             </div>
             <div class="row">
@@ -165,6 +160,7 @@
                 </div>
                 <div class="col-md-2 col-md-offset-2">
                     <span class="help-block" style="font-size: 12px;">Pas dans la liste? Ajoutez-le!</span>
+                    
                 </div>
                 <div class="col-md-2">
                     <div class="input-group">
@@ -174,6 +170,11 @@
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </span>
+                    </div>
+                    <div class="row">
+                        <div class="text-danger error error-acronym">
+                            <span class=""></span>
+                        </div>
                     </div>
                 </div>
                 @Html.HiddenFor(model => model.Acronym, new { id = "hidden-acronym" })
@@ -187,7 +188,6 @@
 
         <!-- START Title -->
             <div class="row">
-                
                 <div class="col-md-12">
                     <div class="row hide" id="warning-isbn">
                         <div class="col-md-6 alert alert-warning" role="alert">
@@ -217,7 +217,8 @@
                     @Html.LabelFor(model => model.Price, new { @class = "control-label" })
                 </div>
                 <div class="col-md-7">
-                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", placeholder = "Ex: 12.99", ariaDescribedby = "basic-addon2" })
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control",
+                        placeholder = "Ex: 12.99", ariaDescribedby = "basic-addon2" })
                 </div>
                 <div class="col-md-12">
                     @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
@@ -233,7 +234,8 @@
                     @Html.LabelFor(model => model.Condition, new { @class = "control-label" })
                 </div>
                 <div class="col-md-7">
-                    @Html.TextAreaFor(model => model.Condition, new { @class = "form-control", placeholder = "Indiquez la condition dans laquelle est l'objet." })
+                    @Html.TextAreaFor(model => model.Condition, new { @class = "form-control",
+                        placeholder = "Indiquez la condition dans laquelle est l'objet." })
                 </div>
                 <div class="col-md-12">
                     @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
@@ -246,7 +248,7 @@
         <!-- BEGIN Footer of the form -->
             <div class="row">
                 <div class="col-md-7">
-                    <div class="col-md-4">
+                    <div class="col-md-4 hide">
                         <label for="selling-frame">Vendre dans le cadre de</label>
                         <br />
                         @Html.RadioButtonFor(model => model.SellingStrategy, "WEBSITE", new { @checked = "checked" })
@@ -262,6 +264,11 @@
                         </div>
                     </div>
                     <div class="col-md-8">
+                        <div class="row">
+                            <div class="text-danger error error-img">
+                                <span class=""></span>
+                            </div>
+                        </div>
                         <div id="images-panel" class="panel panel-info">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
@@ -289,8 +296,10 @@
 
                                         foreach(OfferImage img in images)
                                         {
-                                            <img src="@img.RelativeThumbnailPath" class="img-responsive img-rounded"
-                                                    alt="Preview image" width="10%"/>
+                                            <div class="col-md-2">
+                                                <img src="@img.RelativeThumbnailPath" class="img-responsive img-rounded"
+                                                    alt="Preview image" />
+                                            </div>
                                         }
                                     }
                                     

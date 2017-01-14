@@ -72,7 +72,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
             icon: "glyphicon glyphicon-remove",
             message: message
         }, {
-            type: "danger"
+                
+            type: "danger",
+            placement: {
+                from: "top",
+                align: "center"
+            },
+            newest_on_top: "true"
         })
     }
 
@@ -87,7 +93,32 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
             icon: "glyphicon glyphicon-warning",
             message: message
         }, {
-            type: "warning"
+            type: "warning",
+            placement: {
+                from: "top",
+                align: "center"
+            },
+            newest_on_top: "true"
+        })
+    }
+
+    /**
+     * @description Warns the user with a banner at the top right corner.
+     * @param message The message to be displayed.
+     * @type string
+     * @author Charles Levesque
+     */
+    $.notifySuccess = function (message) {
+        $.notify({
+            icon: "glyphicon glyphicon-ok",
+            message: message
+        }, {
+            type: "success",
+            placement: {
+                from: "top",
+                align: "center"
+            },
+            newest_on_top: "true"
         })
     }
 })(jQuery)

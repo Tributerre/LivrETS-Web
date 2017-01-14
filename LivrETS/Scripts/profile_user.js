@@ -52,6 +52,8 @@
             {
                 class: "text-center",
                 data: function (val) {
+                    if (val.Article.ArticleCode == "C")
+                        return "";
                     return val.Article.Course.Acronym
                 }
             },

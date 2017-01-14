@@ -341,22 +341,6 @@
     <Content Include="Content\template_admin\bootstrap.min.css" />
     <Content Include="Content\template_admin\morris.css" />
     <Content Include="Content\template_admin\sb-admin.css" />
-    <Content Include="Content\Uploads\Originals\24d84ce5-c2a5-4436-8879-2609d3693722-cd9a4b89-0c1b-4cc8-9c5c-eab35ef01c9a.jpg" />
-    <Content Include="Content\Uploads\Originals\2c289bcb-b187-44c2-ad6a-a5413441195d-a5c744f6-32c0-48f9-a082-683ee84ebdc6.png" />
-    <Content Include="Content\Uploads\Originals\2c289bcb-b187-44c2-ad6a-a5413441195d-d94abb49-4534-48c4-b5e5-78b7702bbceb.jpg" />
-    <Content Include="Content\Uploads\Originals\2c289bcb-b187-44c2-ad6a-a5413441195d-f7b5f189-b362-40ca-a185-1b5e594e5e65.jpg" />
-    <Content Include="Content\Uploads\Originals\Temp\24d84ce5-c2a5-4436-8879-2609d3693722-041ef450-6d6e-45e6-826b-6b664d94ec03.jpg" />
-    <Content Include="Content\Uploads\Originals\Temp\24d84ce5-c2a5-4436-8879-2609d3693722-4bfd9932-0265-4a88-b1eb-99779ae0795c.jpg" />
-    <Content Include="Content\Uploads\Originals\Temp\24d84ce5-c2a5-4436-8879-2609d3693722-a6db96b7-95ee-458d-a3ca-4112b94c8da4.jpg" />
-    <Content Include="Content\Uploads\Originals\Temp\24d84ce5-c2a5-4436-8879-2609d3693722-a73fc9b1-db4c-4cea-bf3b-07931ddff365.jpg" />
-    <Content Include="Content\Uploads\Thumbnails\24d84ce5-c2a5-4436-8879-2609d3693722-cd9a4b89-0c1b-4cc8-9c5c-eab35ef01c9a.jpg" />
-    <Content Include="Content\Uploads\Thumbnails\2c289bcb-b187-44c2-ad6a-a5413441195d-a5c744f6-32c0-48f9-a082-683ee84ebdc6.png" />
-    <Content Include="Content\Uploads\Thumbnails\2c289bcb-b187-44c2-ad6a-a5413441195d-d94abb49-4534-48c4-b5e5-78b7702bbceb.jpg" />
-    <Content Include="Content\Uploads\Thumbnails\2c289bcb-b187-44c2-ad6a-a5413441195d-f7b5f189-b362-40ca-a185-1b5e594e5e65.jpg" />
-    <Content Include="Content\Uploads\Thumbnails\Temp\24d84ce5-c2a5-4436-8879-2609d3693722-041ef450-6d6e-45e6-826b-6b664d94ec03.jpg" />
-    <Content Include="Content\Uploads\Thumbnails\Temp\24d84ce5-c2a5-4436-8879-2609d3693722-4bfd9932-0265-4a88-b1eb-99779ae0795c.jpg" />
-    <Content Include="Content\Uploads\Thumbnails\Temp\24d84ce5-c2a5-4436-8879-2609d3693722-a6db96b7-95ee-458d-a3ca-4112b94c8da4.jpg" />
-    <Content Include="Content\Uploads\Thumbnails\Temp\24d84ce5-c2a5-4436-8879-2609d3693722-a73fc9b1-db4c-4cea-bf3b-07931ddff365.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -565,10 +549,13 @@
     <Content Include="Views\Shared\_ProfileUserLayout.cshtml" />
     <Content Include="Views\Fair\Program.cshtml" />
     <Content Include="Views\Admin\CreateFair.cshtml" />
+    <None Include="Properties\PublishProfiles\TributerreLivrETS - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\PDF\" />
+    <Folder Include="Content\Uploads\Originals\" />
+    <Folder Include="Content\Uploads\Thumbnails\" />
     <Folder Include="fonts\" />
   </ItemGroup>
   <ItemGroup>

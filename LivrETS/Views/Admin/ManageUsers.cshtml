@@ -72,7 +72,7 @@
       </div>
       <div class="modal-body">
           <div class="row">
-              <div class="col-md-3"><img src="http://placehold.it/120x120" /></div>
+              <div class="col-md-3"><img src="http://placehold.it/120x120?text=no+image" /></div>
               <div class="col-md-9">
                   <ul id="data-user">
                       <li><b>Nom :</b>kouagnia</li>
@@ -92,7 +92,34 @@
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
-</div><!-- /.modal --
+</div><!-- /.modal -->
+<!-- Modal ModalSaleOffer -->
+<div class="modal fade" id="ModalDelUser" tabindex="-1" role="dialog" aria-labelledby="ModalDelUserLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ModalSaleOfferLabel">Confirmation de suppression</h4>
+            </div>
+            <div class="modal-body">
+                <p>Voulez-vous supprimer cet utilisateur?</p>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <p class="text-danger hide">
+                        Une erreur est survenue. Veillez recharger la page.
+                    </p>
+                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-success" data-offer-id="0" id="btn-confirm-del-user">
+                    <i class="fa fa-spinner fa-pulse fa-fw hide"></i>
+                    <span class="sr-only">Loading...</span>
+                    Confirmer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
         @section Scripts {
             <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
             <script type="text/javascript" src="~/Scripts/manageusers.js"></script>

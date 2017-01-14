@@ -88,3 +88,9 @@ html, body {
   border: 0px solid transparent;
   background-color: transparent;
   color: #fefefe; }
+
+.beta {
+                position: absolute;
+                left: 75%;
+                bottom: 18%;
+            }
