@@ -96,5 +96,30 @@ namespace LivrETS.Helpers
 
             return new HtmlString(String.Format(html));
         }
+
+        /// <summary>
+        /// Get selector tri
+        /// </summary>
+        /// /// <param name="text">url parameter</param>
+        /// <returns>selector tri</returns>
+        public static IHtmlString GetSelectResearch(string selectSearch = null)
+        {
+            string html = "<select name='select_search' class='form-control'>";
+
+            if (selectSearch != null && selectSearch.Equals("course"))
+            {
+                html += "<option value='title'>Titre</option>";
+                html += "<option value='course' selected>Cours</option>";
+            }
+            else
+            {
+                html += "<option value='title' selected>Titre</option>";
+                html += "<option value='course'>Cours</option>";
+            }
+
+            html += "</select>";
+
+            return new HtmlString(String.Format(html));
+        }
     }
 }

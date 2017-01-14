@@ -40,7 +40,19 @@
     <div class="container">
         <h2 class="page-title text-md-center">@Model.Title</h2>
         <div class="row" id="primary-info">
-            <div class="col-md-6" id="info-cours">@Model.Article.Course.Acronym</div>
+            <div class="col-md-6" id="info-cours">
+                @{
+                    if (!Model.Article.ArticleCode.Equals("C"))
+                    {
+                        @Model.Article.Course.Acronym
+                    }
+                    else
+                    {
+                        @Model.Article.TypeName
+                    }
+                }
+                
+            </div>
             <div class="col-md-6" id="info-price">@Model.Price.ToString("00.00") $</div> 
         </div>
         <div class="row product-carousel">
