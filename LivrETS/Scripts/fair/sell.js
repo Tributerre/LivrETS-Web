@@ -33,6 +33,9 @@ $(document).ready(function () {
         $("#modal-cash").modal("show")
     })
 
+    var total = 0;
+    var cashReceived = 0;
+
     $("#btn-cash-ok").on("click", function () {
         if ($("#modal-cash").is(":visible")) {
             $("#modal-cash").modal("hide")
@@ -41,28 +44,34 @@ $(document).ready(function () {
         var ids = $.map($("#articles-table>tbody").find("td.livretsid"), function (element) {
             return element.innerText
         })
-
-        $.ajax({
-            method: "POST",
-            url: "/Fair/ConcludeSell",
-            dataType: "json",
-            data: {
-                ids: ids
-            },
-            success: function () {
-                setTimeout(function () {
-                    window.location.reload(true)
-                }, 0001)
-            },
-            statusCode: {
-                400: function (event, message) {
-                    $.notifyError("Un des identificateurs n'est pas valide.")
+        console.log(cashReceived + " - " + total);
+        if ((cashReceived - total) >= 0) {
+            $.ajax({
+                method: "POST",
+                url: "/Fair/ConcludeSell",
+                dataType: "json",
+                data: {
+                    ids: ids
                 },
-                500: function (event, message) {
-                    $.notifyError("Une erreur est survenue. Svp réessayez.")
+                success: function () {
+                    $.notifySuccess("Vente réussi")
+                    setTimeout(function () {
+                        window.location.reload(true)
+                    }, 1000)
+                },
+                statusCode: {
+                    400: function (event, message) {
+                        $.notifyError("Un des identificateurs n'est pas valide.")
+                    },
+                    500: function (event, message) {
+                        $.notifyError("Une erreur est survenue. Svp réessayez.")
+                    }
                 }
-            }
-        })
+            });
+        } else {
+            $.notifyError("Le montant entré n'est pas suffisant")
+        }
+        
     })
 
     $("#in-cash-received").on("keyup", function () {
@@ -76,8 +85,8 @@ $(document).ready(function () {
             if (currentText === '') {
                 inCashReturned.val('')
             } else {
-                var cashReceived = parseFloat(currentText)
-                var total = parseFloat($("#total").val())
+                cashReceived = parseFloat(currentText)
+                total = parseFloat($("#total").val())
                 if ((cashReceived - total) < 0) 
                     $("#btn-cash-ok").prop("disabled", true);
                 else 

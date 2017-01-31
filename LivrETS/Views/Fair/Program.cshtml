@@ -1,7 +1,7 @@
 ﻿@model LivrETS.Models.Fair
 
 @{
-    ViewBag.Title = "Program";
+    ViewBag.Title = "Programme de la foire";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles {
@@ -28,9 +28,12 @@
         }
     </style>
 }
+
+
 <div class="content">
     <div class="container">
-
+    @if (Model != null)
+    {
         <div class="page-header">
             <h1>Programme <small>Foire @Model.ToString()</small></h1>
         </div>
@@ -46,7 +49,7 @@
                     </tr>
                 </thead>
                 @foreach (var fs in Model.FairSteps)
-            {
+                {
                     <tr>
                         <td>@fs.StartDateTime.ToString("dd MMMM")</td>
                         <td>
@@ -54,12 +57,19 @@
                             @fs.EndDateTime.ToString("hh:mm:ss")
                         </td>
                         <td>@fs.TypeNamePhase</td>
-                        <td>@fs.TypeNamePlace</td>
+                        <td>@fs.Place</td>
                     </tr>
                 }
             </table>
         </div>
-        
+    }else
+    {
+        <div style="height:400px; padding:10% 0;" class="text-center" >
+            <h1 style="font-size:5em;"><span class="primary-color">Désolé !</span></h1>
+            <h2>Aucune foire n'est prévue</h2>
+        </div>
+
+    }
     </div>
 
 </div>

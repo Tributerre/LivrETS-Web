@@ -154,7 +154,7 @@ namespace LivrETS.Controllers
             Fair nextFair = Repository.GetNextFair();
 
             return View((curentFair != null) ? curentFair : nextFair);
-                
+             
         }
 
         #region Ajax

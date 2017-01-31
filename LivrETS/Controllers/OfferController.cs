@@ -115,8 +115,6 @@ namespace LivrETS.Controllers
                     "Le type choisi requiert un cours de la liste.");
             }
 
-            
-
             // Proceeding to add the new offer.
             if (ModelState.IsValid)
             {
