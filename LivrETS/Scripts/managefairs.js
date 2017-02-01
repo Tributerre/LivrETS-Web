@@ -32,7 +32,6 @@ $(document).ready(function () {
             {
                 class: "check-row text-center",
                 sortable: false,
-                visible: false,
                 data: function (val) {
                     return "<input type='checkbox' name='check-select-fair' data-fair-id='" + val.Id + "' />";
                 }
@@ -59,19 +58,20 @@ $(document).ready(function () {
             },
             {
                 class: "text-center",
-                sortable: true,
+                sortable: false,
                 data: function (val) {
 
-                    var btn1 = "<a href='/Admin/ManageDetailsFair/" + val.Id + "' class='btn btn-sm btn-info' "+
+                    var btn1 = "<a href='/Admin/ManageDetailsFair/" + val.Id + "' class='btn btn-sm btn-info' " +
                     "data-fair-id='" + val.Id + "'><span class='glyphicon glyphicon-info-sign'></span></a>";
-                    var btn2 = "<a href='#' class='btn btn-sm btn-primary btn-edit-fair' data-fair-id='" +
-                                val.Id + "' ><span class='glyphicon glyphicon-edit'></span></a>";
+                    var btn2 = "<a href='/Admin/EditFair?Id=" + val.Id + "' class='btn btn-sm btn-primary " +
+                                "btn-edit-fair' data-fair-id='" + val.Id + "' >" +
+                                "<span class='glyphicon glyphicon-edit'></span></a>";
                     var btn3 = "<a href='#' class='btn btn-sm btn-danger btn-delete-fair' data-fair-id='" +
                                 val.Id + "' data-toggle='modal' data-target='#ModalDelFair'>" +
                                 "<span class='glyphicon glyphicon-trash'></span></a>"
 
                     return btn1 + " " + btn2 + " " + btn3;
-                    
+
                 }
             }
         ]
@@ -89,16 +89,15 @@ $(document).ready(function () {
 
     // Delete fair event.
     //sale confirmation
-    var fairId = null;
     $('table tbody').on("click", ".btn-delete-fair", function () {
         var $btn = $(this);
-        fairId = $btn.data("fair-id");
-        //$("#btn-confirm-del-fair").attr("data-fair-id", fairId);
+        var fairId = $btn.data("fair-id");
+        $("#btn-confirm-del-fair").attr("data-fair-id", fairId);
     });
 
     $("#btn-confirm-del-fair").on("click", function () {
         var $btn = $(this);
-        //var fairId = $btn.data("fair-id");
+        var fairId = $btn.data("fair-id");
         var $modal = $('#ModalDelFair');
 
         $txtError = $modal.find(".text-danger");
@@ -106,7 +105,7 @@ $(document).ready(function () {
         $loading.removeClass("hide");
         $txtError.text("").addClass("hide");
         $btn.prop("disabled", true);
-       
+
         $btn.prop("disabled", true);
         $.ajax({
             method: "DELETE",
@@ -116,17 +115,17 @@ $(document).ready(function () {
             data: JSON.stringify({
                 id: fairId
             }),
-            success: function (data) { console.log(data)
+            success: function (data) {
+                console.log(data)
                 $btn.prop("disabled", false);
                 $loading.addClass("hide");
-                if (data.status == 1) {                   
+                if (data.status == 1) {
                     $modal.modal('hide');
                     table.ajax.reload();
-                    $("#btn-confirm-del-fair").attr("data-fair-id", "");
                 } else {
                     $txtError.text(data.message).removeClass("hide");
                 }
-                
+
             },
             error: function () {
                 $btn.prop("disabled", false);
@@ -239,7 +238,7 @@ $(document).ready(function () {
 /**
  * Updates the selected number in the actions panel.
  */
-function updateDeleteSelectedView() { 
+function updateDeleteSelectedView() {
     var checkedCount = $("tbody>tr>td").find("input[type='checkbox'][name='check-select-fair']:checked").length;
 
     if ($("#div-delete-selected").is(":visible")) {

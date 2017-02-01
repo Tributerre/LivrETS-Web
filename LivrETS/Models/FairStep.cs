@@ -20,13 +20,6 @@ namespace LivrETS.Models
         [NotMapped]
         public const string RETRIEVAL_CODE = "R";
 
-        [NotMapped]
-        public const string PA_CODE = "PA";
-        [NotMapped]
-        public const string PB_CODE = "PB";
-        [NotMapped]
-        public const string PE_CODE = "PE";
-
         [Required]
         public string Place { get; set; }
         [Required]
@@ -55,33 +48,14 @@ namespace LivrETS.Models
             }
         }
 
-        [NotMapped]
-        public string TypeNamePlace
-        {
-            get
-            {
-                switch (Place)
-                {
-                    case PA_CODE:
-                        return "Hall Pavillon A";
-                    case PB_CODE:
-                        return "Hall Pavillon B";
-                    case PE_CODE:
-                        return "Hall Pavillon E";
-                    default:
-                        return string.Empty;
-                }
-            }
-        }
-
-        public FairStep(string PhaseCode, string PlaceCode) 
+        public FairStep(string PhaseCode, string PlaceCode)
         {
             this.Place = PlaceCode;
-            this.Phase = PhaseCode;  
+            this.Phase = PhaseCode;
         }
 
-        public FairStep(){}
+        public FairStep() { }
     }
 
-    
+
 }

@@ -170,6 +170,30 @@ namespace LivrETS.Repositories
             ).FirstOrDefault();
         }
 
+        /*************************** fairStep ***************************/
+        public FairStep GetFairStepById(string id)
+        {
+            return (from fs in _db.FairSteps
+                    where fs.Id.ToString().Equals(id)
+                    select fs).FirstOrDefault();
+        }
+
+        public bool DeleteFairStep(string id)
+        {
+            if (id == null)
+                return false;
+
+            FairStep fs = this.GetFairStepById(id);
+
+            if (fs == null)
+                return false;
+
+            _db.FairSteps.Remove(fs);
+            _db.SaveChanges();
+
+            return true;
+        }
+
         /*************************** Courses ***************************/
 
         /// <summary>
