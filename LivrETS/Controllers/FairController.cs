@@ -181,20 +181,20 @@ namespace LivrETS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
             var offersNotSold = currentFair.Offers
-                .Where(offer => !offer.Sold)
+                //.Where(offer => !offer.Sold)
                 .Intersect(user.Offers);
-
-            return Json(
-                from offer in offersNotSold
-                select new
-                {
-                    id = TRIBSTD01Helper.LivrETSIDOf(user: user, article: offer.Article, fair: currentFair),
-                    title = offer.Article.Title,
-                    userFullName = user.FullName,
-                    price = offer.Price
-                },
-                contentType: "application/json"
-            );
+            
+            return  Json(from offer in offersNotSold
+                         select new
+                         {
+                             id = TRIBSTD01Helper.LivrETSIDOf(user: user, article: offer.Article, fair: currentFair),
+                             title = offer.Article.Title,
+                             userFullName = user.FullName,
+                             price = offer.Price,
+                             sold = offer.Sold
+                         },
+                            contentType: "application/json"
+                    );
         }
 
         [HttpPost]

@@ -48,10 +48,14 @@ $(document).ready(function () {
     $("#in-barcode").on("keyup", function (event) {
         if (event.keyCode == 13) {  // Enter
             var barCode = $(this).val().toUpperCase().trim()
+            
+            var totalPrice = 0;
+            var $tbody = $("#articles-table>tbody");
 
             if (barCode === "")
                 return
 
+            $tbody.html("");
             $.ajax({
                 method: "POST",
                 url: "/Fair/OffersNotSold",
@@ -60,8 +64,17 @@ $(document).ready(function () {
                     UserBarCode: barCode
                 },
                 success: function (data) {
+                    console.log(data);
                     $.each(data, function (index, value) {
-                        var tr = $("<tr>")
+                        var sold = value["sold"];
+                        var $class = (sold) ? "sold" : "notsold";
+                        var vendu = (sold) ? "vendu" : "non vendu";
+                        var price = 0;
+
+                        if (sold)
+                            price = parseFloat(value["price"]);
+
+                        var tr = $("<tr>").addClass($class)
                             .append(
                                 $("<td>").text(value["id"]).addClass("article-livretsid")
                             ).append(
@@ -70,10 +83,15 @@ $(document).ready(function () {
                                 $("<td>").text(value["userFullName"])
                             ).append(
                                 $("<td>").text(value["price"])
+                            ).append(
+                                $("<td>").text(vendu)
                             )
+                        $tbody.append(tr);
 
-                        $("#articles-table>tbody").append(tr)
-                    })
+                        totalPrice += price;
+                        
+                    });
+                    $("#retreiveprice").text(totalPrice.toFixed(2));
                 },
                 statusCode: {
                     404: function () {
