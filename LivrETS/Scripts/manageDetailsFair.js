@@ -123,7 +123,7 @@ $(document).ready(function () {
         columns: [
             {
                 data: function (val) {
-                    console.log(val.Acronym);
+                  
                     return val.Acronym;
                 }
             },
@@ -371,7 +371,7 @@ $(document).ready(function () {
             url: "/Fair/GetTotalSalesAmountByArticleType",
             data:JSON.stringify({fairId:$(".fairId").text()}),
             dataType: "json",
-            success: function (data) { console.log(data)
+            success: function (data) { 
                 var plotObj = $.plot($("#total_sale_article_type"), data, {
                     series: {
                         pie: {

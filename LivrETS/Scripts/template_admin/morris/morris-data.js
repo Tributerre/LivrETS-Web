@@ -9,7 +9,7 @@ $(function () {
             url: "/Fair/GetStatsFairs",
             dataType: "json",
             success: function (data) {
-                console.log(data)
+               
                 Morris.Bar({
                     element: 'morris-area-chart',
                     data: data,

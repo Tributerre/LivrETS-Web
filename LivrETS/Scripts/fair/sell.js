@@ -44,7 +44,7 @@ $(document).ready(function () {
         var ids = $.map($("#articles-table>tbody").find("td.livretsid"), function (element) {
             return element.innerText
         })
-        console.log(cashReceived + " - " + total);
+        
         if ((cashReceived - total) >= 0) {
             $.ajax({
                 method: "POST",

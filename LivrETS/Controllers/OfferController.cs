@@ -489,7 +489,7 @@ namespace LivrETS.Controllers
                                     "Notification de LivrÈTS</h1></div></div></div><br>";
             string footer_mail = "<br><div style='background:#629c49;padding:3px 10px;color:black;'>" +
                                    "<h1>MERCI</h1></div>";
-            string footer_message = "<div><p><a href='/Offer/Details/" + offer.Id + "'>Article concernée</a></p></div>";
+            string footer_message = "<div><p><a href='http://tributerrelivrets.azurewebsites.net/Offer/Details/"+ offer.Id+"?title="+ offer.Title +"'>Article concernée</a></p></div>";
             string infos_article = "<p>Répondé au mail " + to_address + "</p>" +
                                     "<div><div><h2>Informations sur l'annonce</h3></div><ul>" +
                                     "<li><b>Titre: </b> " + offer.Title + "</li>" +
