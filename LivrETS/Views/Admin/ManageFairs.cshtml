@@ -51,10 +51,8 @@
 
                 <div class="row" id="group-btn-action">
                     <div class="pull-right" id="div-actions">
-                        <button type="button" class="btn btn-success btn-sm"
-                                data-toggle="modal" data-target="#NewFairModal">
-                            Ajouter une foire
-                        </button>
+                        @Html.ActionLink("Ajouter une foire", "CreateFair", "Admin",
+                                                           new { @class = "btn btn-success btn-sm" })
                     </div>
                 </div>
 
