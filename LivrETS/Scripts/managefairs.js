@@ -83,9 +83,9 @@ $(document).ready(function () {
     });
 
     // Select single fair event.
-    $('table tbody').on("click", ".btn-edit-fair", function () {
+    /*$('table tbody').on("click", ".btn-edit-fair", function () {
         updateDeleteSelectedView();
-    });
+    });*/
 
     // Delete fair event.
     //sale confirmation
@@ -137,7 +137,7 @@ $(document).ready(function () {
     });
 
     // Edit fair event
-    $('table tbody').on("click", ".btn-edit-fair", function () {
+    /*$('table tbody').on("click", ".btn-edit-fair", function () {
         var fairId = $(this).attr("data-fair-id");
 
         $.ajax({
@@ -191,17 +191,17 @@ $(document).ready(function () {
                 }, 600);
             }
         });
-    });
+    });*/
 
     // Select all fair's checkbox for action
-    $("input[type='checkbox'][name='check-select-all']").on("change", function () {
+    /*$("input[type='checkbox'][name='check-select-all']").on("change", function () {
         var checked = $(this).is(":checked");
 
         $("tbody>tr>td")
             .find("input[type='checkbox'][name='check-select-fair']")
             .prop("checked", checked);
-        updateDeleteSelectedView();
-    });
+        //updateDeleteSelectedView();
+    });*/
 
     // Delete selected event            
     $("#div-actions").on("click", "#div-delete-selected>#btn-delete-selected", function () {
@@ -224,7 +224,7 @@ $(document).ready(function () {
                 $("input[type='checkbox'][name='check-select-fair']:checked").each(function () {
                     $(this).parents("tr").remove();
                     $(this).prop("disabled", false);
-                    updateDeleteSelectedView();
+                    //updateDeleteSelectedView();
                 });
             },
             error: function () {
