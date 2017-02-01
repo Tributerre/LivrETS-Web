@@ -4,6 +4,7 @@
         var $loading = $(".loading");
 
         $loading.show();
+
         $.ajax({
             method: "POST",
             contentType: "application/json",

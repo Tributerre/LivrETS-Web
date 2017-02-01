@@ -550,6 +550,7 @@ namespace LivrETS.Controllers
         {
             JavaScriptSerializer jss = new JavaScriptSerializer();
             List<MorrisFairsStatistic> results = new FairStatistics().GetStatsFairs();
+
             return jss.Serialize(results);
         }
 
