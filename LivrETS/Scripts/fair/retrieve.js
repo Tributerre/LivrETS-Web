@@ -64,7 +64,7 @@ $(document).ready(function () {
                     UserBarCode: barCode
                 },
                 success: function (data) {
-                    console.log(data);
+             
                     $.each(data, function (index, value) {
                         var sold = value["sold"];
                         var $class = (sold) ? "sold" : "notsold";

@@ -119,7 +119,6 @@ $(document).ready(function () {
                 type: true
             }),
             success: function (data) {
-                console.log(data);
                 if (data.status == 1) { 
                     $btn.parents("tr").remove();
                 } else {

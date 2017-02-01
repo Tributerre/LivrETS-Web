@@ -116,7 +116,7 @@ $(document).ready(function () {
                 id: fairId
             }),
             success: function (data) {
-                console.log(data)
+             
                 $btn.prop("disabled", false);
                 $loading.addClass("hide");
                 if (data.status == 1) {

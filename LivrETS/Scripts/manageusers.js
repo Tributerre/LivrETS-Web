@@ -162,7 +162,7 @@ $(document).ready(function () {
                     }
                 },
                 error: function (err) {
-                    console.log(err);
+           
                     $("#error-message").text("Une erreur est survenue lors du changement de privilège.");
                     $("#errors").show("slow");
                 }
@@ -233,7 +233,7 @@ $(document).ready(function () {
     var userId = null;
     $('table tbody').on("click", ".btn-del", function () {
         var $btn = $(this);
-        userId = $btn.data("user-id");console.log(userId)
+        userId = $btn.data("user-id");
     });
     // Delete user event.
     $("#btn-confirm-del-user").on("click", function () {

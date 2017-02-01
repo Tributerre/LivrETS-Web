@@ -23,7 +23,7 @@
                 $loading.addClass("hide");
                 $btn.prop("disabled", false);
                 
-                if (data.status == 1) {console.log(data)
+                if (data.status == 1) {
                     $txtMsg.removeClass("hide").html(data.message);
                 } else {
                     $txtMsg.removeClass("hide alert-success").addClass("alert-danger")

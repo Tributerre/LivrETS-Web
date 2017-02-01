@@ -76,7 +76,7 @@ $(document).ready(function () {
     })
 
     $("#btn-preview").on("click", function () {
-        var numberOfStickersLeftStr = $(this).parent().find("input[type='number']").val()
+        var numberOfStickersLeftStr = $(this).parent().find("input[type='number']").val();
         
         if (numberOfStickersLeftStr === "") {
             $(this).parent().addClass("text-danger")
@@ -87,6 +87,7 @@ $(document).ready(function () {
             $.ajax({
                 method: "POST",
                 dataType: "json",
+                contentType: "application/json",
                 url: "/Fair/GeneratePreview",
                 data: { NumberOfStickersLeft: numberOfStickersLeft },
                 success: function (data) {
@@ -98,10 +99,10 @@ $(document).ready(function () {
                 },
                 statusCode: {
                     500: function () {
-                        $.notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.")
+                        $.notifyError("Une erreur est survenue lors du traitement de votre demande. Svp, réessayez.");
                     },
                     400: function () {
-                        $.notifyError("Il n'y a plus d'étiquette à imprimer ou le vendeur n'a pas d'article à vendre dans le système.")
+                        $.notifyError("Il n'y a plus d'étiquette à imprimer ou le vendeur n'a pas d'article à vendre dans le système.");
                     }
                 }
             })

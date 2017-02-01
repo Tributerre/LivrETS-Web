@@ -137,7 +137,7 @@
             data: {
                 offerIds: [offerId]
             },
-            success: function (data) { console.log(data)
+            success: function (data) { 
                 if (data.status == 1) {
                     table.ajax.reload();
                     $modal.modal('hide');
