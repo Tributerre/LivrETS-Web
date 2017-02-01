@@ -31,6 +31,16 @@
         div.group-error h1{
             font-size: 70px;
         }
+
+        .notsold{background-color: #eaeaea; color: black;}
+        #give-price h4{
+            font-size: 2em;
+        }
+        #give-price span{
+            color: red;
+            font-size: 3em;
+            font-weight:400;
+        }
     </style>
 }
 <div class="content">
@@ -79,10 +89,19 @@
                                     <th>Titre</th>
                                     <th>Vendeur</th>
                                     <th>Prix</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <div id="give-price">
+                            <h4>Argent à donner</h4>
+                            <span id="retreiveprice">0</span>
+                        </div>
                     </div>
                 </div>
             </div>
