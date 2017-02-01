@@ -77,7 +77,7 @@ $(document).ready(function () {
 
     $("#btn-preview").on("click", function () {
         var numberOfStickersLeftStr = $(this).parent().find("input[type='number']").val()
-
+        
         if (numberOfStickersLeftStr === "") {
             $(this).parent().addClass("text-danger")
         } else {
@@ -90,8 +90,11 @@ $(document).ready(function () {
                 url: "/Fair/GeneratePreview",
                 data: { NumberOfStickersLeft: numberOfStickersLeft },
                 success: function (data) {
-                    $("#embed-preview").attr("src", data["PdfStickerPath"])
-                    $("#btn-print").prop("disabled", false)
+                    //$("#embed-preview").attr("src", data["PdfStickerPath"]);
+                    $("#btn-print").prop("disabled", false);
+                    $("#embed-preview").load("/Views/Fair/Pick.cshtml", function (responseTxt, statusTxt, xhr) {
+                        $(this).attr("src", data["PdfStickerPath"]);
+                    });
                 },
                 statusCode: {
                     500: function () {
@@ -103,7 +106,7 @@ $(document).ready(function () {
                 }
             })
         }
-    })
+    });
 
     $("#btn-print").on("click", function () {
         $.ajax({
@@ -111,11 +114,7 @@ $(document).ready(function () {
             dataType: "json",
             url: "/Fair/ConfirmPrint",
             success: function (data) {
-                $.notify({
-                    message: `Il reste ${data["RemainingOffersCount"]} offre(s) à imprimer.`
-                }, {
-                    type: "success"
-                })
+                $.notifySuccess(`Il reste ${data["RemainingOffersCount"]} offre(s) à imprimer.`)
             },
             statusCode: {
                 500: function () {
