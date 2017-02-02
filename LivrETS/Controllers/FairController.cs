@@ -248,6 +248,7 @@ namespace LivrETS.Controllers
                 catch (RegexNoMatchException ex)
                 {
                     noMatchExists = true;
+                    Console.WriteLine(ex.Message);
                     return null;
                 }
 
@@ -284,7 +285,6 @@ namespace LivrETS.Controllers
         public ActionResult ConcludeSellTest(ICollection<string> offerIds, string fairId = null)
         {
             bool noMatchExists = false, status=false;
-            string message = null;
 
             Fair fair = (fairId != null)?Repository.GetFairById(fairId):
                 Repository.GetCurrentFair();
@@ -317,6 +317,7 @@ namespace LivrETS.Controllers
                 catch (RegexNoMatchException ex)
                 {
                     noMatchExists = true;
+                    Console.WriteLine(ex.Message);
                     return null;
                 }
 
