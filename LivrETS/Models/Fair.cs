@@ -241,21 +241,6 @@ namespace LivrETS.Models
                 currentDate.Month == CompareDate.Month &&
                 currentDate.Day == CompareDate.Day;
         }
-
-        public string ToString()
-        {
-            string name = null;
-            string year = StartDate.ToString("yyyy");
-
-            if (Trimester.Equals("A"))
-                name = "Automne ";
-            else if (Trimester.Equals("H"))
-                name = "Hiver ";
-            else
-                name = "Été ";
-
-            return name + year;
-        }
     }
 
     /// <summary>

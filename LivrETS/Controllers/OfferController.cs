@@ -57,6 +57,11 @@ namespace LivrETS.Controllers
                 throw new HttpException(404, "Page not Found");
 
             Offer offer = Repository.GetOfferBy(id);
+            DateTime now = offer.StartDate;
+
+            if (DateTime.Compare(offer.MarkedSoldOn, now) != 0 || 
+                DateTime.Compare(offer.Article.DeletedAt, now) != 0)
+                throw new HttpException(404, "Page not Found");
 
             return View(offer);
         }
@@ -221,7 +226,7 @@ namespace LivrETS.Controllers
             if (user.Offers.Where(offerTmp => offerTmp.Id.ToString().Equals(offer.Id.ToString())) == null)
                 throw new HttpException(404, "Page not Found");
 
-            Session["images"] = null;
+            Session["images"] = offer.Images;
             string[] data = Repository.GetISBNByArticle(offer.Article.Id.ToString());
             var model = new ArticleViewModel()
             {

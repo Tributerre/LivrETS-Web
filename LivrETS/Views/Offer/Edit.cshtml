@@ -298,18 +298,31 @@
                                 @if (images != null)
                                 {
                                     
-                                        foreach (OfferImage img in images)
-                                        {
-                                            <div class="col-md-2">
-                                                <img src="@img.RelativeThumbnailPath" class="img-responsive img-rounded"
-                                                     alt="Preview image"  />
-                                                <a href="#" data-toggle='modal' data-target='#ModalConfirmDelImg'
-                                                   class="btn btn-link btn-sm btn-del-img" data-imgid="@img.Id">
-                                                    <span class="fa fa-trash"></span>
-                                                </a>
-                                            </div>
-                                        }
-                           
+                                    foreach (OfferImage img in images)
+                                    {
+                                        <div class="col-md-2">
+                                            <img src="@img.RelativeThumbnailPath" class="img-responsive img-rounded"
+                                                    alt="Preview image"  />
+                                            <a href="#" data-toggle='modal' data-target='#ModalConfirmDelImg'
+                                                class="btn btn-link btn-sm btn-del-img" data-imgid="@img.Id">
+                                                <span class="fa fa-trash"></span>
+                                            </a>
+                                        </div>
+                                    }
+
+                                }
+                                else
+                                {
+                                    ICollection<OfferImage> image1s =
+                                            (ICollection<OfferImage>)Session["images"];
+
+                                    foreach (OfferImage img in image1s)
+                                    {
+                                        <div class="col-md-2">
+                                            <img src="@img.RelativeThumbnailPath" class="img-responsive img-rounded"
+                                                 alt="Preview image" />
+                                        </div>
+                                    }
                                 }
                             </div>
                         </div>
@@ -323,8 +336,7 @@
         <!-- START Buttons -->
             <div class="row">
                 <div class="col-md-7">
-                    <button type="submit" class="btn btn-primary col-md-3">Modifier</button>
-                    <button type="button" class="btn btn-danger col-md-3 pull-right">Annuler</button>
+                    <button type="submit" class="btn btn-primary col-md-3 pull-right">Modifier</button>
                 </div>
             </div>
         <!-- END Buttons -->

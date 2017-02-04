@@ -305,6 +305,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Content Include="App_Data\aspnet-LivrETS-20160629111902.mdf" />
+    <Content Include="App_Data\aspnet-LivrETS-20160629111902_log.ldf">
+      <DependentUpon>aspnet-LivrETS-20160629111902.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\dropdowns-enhancement.css" />
     <Content Include="Content\font-awesome\css\font-awesome.css" />
@@ -555,7 +559,6 @@
     <Content Include="Views\Admin\EditFair.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Content\PDF\" />
     <Folder Include="Content\Uploads\Originals\" />
     <Folder Include="Content\Uploads\Thumbnails\" />

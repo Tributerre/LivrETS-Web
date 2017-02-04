@@ -63,11 +63,14 @@ namespace LivrETS
             //   appId: "",
             //   appSecret: "");
 
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            var google = new GoogleOAuth2AuthenticationOptions()
             {
                 ClientId = ConfigurationManager.AppSettings["GoogleClientID"],
-                ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"]
-            });
+                ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"],
+                Provider = new GoogleOAuth2AuthenticationProvider()
+            };
+            google.Scope.Add("email");
+            app.UseGoogleAuthentication(google);
         }
 
         
