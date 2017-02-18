@@ -63,8 +63,6 @@ $(function () {
         $btn.prop("disabled", true);
 
         var session = $("#session").val();
-        var startDate = $("#start_date").val();
-        var endDate = $("#end_date").val();
         var steps = [];
         $(".add-activity").each(function () {
             var $me = $(this)
@@ -84,8 +82,7 @@ $(function () {
             dataType: "json",
             url: "/Admin/CreateFairSubmit",
             data: {
-                session: session, startDate: startDate,
-                endDate: endDate, steps: steps, Id: $btn.data("id")
+                session: session, steps: steps, Id: $btn.data("id")
             },
             success: function (data) {
                 $loading.addClass("hide");

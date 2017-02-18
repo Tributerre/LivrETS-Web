@@ -397,11 +397,11 @@ namespace LivrETS.Controllers
                 message = message
             }, contentType: "application/json");
         }
+
         // POST: /Admin/CreateFairSubmit
         // Adds Fair
         [HttpPost]
-        public ActionResult CreateFairSubmit(string session, string startDate,
-            string endDate, string[] steps, string Id)
+        public ActionResult CreateFairSubmit(string session, string[] steps, string Id)
         {
             string message = "Erreur de dates";
             using (var db = new ApplicationDbContext())
@@ -417,20 +417,7 @@ namespace LivrETS.Controllers
                 else
                     fair = new Fair();
 
-
                 fair.Trimester = session;
-                DateTime startDateTmp = DateTime.Parse(startDate);
-                DateTime endDateTmp = DateTime.Parse(endDate);
-
-                if (DateTime.Compare(startDateTmp, endDateTmp) > 0)
-                    return Json(new
-                    {
-                        status = false,
-                        message = message
-                    }, contentType: "application/json");
-
-                fair.StartDate = startDateTmp;
-                fair.EndDate = endDateTmp;
 
                 if (Id == null)
                     db.Fairs.Add(fair);
@@ -453,9 +440,7 @@ namespace LivrETS.Controllers
                         DateTime start = DateTime.Parse(dynamicObject["StartDateTime"]);
                         DateTime end = DateTime.Parse(dynamicObject["EndDateTime"]);
 
-                        if (DateTime.Compare(start, end) > 0 ||
-                            (DateTime.Compare(start, startDateTmp) < 0 || DateTime.Compare(start, endDateTmp) > 0) ||
-                                (DateTime.Compare(end, startDateTmp) < 0 && DateTime.Compare(end, endDateTmp) > 0))
+                        if (DateTime.Compare(start, end) > 0)
                             return Json(new
                             {
                                 status = false,
@@ -463,24 +448,30 @@ namespace LivrETS.Controllers
                             }, contentType: "application/json");
 
                         if (dynamicObject["Id"].Equals("-1"))
-                        {
                             fs = new FairStep(Convert.ToString(dynamicObject["CodeStep"]),
                                 Convert.ToString(dynamicObject["Place"]));
-                            db.FairSteps.Attach(fs as FairStep);
-                        }
                         else
                         {
                             string id = Convert.ToString(dynamicObject["Id"]);
                             fs = db.FairSteps.FirstOrDefault(fsdb => fsdb.Id.ToString().Equals(id));
+                           
                         }
 
+                        db.FairSteps.Attach(fs as FairStep);
                         fs.StartDateTime = start;
                         fs.EndDateTime = end;
+                        fs.Place = dynamicObject["Place"];
+                        fs.Phase = dynamicObject["CodeStep"];
                         fair.FairSteps.Add(fs);
 
                         if (dynamicObject["Id"].Equals("-1"))
                             db.FairSteps.Add(fs);
                     }
+
+                    fair.StartDate = fair.FairSteps.OrderBy(x => x.StartDateTime)
+                        .FirstOrDefault().StartDateTime;
+                    fair.EndDate = fair.FairSteps.OrderBy(x => x.EndDateTime)
+                        .LastOrDefault().EndDateTime;
                 }
 
 
