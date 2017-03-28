@@ -293,6 +293,11 @@
     <Compile Include="Models\TRIBSTD01Helper.cs" />
     <Compile Include="Models\Trimester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\LivrETSRepository.cs" />
     <Compile Include="Service\IO\FileSystemFacade.cs" />
     <Compile Include="Service\PrintManager.cs" />
@@ -305,10 +310,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
-    <Content Include="App_Data\aspnet-LivrETS-20160629111902.mdf" />
-    <Content Include="App_Data\aspnet-LivrETS-20160629111902_log.ldf">
-      <DependentUpon>aspnet-LivrETS-20160629111902.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\dropdowns-enhancement.css" />
     <Content Include="Content\font-awesome\css\font-awesome.css" />
@@ -557,8 +558,13 @@
     <Content Include="Views\Admin\CreateFair.cshtml" />
     <None Include="Properties\PublishProfiles\TributerreLivrETS - Web Deploy.pubxml" />
     <Content Include="Views\Admin\EditFair.cshtml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Content\PDF\" />
     <Folder Include="Content\Uploads\Originals\" />
     <Folder Include="Content\Uploads\Thumbnails\" />
