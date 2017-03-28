@@ -60,6 +60,7 @@ namespace LivrETS.Controllers
         {
             ViewBag.CurrentSort = sortOrder;
             IEnumerable<Offer> offers = null;
+            int max_home_page = 20;
 
             if (searchString != null)
                 page = 1;
@@ -69,10 +70,9 @@ namespace LivrETS.Controllers
             ViewBag.CurrentFilter = searchString;
             offers = Repository.GetAllOffers(Pmin, Pmax, select_search, searchString, sortOrder);
 
-            int pageSize = int.Parse(ConfigurationManager.AppSettings["MAX_HOME_PAGE"]);
             int pageNumber = (page ?? 1);
 
-            return View(offers.ToList().ToPagedList(pageNumber, pageSize));
+            return View(offers.ToList().ToPagedList(pageNumber, max_home_page));
         }
 
         protected override void Dispose(bool disposing)

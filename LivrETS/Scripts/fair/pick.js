@@ -87,7 +87,7 @@ $(document).ready(function () {
             $.ajax({
                 method: "POST",
                 dataType: "json",
-                contentType: "application/json",
+                //contentType: "application/json",
                 url: "/Fair/GeneratePreview",
                 data: { NumberOfStickersLeft: numberOfStickersLeft },
                 success: function (data) {
