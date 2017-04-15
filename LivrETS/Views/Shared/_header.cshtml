@@ -90,7 +90,7 @@
                         <!----><li class="dropdown">
                             <a href="#" data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle">Foire</a>
                             <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Programme", "Program", "Fair")</li>
+                                <li>@Html.ActionLink("Horaire", "Program", "Fair")</li>
                                 @if (User.IsInRole("Administrator") || User.IsInRole("Clerk"))
                                 {
                                     <li>@Html.ActionLink("Cueillette", "Pick", "Fair")</li>

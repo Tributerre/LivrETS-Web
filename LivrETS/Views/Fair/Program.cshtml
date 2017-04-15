@@ -1,7 +1,7 @@
 ﻿@model LivrETS.Models.Fair
 
 @{
-    ViewBag.Title = "Programme de la foire";
+    ViewBag.Title = "Horaire de la foire";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles {
@@ -35,7 +35,7 @@
     @if (Model != null)
     {
         <div class="page-header">
-            <h1>Programme <small>Foire @Model.StartDate.ToString("Y")</small></h1>
+            <h1>Horaire <small>Foire @Model.TrimesterToString()</small></h1>
         </div>
 
         <div class="row" id="group-table">
@@ -53,8 +53,8 @@
                     <tr>
                         <td>@fs.StartDateTime.ToString("dd MMMM")</td>
                         <td>
-                            @fs.StartDateTime.ToString("hh:mm:ss") -
-                            @fs.EndDateTime.ToString("hh:mm:ss")
+                            @fs.StartDateTime.ToString("hh:mm") -
+                            @fs.EndDateTime.ToString("hh:mm")
                         </td>
                         <td>@fs.TypeNamePhase</td>
                         <td>@fs.Place</td>

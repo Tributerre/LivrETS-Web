@@ -241,6 +241,21 @@ namespace LivrETS.Models
                 currentDate.Month == CompareDate.Month &&
                 currentDate.Day == CompareDate.Day;
         }
+
+        public string TrimesterToString()
+        {
+
+            switch(this.Trimester){
+                case "H":
+                    return "Hiver";
+                case "A":
+                    return "Automne";
+                case "E":
+                    return "Été";
+                default:
+                    return "Pas définie";
+            }
+        }
     }
 
     /// <summary>

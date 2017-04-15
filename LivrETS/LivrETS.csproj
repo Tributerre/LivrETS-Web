@@ -556,6 +556,7 @@
     <Content Include="Views\Shared\_ProfileUserLayout.cshtml" />
     <Content Include="Views\Fair\Program.cshtml" />
     <Content Include="Views\Admin\CreateFair.cshtml" />
+    <None Include="Properties\PublishProfiles\livrets_ftp.pubxml" />
     <None Include="Properties\PublishProfiles\TributerreLivrETS - Web Deploy.pubxml" />
     <Content Include="Views\Admin\EditFair.cshtml" />
     <None Include="Properties\Settings.settings">
