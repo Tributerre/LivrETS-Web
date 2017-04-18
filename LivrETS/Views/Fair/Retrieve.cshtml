@@ -22,6 +22,8 @@
     ViewBag.Title = "Récupérer";
 }
 @section Styles {
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+
     <style>
         div.group-error {
             margin: 10% 0;
@@ -69,8 +71,10 @@
 
             <div class="row">
                 <div class="col-md-6">
+                    <label>Numéro de l'étudiant</label>
                     <input type="text" class="form-control" id="in-barcode" placeholder="Espace de numérisation" />
                 </div>
+                
             </div>
 
             <div class="row">
@@ -81,8 +85,10 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="table-responsive" style="min-height: 450px; border: 1px solid lightgray; border-radius: 3px;">
-                        <table id="articles-table" class="table table-bordered">
+                    <div class="table-responsive" id="group-table">
+
+                        <table id="articles-table" class="table-stripped table-bordered table-hover " 
+                               cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -97,6 +103,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
+                    
                     <div class="text-center">
                         <div id="give-price">
                             <h4>Argent à donner</h4>
@@ -116,5 +123,6 @@
     </div>
 </div>
 @section Scripts {
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
     <script src="~/Scripts/fair/retrieve.js"></script>
 }

@@ -472,6 +472,7 @@
     <Content Include="Scripts\dropdowns-enhancement.js" />
     <Content Include="Scripts\fair\createFair.js" />
     <Content Include="Scripts\fair\EditFair.js" />
+    <Content Include="Scripts\fair\informations.js" />
     <Content Include="Scripts\fair\retrieve.js" />
     <Content Include="Scripts\fair\sell.js" />
     <Content Include="Scripts\fullcalendar-lang-fr-ca.js" />
