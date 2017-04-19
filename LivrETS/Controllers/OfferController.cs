@@ -79,6 +79,28 @@ namespace LivrETS.Controllers
                 FileSystemFacade.CleanTempFolder(uploadsPath: arguments.Item1, userId: arguments.Item2);
             }, state: new Tuple<string, string>(Server.MapPath(UPLOADS_PATH), User.Identity.GetUserId()));
 
+            var nextFair = Repository.GetNextFair();
+            var curentFair = Repository.GetCurrentFair();
+            var flagFair = false;
+
+            if (curentFair != null)
+            {
+                DateTime now = DateTime.Now;
+                foreach (var step in curentFair.FairSteps)
+                {
+                    if (step.Phase == "S")
+                        if (now.CompareTo(step.StartDateTime) < 0)
+                        {
+                            flagFair = true;
+                            break;
+                        }
+                }
+            }
+            if (nextFair != null)
+                flagFair = true;
+            
+
+            ViewBag.flagFair = flagFair; 
             return View(model);
         }
 
@@ -87,26 +109,6 @@ namespace LivrETS.Controllers
         public ActionResult Create(ArticleViewModel model)
         {
             var course = Repository.GetCourseByAcronym(model.Acronym);
-
-            /*if (string.IsNullOrEmpty(model.Type))
-            {
-                ModelState.AddModelError(nameof(ArticleViewModel.ISBN),
-                    "");
-            }
-            else if (model.Type.Equals(Article.BOOK_CODE))
-            {
-                
-                
-                    var result = BookApi.Search(model.ISBN, model.Title);
-
-                    // Validating the model
-                    if (!result)
-                    {
-                        ModelState.AddModelError(nameof(ArticleViewModel.ISBN),
-                            "Votre ISBN ne correspond pas au Titre de l'article ");
-                    }
-                
-            }*/
 
             if (model.Type != Article.CALCULATOR_CODE && string.IsNullOrEmpty(model.ISBN))
             {
@@ -171,12 +173,35 @@ namespace LivrETS.Controllers
                     Title = model.Title  // FIXME: No elements for this in the view. Weird.
                 };
 
+                
                 if (model.ForNextFair)
                 {
+                    
+                    var curentFair = Repository.GetCurrentFair();
                     var nextFair = Repository.GetNextFair();
+                    bool flagFair = false;
 
-                    offer.ManagedByFair = true;
-                    nextFair?.Offers.Add(offer);
+                    if (curentFair != null)
+                    {
+                        foreach (var step in curentFair.FairSteps)
+                        {
+                            if (step.Phase == "S")
+                                if (now.CompareTo(step.StartDateTime) < 0)
+                                {
+                                    flagFair = true;
+                                    offer.ManagedByFair = true;
+                                    curentFair?.Offers.Add(offer);
+                                    break;
+                                }
+                        }
+                    }
+
+                    if (!flagFair && nextFair != null)
+                    {
+                        offer.ManagedByFair = true;
+                        nextFair?.Offers.Add(offer);
+                    }
+                    
                 }
 
                 Repository.AddOffer(offer, toUser: User.Identity.GetUserId());

@@ -37,15 +37,6 @@ namespace LivrETS.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        /*public DateTime PickingStartDate { get; set; }
-        public DateTime PickingEndDate { get; set; }
-
-        public DateTime SaleStartDate { get; set; }
-        public DateTime SaleEndDate { get; set; }
-
-        public DateTime RetrievalStartDate { get; set; }
-        public DateTime RetrievalEndDate { get; set; }*/
-
         [Required]
         public string Trimester { get; set; }
         public virtual ICollection<Offer> Offers { get; set; }
@@ -71,28 +62,6 @@ namespace LivrETS.Models
                 }
                 
                 return null;
-                /*DateTime now = DateTime.Now;
-
-                if (now < StartDate || now < PickingStartDate)
-                {
-                    return FairPhase.PREFAIR;
-                }
-                else if (now >= PickingStartDate && now < PickingEndDate)
-                {
-                    return FairPhase.PICKING;
-                }
-                else if (now >= SaleStartDate && now < SaleEndDate)
-                {
-                    return FairPhase.SALE;
-                }
-                else if (now >= RetrievalStartDate && now < RetrievalEndDate)
-                {
-                    return FairPhase.RETRIEVAL;
-                }
-                else
-                {
-                    return FairPhase.POSTFAIR;
-                }*/
             }
         }
 
@@ -122,46 +91,6 @@ namespace LivrETS.Models
             StartDate = start;
             EndDate = end;
         }
-
-        /// <summary>
-        /// Set the dates for the fair or one of its phases.
-        /// </summary>
-        /// <param name="start">Start date of the fair or phase</param>
-        /// <param name="end">End date of the fair or phase</param>
-        /// <param name="forPhase">Phase to set the dates for. Choose PREFAIR or POSTFAIR for fair.</param>
-        /*public Fair SetDates(DateTime start, DateTime end, FairPhase forPhase = FairPhase.PREFAIR)
-        {
-            if (end <= start)
-            {
-                throw new ArgumentException("End must be greater than start");
-            }
-
-            switch (forPhase)
-            {
-                case FairPhase.PREFAIR:
-                case FairPhase.POSTFAIR:
-                    StartDate = start;
-                    EndDate = end;
-                    break;
-
-                case FairPhase.PICKING:
-                    PickingStartDate = start;
-                    PickingEndDate = end;
-                    break;
-
-                case FairPhase.SALE:
-                    SaleStartDate = start;
-                    SaleEndDate = end;
-                    break;
-
-                case FairPhase.RETRIEVAL:
-                    RetrievalStartDate = start;
-                    RetrievalEndDate = end;
-                    break;
-            }
-
-            return this;
-        }*/
 
         public static bool CheckStatusFair()
         {

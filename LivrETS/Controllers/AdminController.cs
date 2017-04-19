@@ -269,32 +269,19 @@ namespace LivrETS.Controllers
             {
                 Fair fair;
                 if (model.Id == null)
-                {
                     fair = new Fair();
-                }
                 else
                 {
                     fair = db.Fairs.FirstOrDefault(fairDb => fairDb.Id.ToString() == model.Id);
 
                     if (fair == null)
-                    {
                         return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-                    }
                 }
 
-                /*fair.SetDates(model.StartDate, model.EndDate.AddSeconds(model.EndDate.Second * -1))
-                    .SetDates(model.PickingStartDate, model.PickingEndDate.AddSeconds(model.EndDate.Second * -1), 
-                                forPhase: FairPhase.PICKING)
-                    .SetDates(model.SaleStartDate, model.SaleEndDate.AddSeconds(model.EndDate.Second * -1), 
-                                forPhase: FairPhase.SALE)
-                    .SetDates(model.RetrievalStartDate, model.RetrievalEndDate.AddSeconds(model.EndDate.Second * -1), 
-                                forPhase: FairPhase.RETRIEVAL);*/
                 fair.Trimester = model.Trimester;
 
                 if (model.Id == null)
-                {
                     db.Fairs.Add(fair);
-                }
 
                 // Updating all past offers until the fair start date before this fair
                 var pastFair = (
@@ -314,15 +301,11 @@ namespace LivrETS.Controllers
 
                 // Removing the old offers managed by the fair.
                 foreach (var offer in fair.Offers)
-                {
                     fair.Offers.Remove(offer);
-                }
 
                 // Adding the new ones (including the old ones that are still valid for this fair).
                 foreach (var offer in pastOffers)
-                {
                     fair.Offers.Add(offer);
-                }
 
                 db.SaveChanges();
             }

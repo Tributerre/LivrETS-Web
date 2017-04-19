@@ -21,6 +21,8 @@
 @{
     ViewBag.Title = "Ajouter une annonce";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var flagFair = ViewBag.flagFair;
 }
 
 @section Styles {
@@ -253,15 +255,19 @@
                         <br />
                         @Html.RadioButtonFor(model => model.SellingStrategy, "WEBSITE", new { @checked = "checked" })
                         <span class="label label-success" style="font-size: 15px; margin-left: 10px;">Site Web</span>
-                        <br /><br />
-                        @Html.RadioButtonFor(model => model.SellingStrategy, "FAIR", new { })
-                        <span class="label label-info" style="font-size: 15px; margin-left: 10px;">Foire</span>
-                        <br /><br />
-                        <div id="info-sellingframe-fair" class="panel panel-info" hidden>
-                            <div class="panel-body bg-info" style="font-size: 12px;">
-                                L'article sera enregistr&eacute; pour la prochaine Foire aux Livres.
+                        @if (flagFair)
+                        {
+                            <br /><br />
+                            @Html.RadioButtonFor(model => model.SellingStrategy, "FAIR", new { })
+                            <span class="label label-info" style="font-size: 15px; margin-left: 10px;">Foire</span>
+                            <br /><br />
+                            <div id="info-sellingframe-fair" class="panel panel-info" hidden>
+                                <div class="panel-body bg-info" style="font-size: 12px;">
+                                    L'article sera enregistr&eacute; pour la prochaine Foire aux Livres.
+                                </div>
                             </div>
-                        </div>
+                        }
+                        
                     </div>
                     <div class="col-md-8">
                         <div class="row">
