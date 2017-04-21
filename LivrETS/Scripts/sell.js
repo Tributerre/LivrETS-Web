@@ -54,9 +54,9 @@ $(document).ready(function () {
                             .append($("<img>")
                                 .attr("src", json["thumbPath"])
                                 .attr("class", "img-responsive img-rounded")
-                                .attr("alt", "Preview image")
+                                .attr("alt", "Preview image")        
                             );
-
+                       
                         $("#images-panel>div[class='panel-body']").append(image);
                     }
                 }
@@ -168,20 +168,21 @@ $(document).ready(function () {
             });
         }
     });
-    var elt = null;
+    
+    var $parent = null;
+    var imgId = null;
     //delete image 
     $(".btn-del-img").on("click", function () { 
         var $btn = $(this);
-        elt = $btn.parent("li");
-        var imgId = $btn.data("imgid"); 
-        $("#btn-confirm-del-img").attr("data-imgid", imgId);
-        
+        imgId = $btn.data("imgid");
+        $parent = $btn.parent(".col-md-2");
+        $("#btn-confirm-del-img").attr("data-imgid", imgId);     
     });
 
     //confirm delete image 
     $("#btn-confirm-del-img").on("click", function () {
         var $btn = $(this);
-        var imgId = $btn.data("imgid");
+        //var imgId = $btn.data("imgid");
         var $modal = $('#ModalConfirmDelImg');  
         var $txtError = $modal.find(".text-danger");
         var $loading = $modal.find(".fa-spinner");
@@ -202,7 +203,7 @@ $(document).ready(function () {
                     $btn.prop("disabled", false);
                     $modal.modal('hide');
                     $loading.addClass("hide");
-                    elt.hide();
+                    $parent.hide();
                 } else {
                     $txtError.text(data.message).removeClass("hide");
                     $loading.addClass("hide");
