@@ -181,9 +181,13 @@ namespace LivrETS.Controllers
         public ActionResult ListOffersFair(string id)
         {
             var currentFair = Repository.GetFairById(id);
+            DateTime now = DateTime.Now;
+            var Offers = currentFair.Offers.Where(offer => 
+                DateTime.Compare(offer.StartDate, offer.Article.DeletedAt) != 0);
 
-            return Json(new {
-                currentFair.Offers
+            return Json(new
+            {
+               Offers 
             }, contentType: "application/json");
         }
 

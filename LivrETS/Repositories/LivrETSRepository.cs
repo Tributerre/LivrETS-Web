@@ -128,7 +128,8 @@ namespace LivrETS.Repositories
                         {
                             Id = fair.Id,
                             Trimester = fair.Trimester,
-                            NbOffer = fair.Offers.Count(),
+                            NbOffer = fair.Offers.Where(offer => DateTime.
+                                Compare(offer.StartDate, offer.Article.DeletedAt) == 0).Count(),
                             StartDate = fair.StartDate,
                             EndDate = fair.EndDate
                         });
@@ -165,7 +166,8 @@ namespace LivrETS.Repositories
             var now = DateTime.Now;
             return (
                 from fairdb in _db.Fairs
-                where fairdb.StartDate <= now && now <= fairdb.EndDate
+                where DateTime.Compare(now,fairdb.StartDate) >= 0 && 
+                        DateTime.Compare(now, fairdb.EndDate) <= 0
                 select fairdb
             ).FirstOrDefault();
         }

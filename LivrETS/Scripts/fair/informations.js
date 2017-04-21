@@ -1,13 +1,14 @@
 ﻿$(document).ready(function () {
 
-    var table = $('#table-2').DataTable({
+    $('#table-2').DataTable({
         processing: true,
         ajax: {
             url: "/Admin/ListOffersFair",
-            data: { id: $("#table-2").data("id") },
+            data: { id: $("#table-2").data("id")},
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
+                console.log(val)
                 return val.Offers
             }
         },
@@ -15,7 +16,6 @@
            {
                sortable: false,
                data: function (val) {
-
                    return val.Title
                }
            },

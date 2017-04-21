@@ -409,31 +409,61 @@ namespace LivrETS.Controllers
             Fair nextFair = Repository.GetNextFair();
             FairStep currentFairStepS = null;
 
-            if (currentFair != null && DateTime.Compare(now, currentFair.EndDate)>0)
-                currentFairStepS = currentFair.FairSteps.FirstOrDefault(step => step.Phase == "S");            
+            if (currentFair != null && DateTime.Compare(now, currentFair.StartDate) > 0
+                && DateTime.Compare(now, currentFair.EndDate) < 0)
+            {
+                currentFairStepS = currentFair.FairSteps.FirstOrDefault(step => step.Phase == "S");
 
-            return Json(new {
+                return Json(new
+                {
+                    Offers = user.Offers.Where(
+                         offer => DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0 &&
+                                  DateTime.Compare(offer.MarkedSoldOn, offer.StartDate) == 0
+                        ).OrderByDescending(offer => offer.StartDate).Select(offer => new
+                        {
+                            Id = offer.Id,
+                            Title = offer.Title,
+                            Price = offer.Price,
+                            TypeName = offer.Article.TypeName,
+                            Courses = offer.Article.Course.Acronym,
+                            startDate = offer.StartDate,
+                            fairState = offer.Article.FairState,
+                            articlecode = offer.Article.ArticleCode,
+                            StartDate = offer.StartDate,
+                            sold = offer.Sold,
+                            ManagedByFair = offer.ManagedByFair,
+                            GetBtn = (currentFair != null && offer.ManagedByFair) ?
+                                        (currentFair.Offers.FirstOrDefault(offertmp => offertmp.Id.Equals(offer.Id)) != null) ?
+                                            (currentFairStepS != null) ?
+                                                DateTime.Compare(now, currentFairStepS.StartDateTime)
+                                            : -2
+                                        : -3
+                                    : (nextFair.Offers.FirstOrDefault(offertmp => offertmp.Id.Equals(offer.Id)) != null) ?
+                                    1 : -4
+                        })
+                }, contentType: "application/json");
+            }
+
+            return Json(new
+            {
                 Offers = user.Offers.Where(
-                     offer => DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0 &&
-                              DateTime.Compare(offer.MarkedSoldOn, offer.StartDate) == 0
-                    ).OrderByDescending(offer => offer.StartDate).Select(offer => new
-                    {
-                        Id = offer.Id,
-                        Title = offer.Title,
-                        Price = offer.Price,
-                        TypeName = offer.Article.TypeName, 
-                        Courses = offer.Article.Course.Acronym,
-                        startDate = offer.StartDate,
-                        fairState = offer.Article.FairState,
-                        articlecode = offer.Article.ArticleCode,
-                        StartDate = offer.StartDate,
-                        sold = offer.Sold,
-                        ManagedByFair = offer.ManagedByFair,
-                        GetBtn = (currentFairStepS != null) ?
-                                    DateTime.Compare(now, currentFairStepS.StartDateTime):
-                                    -2,
-                        NextFair = (nextFair != null)?true:false
-                    })
+                         offer => DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0 &&
+                                  DateTime.Compare(offer.MarkedSoldOn, offer.StartDate) == 0
+                        ).OrderByDescending(offer => offer.StartDate).Select(offer => new
+                        {
+                            Id = offer.Id,
+                            Title = offer.Title,
+                            Price = offer.Price,
+                            TypeName = offer.Article.TypeName,
+                            Courses = offer.Article.Course.Acronym,
+                            startDate = offer.StartDate,
+                            fairState = offer.Article.FairState,
+                            articlecode = offer.Article.ArticleCode,
+                            StartDate = offer.StartDate,
+                            sold = offer.Sold,
+                            ManagedByFair = offer.ManagedByFair,
+                            GetBtn = -4
+                        })
             }, contentType: "application/json");
         }
 

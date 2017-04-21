@@ -19,6 +19,7 @@
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
+                console.log(val)
                 return val.Offers
             }
         },
@@ -71,25 +72,25 @@
                     if (val.Sold == true)
                         sold = "hide";
 
-                    var btn1 = "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
+                    var btnSale = "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
                         "data-toggle='modal' data-target='#ModalSaleOffer' data-status='1' id='sale'>vendu</a> ";
-                    var btn2 = "<a class='btn btn-sm btn-danger btn-sale hide' data-offer-id='" + val.Id + "' " +
+                    var btnNoSale = "<a class='btn btn-sm btn-danger btn-nosale hide' data-offer-id='" + val.Id + "' " +
                         "data-status='0' id='nosale'>non vendu</a>";
-                    var btn3 = "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer' " +
+                    var btnEdit = "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer' " +
                         "data-offer-id='" + val.Id + "'><span class='glyphicon glyphicon-edit'></span></a> ";
-                    var btn4 = "<a href='#' class='btn btn-sm btn-danger btn-del-offer' data-offer-id='" + val.Id + "'" +
+                    var btnDel = "<a href='#' class='btn btn-sm btn-danger btn-del-offer' data-offer-id='" + val.Id + "'" +
                         "data-toggle='modal' data-target='#ModalDelOffer'><span class='glyphicon glyphicon-trash'></span></a>";
                     
                     if (val.ManagedByFair) {
-                        if (val.GetBtn == "-1")
-                            return btn1 + " " + btn3 + " " + btn4;
+                        if (val.GetBtn == "-1" || val.GetBtn == "1")
+                            return btnEdit + " " + btnDel;
                         else if (val.GetBtn == "1" || val.GetBtn == "0")
                             return "Aucune action disponible";
                         else
                             return "Aucune action disponible";
                     }
 
-                    return btn1 + " " + btn3 + " " + btn4;
+                    return btnSale + " " + btnEdit + " " + btnDel;
                      
                 }
             }
