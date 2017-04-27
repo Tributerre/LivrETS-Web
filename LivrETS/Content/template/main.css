@@ -557,6 +557,7 @@ hr {
     bottom: 18%;
     font-weight: bold;
     font-size: 1.25em;
+    display: none;
 }
 .header .logo {
   margin-top: 28px;

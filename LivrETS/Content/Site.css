@@ -90,7 +90,7 @@ html, body {
   color: #fefefe; }
 
 .beta {
-                position: absolute;
-                left: 75%;
-                bottom: 18%;
-            }
+    position: absolute;
+    left: 75%;
+    bottom: 18%;
+}
