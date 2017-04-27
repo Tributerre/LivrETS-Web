@@ -94,81 +94,44 @@ namespace LivrETS.Models
 
         public static bool CheckStatusFair()
         {
-            /*List<ApplicationUser> listAllUsers = null;
             List<ApplicationUser> listUsersParicipateFair = null;
             Fair fair = null;
+            var now = DateTime.Now;
 
             using (var db = new ApplicationDbContext())
             {
-                var now = DateTime.Now;
-                Fair nextFair =  (
-                    from fairF in db.Fairs
-                    where fairF.StartDate > now
-                    orderby fairF.StartDate ascending
-                    select fairF
-                ).FirstOrDefault();
 
-                Fair currentFair = (
+                fair = (
                             from fairdb in db.Fairs
                             where fairdb.StartDate <= now && now <= fairdb.EndDate
                             select fairdb
                         ).FirstOrDefault();
 
-                fair = (currentFair != null) ? currentFair : nextFair;
-
                 if (fair == null)
                     return false;
 
-                listAllUsers = (from user in db.Users
-                                select user).ToList();
+                var listAllUsers = (from user in db.Users
+                                select user);
                 listUsersParicipateFair = listAllUsers.Where(user =>
                                         user.Offers.Where(offer =>
-                                        offer.ManagedByFair == true) != null).ToList();
+                                        offer.ManagedByFair == true) != null)
+                                        .ToList();
             }
 
-            DateTime currentDate = (Convert.ToDateTime(DateTime.Now.ToString()));
+            DateTime fairRetrievalStartDate = (Convert.ToDateTime(fair.FairSteps.Where(step => 
+                                            step.Phase == "R").FirstOrDefault().StartDateTime));
 
-            DateTime fairPickingEndDate = (Convert.ToDateTime(fair.PickingEndDate));
-            DateTime fairPickingStartDate = (Convert.ToDateTime(fair.PickingStartDate));
-            DateTime fairSaleStartDate = (Convert.ToDateTime(fair.SaleStartDate));
-            DateTime fairSaleEndDate = (Convert.ToDateTime(fair.SaleEndDate));
-            DateTime fairRetrievalStartDate = (Convert.ToDateTime(fair.RetrievalStartDate));
-            DateTime fairRetrievalEndDate = (Convert.ToDateTime(fair.RetrievalEndDate));
 
-            if (CompareDate(currentDate, fairPickingStartDate))
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.STARTFAIRPICKING, listAllUsers)
-                );
-            else if (CompareDate(currentDate, fairPickingEndDate))
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.ENDFAIRPICKING, listAllUsers)
-                );
-            else if (CompareDate(currentDate, fairSaleStartDate))
-            {
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.STARTFAIRSALE, listAllUsers)
-                );
-            }
-            else if (CompareDate(currentDate, fairSaleEndDate))
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.ENDFAIRSALE, listAllUsers)
-                );
-            else if (CompareDate(currentDate, fairRetrievalStartDate))
+            if (DateTime.Compare(now.Date, fairRetrievalStartDate.Date) == 0)
                 return NotificationManager.getInstance().sendNotification(
                     new Notification(NotificationOptions.STARTFAIRRETREIVAL, listUsersParicipateFair)
                 );
-            else if (CompareDate(currentDate, fairRetrievalEndDate))
+            else if (DateTime.Compare(now.Date, fairRetrievalStartDate.Date.AddDays(7)) == 0)
                 return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.ENDFAIRRETREIVAL, listUsersParicipateFair)
-                );*/
-            return false;
-        }
+                    new Notification(NotificationOptions.LATEFORRETREIVALAFTERAWEEK, listUsersParicipateFair)
+                );
 
-        private static bool CompareDate(DateTime currentDate, DateTime CompareDate)
-        {
-            return currentDate.Year == currentDate.Year &&
-                currentDate.Month == CompareDate.Month &&
-                currentDate.Day == CompareDate.Day;
+            return false;
         }
 
         public string TrimesterToString()
@@ -186,18 +149,5 @@ namespace LivrETS.Models
             }
         }
     }
-
-    /// <summary>
-    /// Enumerations of the different fair phases. Learn about
-    /// those phases in the documentation.
-    /// </summary>
-    /*public enum FairPhase
-    {
-        PREFAIR = 0,
-        PICKING,
-        SALE,
-        RETRIEVAL,
-        POSTFAIR
-    }*/
 
 }
