@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/> 
  */
+using LivrETS.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -94,44 +95,53 @@ namespace LivrETS.Models
 
         public static bool CheckStatusFair()
         {
-            List<ApplicationUser> listUsersParicipateFair = null;
-            Fair fair = null;
+            List<UserViewModel> listUsersParicipateFair = null;
+            //Fair fair = null;
             var now = DateTime.Now;
 
             using (var db = new ApplicationDbContext())
             {
+                try
+                {
+                    listUsersParicipateFair = db.Database.SqlQuery<UserViewModel>(
+                            "SELECT u.Email, u.FirstName, u.LastName " +
+                            "FROM AspNetUsers u " +
+                            "INNER JOIN Offers o ON u.Id = o.ApplicationUser_Id " +
+                            "INNER JOIN Fairs f ON f.Id = o.Fair_Id " +
+                            "WHERE o.ManagedByFair = 1 " +
+                            "AND GETDATE() BETWEEN f.StartDate AND f.EndDate ").ToList();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
 
-                fair = (
+                Fair fair = (
                             from fairdb in db.Fairs
+                            join fs in db.FairSteps on fairdb.Id equals fs.FairID
                             where fairdb.StartDate <= now && now <= fairdb.EndDate
                             select fairdb
                         ).FirstOrDefault();
 
-                if (fair == null)
+                if (fair == null || listUsersParicipateFair == null)
                     return false;
 
-                var listAllUsers = (from user in db.Users
-                                select user);
-                listUsersParicipateFair = listAllUsers.Where(user =>
-                                        user.Offers.Where(offer =>
-                                        offer.ManagedByFair == true) != null)
-                                        .ToList();
+                DateTime fairRetrievalStartDate = fair.FairSteps.Where(step =>
+                                            step.Phase == "R").FirstOrDefault().StartDateTime;
+
+                if (DateTime.Compare(now.Date, fairRetrievalStartDate.Date) == 0)
+                    return NotificationManager.getInstance().sendNotification(
+                        new Notification(NotificationOptions.STARTFAIRRETREIVAL, listUsersParicipateFair)
+                    );
+                else if (DateTime.Compare(now.Date, fairRetrievalStartDate.Date.AddDays(7)) == 0)
+                    return NotificationManager.getInstance().sendNotification(
+                        new Notification(NotificationOptions.LATEFORRETREIVALAFTERAWEEK, listUsersParicipateFair)
+                    );
+
+                return true;
+
             }
-
-            DateTime fairRetrievalStartDate = (Convert.ToDateTime(fair.FairSteps.Where(step => 
-                                            step.Phase == "R").FirstOrDefault().StartDateTime));
-
-
-            if (DateTime.Compare(now.Date, fairRetrievalStartDate.Date) == 0)
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.STARTFAIRRETREIVAL, listUsersParicipateFair)
-                );
-            else if (DateTime.Compare(now.Date, fairRetrievalStartDate.Date.AddDays(7)) == 0)
-                return NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.LATEFORRETREIVALAFTERAWEEK, listUsersParicipateFair)
-                );
-
-            return false;
+           
         }
 
         public string TrimesterToString()

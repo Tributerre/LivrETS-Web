@@ -2,6 +2,7 @@
 using System.IO;
 using System.Configuration;
 using System;
+using LivrETS.ViewModels;
 
 namespace LivrETS.Models
 {
@@ -9,22 +10,16 @@ namespace LivrETS.Models
     {
         public string template = null;
         public string emailProvider = null;
-        public List<ApplicationUser> listUser = null;
-        public ApplicationUser user = null;
+        public List<UserViewModel> listUser = null;
 
-        public Notification(NotificationOptions option, List<ApplicationUser> listUser)
+        public Notification(NotificationOptions option, List<UserViewModel> listUser)
         {
             this.emailProvider = ConfigurationManager.AppSettings["EMAIL_PROVIDER"];
             this.template = GetMessage(option);
             this.listUser = listUser;
         }
 
-        public Notification(NotificationOptions option, ApplicationUser user)
-        {
-            this.emailProvider = ConfigurationManager.AppSettings["EMAIL_PROVIDER"];
-            this.template = GetMessage(option);
-            this.user = user;
-        }
+
 
         public string GetMessage(NotificationOptions option)
         {

@@ -80,15 +80,15 @@ namespace LivrETS
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection",
                 new SqlServerStorageOptions { QueuePollInterval = TimeSpan.FromSeconds(1) });
 
-                RecurringJob.AddOrUpdate(() => Fair.CheckStatusFair(), Cron.Daily);
+            RecurringJob.AddOrUpdate(() => Fair.CheckStatusFair(), Cron.Minutely);
 
-                app.UseHangfireServer();
-                app.UseHangfireDashboard();
+            app.UseHangfireServer();
+            app.UseHangfireDashboard();
 
-                app.UseHangfireDashboard("/livretsJob", new DashboardOptions
-                {
-                    Authorization = new[] { new HangfireAutorizationFilter() }
-                });
+            app.UseHangfireDashboard("/livretsJob", new DashboardOptions
+            {
+                Authorization = new[] { new HangfireAutorizationFilter() }
+            });
 
         }
     }
