@@ -106,6 +106,7 @@ namespace LivrETS.Controllers
 
         // POST: Offer/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(ArticleViewModel model)
         {
             var course = Repository.GetCourseByAcronym(model.Acronym);
@@ -120,6 +121,12 @@ namespace LivrETS.Controllers
             {
                 ModelState.AddModelError(nameof(ArticleViewModel.Acronym), 
                     "Le type choisi requiert un cours de la liste.");
+            }
+
+            if(model.Type == null)
+            {
+                ModelState.AddModelError(nameof(ArticleViewModel.Type),
+                    "Choisissez un type pour votre annonce.");
             }
 
             // Proceeding to add the new offer.
@@ -222,6 +229,7 @@ namespace LivrETS.Controllers
             }
             else
             {
+                ViewBag.flagFair = false;
                 model.Courses = Repository.GetAllCourses().ToList();
                 return View(model);
             }

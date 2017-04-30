@@ -88,8 +88,10 @@ $(document).ready(function () {
     $("input[name='SellingStrategy']").on("change", function () {
         if ($(this).val() === 'FAIR') {
             $("#info-sellingframe-fair").show('fast');
+            $("#images-panel").hide('fast');
         } else {
             $("#info-sellingframe-fair").hide('fast');
+            $("#images-panel").show('fast');
         }
     });
     
@@ -225,16 +227,10 @@ $(document).ready(function () {
             $("#calculator-models-dropdown").show('fast');
             $("#isbn-text-input").hide('fast');
             $("#bloc-course").hide('fast');
-        /*}else if(value === 'L'){
-            $("#warning-isbn").removeClass("hide");
-            $("#calculator-models-dropdown").hide('fast');
-            $("#isbn-text-input").show('fast');
-            $("#bloc-course").show('fast');*/
         } else {
             $("#calculator-models-dropdown").hide('fast');
             $("#isbn-text-input").show('fast');
             $("#bloc-course").show('fast');
-            //$("#warning-isbn").addClass("hide")
         } 
     }
 });
