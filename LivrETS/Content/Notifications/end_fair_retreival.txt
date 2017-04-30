@@ -1,7 +1,0 @@
-﻿<div>
-<p>Bonjour {0}</p>
-<br>
-<p>Juste pour informer que <b>end fair retreival</b></p>
-<br/>
-<p>Bonne Journée</p>
-</div>

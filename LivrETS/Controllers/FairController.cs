@@ -158,17 +158,6 @@ namespace LivrETS.Controllers
         }
 
         #region Ajax
-        
-        [HttpPost]
-        public ActionResult CheckStatusFair()
-        {
-
-            return Json(new
-            {
-                status = Fair.CheckStatusFair()
-            },contentType: "application/json"
-            );
-        }
 
         [HttpPost]
         public ActionResult OffersNotSold(string UserBarCode)
@@ -219,10 +208,10 @@ namespace LivrETS.Controllers
                 Repository.Update();
 
                 //send notification mail
-                NotificationManager.getInstance().sendNotification(
+                /*NotificationManager.getInstance().sendNotification(
                     new Notification(NotificationOptions.ARTICLERETREIVEDCONFIRMATION,
                                 Repository.GetOfferByUser(offer))
-                    );
+                    );*/
             }
 
             return Json(new { }, contentType: "application/json");
@@ -268,11 +257,6 @@ namespace LivrETS.Controllers
                 {
                     Offer = offer
                 });
-
-                NotificationManager.getInstance().sendNotification(
-                    new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR,
-                        Repository.GetOfferByUser(offer))
-                );
             }
 
             seller.Sales.Add(sale);
@@ -309,7 +293,7 @@ namespace LivrETS.Controllers
                 
                 try
                 {
-                    Offer offer = Repository.GetOfferBy(id);
+                    Offer offer = Repository.GetOfferById(id);
                     string LivrETSID = fair.LivrETSID + "-" + seller.LivrETSID + "-" + offer.Article.LivrETSID;
    
                     helper = new TRIBSTD01Helper(LivrETSID);
@@ -336,7 +320,7 @@ namespace LivrETS.Controllers
             foreach(string id in offerIds)
             {
                 //var currentOffer = helper.GetOffer();
-                Offer currentOffer = Repository.GetOfferBy(id);
+                Offer currentOffer = Repository.GetOfferById(id);
                 Repository.AttachToContext(currentOffer);
                 currentOffer.Article.MarkAsSold();
                 currentOffer.MarkedSoldOn = DateTime.Now;
@@ -345,10 +329,10 @@ namespace LivrETS.Controllers
                     Offer = currentOffer
                 });
 
-                NotificationManager.getInstance().sendNotification(
+                /*NotificationManager.getInstance().sendNotification(
                     new Notification(NotificationOptions.ARTICLEMARKEDASSOLDDURINGFAIR,
                         Repository.GetOfferByUser(currentOffer))
-                );
+                );*/
             }
 
             seller.Sales.Add(sale);
@@ -435,10 +419,10 @@ namespace LivrETS.Controllers
             Repository.Update();
 
             //send notification mail
-            NotificationManager.getInstance().sendNotification(
+            /*NotificationManager.getInstance().sendNotification(
                 new Notification(NotificationOptions.ARTICLEPICKEDCONFIRMATION, 
                         Repository.GetOfferByUser(article: article))
-                );
+                );*/
             return Json(new { }, contentType: "application/json");
         }
 
@@ -463,7 +447,7 @@ namespace LivrETS.Controllers
                 NumberOfStickersLeft,
                 offersPicked.ConvertAll(new Converter<string, PrintManager.StickerInfo>(offerId => 
                 {
-                    var offer = Repository.GetOfferBy(Id: offerId);
+                    var offer = Repository.GetOfferById(Id: offerId);
                     return new PrintManager.StickerInfo()
                     {
                         ArticleLivrETSID = offer.Article.LivrETSID,

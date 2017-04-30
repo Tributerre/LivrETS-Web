@@ -56,7 +56,7 @@ namespace LivrETS.Controllers
             if (id == null)
                 throw new HttpException(404, "Page not Found");
 
-            Offer offer = Repository.GetOfferBy(id);
+            Offer offer = Repository.GetOfferById(id);
             DateTime now = offer.StartDate;
 
             if (DateTime.Compare(offer.MarkedSoldOn, now) != 0 || 
@@ -79,34 +79,37 @@ namespace LivrETS.Controllers
                 FileSystemFacade.CleanTempFolder(uploadsPath: arguments.Item1, userId: arguments.Item2);
             }, state: new Tuple<string, string>(Server.MapPath(UPLOADS_PATH), User.Identity.GetUserId()));
 
+            var nextFair = Repository.GetNextFair();
+            var curentFair = Repository.GetCurrentFair();
+            var flagFair = false;
+
+            if (curentFair != null)
+            {
+                DateTime now = DateTime.Now;
+                foreach (var step in curentFair.FairSteps)
+                {
+                    if (step.Phase == "S")
+                        if (now.CompareTo(step.StartDateTime) < 0)
+                        {
+                            flagFair = true;
+                            break;
+                        }
+                }
+            }
+            if (nextFair != null)
+                flagFair = true;
+            
+
+            ViewBag.flagFair = flagFair; 
             return View(model);
         }
 
         // POST: Offer/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(ArticleViewModel model)
         {
             var course = Repository.GetCourseByAcronym(model.Acronym);
-
-            /*if (string.IsNullOrEmpty(model.Type))
-            {
-                ModelState.AddModelError(nameof(ArticleViewModel.ISBN),
-                    "");
-            }
-            else if (model.Type.Equals(Article.BOOK_CODE))
-            {
-                
-                
-                    var result = BookApi.Search(model.ISBN, model.Title);
-
-                    // Validating the model
-                    if (!result)
-                    {
-                        ModelState.AddModelError(nameof(ArticleViewModel.ISBN),
-                            "Votre ISBN ne correspond pas au Titre de l'article ");
-                    }
-                
-            }*/
 
             if (model.Type != Article.CALCULATOR_CODE && string.IsNullOrEmpty(model.ISBN))
             {
@@ -118,6 +121,12 @@ namespace LivrETS.Controllers
             {
                 ModelState.AddModelError(nameof(ArticleViewModel.Acronym), 
                     "Le type choisi requiert un cours de la liste.");
+            }
+
+            if(model.Type == null)
+            {
+                ModelState.AddModelError(nameof(ArticleViewModel.Type),
+                    "Choisissez un type pour votre annonce.");
             }
 
             // Proceeding to add the new offer.
@@ -171,12 +180,35 @@ namespace LivrETS.Controllers
                     Title = model.Title  // FIXME: No elements for this in the view. Weird.
                 };
 
+                
                 if (model.ForNextFair)
                 {
+                    
+                    var curentFair = Repository.GetCurrentFair();
                     var nextFair = Repository.GetNextFair();
+                    bool flagFair = false;
 
-                    offer.ManagedByFair = true;
-                    nextFair?.Offers.Add(offer);
+                    if (curentFair != null)
+                    {
+                        foreach (var step in curentFair.FairSteps)
+                        {
+                            if (step.Phase == "S")
+                                if (now.CompareTo(step.StartDateTime) < 0)
+                                {
+                                    flagFair = true;
+                                    offer.ManagedByFair = true;
+                                    curentFair?.Offers.Add(offer);
+                                    break;
+                                }
+                        }
+                    }
+
+                    if (!flagFair && nextFair != null)
+                    {
+                        offer.ManagedByFair = true;
+                        nextFair?.Offers.Add(offer);
+                    }
+                    
                 }
 
                 Repository.AddOffer(offer, toUser: User.Identity.GetUserId());
@@ -197,6 +229,7 @@ namespace LivrETS.Controllers
             }
             else
             {
+                ViewBag.flagFair = false;
                 model.Courses = Repository.GetAllCourses().ToList();
                 return View(model);
             }
@@ -221,7 +254,7 @@ namespace LivrETS.Controllers
         {
 
             var user = UserManager.FindById(User.Identity.GetUserId());
-            Offer offer = Repository.GetOfferBy(id);
+            Offer offer = Repository.GetOfferById(id);
 
             if (user.Offers.Where(offerTmp => offerTmp.Id.ToString().Equals(offer.Id.ToString())) == null)
                 throw new HttpException(404, "Page not Found");
@@ -281,7 +314,7 @@ namespace LivrETS.Controllers
             // Proceeding to add the new offer.
             if (ModelState.IsValid)
             {
-                Offer cOffer = Repository.GetOfferBy(model.Id);
+                Offer cOffer = Repository.GetOfferById(model.Id);
                 Article cArticle = cOffer.Article;
                 var uploadsPath = Server.MapPath(UPLOADS_PATH);
 
@@ -478,7 +511,7 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult sendMailForOffer(string to_name, string to_message, string to_address, string to_offer)
         {
-            Offer offer = Repository.GetOfferBy(to_offer);
+            Offer offer = Repository.GetOfferById(to_offer);
             ApplicationUser userOffer = Repository.GetOfferByUser(offer);
 
             MailMessage mail = new MailMessage();

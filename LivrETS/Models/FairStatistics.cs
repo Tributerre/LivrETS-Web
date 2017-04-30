@@ -194,10 +194,14 @@ namespace LivrETS.Models
                             "f.Trimester trimester, YEAR(f.StartDate) year, " +
                             "(SELECT COUNT(o.Id) " +
                                 "FROM Offers o " +
-                                "WHERE o.MarkedSoldOn = o.StartDate AND o.Fair_Id = f.Id) AS articles, " +
+                                "INNER JOIN Articles a ON a.id = o.ArticleID " +
+                                "WHERE o.MarkedSoldOn = o.StartDate AND o.Fair_Id = f.Id " +
+                                "AND a.DeletedAt = o.StartDate) AS articles, " +
                             "(SELECT COUNT(o.Id) " +
                                 "FROM Offers o " +
-                                "WHERE o.MarkedSoldOn <> o.StartDate AND o.Fair_Id = f.Id) AS articles_sold " +
+                                "INNER JOIN Articles a ON a.id = o.ArticleID " +
+                                "WHERE o.MarkedSoldOn <> o.StartDate AND o.Fair_Id = f.Id " +
+                                "AND a.DeletedAt = o.StartDate) AS articles_sold " +
                             "FROM Fairs f " +
                             "ORDER BY f.StartDate ASC").ToList();
                 }

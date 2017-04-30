@@ -2,6 +2,7 @@
 using System.Net.Mail;
 using System.Configuration;
 using System.Net;
+using LivrETS.ViewModels;
 
 namespace LivrETS.Models
 {
@@ -45,21 +46,12 @@ namespace LivrETS.Models
                 SmtpServer.Port = Int32.Parse(ConfigurationManager.AppSettings["EMAIL_PORT"]);
                 SmtpServer.Credentials = new NetworkCredential(ConfigurationManager.AppSettings["EMAIL_USERNAME"], 
                     ConfigurationManager.AppSettings["EMAIL_PWD"]);
-                SmtpServer.EnableSsl = true;
-                
-                if(notification.user == null)
+                SmtpServer.EnableSsl = true;               
+
+                foreach (var user in notification.listUser)
                 {
-                    foreach (ApplicationUser user in notification.listUser)
-                    {
-                        mail.Body = string.Format(notification.template, user.FirstName);
-                        mail.To.Add(user.Email);
-                    }
-                }
-                else
-                {
-                    ApplicationUser user = notification.user;
                     mail.Body = string.Format(notification.template, user.FirstName);
-                    mail.To.Add(user.Email); 
+                    mail.To.Add(user.Email);
                 }
                 
                 SmtpServer.Send(mail);

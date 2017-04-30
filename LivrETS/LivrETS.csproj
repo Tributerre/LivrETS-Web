@@ -259,6 +259,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FairController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -320,18 +321,8 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Login.css" />
     <Content Include="Content\LoginConfirmation.css" />
-    <Content Include="Content\Notifications\article_marked_as_soldduring_fair.txt" />
-    <Content Include="Content\Notifications\article_picked_confirmation.txt" />
-    <Content Include="Content\Notifications\article_retreived_confirmation.txt" />
-    <Content Include="Content\Notifications\article_transfered_to_tributerre.txt" />
-    <Content Include="Content\Notifications\end_fair_picking.txt" />
-    <Content Include="Content\Notifications\end_fair_retreival.txt" />
-    <Content Include="Content\Notifications\end_fair_sale.txt" />
-    <Content Include="Content\Notifications\late_for_retreival_after_a_week.txt" />
-    <Content Include="Content\Notifications\late_for_retreival_before_a_week.txt" />
-    <Content Include="Content\Notifications\start_fair_picking.txt" />
     <Content Include="Content\Notifications\start_fair_retreival.txt" />
-    <Content Include="Content\Notifications\start_fair_sale.txt" />
+    <Content Include="Content\Notifications\late_for_retreival_after_a_week.txt" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\template\animate.min.css" />
     <Content Include="Content\template\bootstrap-select.min.css" />
@@ -472,6 +463,7 @@
     <Content Include="Scripts\dropdowns-enhancement.js" />
     <Content Include="Scripts\fair\createFair.js" />
     <Content Include="Scripts\fair\EditFair.js" />
+    <Content Include="Scripts\fair\informations.js" />
     <Content Include="Scripts\fair\retrieve.js" />
     <Content Include="Scripts\fair\sell.js" />
     <Content Include="Scripts\fullcalendar-lang-fr-ca.js" />
@@ -509,6 +501,7 @@
     <Content Include="Scripts\template_admin\flot\jquery.flot.pie.js" />
     <Content Include="Scripts\template_admin\flot\jquery.flot.resize.js" />
     <Content Include="Scripts\template_admin\flot\jquery.flot.tooltip.min.js" />
+    <Content Include="Scripts\template_admin\manageCourses.js" />
     <Content Include="Scripts\template_admin\manageOffersFair.js" />
     <Content Include="Scripts\template_admin\morris\morris-data.js" />
     <Content Include="Scripts\template_admin\morris\morris.js" />
@@ -556,12 +549,14 @@
     <Content Include="Views\Shared\_ProfileUserLayout.cshtml" />
     <Content Include="Views\Fair\Program.cshtml" />
     <Content Include="Views\Admin\CreateFair.cshtml" />
+    <None Include="Properties\PublishProfiles\livrets_ftp.pubxml" />
     <None Include="Properties\PublishProfiles\TributerreLivrETS - Web Deploy.pubxml" />
     <Content Include="Views\Admin\EditFair.cshtml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="Views\Admin\ManageCourses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -569,6 +564,7 @@
     <Folder Include="Content\Uploads\Originals\" />
     <Folder Include="Content\Uploads\Thumbnails\" />
     <Folder Include="fonts\" />
+    <Folder Include="Views\Course\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.html" />

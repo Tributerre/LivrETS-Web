@@ -36,6 +36,23 @@ namespace LivrETS.Controllers
         private ApplicationUserManager _userManager;
 
         public AdminController() { }
+        private LivrETSRepository _repository;
+        public LivrETSRepository Repository
+        {
+            get
+            {
+                if (_repository == null)
+                {
+                    _repository = new LivrETSRepository();
+                }
+
+                return _repository;
+            }
+            private set
+            {
+                _repository = value;
+            }
+        }
 
         public AdminController(ApplicationUserManager userManager)
         {
@@ -54,7 +71,7 @@ namespace LivrETS.Controllers
             }
         }
 
-        // GET: Offer
+        // GET: /Admin/Index
         public ActionResult Index()
         {
             //if current fair is finish, then take next fair 
@@ -66,9 +83,22 @@ namespace LivrETS.Controllers
             ViewData["users"] = Repository.GetAllUsers().Count();
             ViewData["fairs"] = Repository.GetAllFairs().ToList().Count();
             ViewData["offers"] = Repository.GetAllOffers().Count();
-            ViewData["saleitems"] = Repository.GetAllOffers().
-                Where(offer => offer.MarkedSoldOn != offer.StartDate).Count();
+            ViewData["courses"] = Repository.GetAllCourses().Count();
 
+            return View();
+        }
+
+        // GET: /Admin/ManageUsers
+        [HttpGet]
+        public ActionResult ManageUsers()
+        {
+            return View();
+        }
+
+        // GET: /Admin/ManageFairs
+        [HttpGet]
+        public ActionResult ManageFairs()
+        {
             return View();
         }
 
@@ -84,20 +114,6 @@ namespace LivrETS.Controllers
         public ActionResult EditFair(string Id)
         {
             return View(Repository.GetFairById(Id));
-        }
-
-        // GET: /Admin/ManageUsers
-        [HttpGet]
-        public ActionResult ManageUsers()
-        {
-            return View();
-        }
-
-        // GET: /Admin/ManageFairs
-        [HttpGet]
-        public ActionResult ManageFairs()
-        {
-            return View();
         }
 
         // GET: /Admin/ManageDetailsFair/5
@@ -122,6 +138,13 @@ namespace LivrETS.Controllers
             return View();
         }
 
+        // GET: /Admin/ManageCourses
+        [HttpGet]
+        public ActionResult ManageCourses()
+        {
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -132,23 +155,7 @@ namespace LivrETS.Controllers
 
             base.Dispose(disposing);
         }
-        private LivrETSRepository _repository;
-        public LivrETSRepository Repository
-        {
-            get
-            {
-                if (_repository == null)
-                {
-                    _repository = new LivrETSRepository();
-                }
-
-                return _repository;
-            }
-            private set
-            {
-                _repository = value;
-            }
-        }
+        
 
         #region Ajax
 
@@ -181,9 +188,13 @@ namespace LivrETS.Controllers
         public ActionResult ListOffersFair(string id)
         {
             var currentFair = Repository.GetFairById(id);
+            DateTime now = DateTime.Now;
+            var Offers = currentFair.Offers.Where(offer => 
+                DateTime.Compare(offer.StartDate, offer.Article.DeletedAt) != 0);
 
-            return Json(new {
-                currentFair.Offers
+            return Json(new
+            {
+               Offers 
             }, contentType: "application/json");
         }
 
@@ -269,32 +280,19 @@ namespace LivrETS.Controllers
             {
                 Fair fair;
                 if (model.Id == null)
-                {
                     fair = new Fair();
-                }
                 else
                 {
                     fair = db.Fairs.FirstOrDefault(fairDb => fairDb.Id.ToString() == model.Id);
 
                     if (fair == null)
-                    {
                         return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-                    }
                 }
 
-                /*fair.SetDates(model.StartDate, model.EndDate.AddSeconds(model.EndDate.Second * -1))
-                    .SetDates(model.PickingStartDate, model.PickingEndDate.AddSeconds(model.EndDate.Second * -1), 
-                                forPhase: FairPhase.PICKING)
-                    .SetDates(model.SaleStartDate, model.SaleEndDate.AddSeconds(model.EndDate.Second * -1), 
-                                forPhase: FairPhase.SALE)
-                    .SetDates(model.RetrievalStartDate, model.RetrievalEndDate.AddSeconds(model.EndDate.Second * -1), 
-                                forPhase: FairPhase.RETRIEVAL);*/
                 fair.Trimester = model.Trimester;
 
                 if (model.Id == null)
-                {
                     db.Fairs.Add(fair);
-                }
 
                 // Updating all past offers until the fair start date before this fair
                 var pastFair = (
@@ -314,15 +312,11 @@ namespace LivrETS.Controllers
 
                 // Removing the old offers managed by the fair.
                 foreach (var offer in fair.Offers)
-                {
                     fair.Offers.Remove(offer);
-                }
 
                 // Adding the new ones (including the old ones that are still valid for this fair).
                 foreach (var offer in pastOffers)
-                {
                     fair.Offers.Add(offer);
-                }
 
                 db.SaveChanges();
             }
@@ -509,6 +503,22 @@ namespace LivrETS.Controllers
 
             UserManager.Delete(user);
         }
+
+        // POST: /Admin/ListCourses
+        // List all Offers
+        [HttpPost]
+        public ActionResult ListCourses()
+        {
+            return Json(new
+            {
+                courses = Repository.GetAllCourses().Select(course => new
+                        {
+                            Id = course.Id,
+                            Acronym = course.Acronym
+                        })
+            }, contentType: "application/json");
+        }
+
 
         #endregion
     }

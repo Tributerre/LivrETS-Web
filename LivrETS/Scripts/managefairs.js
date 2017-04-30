@@ -89,15 +89,16 @@ $(document).ready(function () {
 
     // Delete fair event.
     //sale confirmation
+    var fairId = "";
     $('table tbody').on("click", ".btn-delete-fair", function () {
         var $btn = $(this);
-        var fairId = $btn.data("fair-id");
+        fairId = $btn.data("fair-id");
         $("#btn-confirm-del-fair").attr("data-fair-id", fairId);
     });
 
     $("#btn-confirm-del-fair").on("click", function () {
         var $btn = $(this);
-        var fairId = $btn.data("fair-id");
+        
         var $modal = $('#ModalDelFair');
 
         $txtError = $modal.find(".text-danger");
@@ -135,73 +136,6 @@ $(document).ready(function () {
             }
         });
     });
-
-    // Edit fair event
-    /*$('table tbody').on("click", ".btn-edit-fair", function () {
-        var fairId = $(this).attr("data-fair-id");
-
-        $.ajax({
-            method: "POST",
-            contentType: "application/json",
-            dataType: "json",
-            url: "/Admin/GetFairData",
-            data: JSON.stringify({
-                Id: fairId
-            }),
-            success: function (fair) {
-                var dateFormat = "DD-MM-YYYY";
-
-                $("#NewFairModal").modal("show");
-
-                startDate = moment(fair.StartDate);
-                endDate = moment(fair.EndDate);
-                pickingStartDate = moment(fair.PickingStartDate);
-                pickingEndDate = moment(fair.PickingEndDate);
-                saleStartDate = moment(fair.SaleStartDate);
-                saleEndDate = moment(fair.SaleEndDate);
-                retrievingStartDate = moment(fair.RetrievalStartDate);
-                retrievingEndDate = moment(fair.RetrievalEndDate);
-
-                $("#start-date").val(startDate.format(dateFormat));
-                $("#end-date").val(endDate.format(dateFormat));
-                $("#picking-start-date").val(pickingStartDate.format(dateFormat));
-                $("#picking-end-date").val(pickingEndDate.format(dateFormat));
-                $("#sale-start-date").val(saleStartDate.format(dateFormat));
-                $("#sale-end-date").val(saleEndDate.format(dateFormat));
-                $("#retrieval-start-date").val(retrievingStartDate.format(dateFormat));
-                $("#retrieval-end-date").val(retrievingEndDate.format(dateFormat));
-                window.fairId = fair.Id;
-
-                switch (fair.Trimester) {
-                    case "A":
-                        $("#select-trimester").val("A");
-                        break;
-
-                    case "H":
-                        $("#select-trimester").val("H");
-                        break;
-
-                    case "É":
-                        $("#select-trimester").val("E");
-                        break;
-                }
-
-                setTimeout(function () { // Wait until the calendar is shown
-                    $("#dp-start-date").trigger("dp.change", [startDate]);
-                }, 600);
-            }
-        });
-    });*/
-
-    // Select all fair's checkbox for action
-    /*$("input[type='checkbox'][name='check-select-all']").on("change", function () {
-        var checked = $(this).is(":checked");
-
-        $("tbody>tr>td")
-            .find("input[type='checkbox'][name='check-select-fair']")
-            .prop("checked", checked);
-        //updateDeleteSelectedView();
-    });*/
 
     // Delete selected event            
     $("#div-actions").on("click", "#div-delete-selected>#btn-delete-selected", function () {

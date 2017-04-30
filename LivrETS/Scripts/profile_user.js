@@ -19,6 +19,7 @@
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
+                console.log(val)
                 return val.Offers
             }
         },
@@ -46,15 +47,15 @@
             {
                 class: "text-center",
                 data: function (val) {
-                    return val.Article.TypeName
+                    return val.TypeName
                 }
             },
             {
                 class: "text-center",
                 data: function (val) {
-                    if (val.Article.ArticleCode == "C")
+                    if (val.ArticleCode == "C")
                         return "";
-                    return val.Article.Course.Acronym
+                    return val.Courses
                 }
             },
             {
@@ -67,43 +68,29 @@
                 class: "text-center",
                 sortable: false,
                 data: function (val) {
-                    /*if (val.ManagedByFair) 
-                        return "Article de la foire";*/
+                    var sold = "";
+                    if (val.Sold == true)
+                        sold = "hide";
+
+                    var btnSale = "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
+                        "data-toggle='modal' data-target='#ModalSaleOffer' data-status='1' id='sale'>vendu</a> ";
+                    var btnNoSale = "<a class='btn btn-sm btn-danger btn-nosale hide' data-offer-id='" + val.Id + "' " +
+                        "data-status='0' id='nosale'>non vendu</a>";
+                    var btnEdit = "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer' " +
+                        "data-offer-id='" + val.Id + "'><span class='glyphicon glyphicon-edit'></span></a> ";
+                    var btnDel = "<a href='#' class='btn btn-sm btn-danger btn-del-offer' data-offer-id='" + val.Id + "'" +
+                        "data-toggle='modal' data-target='#ModalDelOffer'><span class='glyphicon glyphicon-trash'></span></a>";
                     
                     if (val.ManagedByFair) {
-                        var fairState = val.Article.FairState;
-                        
-                        var UNKNOWN = 0,
-                            PICKED = 1,
-                            SOLD = 2,
-                            RETREIVED = 3;
-
-                        if (fairState == RETREIVED)
-                            return "Récupéré";
-                        else if (fairState == PICKED)
-                            return "Ceuilli";
-                        else if (fairState == SOLD)
-                            return "Vendu";
-
-                        return "Enregistrer en foire";
+                        if (val.GetBtn == "-1" || val.GetBtn == "1")
+                            return btnEdit + " " + btnDel;
+                        else if (val.GetBtn == "1" || val.GetBtn == "0")
+                            return "Aucune action disponible";
+                        else
+                            return "Aucune action disponible";
                     }
 
-                    var sold = "";
-                    if (val.Sold == true) {
-                        sold = "hide"
-                    }
-                    var btn1 = "<a class='btn btn-sm btn-success btn-sale " + sold + "' data-offer-id='" + val.Id + "' " +
-                        "data-toggle='modal' data-target='#ModalSaleOffer'" +
-                        "data-status='1' id='sale'>vendu</a> ";
-                    var btn2 = "<a class='btn btn-sm btn-danger btn-sale hide'  data-offer-id='" + val.Id + "' " +
-                        "data-status='0' id='nosale'>non vendu</a>";
-                    var btn3 = "<a href='/Offer/Edit/" + val.Id + "' class='btn btn-sm btn-primary btn-edit-offer' "+
-                        "data-offer-id='" + val.Id + "'>" +
-                        "<span class='glyphicon glyphicon-edit'></span></a> ";
-                    var btn4 = "<a href='#' class='btn btn-sm btn-danger btn-del-offer' data-offer-id='" + val.Id + "'" +
-                        "data-toggle='modal' data-target='#ModalDelOffer'><span class='glyphicon glyphicon-trash'></span></a>"
-
-                    return btn1 + " " + btn3 + " " + btn4;
+                    return btnSale + " " + btnEdit + " " + btnDel;
                      
                 }
             }

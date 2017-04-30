@@ -25,8 +25,8 @@
                 <div class="logo text-md-center">
                     <h1>
                         <a href="/home/index">
-                            Tribu<span class="primary-color">terre</span>
-                            
+                            <!--Livr<span class="primary-color">ETS</span> -->
+                            <img src="~/Images/logos/LivreETS.png" width="50%" />
                         </a>
                     </h1><small id="beta">Beta</small>
                 </div><!-- /.logo -->
@@ -90,7 +90,7 @@
                         <!----><li class="dropdown">
                             <a href="#" data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle">Foire</a>
                             <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Programme", "Program", "Fair")</li>
+                                <li>@Html.ActionLink("Informations", "Program", "Fair")</li>
                                 @if (User.IsInRole("Administrator") || User.IsInRole("Clerk"))
                                 {
                                     <li>@Html.ActionLink("Cueillette", "Pick", "Fair")</li>
