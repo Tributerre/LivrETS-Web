@@ -236,7 +236,6 @@ namespace LivrETS.Repositories
             _db.SaveChanges();
         }
 
-
         /*************************** Offer ***************************/
         public ApplicationUser GetOfferByUser(Offer offer = null, Article article = null)
         {
@@ -379,7 +378,7 @@ namespace LivrETS.Repositories
             {
                 foreach (string Id in Ids)
                 {
-                    Offer offer = GetOfferBy(Id);
+                    Offer offer = GetOfferById(Id);
 
                     if(offer.Images != null)
                     {
@@ -414,7 +413,7 @@ namespace LivrETS.Repositories
         {
             for (int i = 0; i < offerIds.Length; i++)
             {
-                Offer offer = this.GetOfferBy(offerIds[i]);
+                Offer offer = this.GetOfferById(offerIds[i]);
                 if (offer == null)
                     return false;
 
@@ -438,6 +437,62 @@ namespace LivrETS.Repositories
             }
 
             return offers.Count();
+        }
+
+        /// <summary>
+        /// find list offers by course
+        /// </summary>
+        public IEnumerable<Offer> GetOfferByCourse(string Id, string Acronym = null)
+        {
+            if(Id != null)
+                return (
+                        from offer in _db.Offers
+                        where offer.Article.CourseID.ToString().Equals(Id)
+                        select offer
+                    ).ToList();
+
+            return (
+                        from offer in _db.Offers
+                        where offer.Article.Course.Acronym.Equals(Acronym)
+                        select offer
+                    ).ToList();
+        }
+
+        /// <summary>
+        /// Delete course 
+        /// </summary>
+        /// <param name="Acronyms">
+        /// course Acronym array
+        /// </param>
+        public bool DeleteCourse(string[] Acronyms)
+        {
+            try
+            {
+                foreach (string acronym in Acronyms)
+                {
+                    Course course = GetCourseByAcronym(acronym);
+                    string[] ids = (from offer in _db.Offers
+                                          where offer.Article.Course.Acronym.Equals(acronym) && 
+                                                !offer.ManagedByFair
+                                          select offer.Id.ToString()).ToArray();
+
+                    if (course != null)
+                    {
+                        DeleteOffer(ids);
+                        _db.Courses.Remove(course); 
+                    }
+                }
+
+                _db.SaveChanges();
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
         }
 
         /// <summary>
@@ -529,7 +584,7 @@ namespace LivrETS.Repositories
         /// </summary>
         /// <param name="Id">The Id of the offer.</param>
         /// <returns>An Offer or null if not found.</returns>
-        public Offer GetOfferBy(string Id)
+        public Offer GetOfferById(string Id)
         {
             if (Id == null)
                 return null;
@@ -546,7 +601,7 @@ namespace LivrETS.Repositories
         {
             for (int i = 0; i < offerIds.Length; i++)
             {
-                Offer offer = this.GetOfferBy(offerIds[i]);
+                Offer offer = this.GetOfferById(offerIds[i]);
                 if (offer == null)
                     return false;
                 

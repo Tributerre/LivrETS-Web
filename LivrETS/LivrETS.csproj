@@ -259,6 +259,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FairController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -500,6 +501,7 @@
     <Content Include="Scripts\template_admin\flot\jquery.flot.pie.js" />
     <Content Include="Scripts\template_admin\flot\jquery.flot.resize.js" />
     <Content Include="Scripts\template_admin\flot\jquery.flot.tooltip.min.js" />
+    <Content Include="Scripts\template_admin\manageCourses.js" />
     <Content Include="Scripts\template_admin\manageOffersFair.js" />
     <Content Include="Scripts\template_admin\morris\morris-data.js" />
     <Content Include="Scripts\template_admin\morris\morris.js" />
@@ -554,6 +556,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="Views\Admin\ManageCourses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -561,6 +564,7 @@
     <Folder Include="Content\Uploads\Originals\" />
     <Folder Include="Content\Uploads\Thumbnails\" />
     <Folder Include="fonts\" />
+    <Folder Include="Views\Course\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.html" />

@@ -293,7 +293,7 @@ namespace LivrETS.Controllers
                 
                 try
                 {
-                    Offer offer = Repository.GetOfferBy(id);
+                    Offer offer = Repository.GetOfferById(id);
                     string LivrETSID = fair.LivrETSID + "-" + seller.LivrETSID + "-" + offer.Article.LivrETSID;
    
                     helper = new TRIBSTD01Helper(LivrETSID);
@@ -320,7 +320,7 @@ namespace LivrETS.Controllers
             foreach(string id in offerIds)
             {
                 //var currentOffer = helper.GetOffer();
-                Offer currentOffer = Repository.GetOfferBy(id);
+                Offer currentOffer = Repository.GetOfferById(id);
                 Repository.AttachToContext(currentOffer);
                 currentOffer.Article.MarkAsSold();
                 currentOffer.MarkedSoldOn = DateTime.Now;
@@ -447,7 +447,7 @@ namespace LivrETS.Controllers
                 NumberOfStickersLeft,
                 offersPicked.ConvertAll(new Converter<string, PrintManager.StickerInfo>(offerId => 
                 {
-                    var offer = Repository.GetOfferBy(Id: offerId);
+                    var offer = Repository.GetOfferById(Id: offerId);
                     return new PrintManager.StickerInfo()
                     {
                         ArticleLivrETSID = offer.Article.LivrETSID,

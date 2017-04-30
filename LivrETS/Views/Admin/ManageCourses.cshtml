@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Liste des cours";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.css">
+    <style>
+        h1 {
+            margin-bottom: 50px;
+        }
+
+        #group-btn-action {
+            margin-bottom: 30px;
+            padding-right: 16px;
+        }
+    </style>
+}
+
+<div id="page-wrapper">
+    <div class="container">
+
+        <h1>Courses</h1>
+
+        <div id="errors" class="row" hidden>
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button id="close-error" type="button" class="close" aria-label="Fermer">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span id="error-message"></span>
+            </div>
+        </div>
+
+        <div class="row" id="top-row">
+            <div class="col-md-12">
+
+                <div class="row" id="group-btn-action">
+                    <div class="pull-right" id="div-actions">
+                        <a href="/Offer/Create" class="btn btn-success btn-sm">
+                            Ajouter un article
+                        </a>
+                    </div>
+                </div>
+
+                <table class="table-stripped table-bordered table-hover display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" name="check-select-all" />
+                            </th>
+                            <th>Title</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+    <script src="~/Scripts/template_admin/manageCourses.js"></script>
+}

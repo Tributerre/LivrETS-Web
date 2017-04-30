@@ -56,7 +56,7 @@ namespace LivrETS.Controllers
             if (id == null)
                 throw new HttpException(404, "Page not Found");
 
-            Offer offer = Repository.GetOfferBy(id);
+            Offer offer = Repository.GetOfferById(id);
             DateTime now = offer.StartDate;
 
             if (DateTime.Compare(offer.MarkedSoldOn, now) != 0 || 
@@ -246,7 +246,7 @@ namespace LivrETS.Controllers
         {
 
             var user = UserManager.FindById(User.Identity.GetUserId());
-            Offer offer = Repository.GetOfferBy(id);
+            Offer offer = Repository.GetOfferById(id);
 
             if (user.Offers.Where(offerTmp => offerTmp.Id.ToString().Equals(offer.Id.ToString())) == null)
                 throw new HttpException(404, "Page not Found");
@@ -306,7 +306,7 @@ namespace LivrETS.Controllers
             // Proceeding to add the new offer.
             if (ModelState.IsValid)
             {
-                Offer cOffer = Repository.GetOfferBy(model.Id);
+                Offer cOffer = Repository.GetOfferById(model.Id);
                 Article cArticle = cOffer.Article;
                 var uploadsPath = Server.MapPath(UPLOADS_PATH);
 
@@ -503,7 +503,7 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult sendMailForOffer(string to_name, string to_message, string to_address, string to_offer)
         {
-            Offer offer = Repository.GetOfferBy(to_offer);
+            Offer offer = Repository.GetOfferById(to_offer);
             ApplicationUser userOffer = Repository.GetOfferByUser(offer);
 
             MailMessage mail = new MailMessage();
