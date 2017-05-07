@@ -110,7 +110,7 @@ $(document).ready(function () {
         };
         $error.hide();
 
-        var pattern = /^[A-Z]{3}[0-9]{3}$/;
+        var pattern = /^[a-zA-Z]{3}[0-9]{3}$/;
         var resultReg = pattern.test(courseTxt);
 
         if (courseTxt === "") {
@@ -134,7 +134,7 @@ $(document).ready(function () {
                 method: "POST",
                 dataType: "json",
                 url: "/Offer/AddNewCourse",
-                data: { acronym: courseTxt },
+                data: { acronym: courseTxt.substr(0, 3).toUpperCase() + "" + courseTxt.substr(3, 6) },
                 success: function (data) {
                     var newCourseElement = $("<li>")
                         .append($("<input>") 

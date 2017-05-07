@@ -182,8 +182,7 @@ namespace LivrETS.Controllers
 
                 
                 if (model.ForNextFair)
-                {
-                    
+                {  
                     var curentFair = Repository.GetCurrentFair();
                     var nextFair = Repository.GetNextFair();
                     bool flagFair = false;
@@ -213,7 +212,7 @@ namespace LivrETS.Controllers
 
                 Repository.AddOffer(offer, toUser: User.Identity.GetUserId());
 
-                if (Session["images"] != null)
+                if (Session["images"] != null && !offer.ManagedByFair)
                 {
                     List<OfferImage> images = Session["images"] as List<OfferImage>;
                     foreach (var image in images)
