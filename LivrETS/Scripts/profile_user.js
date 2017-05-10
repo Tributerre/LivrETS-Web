@@ -67,7 +67,7 @@
             {
                 class: "text-center",
                 sortable: false,
-                data: function (val) {
+                data: function (val) { 
                     var sold = "";
                     if (val.Sold == true)
                         sold = "hide";
@@ -82,12 +82,10 @@
                         "data-toggle='modal' data-target='#ModalDelOffer'><span class='glyphicon glyphicon-trash'></span></a>";
                     
                     if (val.ManagedByFair) {
-                        if (val.GetBtn == "-1" || val.GetBtn == "1")
+                        if (val.GetBtn == 1 || val.GetBtn == 2)
                             return btnEdit + " " + btnDel;
-                        else if (val.GetBtn == "1" || val.GetBtn == "0")
-                            return "Aucune action disponible";
-                        else
-                            return "Aucune action disponible";
+
+                        return "Aucune action disponible";
                     }
 
                     return btnSale + " " + btnEdit + " " + btnDel;

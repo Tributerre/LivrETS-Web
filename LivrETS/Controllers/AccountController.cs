@@ -409,10 +409,12 @@ namespace LivrETS.Controllers
             Fair nextFair = Repository.GetNextFair();
             FairStep currentFairStepS = null;
 
-            if (currentFair != null && DateTime.Compare(now, currentFair.StartDate) > 0
-                && DateTime.Compare(now, currentFair.EndDate) < 0)
-            {
+            /*if (currentFair != null && DateTime.Compare(now.Date, currentFair.StartDate.Date) > 0
+                && DateTime.Compare(now.Date, currentFair.EndDate.Date) < 0)*/
+            //{
+            if (currentFair != null)
                 currentFairStepS = currentFair.FairSteps.FirstOrDefault(step => step.Phase == "S");
+
 
                 return Json(new
                 {
@@ -432,19 +434,21 @@ namespace LivrETS.Controllers
                             StartDate = offer.StartDate,
                             sold = offer.Sold,
                             ManagedByFair = offer.ManagedByFair,
-                            GetBtn = (currentFair != null && offer.ManagedByFair) ?
+                            GetBtn = (currentFair != null && offer.ManagedByFair) ?  
                                         (currentFair.Offers.FirstOrDefault(offertmp => offertmp.Id.Equals(offer.Id)) != null) ?
                                             (currentFairStepS != null) ?
-                                                DateTime.Compare(now, currentFairStepS.StartDateTime)
+                                                (DateTime.Compare(now, currentFairStepS.StartDateTime) < 0)?2:-4
                                             : -2
                                         : -3
-                                    : (nextFair.Offers.FirstOrDefault(offertmp => offertmp.Id.Equals(offer.Id)) != null) ?
-                                    1 : -4
+                                    : (nextFair != null)?
+                                        (nextFair.Offers.FirstOrDefault(offertmp => offertmp.Id.Equals(offer.Id)) != null) ?
+                                            1 : -4
+                                    :-4
                         })
                 }, contentType: "application/json");
-            }
+            //}
 
-            return Json(new
+            /*return Json(new
             {
                 Offers = user.Offers.Where(
                          offer => DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0 &&
@@ -462,9 +466,10 @@ namespace LivrETS.Controllers
                             StartDate = offer.StartDate,
                             sold = offer.Sold,
                             ManagedByFair = offer.ManagedByFair,
-                            GetBtn = -4
+                            GetBtn = (nextFair.Offers.FirstOrDefault(offertmp => offertmp.Id.Equals(offer.Id)) != null) ?
+                                    1 : -4
                         })
-            }, contentType: "application/json");
+            }, contentType: "application/json");*/
         }
 
         public JsonResult GetUserBy(string id)
