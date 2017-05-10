@@ -415,6 +415,7 @@ namespace LivrETS.Controllers
             if (currentFair != null)
                 currentFairStepS = currentFair.FairSteps.FirstOrDefault(step => step.Phase == "S");
 
+
                 return Json(new
                 {
                     Offers = user.Offers.Where(
@@ -433,10 +434,10 @@ namespace LivrETS.Controllers
                             StartDate = offer.StartDate,
                             sold = offer.Sold,
                             ManagedByFair = offer.ManagedByFair,
-                            GetBtn = (currentFair != null && offer.ManagedByFair) ?
+                            GetBtn = (currentFair != null && offer.ManagedByFair) ?  
                                         (currentFair.Offers.FirstOrDefault(offertmp => offertmp.Id.Equals(offer.Id)) != null) ?
                                             (currentFairStepS != null) ?
-                                                DateTime.Compare(now, currentFairStepS.StartDateTime)
+                                                (DateTime.Compare(now, currentFairStepS.StartDateTime) < 0)?2:-4
                                             : -2
                                         : -3
                                     : (nextFair != null)?

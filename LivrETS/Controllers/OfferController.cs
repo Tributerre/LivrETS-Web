@@ -88,17 +88,18 @@ namespace LivrETS.Controllers
                 DateTime now = DateTime.Now;
                 foreach (var step in curentFair.FairSteps)
                 {
-                    if (step.Phase == "S")
-                        if (now.CompareTo(step.StartDateTime) < 0)
+                    var d1 = now.Date;
+                    var d2 = step.StartDateTime.Date;
+                    if (step.Phase == "P")
+                        if (DateTime.Compare(now.Date, step.EndDateTime.Date) <= 0)
                         {
                             flagFair = true;
-                            break;
+                            //break;
                         }
                 }
             }
             if (nextFair != null)
-                flagFair = true;
-            
+                flagFair = true;   
 
             ViewBag.flagFair = flagFair; 
             return View(model);
