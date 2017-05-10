@@ -187,10 +187,14 @@ namespace LivrETS.Controllers
         [HttpPost]
         public ActionResult ListOffersFair(string id)
         {
+            List<Offer> Offers = new List<Offer>();
             var currentFair = Repository.GetFairById(id);
             DateTime now = DateTime.Now;
-            var Offers = currentFair.Offers.Where(offer => 
-                DateTime.Compare(offer.StartDate, offer.Article.DeletedAt) != 0);
+            var currentFairStepsS = currentFair.FairSteps.Where(step => step.Phase.Equals("S")).FirstOrDefault();
+
+            if(DateTime.Compare(now.Date, currentFairStepsS.StartDateTime.Date) >= 0)
+                Offers = currentFair.Offers.Where(offer => 
+                    DateTime.Compare(offer.StartDate, offer.Article.DeletedAt) == 0).ToList();
 
             return Json(new
             {
