@@ -22,6 +22,7 @@ using LivrETS.Models;
 using LivrETS.Repositories;
 using PagedList;
 using System.Configuration;
+using System;
 
 namespace LivrETS.Controllers
 {
@@ -66,10 +67,9 @@ namespace LivrETS.Controllers
                 page = 1;
             else
                 searchString = currentFilter;
-            
+
             ViewBag.CurrentFilter = searchString;
             offers = Repository.GetAllOffers(Pmin, Pmax, select_search, searchString, sortOrder);
-
             int pageNumber = (page ?? 1);
 
             return View(offers.ToList().ToPagedList(pageNumber, max_home_page));

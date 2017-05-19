@@ -342,8 +342,15 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\code_barre.jpg" />
-    <Content Include="Images\ets.png" />
     <Content Include="Images\isbn.jpg" />
+    <Content Include="Images\logos\aeets.png" />
+    <Content Include="Images\logos\coopets.jpg" />
+    <Content Include="Images\logos\ets.png" />
+    <Content Include="Images\logos\favicon.ico" />
+    <Content Include="Images\logos\fddaeets.png" />
+    <Content Include="Images\logos\LivreETS.png" />
+    <Content Include="Images\logos\logo_livrets.png" />
+    <Content Include="Images\logos\Tributerre.png" />
     <Content Include="Images\student_card_example.jpg" />
     <Content Include="Images\template\ajax.gif" />
     <Content Include="Images\template\AjaxLoader.gif" />

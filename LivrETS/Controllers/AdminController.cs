@@ -214,7 +214,7 @@ namespace LivrETS.Controllers
 
         // PUT: /Admin/ChangeUserRole
         // Change the role of a user.
-        [HttpPut]
+        [HttpPost]
         public ActionResult ChangeUserRole(AjaxManageUsersViewModel model)
         {
             var user = UserManager.FindById(model.UserId);
@@ -222,8 +222,7 @@ namespace LivrETS.Controllers
             String message = null;
             
             if (user == null)
-                message = "Modifications annulée: l'utilisateur n'existe pas";
-            
+                message = "Modifications annulée: l'utilisateur n'existe pas";  
 
             // Remove from all roles just in case.
             UserManager.RemoveFromRoles(user.Id, UserManager.GetRoles(user.Id).ToArray());
@@ -234,14 +233,12 @@ namespace LivrETS.Controllers
                 message = "Modifications reusie";
             }
 
-
             if (model.NewRole != null && !model.NewRole.Equals("anonymous"))
             {
                 UserManager.AddToRole(user.Id, model.NewRole);
                 status = true;
                 message = "Modifications reusie";
             }
-
 
             return Json(new { status=status, message=message }, contentType: "application/json");
         }
