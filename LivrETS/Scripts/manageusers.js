@@ -140,7 +140,7 @@ $(document).ready(function () {
 
         $modal.on('shown.bs.modal', function () {
             $.ajax({
-                method: "PUT",
+                method: "POST",
                 contentType: "application/json",
                 url: "/Account/GetUserBy",
                 dataType: "json",
@@ -181,7 +181,7 @@ $(document).ready(function () {
 
         $me = $(this);
         $.ajax({
-            method: "PUT",
+            method: "POST",
             contentType: "application/json",
             url: "/Admin/ChangeUserRole",
             dataType: "json",
@@ -195,11 +195,11 @@ $(document).ready(function () {
                     $table.ajax.reload();
                     $.notifySuccess('Modification réussit');
                 } else {
-                    $.notifyError('Erreur');
+                    $.notifyError('Erreur de modification');
                 }
             },
-            error: function (err) {
-                $.notifySuccess("erreur");
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.notifyError(errorThrown);
             }
         });
     });

@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
-
+    $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+        console.log(message);
+    };
     $('#table-2').DataTable({
         processing: true,
         ajax: {
@@ -8,7 +10,7 @@
             type: "POST",
             dataType: "JSON",
             dataSrc: function (val) {
-                console.log(val)
+                
                 return val.Offers
             }
         },

@@ -38,7 +38,7 @@ $(function () {
         }
             
         $.ajax({
-            method: "DELETE",
+            method: "POST",
             dataType: "json",
             url: "/Admin/DeleteFairStep",
             data: { id: id },
@@ -80,7 +80,7 @@ $(function () {
         $.ajax({
             method: "POST",
             dataType: "json",
-            url: "/Admin/CreateFairSubmit",
+            url: "/Admin/CreateUpdateFair",
             data: {
                 session: session, steps: steps, Id: $btn.data("id")
             },

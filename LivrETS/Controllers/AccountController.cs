@@ -29,6 +29,7 @@ using LivrETS.ViewModels;
 using System.Collections.Generic;
 using System.Net;
 using LivrETS.Repositories;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace LivrETS.Controllers
 {
@@ -307,6 +308,8 @@ namespace LivrETS.Controllers
             return View(model);
         }
 
+
+
         //
         // POST: /Account/LogOff
         [HttpPost]
@@ -330,6 +333,34 @@ namespace LivrETS.Controllers
         public ActionResult Historic()
         {
             return View();
+        }
+
+        // GET: /Account/Historic
+        [HttpGet]
+        public ActionResult InitRole()
+        {
+            var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+            ApplicationUser user = UserManager.FindByEmail("willy.kouagnia-nyandjou.1@etsmtl.net");
+
+            string[] roles = { "Administrator", "Clerk" };
+            foreach(string role in roles)
+            {
+                IdentityResult roleResult = null;
+                if (!rm.RoleExists(role))
+                    roleResult = rm.Create(new IdentityRole(role));
+                else
+                {
+                    if(role.Equals("Administrator"))
+                        UserManager.AddToRole(user.Id, "Administrator");
+                }
+
+                if (!roleResult.Succeeded)
+                    if (role.Equals("Administrator"))
+                        UserManager.AddToRole(user.Id, "Administrator");
+
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: /Account/Profile
@@ -409,9 +440,6 @@ namespace LivrETS.Controllers
             Fair nextFair = Repository.GetNextFair();
             FairStep currentFairStepS = null;
 
-            /*if (currentFair != null && DateTime.Compare(now.Date, currentFair.StartDate.Date) > 0
-                && DateTime.Compare(now.Date, currentFair.EndDate.Date) < 0)*/
-            //{
             if (currentFair != null)
                 currentFairStepS = currentFair.FairSteps.FirstOrDefault(step => step.Phase == "S");
 
@@ -446,32 +474,9 @@ namespace LivrETS.Controllers
                                     :-4
                         })
                 }, contentType: "application/json");
-            //}
-
-            /*return Json(new
-            {
-                Offers = user.Offers.Where(
-                         offer => DateTime.Compare(offer.Article.DeletedAt, offer.StartDate) == 0 &&
-                                  DateTime.Compare(offer.MarkedSoldOn, offer.StartDate) == 0
-                        ).OrderByDescending(offer => offer.StartDate).Select(offer => new
-                        {
-                            Id = offer.Id,
-                            Title = offer.Title,
-                            Price = offer.Price,
-                            TypeName = offer.Article.TypeName,
-                            Courses = offer.Article.Course.Acronym,
-                            startDate = offer.StartDate,
-                            fairState = offer.Article.FairState,
-                            articlecode = offer.Article.ArticleCode,
-                            StartDate = offer.StartDate,
-                            sold = offer.Sold,
-                            ManagedByFair = offer.ManagedByFair,
-                            GetBtn = (nextFair.Offers.FirstOrDefault(offertmp => offertmp.Id.Equals(offer.Id)) != null) ?
-                                    1 : -4
-                        })
-            }, contentType: "application/json");*/
         }
 
+        [HttpPost]
         public JsonResult GetUserBy(string id)
         {
             ApplicationUser user = UserManager.FindById(id);
