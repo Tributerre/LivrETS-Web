@@ -59,7 +59,7 @@ $(function () {
         $.ajax({
             method: "POST",
             dataType: "json",
-            url: "/Admin/CreateFairSubmit",
+            url: "/Admin/CreateUpdateFair",
             data: {
                 session: session, steps: steps
             },

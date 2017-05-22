@@ -126,8 +126,17 @@ namespace LivrETS.Models
                 if (fair == null || listUsersParicipateFair == null)
                     return false;
 
-                DateTime fairRetrievalStartDate = fair.FairSteps.Where(step =>
+                DateTime fairRetrievalStartDate = DateTime.Now.AddDays(-10000);
+                try
+                {
+                    fairRetrievalStartDate = fair.FairSteps.Where(step =>
                                             step.Phase == "R").FirstOrDefault().StartDateTime;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                
 
                 if (DateTime.Compare(now.Date, fairRetrievalStartDate.Date) == 0)
                     return NotificationManager.getInstance().sendNotification(

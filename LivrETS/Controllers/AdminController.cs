@@ -27,6 +27,7 @@ using LivrETS.ViewModels;
 using System.Net;
 using System.Web.Security;
 using LivrETS.Repositories;
+using System.Globalization;
 
 namespace LivrETS.Controllers
 {
@@ -192,13 +193,14 @@ namespace LivrETS.Controllers
             DateTime now = DateTime.Now;
             var currentFairStepsS = currentFair.FairSteps.Where(step => step.Phase.Equals("S")).FirstOrDefault();
 
-            if(DateTime.Compare(now.Date, currentFairStepsS.StartDateTime.Date) >= 0)
-                Offers = currentFair.Offers.Where(offer => 
-                    DateTime.Compare(offer.StartDate, offer.Article.DeletedAt) == 0).ToList();
+            if(currentFairStepsS != null) { }
+                if(DateTime.Compare(now.Date, currentFairStepsS.StartDateTime.Date) >= 0)
+                    Offers = currentFair.Offers.Where(offer => 
+                        DateTime.Compare(offer.StartDate, offer.Article.DeletedAt) == 0).ToList();
 
             return Json(new
             {
-               Offers 
+               Offers
             }, contentType: "application/json");
         }
 
@@ -380,7 +382,7 @@ namespace LivrETS.Controllers
 
         // DELETE: /Admin/DeleteFairStep
         // Deletes one or more fairSteps.
-        [HttpDelete]
+        [HttpPost]
         public ActionResult DeleteFairStep(string id)
         {
             bool status = Repository.DeleteFairStep(id);
@@ -394,11 +396,10 @@ namespace LivrETS.Controllers
         }
 
         // POST: /Admin/CreateFairSubmit
-        // Adds Fair
+        // Adds and Edit Fair 
         [HttpPost]
-        public ActionResult CreateFairSubmit(string session, string[] steps, string Id)
+        public ActionResult CreateUpdateFair(string session, string[] steps, string Id)
         {
-            string message = "Erreur de dates";
             using (var db = new ApplicationDbContext())
             {
                 Fair fair = null;
@@ -406,7 +407,7 @@ namespace LivrETS.Controllers
 
                 if (Id != null)
                 {
-                    fair = db.Fairs.FirstOrDefault(fairDb => fairDb.Id.ToString() == Id);
+                    fair = db.Fairs.FirstOrDefault(fairDb => fairDb.Id.ToString().Equals(Id));
                     db.Fairs.Attach(fair as Fair);
                 }
                 else
@@ -432,14 +433,15 @@ namespace LivrETS.Controllers
                                 message = "Des informations sont manquantes"
                             }, contentType: "application/json");
 
+                 
                         DateTime start = DateTime.Parse(dynamicObject["StartDateTime"]);
                         DateTime end = DateTime.Parse(dynamicObject["EndDateTime"]);
-
+                        
                         if (DateTime.Compare(start, end) > 0)
                             return Json(new
                             {
                                 status = false,
-                                message = message
+                                message = "Erreur de dates entre "+ start +" et "+ end
                             }, contentType: "application/json");
 
                         if (dynamicObject["Id"].Equals("-1"))
